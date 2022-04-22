@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <OutputType>Exe</OutputType>
+        <TargetFramework>net6.0</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <Folder Include="Controllers" />
+      <Folder Include="Core\Doctors\Repository" />
+      <Folder Include="Core\Equipments\Repository" />
+      <Folder Include="Core\Patients\Model" />
+      <Folder Include="Core\Patients\Repository" />
+      <Folder Include="Core\Rooms\Repository" />
+      <Folder Include="Core\Secretaries\Model" />
+      <Folder Include="Core\Secretaries\Repository" />
+    </ItemGroup>
+
+</Project>
