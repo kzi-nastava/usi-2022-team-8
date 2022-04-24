@@ -1,0 +1,10 @@
+[
+  {
+    "type": "Manager",
+    "username": "milos",
+    "password": "milos",
+    "name": "Milos",
+    "surname": "Milinkovic",
+    "blocked": "NotBlocked"
+  }
+]
