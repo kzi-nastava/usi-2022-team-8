@@ -13,6 +13,12 @@ C:\4. semestar\USI\Projekat\HealthInstitution\HealthInstitution\obj\Debug\net6.0
 C:\4. semestar\USI\Projekat\HealthInstitution\HealthInstitution\obj\Debug\net6.0-windows\HealthInstitution.pdb
 C:\4. semestar\USI\Projekat\HealthInstitution\HealthInstitution\obj\Debug\net6.0-windows\HealthInstitution.genruntimeconfig.cache
 C:\4. semestar\USI\Projekat\HealthInstitution\HealthInstitution\obj\Debug\net6.0-windows\ref\HealthInstitution.dll
-C:\4. semestar\USI\Projekat\HealthInstitution\HealthInstitution\obj\Debug\net6.0-windows\HealthInstitution.GUI.LoginWindow.LoginWindow.resources
 C:\4. semestar\USI\Projekat\HealthInstitution\HealthInstitution\obj\Debug\net6.0-windows\HealthInstitution.Properties.Resources.resources
 C:\4. semestar\USI\Projekat\HealthInstitution\HealthInstitution\obj\Debug\net6.0-windows\HealthInstitution.csproj.GenerateResource.cache
+C:\4. semestar\USI\Projekat\HealthInstitution\HealthInstitution\obj\Debug\net6.0-windows\GUI\LoginWindow\LoginWindow.g.cs
+C:\4. semestar\USI\Projekat\HealthInstitution\HealthInstitution\obj\Debug\net6.0-windows\HealthInstitution_MarkupCompile.cache
+C:\4. semestar\USI\Projekat\HealthInstitution\HealthInstitution\obj\Debug\net6.0-windows\HealthInstitution_MarkupCompile.lref
+C:\4. semestar\USI\Projekat\HealthInstitution\HealthInstitution\obj\Debug\net6.0-windows\GUI\LoginWindow\LoginWindow.baml
+C:\4. semestar\USI\Projekat\HealthInstitution\HealthInstitution\obj\Debug\net6.0-windows\HealthInstitution.g.resources
+C:\4. semestar\USI\Projekat\HealthInstitution\HealthInstitution\obj\Debug\net6.0-windows\GUI\UserWindow\DoctorWindow.g.cs
+C:\4. semestar\USI\Projekat\HealthInstitution\HealthInstitution\obj\Debug\net6.0-windows\GUI\UserWindow\DoctorWindow.baml

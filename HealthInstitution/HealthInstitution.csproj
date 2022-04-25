@@ -1,12 +1,17 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
-        <OutputType>Exe</OutputType>
+        <OutputType>WinExe</OutputType>
         <TargetFramework>net6.0-windows</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
         <UseWindowsForms>True</UseWindowsForms>
+        <UseWPF>True</UseWPF>
     </PropertyGroup>
+
+    <ItemGroup>
+      <None Remove="Data\Images\Hospital.png" />
+    </ItemGroup>
 
     <ItemGroup>
       <Folder Include="Controllers" />
@@ -23,8 +28,15 @@
       <Folder Include="Core\RestRequests\Repository" />
       <Folder Include="Core\Rooms\Repository" />
       <Folder Include="Core\SystemUsers\Doctors\Repository" />
+      <Folder Include="Core\SystemUsers\Patients\Repository\" />
       <Folder Include="Core\SystemUsers\Secretaries\Model" />
       <Folder Include="Core\SystemUsers\Secretaries\Repository" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Resource Include="Data\Images\Hospital.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Resource>
     </ItemGroup>
 
     <ItemGroup>

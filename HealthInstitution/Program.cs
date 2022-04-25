@@ -6,8 +6,10 @@ using System.Text.Json.Serialization;
 using System.IO;
 using HealthInstitution.Core.SystemUsers.Users.Model;
 using HealthInstitution.Core.SystemUsers.Patients.Model;
+using HealthInstitution.GUI.LoginWindow;
 
-/*Console.WriteLine("Hello, World!");
+
+/*
 JsonSerializerOptions options = new JsonSerializerOptions
 {
     Converters ={
@@ -21,5 +23,3 @@ foreach (User user in users)
     System.Console.WriteLine(user.username);
     //System.Console.WriteLine(user.type);
 }*/
-
-//Application.Run(new LoginWindow());
