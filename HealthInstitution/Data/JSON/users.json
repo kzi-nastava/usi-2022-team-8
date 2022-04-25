@@ -1,0 +1,32 @@
+[
+  {
+    "type": "Patient",
+    "username": "pera",
+    "password": "pera"
+  },
+  {
+    "type": "Patient",
+    "username": "marko",
+    "password": "marko"
+  },
+  {
+    "type": "Doctor",
+    "username": "jovan",
+    "password": "jovan"
+  },
+  {
+    "type": "Doctor",
+    "username": "ivan",
+    "password": "ivan"
+  },
+  {
+    "type": "Secretary",
+    "username": "simo",
+    "password": "simo"
+  },
+  {
+    "type": "Manager",
+    "username": "milos",
+    "password": "milos"
+  }
+]

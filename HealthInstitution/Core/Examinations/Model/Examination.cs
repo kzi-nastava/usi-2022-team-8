@@ -13,6 +13,18 @@ public class Examination
     public Doctor doctor { get; set; }
     public MedicalRecord medicalRecord { get; set; }
     public String anamnesis { get; set; }
+
+
+    public Examination(Appointment appointment, ExaminationStatus status, Room room, Doctor doctor, MedicalRecord medicalRecord, string anamnesis)
+    {
+        this.appointment = appointment;
+        this.status = status;
+        this.room = room;
+        this.doctor = doctor;
+        this.medicalRecord = medicalRecord;
+        this.anamnesis = anamnesis;
+    }
+    
 }
 
 public enum ExaminationStatus

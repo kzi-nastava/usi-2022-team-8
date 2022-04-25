@@ -1,0 +1,15 @@
+C:\4. semestar\USI\Projekat\HealthInstitution\HealthInstitution\obj\Debug\net6.0\HealthInstitution.csproj.AssemblyReference.cache
+C:\4. semestar\USI\Projekat\HealthInstitution\HealthInstitution\obj\Debug\net6.0\HealthInstitution.GeneratedMSBuildEditorConfig.editorconfig
+C:\4. semestar\USI\Projekat\HealthInstitution\HealthInstitution\obj\Debug\net6.0\HealthInstitution.AssemblyInfoInputs.cache
+C:\4. semestar\USI\Projekat\HealthInstitution\HealthInstitution\obj\Debug\net6.0\HealthInstitution.AssemblyInfo.cs
+C:\4. semestar\USI\Projekat\HealthInstitution\HealthInstitution\obj\Debug\net6.0\HealthInstitution.csproj.CoreCompileInputs.cache
+C:\4. semestar\USI\Projekat\HealthInstitution\HealthInstitution\bin\Debug\net6.0\HealthInstitution.exe
+C:\4. semestar\USI\Projekat\HealthInstitution\HealthInstitution\bin\Debug\net6.0\HealthInstitution.deps.json
+C:\4. semestar\USI\Projekat\HealthInstitution\HealthInstitution\bin\Debug\net6.0\HealthInstitution.runtimeconfig.json
+C:\4. semestar\USI\Projekat\HealthInstitution\HealthInstitution\bin\Debug\net6.0\HealthInstitution.dll
+C:\4. semestar\USI\Projekat\HealthInstitution\HealthInstitution\bin\Debug\net6.0\HealthInstitution.pdb
+C:\4. semestar\USI\Projekat\HealthInstitution\HealthInstitution\obj\Debug\net6.0\HealthInstitution.dll
+C:\4. semestar\USI\Projekat\HealthInstitution\HealthInstitution\obj\Debug\net6.0\refint\HealthInstitution.dll
+C:\4. semestar\USI\Projekat\HealthInstitution\HealthInstitution\obj\Debug\net6.0\HealthInstitution.pdb
+C:\4. semestar\USI\Projekat\HealthInstitution\HealthInstitution\obj\Debug\net6.0\HealthInstitution.genruntimeconfig.cache
+C:\4. semestar\USI\Projekat\HealthInstitution\HealthInstitution\obj\Debug\net6.0\ref\HealthInstitution.dll

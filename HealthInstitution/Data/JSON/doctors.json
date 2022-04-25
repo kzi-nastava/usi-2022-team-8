@@ -1,0 +1,18 @@
+[
+  {
+    "type": "Doctor",
+    "username": "jovan",
+    "password": "jovan",
+    "name": "Jovan",
+    "surname": "Jovanovic",
+    "blocked": "NotBlocked"
+  },
+  {
+    "type": "Doctor",
+    "username": "ivan",
+    "password": "ivan",
+    "name": "Ivan",
+    "surname": "Ivanovic",
+    "blocked": "NotBlocked"
+  }
+]

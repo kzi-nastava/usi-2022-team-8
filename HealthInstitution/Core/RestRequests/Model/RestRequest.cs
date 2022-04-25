@@ -6,7 +6,7 @@ public class RestRequest
 {
     public Doctor doctor { get; set; }
     public String reason { get; set; }
-    public DateTime startDate { get; set; }
+    public DateOnly startDate { get; set; }
     public int daysDuration { get; set; }
     public RestRequestState state { get; set; }
     public bool isUrgent { get; set; }

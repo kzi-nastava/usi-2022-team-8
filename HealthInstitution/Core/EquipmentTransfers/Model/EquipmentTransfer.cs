@@ -9,4 +9,13 @@ public class EquipmentTransfer
     public Room fromRoom { get; set; }
     public Room toRoom { get; set; }
     public DateTime transferTime { get; set; }
+
+
+    public EquipmentTransfer(Equipment equipment, Room fromRoom, Room toRoom, DateTime transferTime)
+    {
+        this.equipment = equipment;
+        this.fromRoom = fromRoom;
+        this.toRoom = toRoom;
+        this.transferTime = transferTime;
+    }
 }

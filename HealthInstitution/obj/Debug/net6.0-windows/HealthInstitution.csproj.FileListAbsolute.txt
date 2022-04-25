@@ -1,0 +1,34 @@
+C:\4. semestar\USI\Projekat\HealthInstitution\HealthInstitution\bin\Debug\net6.0-windows\HealthInstitution.exe
+C:\4. semestar\USI\Projekat\HealthInstitution\HealthInstitution\bin\Debug\net6.0-windows\HealthInstitution.deps.json
+C:\4. semestar\USI\Projekat\HealthInstitution\HealthInstitution\bin\Debug\net6.0-windows\HealthInstitution.runtimeconfig.json
+C:\4. semestar\USI\Projekat\HealthInstitution\HealthInstitution\bin\Debug\net6.0-windows\HealthInstitution.dll
+C:\4. semestar\USI\Projekat\HealthInstitution\HealthInstitution\bin\Debug\net6.0-windows\HealthInstitution.pdb
+C:\4. semestar\USI\Projekat\HealthInstitution\HealthInstitution\obj\Debug\net6.0-windows\HealthInstitution.csproj.AssemblyReference.cache
+C:\4. semestar\USI\Projekat\HealthInstitution\HealthInstitution\obj\Debug\net6.0-windows\HealthInstitution.GeneratedMSBuildEditorConfig.editorconfig
+C:\4. semestar\USI\Projekat\HealthInstitution\HealthInstitution\obj\Debug\net6.0-windows\HealthInstitution.AssemblyInfoInputs.cache
+C:\4. semestar\USI\Projekat\HealthInstitution\HealthInstitution\obj\Debug\net6.0-windows\HealthInstitution.AssemblyInfo.cs
+C:\4. semestar\USI\Projekat\HealthInstitution\HealthInstitution\obj\Debug\net6.0-windows\HealthInstitution.csproj.CoreCompileInputs.cache
+C:\4. semestar\USI\Projekat\HealthInstitution\HealthInstitution\obj\Debug\net6.0-windows\HealthInstitution.dll
+C:\4. semestar\USI\Projekat\HealthInstitution\HealthInstitution\obj\Debug\net6.0-windows\refint\HealthInstitution.dll
+C:\4. semestar\USI\Projekat\HealthInstitution\HealthInstitution\obj\Debug\net6.0-windows\HealthInstitution.pdb
+C:\4. semestar\USI\Projekat\HealthInstitution\HealthInstitution\obj\Debug\net6.0-windows\HealthInstitution.genruntimeconfig.cache
+C:\4. semestar\USI\Projekat\HealthInstitution\HealthInstitution\obj\Debug\net6.0-windows\ref\HealthInstitution.dll
+C:\4. semestar\USI\Projekat\HealthInstitution\HealthInstitution\obj\Debug\net6.0-windows\HealthInstitution.Properties.Resources.resources
+C:\4. semestar\USI\Projekat\HealthInstitution\HealthInstitution\obj\Debug\net6.0-windows\HealthInstitution.csproj.GenerateResource.cache
+C:\4. semestar\USI\Projekat\HealthInstitution\HealthInstitution\obj\Debug\net6.0-windows\GUI\LoginWindow\LoginWindow.g.cs
+C:\4. semestar\USI\Projekat\HealthInstitution\HealthInstitution\obj\Debug\net6.0-windows\HealthInstitution_MarkupCompile.cache
+C:\4. semestar\USI\Projekat\HealthInstitution\HealthInstitution\obj\Debug\net6.0-windows\HealthInstitution_MarkupCompile.lref
+C:\4. semestar\USI\Projekat\HealthInstitution\HealthInstitution\obj\Debug\net6.0-windows\GUI\LoginWindow\LoginWindow.baml
+C:\4. semestar\USI\Projekat\HealthInstitution\HealthInstitution\obj\Debug\net6.0-windows\HealthInstitution.g.resources
+C:\4. semestar\USI\Projekat\HealthInstitution\HealthInstitution\obj\Debug\net6.0-windows\GUI\UserWindow\DoctorWindow.g.cs
+C:\4. semestar\USI\Projekat\HealthInstitution\HealthInstitution\obj\Debug\net6.0-windows\GUI\UserWindow\DoctorWindow.baml
+D:\programiranje\4_semestar\uvodSoftversko\projekat1\course-project-tim-8\HealthInstitution\obj\Debug\net6.0-windows\HealthInstitution.csproj.AssemblyReference.cache
+D:\programiranje\4_semestar\uvodSoftversko\projekat1\course-project-tim-8\HealthInstitution\obj\Debug\net6.0-windows\GUI\LoginWindow\LoginWindow.g.cs
+D:\programiranje\4_semestar\uvodSoftversko\projekat1\course-project-tim-8\HealthInstitution\obj\Debug\net6.0-windows\GUI\UserWindow\AddStudentWindow.g.cs
+D:\programiranje\4_semestar\uvodSoftversko\projekat1\course-project-tim-8\HealthInstitution\obj\Debug\net6.0-windows\GUI\UserWindow\DoctorWindow.g.cs
+D:\programiranje\4_semestar\uvodSoftversko\projekat1\course-project-tim-8\HealthInstitution\obj\Debug\net6.0-windows\GUI\UserWindow\SecretaryWindow.g.cs
+D:\programiranje\4_semestar\uvodSoftversko\projekat1\course-project-tim-8\HealthInstitution\obj\Debug\net6.0-windows\HealthInstitution_MarkupCompile.cache
+D:\programiranje\4_semestar\uvodSoftversko\projekat1\course-project-tim-8\HealthInstitution\obj\Debug\net6.0-windows\HealthInstitution_MarkupCompile.lref
+D:\programiranje\4_semestar\uvodSoftversko\projekat1\course-project-tim-8\HealthInstitution\obj\Debug\net6.0-windows\HealthInstitution.dll
+D:\programiranje\4_semestar\uvodSoftversko\projekat1\course-project-tim-8\HealthInstitution\obj\Debug\net6.0-windows\refint\HealthInstitution.dll
+D:\programiranje\4_semestar\uvodSoftversko\projekat1\course-project-tim-8\HealthInstitution\obj\Debug\net6.0-windows\HealthInstitution.pdb
