@@ -8,23 +8,19 @@
     "net6.0-windows7.0": []
   },
   "packageFolders": {
-    "C:\\Users\\Win\\.nuget\\packages\\": {},
-    "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder": {}
+    "C:\\Users\\Nemanja\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\programiranje\\4_semestar\\uvodSoftversko\\projekat1\\course-project-tim-8\\HealthInstitution\\HealthInstitution.csproj",
+      "projectUniqueName": "C:\\4. semestar\\USI\\ProjekatNEW\\course-project-tim-8\\HealthInstitution\\HealthInstitution.csproj",
       "projectName": "HealthInstitution",
-      "projectPath": "D:\\programiranje\\4_semestar\\uvodSoftversko\\projekat1\\course-project-tim-8\\HealthInstitution\\HealthInstitution.csproj",
-      "packagesPath": "C:\\Users\\Win\\.nuget\\packages\\",
-      "outputPath": "D:\\programiranje\\4_semestar\\uvodSoftversko\\projekat1\\course-project-tim-8\\HealthInstitution\\obj\\",
+      "projectPath": "C:\\4. semestar\\USI\\ProjekatNEW\\course-project-tim-8\\HealthInstitution\\HealthInstitution.csproj",
+      "packagesPath": "C:\\Users\\Nemanja\\.nuget\\packages\\",
+      "outputPath": "C:\\4. semestar\\USI\\ProjekatNEW\\course-project-tim-8\\HealthInstitution\\obj\\",
       "projectStyle": "PackageReference",
-      "fallbackFolders": [
-        "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
-      ],
       "configFilePaths": [
-        "C:\\Users\\Win\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\Nemanja\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [

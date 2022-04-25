@@ -54,7 +54,7 @@ namespace HealthInstitution.GUI.UserWindow {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/HealthInstitution;component/gui/userwindow/secretarywindow.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/HealthInstitution;V1.0.0.0;component/gui/userwindow/secretarywindow.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\..\GUI\UserWindow\SecretaryWindow.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);

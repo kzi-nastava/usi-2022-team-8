@@ -31,11 +31,11 @@ namespace HealthInstitution.GUI.UserWindow
             this.Close();
         }
 
-        [STAThread]
+        /*[STAThread]
         static void Main(string[] args)
         {
             SecretaryWindow secretaryWindow = new SecretaryWindow();
             secretaryWindow.ShowDialog();   
-        }
+        }*/
     }
 }

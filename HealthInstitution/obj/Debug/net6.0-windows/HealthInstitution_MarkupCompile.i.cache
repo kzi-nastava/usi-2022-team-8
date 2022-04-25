@@ -4,7 +4,7 @@
 winexe
 C#
 .cs
-D:\programiranje\4_semestar\uvodSoftversko\projekat1\course-project-tim-8\HealthInstitution\obj\Debug\net6.0-windows\
+C:\4. semestar\USI\ProjekatNEW\course-project-tim-8\HealthInstitution\obj\Debug\net6.0-windows\
 HealthInstitution
 none
 false
@@ -13,7 +13,7 @@ TRACE;DEBUG;NET;NET6_0;NETCOREAPP
 41825615540
 
 37655767563
-2031899591702
+2031842026807
 GUI\LoginWindow\LoginWindow.xaml;GUI\UserWindow\AddStudentWindow.xaml;GUI\UserWindow\DoctorWindow.xaml;GUI\UserWindow\SecretaryWindow.xaml;
 
 False
