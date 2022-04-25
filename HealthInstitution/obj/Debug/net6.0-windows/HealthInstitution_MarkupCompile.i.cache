@@ -10,11 +10,11 @@ none
 false
 TRACE;DEBUG;NET;NET6_0;NETCOREAPP
 
-2809748351
+41825615540
 
-35-1309576432
+37655767563
 2031899591702
-GUI\LoginWindow\LoginWindow.xaml;GUI\UserWindow\DoctorWindow.xaml;
+GUI\LoginWindow\LoginWindow.xaml;GUI\UserWindow\AddStudentWindow.xaml;GUI\UserWindow\DoctorWindow.xaml;GUI\UserWindow\SecretaryWindow.xaml;
 
-False
+True
 
