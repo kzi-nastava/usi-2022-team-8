@@ -1,20 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "C:\\4. semestar\\USI\\Projekat\\HealthInstitution\\HealthInstitution\\HealthInstitution.csproj": {}
+    "C:\\Users\\Uros\\source\\repos\\course-project-tim-8\\HealthInstitution\\HealthInstitution.csproj": {}
   },
   "projects": {
-    "C:\\4. semestar\\USI\\Projekat\\HealthInstitution\\HealthInstitution\\HealthInstitution.csproj": {
+    "C:\\Users\\Uros\\source\\repos\\course-project-tim-8\\HealthInstitution\\HealthInstitution.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\4. semestar\\USI\\Projekat\\HealthInstitution\\HealthInstitution\\HealthInstitution.csproj",
+        "projectUniqueName": "C:\\Users\\Uros\\source\\repos\\course-project-tim-8\\HealthInstitution\\HealthInstitution.csproj",
         "projectName": "HealthInstitution",
-        "projectPath": "C:\\4. semestar\\USI\\Projekat\\HealthInstitution\\HealthInstitution\\HealthInstitution.csproj",
-        "packagesPath": "C:\\Users\\Nemanja\\.nuget\\packages\\",
-        "outputPath": "C:\\4. semestar\\USI\\Projekat\\HealthInstitution\\HealthInstitution\\obj\\",
+        "projectPath": "C:\\Users\\Uros\\source\\repos\\course-project-tim-8\\HealthInstitution\\HealthInstitution.csproj",
+        "packagesPath": "C:\\Users\\Uros\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\Uros\\source\\repos\\course-project-tim-8\\HealthInstitution\\obj\\",
         "projectStyle": "PackageReference",
+        "fallbackFolders": [
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+        ],
         "configFilePaths": [
-          "C:\\Users\\Nemanja\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Uros\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
         "originalTargetFrameworks": [
