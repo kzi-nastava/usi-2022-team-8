@@ -1,0 +1,14 @@
+[
+  {
+    "quantity": 50,
+    "name": "chair",
+    "equipmentType": "RoomFurniture",
+    "isDynamic": "false"
+  },
+  {
+    "quantity": 150,
+    "name": "injection",
+    "equipmentType": "SurgeryEquipment",
+    "isDynamic": "true"
+  }
+]
