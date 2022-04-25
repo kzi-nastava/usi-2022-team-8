@@ -13,8 +13,8 @@ TRACE;DEBUG;NET;NET6_0;NETCOREAPP
 41825615540
 
 37655767563
-2031842026807
+2031899591702
 GUI\LoginWindow\LoginWindow.xaml;GUI\UserWindow\AddStudentWindow.xaml;GUI\UserWindow\DoctorWindow.xaml;GUI\UserWindow\SecretaryWindow.xaml;
 
-False
+True
 

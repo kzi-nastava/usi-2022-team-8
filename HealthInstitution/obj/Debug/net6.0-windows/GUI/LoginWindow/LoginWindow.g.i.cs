@@ -78,7 +78,7 @@ namespace HealthInstitution.GUI.LoginWindow {
                 return;
             }
             _contentLoaded = true;
-            System.Uri resourceLocater = new System.Uri("/HealthInstitution;V1.0.0.0;component/gui/loginwindow/loginwindow.xaml", System.UriKind.Relative);
+            System.Uri resourceLocater = new System.Uri("/HealthInstitution;component/gui/loginwindow/loginwindow.xaml", System.UriKind.Relative);
             
             #line 1 "..\..\..\..\..\GUI\LoginWindow\LoginWindow.xaml"
             System.Windows.Application.LoadComponent(this, resourceLocater);
