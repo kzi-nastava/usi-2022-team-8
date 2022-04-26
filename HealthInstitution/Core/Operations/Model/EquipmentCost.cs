@@ -8,6 +8,7 @@ public class EquipmentCost
     public Equipment equipment { get; set; }
     public int quantity { get; set; }
 
+
     public EquipmentCost(Operation operation, Equipment equipment, int quantity)
     {
         this.operation = operation;

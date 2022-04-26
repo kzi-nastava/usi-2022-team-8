@@ -10,6 +10,7 @@ public class EquipmentTransfer
     public Room toRoom { get; set; }
     public DateTime transferTime { get; set; }
 
+
     public EquipmentTransfer(Equipment equipment, Room fromRoom, Room toRoom, DateTime transferTime)
     {
         this.equipment = equipment;

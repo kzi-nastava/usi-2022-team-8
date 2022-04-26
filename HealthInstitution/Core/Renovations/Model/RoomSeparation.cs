@@ -2,6 +2,7 @@ using HealthInstitution.Core.Rooms.Model;
 
 namespace HealthInstitution.Core.Renovations.Model;
 
+
 public class RoomSeparation : Renovation
 {
     public Room firstRoom { get; set; }

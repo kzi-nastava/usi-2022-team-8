@@ -2,17 +2,17 @@
   {
     "type": "Patient",
     "username": "pera",
-    "password": "pera",
+    "password": "pera"
   },
   {
     "type": "Patient",
     "username": "marko",
-    "password": "marko",
+    "password": "marko"
   },
   {
     "type": "Doctor",
     "username": "jovan",
-    "password": "jovan",
+    "password": "jovan"
   },
   {
     "type": "Doctor",

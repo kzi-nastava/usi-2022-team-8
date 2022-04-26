@@ -14,6 +14,7 @@ public class Examination
     public MedicalRecord medicalRecord { get; set; }
     public String anamnesis { get; set; }
 
+
     public Examination(Appointment appointment, ExaminationStatus status, Room room, Doctor doctor, MedicalRecord medicalRecord, string anamnesis)
     {
         this.appointment = appointment;
@@ -23,6 +24,7 @@ public class Examination
         this.medicalRecord = medicalRecord;
         this.anamnesis = anamnesis;
     }
+    
 }
 
 public enum ExaminationStatus

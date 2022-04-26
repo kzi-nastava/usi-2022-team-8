@@ -5,6 +5,7 @@ namespace HealthInstitution.Core.Renovations.Model;
 public class Renovation
 {
     public DateTime startDate { get; set; }
+
     public DateTime endDate { get; set; }
     public Room room { get; set; }
 
