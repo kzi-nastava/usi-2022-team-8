@@ -47,10 +47,9 @@ namespace HealthInstitution.GUI.LoginWindow
                 {
                     case UserType.Patient:
                         /*PatientRepository patientRepository = PatientRepository.GetInstance();
-                        Patient patient = patientRepository.GetPatientById(usernameInput);
-                        PatientWindow patientWindow = new PatientWindow();
-                        patientWindow.ShowDialog();
-                        break;*/
+                        Patient patient = patientRepository.GetPatientById(usernameInput);*/
+                        this.Close();
+                        new PatientWindow().ShowDialog();
                         break;
                     case UserType.Doctor:
                         this.Close();

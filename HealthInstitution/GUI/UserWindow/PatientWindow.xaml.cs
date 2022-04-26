@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using HealthInstitution.GUI.PatientWindows;
 
 namespace HealthInstitution.GUI.UserWindow
 {
@@ -22,6 +23,21 @@ namespace HealthInstitution.GUI.UserWindow
         public PatientWindow()
         {
             InitializeComponent();
+        }
+
+        private void logout_button_Click(object sender, RoutedEventArgs e)
+        {
+            if (System.Windows.MessageBox.Show("Are you sure you want to log out?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+            {
+                this.Close();
+                new LoginWindow.LoginWindow().ShowDialog();
+                //lw.ShowDialog();
+            }
+        }
+
+        private void Schedule_Button_Click(object sender, RoutedEventArgs e)
+        {
+            new PatientScheduleWindow().ShowDialog();
         }
     }
 }
