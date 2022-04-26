@@ -1,11 +1,20 @@
 [
   {
+    "id": 1,
+    "quantity": 3,
+    "name": "bed",
+    "type": "RoomFurniture",
+    "isDynamic": "false"
+  },
+  {
+    "id": 2,
     "quantity": 50,
     "name": "chair",
     "equipmentType": "RoomFurniture",
     "isDynamic": "false"
   },
   {
+    "id": 3,
     "quantity": 150,
     "name": "injection",
     "equipmentType": "SurgeryEquipment",
