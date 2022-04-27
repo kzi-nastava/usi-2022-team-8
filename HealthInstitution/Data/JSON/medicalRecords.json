@@ -5,8 +5,8 @@
     "patientUsername": "pera",
     "previousIlnesses": [ "Headaches", "Diarrhea" ],
     "allergens": [ "Gluten", "Nuts" ],
-    "prescriptions": [],
-    "referrals":[]
+    "prescriptionsId": [],
+    "referralsId":[]
   },
   {
     "height": 174.0,
@@ -14,7 +14,7 @@
     "patientUsername": "marko",
     "previousIlnesses": [ "Headaches", "Mononucleosis" ],
     "allergens": [ "Milk", "Soya", "Nuts" ],
-    "prescriptions": [],
-    "referrals": []
+    "prescriptionsId": [],
+    "referralsId": []
   }
 ]
