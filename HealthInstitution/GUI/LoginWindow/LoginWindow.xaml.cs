@@ -70,6 +70,9 @@ namespace HealthInstitution.GUI.LoginWindow
                         break;*/
                         break;
                     case UserType.Manager:
+                        this.Close();
+                        ManagerWindow managerWindow = new ManagerWindow();
+                        managerWindow.ShowDialog();
                         /*PatientRepository patientRepository = PatientRepository.GetInstance();
                         Patient patient = patientRepository.GetPatientById(usernameInput);
                         PatientWindow patientWindow = new PatientWindow();

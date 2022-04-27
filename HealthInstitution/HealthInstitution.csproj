@@ -12,7 +12,6 @@
     <ItemGroup>
       <Folder Include="Controllers" />
       <Folder Include="Core\Appointments\Repository" />
-      <Folder Include="Core\EquipmentTransfers\Repository" />
       <Folder Include="Core\Examinations\Repository" />
       <Folder Include="Core\MedicalRecords\Repository" />
       <Folder Include="Core\Operations\Repository" />
@@ -24,6 +23,10 @@
       <Folder Include="Core\SystemUsers\Doctors\Repository" />
       <Folder Include="Core\SystemUsers\Secretaries\Model" />
       <Folder Include="Core\SystemUsers\Secretaries\Repository" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     </ItemGroup>
 
     <ItemGroup>
