@@ -24,11 +24,35 @@ namespace HealthInstitution.GUI.UserWindow
             InitializeComponent();
         }
 
-        private void addPatient_click(object sender, RoutedEventArgs e)
+        private void crudPatients_click(object sender, RoutedEventArgs e)
         {
-            AddStudentWindow addStudentWindow = new AddStudentWindow();
-            addStudentWindow.ShowDialog();
+            AddUserWindow addUserWindow = new AddUserWindow();
+            addUserWindow.ShowDialog();
             this.Close();
+        }
+
+        private void blockUnblock_click(object sender, RoutedEventArgs e)
+        {
+            AddUserWindow addUserWindow = new AddUserWindow();
+            addUserWindow.ShowDialog();
+            this.Close();
+        }
+
+        private void examinationRequests_click(object sender, RoutedEventArgs e)
+        {
+            AddUserWindow addUserWindow = new AddUserWindow();
+            addUserWindow.ShowDialog();
+            this.Close();
+        }
+
+        private void LogOut_Click(object sender, RoutedEventArgs e)
+        {
+            if (System.Windows.MessageBox.Show("Are you sure you want to log out?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+            {
+                this.Close();
+                LoginWindow.LoginWindow lw = new LoginWindow.LoginWindow();
+                lw.ShowDialog();
+            }
         }
 
         /*[STAThread]

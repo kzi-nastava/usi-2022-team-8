@@ -54,8 +54,8 @@ namespace HealthInstitution.GUI.LoginWindow
                         break;
                     case UserType.Doctor:
                         this.Close();
-                        DoctorWindow window = new DoctorWindow();
-                        window.ShowDialog();
+                        DoctorWindow doctorWindow = new DoctorWindow();
+                        doctorWindow.ShowDialog();
                         /*PatientRepository patientRepository = PatientRepository.GetInstance();
                         Patient patient = patientRepository.GetPatientById(usernameInput);
                         PatientWindow patientWindow = new PatientWindow();
@@ -63,6 +63,9 @@ namespace HealthInstitution.GUI.LoginWindow
                         break;*/
                         break;
                     case UserType.Secretary:
+                        this.Close();
+                        SecretaryWindow secretaryWindow = new SecretaryWindow();
+                        secretaryWindow.ShowDialog();
                         /*PatientRepository patientRepository = PatientRepository.GetInstance();
                         Patient patient = patientRepository.GetPatientById(usernameInput);
                         PatientWindow patientWindow = new PatientWindow();
