@@ -11,12 +11,13 @@ public class Room
     public bool isRenovating { get; set; }
     public List<Equipment> availableEquipment { get; set; }
 
-    public Room(int id, RoomType type, int number, bool isRenovating)
+    public Room(int id, RoomType type, int number, bool isRenovating, List<Equipment> availableEquipment)
     {
         this.id = id;
         this.type = type;
         this.number = number;
         this.isRenovating = isRenovating;
+        this.availableEquipment = availableEquipment;
     }
 }
 

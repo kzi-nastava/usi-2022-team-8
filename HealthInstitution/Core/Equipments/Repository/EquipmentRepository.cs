@@ -13,6 +13,8 @@ namespace HealthInstitution.Core.Equipments.Repository
     public class EquipmentRepository
     {
         public String fileName { get; set; }
+
+        private int maxId;
         public List<Equipment> equipments { get; set; }
         public Dictionary<int, Equipment> equipmentById { get; set; }
 
@@ -25,6 +27,7 @@ namespace HealthInstitution.Core.Equipments.Repository
             this.fileName = fileName;
             this.equipments = new List<Equipment>();
             this.equipmentById = new Dictionary<int, Equipment>();
+            this.maxId = 0;
             this.LoadEquipments();
         }
         private static EquipmentRepository instance = null;
@@ -43,6 +46,10 @@ namespace HealthInstitution.Core.Equipments.Repository
             var equipments = JsonSerializer.Deserialize<List<Equipment>>(File.ReadAllText(@"..\..\..\Data\JSON\equipments.json"), options);
             foreach (Equipment equipment in equipments)
             {
+                if (equipment.id > maxId)
+                {
+                    maxId = equipment.id;
+                }
                 this.equipments.Add(equipment);
                 this.equipmentById.Add(equipment.id, equipment);
             }
@@ -50,17 +57,28 @@ namespace HealthInstitution.Core.Equipments.Repository
 
         public void SaveEquipments()
         {
-            var allRooms = JsonSerializer.Serialize(this.equipments, options);
-            File.WriteAllText(this.fileName, allRooms);
+            var allEquipments = JsonSerializer.Serialize(this.equipments, options);
+            File.WriteAllText(this.fileName, allEquipments);
         }
 
-        public List<Equipment> GetRooms()
+        public List<Equipment> GetEquipments()
         {
             return this.equipments;
         }
 
-        public void AddEquipment(int id, int quantity, string name, EquipmentType type, bool isDynamic)
+        public Equipment GetEquipmentById(int id)
         {
+            if (equipmentById.ContainsKey(id))
+                return equipmentById[id];
+            return null;
+        }
+
+        public void AddEquipment(int quantity, string name, EquipmentType type, bool isDynamic)
+        {
+
+            this.maxId++;
+            int id = this.maxId;
+
             Equipment equipment = new Equipment(id, quantity, name, type, isDynamic);
             this.equipments.Add(equipment);
             this.equipmentById.Add(equipment.id, equipment);
@@ -69,7 +87,7 @@ namespace HealthInstitution.Core.Equipments.Repository
 
         public void UpdateEquipment(int id, int quantity, string name, EquipmentType type, bool isDynamic)
         {
-            Equipment equipment = equipmentById[id];
+            Equipment equipment = GetEquipmentById(id);
             equipment.quantity = quantity;
             equipment.name = name;
             equipment.type = type;
@@ -80,11 +98,11 @@ namespace HealthInstitution.Core.Equipments.Repository
 
         public void DeleteEquipment(int id)
         {
-            Equipment equipment = equipmentById[id];
+            Equipment equipment = GetEquipmentById(id);
             this.equipments.Remove(equipment);
             this.equipmentById.Remove(id);
             SaveEquipments();
         }
     }
 }
-}
+

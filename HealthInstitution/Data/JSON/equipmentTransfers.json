@@ -1,0 +1,9 @@
+[
+  {
+    "id": 1,
+    "equipment": 1,
+    "fromRoom": 1,
+    "toRoom": 2,
+    "transferTime": "2022-07-26T00:00:00"
+  }
+]
