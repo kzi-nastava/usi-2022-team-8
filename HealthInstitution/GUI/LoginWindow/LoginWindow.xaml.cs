@@ -14,6 +14,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using HealthInstitution.Core.Examinations.Repository;
+using HealthInstitution.Core.Examinations.Model;
 using HealthInstitution.Core.ScheduleEditRequests.Repository;
 
 namespace HealthInstitution.GUI.LoginWindow
@@ -21,12 +23,13 @@ namespace HealthInstitution.GUI.LoginWindow
     /// <summary>
     /// Interaction logic for LoginWindow.xaml
     /// </summary>
-    
+
     public partial class LoginWindow : Window
     {
-        String usernameInput;
-        String passwordInput;
+        private String usernameInput;
+        private String passwordInput;
         public UserRepository userRepository = UserRepository.GetInstance();
+
         public LoginWindow()
         {
             InitializeComponent();
@@ -40,9 +43,12 @@ namespace HealthInstitution.GUI.LoginWindow
             if (foundUser == null)
             {
                 System.Windows.MessageBox.Show("Username doesn't exist!", "Log in error", MessageBoxButton.OK, MessageBoxImage.Error);
-            } else if (foundUser.password != passwordInput) {
+            }
+            else if (foundUser.password != passwordInput)
+            {
                 System.Windows.MessageBox.Show("Username and password don't match!", "Log in error", MessageBoxButton.OK, MessageBoxImage.Error);
-            } else
+            }
+            else
             {
                 switch (foundUser.type)
                 {
@@ -52,10 +58,20 @@ namespace HealthInstitution.GUI.LoginWindow
                         PatientWindow patientWindow = new PatientWindow();
                         patientWindow.ShowDialog();
                         break;*/
-                        var temp = ScheduleEditRequestRepository.GetInstance();
-                        Console.WriteLine(temp.GetScheduleEditRequestById("1"));
+                        Examination temp = ExaminationRepository.GetInstance().GetExaminationById(1);
+                        /* Console.WriteLine(temp.GetExaminationById(1));
+                         Examination examination = temp.GetExaminationById(1);
+                         ExaminationRepository.GetInstance().DeleteExaminations(examination.id);
+                         ExaminationRepository.GetInstance().AddExamination(examination.appointment, examination.status, examination.room, examination.doctor, examination.medicalRecord, examination.anamnesis);
+                         examination.anamnesis = "AAAAAAAAAAAA";
+                         examination.id = 2;
+                         ExaminationRepository.GetInstance().SwapExamination(examination);*/
+
+                        ScheduleEditRequestRepository.GetInstance().AddScheduleEditRequests(temp);
+                        ScheduleEditRequestRepository.GetInstance().DeleteScheduleEditRequests(1);
 
                         break;
+
                     case UserType.Doctor:
                         this.Close();
                         DoctorWindow window = new DoctorWindow();
@@ -66,9 +82,8 @@ namespace HealthInstitution.GUI.LoginWindow
                         patientWindow.ShowDialog();
                         break;*/
 
-
-
                         break;
+
                     case UserType.Secretary:
                         /*PatientRepository patientRepository = PatientRepository.GetInstance();
                         Patient patient = patientRepository.GetPatientById(usernameInput);
@@ -76,6 +91,7 @@ namespace HealthInstitution.GUI.LoginWindow
                         patientWindow.ShowDialog();
                         break;*/
                         break;
+
                     case UserType.Manager:
                         /*PatientRepository patientRepository = PatientRepository.GetInstance();
                         Patient patient = patientRepository.GetPatientById(usernameInput);
@@ -88,7 +104,7 @@ namespace HealthInstitution.GUI.LoginWindow
         }
 
         [STAThread]
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             LoginWindow window = new LoginWindow();
             window.ShowDialog();
