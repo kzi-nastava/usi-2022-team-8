@@ -37,7 +37,8 @@ namespace HealthInstitution.GUI.UserWindow
 
         private void EquipmentTransfer_Click(object sender, RoutedEventArgs e)
         {
-            //todo
+            EquipmentTransferDialog equipmentTransferDialog = new EquipmentTransferDialog();
+            equipmentTransferDialog.ShowDialog();
         }
 
         private void EquipmentInspection_Click(object sender, RoutedEventArgs e)
