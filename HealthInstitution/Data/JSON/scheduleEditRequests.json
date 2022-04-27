@@ -1,0 +1,52 @@
+[
+  {
+    "Id": 1,
+    "examination": {
+      "Id": 1,
+      "appointment": {
+        "isFree": true,
+        "startTime": "2022-04-26T13:00:00"
+      },
+      "status": "Scheduled",
+      "room": {
+        "type": "ExaminationRoom",
+        "number": 204,
+        "isRenovating": false,
+        "availableEquipment": []
+      },
+      "doctor": {
+        "type": "Doctor",
+        "username": "jovan",
+        "password": "jovan",
+        "name": "Jovan",
+        "surname": "Jovanovic",
+        "blocked": "NotBlocked"
+      }
+    }
+  },
+  {
+    "Id": 2,
+    "examination": {
+      "Id": 2,
+      "appointment": {
+        "isFree": true,
+        "startTime": "2022-04-26T14:00:00"
+      },
+      "status": "Scheduled",
+      "room": {
+        "type": "ExaminationRoom",
+        "number": 204,
+        "isRenovating": false,
+        "availableEquipment": []
+      },
+      "doctor": {
+        "type": "Doctor",
+        "username": "jovan",
+        "password": "jovan",
+        "name": "Jovan",
+        "surname": "Jovanovic",
+        "blocked": "NotBlocked"
+      }
+    }
+  }
+]

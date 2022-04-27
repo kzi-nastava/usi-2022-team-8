@@ -14,6 +14,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using HealthInstitution.Core.ScheduleEditRequests.Repository;
 
 namespace HealthInstitution.GUI.LoginWindow
 {
@@ -51,6 +52,9 @@ namespace HealthInstitution.GUI.LoginWindow
                         PatientWindow patientWindow = new PatientWindow();
                         patientWindow.ShowDialog();
                         break;*/
+                        var temp = ScheduleEditRequestRepository.GetInstance();
+                        Console.WriteLine(temp.GetScheduleEditRequestById("1"));
+
                         break;
                     case UserType.Doctor:
                         this.Close();
@@ -61,6 +65,9 @@ namespace HealthInstitution.GUI.LoginWindow
                         PatientWindow patientWindow = new PatientWindow();
                         patientWindow.ShowDialog();
                         break;*/
+
+
+
                         break;
                     case UserType.Secretary:
                         /*PatientRepository patientRepository = PatientRepository.GetInstance();

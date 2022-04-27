@@ -7,6 +7,7 @@ namespace HealthInstitution.Core.Examinations.Model;
 
 public class Examination
 {
+    public int Id { get; set; }
     public Appointment appointment { get; set; }
     public ExaminationStatus status { get; set; }
     public Room room { get; set; }
