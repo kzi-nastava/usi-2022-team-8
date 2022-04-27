@@ -13,6 +13,6 @@ public class Operation
     public Room room { get; set; }
     public Doctor doctor { get; set; }
     public MedicalRecord medicalRecord { get; set; }
-    public String operationReport { get; set; }
+    public String report { get; set; }
     public List<EquipmentCost> equipmentCosts { get; set; }
 }

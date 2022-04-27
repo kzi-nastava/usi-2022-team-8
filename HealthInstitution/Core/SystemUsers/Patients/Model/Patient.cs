@@ -10,4 +10,9 @@ public class Patient : User
     {
         this.blocked = blocked;
     }
+
+    public override string? ToString()
+    {
+        return this.name+" "+this.surname;
+    }
 }

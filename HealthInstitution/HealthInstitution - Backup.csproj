@@ -1,6 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
     <PropertyGroup>
+
         <OutputType>WinExe</OutputType>
         <TargetFramework>net6.0-windows</TargetFramework>
         <ImplicitUsings>enable</ImplicitUsings>
@@ -18,8 +19,10 @@
       <Folder Include="Core\Appointments\Repository" />
       <Folder Include="Core\Equipments\Repository" />
       <Folder Include="Core\EquipmentTransfers\Repository" />
+      <Folder Include="Core\Examinations\Repository" />
       <Folder Include="Core\MedicalRecords\Repository" />
       <Folder Include="Core\Operations\Repository" />
+
       <Folder Include="Core\Polls\Repository\" />
       <Folder Include="Core\Prescriptions\Repository" />
       <Folder Include="Core\Referrals\Repository" />
@@ -27,9 +30,13 @@
       <Folder Include="Core\RestRequests\Repository" />
       <Folder Include="Core\Rooms\Repository" />
       <Folder Include="Core\SystemUsers\Doctors\Repository" />
+
+      <Folder Include="Core\SystemUsers\Patients\Repository" />
+
       <Folder Include="Core\SystemUsers\Secretaries\Model" />
       <Folder Include="Core\SystemUsers\Secretaries\Repository" />
     </ItemGroup>
+
 
     <ItemGroup>
       <Resource Include="Data\Images\Hospital.png">
@@ -38,9 +45,6 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Compile Update="GUI\DoctorView\DoctorWindow.xaml.cs">
-        <SubType>Code</SubType>
-      </Compile>
       <Compile Update="Properties\Resources.Designer.cs">
         <DesignTime>True</DesignTime>
         <AutoGen>True</AutoGen>
@@ -53,19 +57,6 @@
         <Generator>ResXFileCodeGenerator</Generator>
         <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       </EmbeddedResource>
-    </ItemGroup>
-
-    <ItemGroup>
-      <None Update="GUI\MedicalRecordView\aaaa.xaml">
-        <Generator>MSBuild:Compile</Generator>
-      </None>
-    </ItemGroup>
-
-    <ItemGroup>
-      <Page Update="GUI\DoctorView\DoctorWindow.xaml">
-        <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
-        <SubType>Designer</SubType>
-      </Page>
     </ItemGroup>
 
 </Project>
