@@ -24,25 +24,19 @@ namespace HealthInstitution.GUI.UserWindow
             InitializeComponent();
         }
 
-        private void crudbPatients_click(object sender, RoutedEventArgs e)
+        private void patients_click(object sender, RoutedEventArgs e)
         {
             CrudbPatients crudbPatientsWindow = new CrudbPatients();
             crudbPatientsWindow.ShowDialog();
-            this.Close();
+            //this.Close();
         }
 
-        private void unblock_click(object sender, RoutedEventArgs e)
-        {
-            AddUserWindow addUserWindow = new AddUserWindow();
-            addUserWindow.ShowDialog();
-            this.Close();
-        }
 
         private void examinationRequests_click(object sender, RoutedEventArgs e)
         {
             ExaminationRequestsReview examinationRequestsReview = new ExaminationRequestsReview();
             examinationRequestsReview.ShowDialog();
-            this.Close();
+            //this.Close();
         }
 
         private void LogOut_Click(object sender, RoutedEventArgs e)

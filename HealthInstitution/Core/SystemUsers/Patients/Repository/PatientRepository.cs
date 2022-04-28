@@ -1,4 +1,5 @@
-﻿using HealthInstitution.Core.SystemUsers.Patients.Model;
+﻿using HealthInstitution.Core.MedicalRecords.Repository;
+using HealthInstitution.Core.SystemUsers.Patients.Model;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -66,9 +67,11 @@ namespace HealthInstitution.Core.SystemUsers.Patients.Repository
             return null;
         }
 
-        public void AddPatient(string username, string password, string name, string surname)
+        public void AddPatient(string username, string password, string name, string surname, double height, double weight, List<string> allergens, List<string> previousIlnesses)
         {
+            MedicalRecordRepository medicalRecordRepository = MedicalRecordRepository.GetInstance();
             Patient patient = new Patient(Users.Model.UserType.Patient, username, password, name, surname, Users.Model.BlockState.NotBlocked);
+            medicalRecordRepository.AddMedicalRecord(height, weight,previousIlnesses, allergens,patient);
             this.patients.Add(patient);
             this.patientByUsername[username] = patient;
             SavePatients();
@@ -91,6 +94,14 @@ namespace HealthInstitution.Core.SystemUsers.Patients.Repository
             this.patients.Remove(patient);
             this.patientByUsername.Remove(username);
             SavePatients();
+        }
+        public void ChangeBlockedStatus(string username)
+        {
+            Patient patient = this.GetPatientByUsername(username);
+            if (patient.blocked == Users.Model.BlockState.NotBlocked)
+                patient.blocked = Users.Model.BlockState.BlockedBySecretary;
+            else
+                patient.blocked = Users.Model.BlockState.NotBlocked;
         }
     }
 }

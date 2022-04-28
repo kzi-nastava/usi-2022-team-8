@@ -5,22 +5,22 @@
     <Compile Update="GUI\LoginWindow\LoginWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="GUI\UserWindow\CreatePatientWindow.xaml.cs">
+    <Compile Update="GUI\SecretaryView\CreatePatientWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="GUI\UserWindow\CrudbPatients.xaml.cs">
+    <Compile Update="GUI\SecretaryView\CrudbPatients.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="GUI\SecretaryView\UpdatePatientWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="GUI\UserWindow\DoctorWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="GUI\UserWindow\ExaminationRequestsReview.xaml.cs">
+    <Compile Update="GUI\SecretaryView\ExaminationRequestsReview.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="GUI\UserWindow\UnblockingWindow.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="GUI\UserWindow\UpdatePatientWindow.xaml.cs">
+    <Compile Update="GUI\SecretaryView\UnblockingWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
@@ -28,22 +28,22 @@
     <Page Update="GUI\LoginWindow\LoginWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="GUI\UserWindow\CreatePatientWindow.xaml">
+    <Page Update="GUI\SecretaryView\CreatePatientWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="GUI\UserWindow\CrudbPatients.xaml">
+    <Page Update="GUI\SecretaryView\CrudbPatients.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="GUI\SecretaryView\UpdatePatientWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="GUI\UserWindow\DoctorWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="GUI\UserWindow\ExaminationRequestsReview.xaml">
+    <Page Update="GUI\SecretaryView\ExaminationRequestsReview.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="GUI\UserWindow\UnblockingWindow.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="GUI\UserWindow\UpdatePatientWindow.xaml">
+    <Page Update="GUI\SecretaryView\UnblockingWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>

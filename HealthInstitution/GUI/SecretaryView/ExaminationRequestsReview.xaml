@@ -8,7 +8,7 @@
         WindowStartupLocation="CenterScreen"
         Title="ExaminationRequestsReview" Height="350" Width="600">
     <Grid>
-        <Button Content="Accept" Click="crudPatients_click" HorizontalAlignment="Center" Margin="-100,300,0,0" VerticalAlignment="Top" FontSize="18"/>
-        <Button Content="Reject" Click="blockUnblock_click" HorizontalAlignment="Center" Margin="50,300,0,0" VerticalAlignment="Top" FontSize="18"/>
+        <Button Content="Accept" Click="accept_click" HorizontalAlignment="Center" Margin="-100,300,0,0" VerticalAlignment="Top" FontSize="18"/>
+        <Button Content="Reject" Click="reject_click" HorizontalAlignment="Center" Margin="50,300,0,0" VerticalAlignment="Top" FontSize="18"/>
     </Grid>
 </Window>

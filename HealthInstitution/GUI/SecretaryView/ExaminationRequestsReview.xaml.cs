@@ -23,5 +23,15 @@ namespace HealthInstitution.GUI.UserWindow
         {
             InitializeComponent();
         }
+
+        private void accept_click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void reject_click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

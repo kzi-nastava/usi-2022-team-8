@@ -6,11 +6,19 @@
         xmlns:local="clr-namespace:HealthInstitution.GUI.UserWindow"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="Patient's operations" Height="350" Width="600">
+        Title="Patients" Height="350" Width="600">
     <Grid>
-        <Button Content="Create" Click="createPatient_click" HorizontalAlignment="Center" Margin="-220,300,0,0" VerticalAlignment="Top" FontSize="18"/>
-        <Button Content="Update" Click="updatePatient_click" HorizontalAlignment="Center" Margin="-70,300,0,0" VerticalAlignment="Top" FontSize="18"/>
-        <Button Content="Delete" Click="deletePatient_click" HorizontalAlignment="Center" Margin="80,300,0,0" VerticalAlignment="Top" FontSize="18"/>
-        <Button Content="Block" Click="blockPatient_click" HorizontalAlignment="Center" Margin="210,300,0,0" VerticalAlignment="Top" FontSize="18"/>
+        <DataGrid  ItemsSource="{Binding Patient}" AutoGenerateColumns="False" Name="dataGrid"  Height="250" VerticalAlignment="Top">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Username" FontSize="18" Binding="{Binding username}" Width ="150"/>
+                <DataGridTextColumn Header="Name" FontSize="18" Binding="{Binding name}" Width =" 150"/>
+                <DataGridTextColumn Header="Surname" FontSize="18" Binding="{Binding surname}" Width =" 150"/>
+                <DataGridTextColumn Header="Blocked status" FontSize="18" Binding="{Binding blocked}" Width =" 150"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <Button Content="Create" Name="createButton" Click="createPatient_click" HorizontalAlignment="Center" Margin="-450,300,0,0" VerticalAlignment="Top" FontSize="15" Width="130"/>
+        <Button Content="Update" Name="updateButton" Click="updatePatient_click" HorizontalAlignment="Center" Margin="-150,300,0,0" VerticalAlignment="Top" FontSize="15" Width="130"/>
+        <Button Content="Delete" Name="deleteButton" Click="deletePatient_click" HorizontalAlignment="Center" Margin="150,300,0,0" VerticalAlignment="Top" FontSize="15" Width="130"/>
+        <Button Content="Block/Unblock" Name="blockButton" Click="blockPatient_click" HorizontalAlignment="Center" Margin="450,300,0,0" VerticalAlignment="Top" FontSize="15" Width="130"/>
     </Grid>
 </Window>

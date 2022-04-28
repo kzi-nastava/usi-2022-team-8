@@ -66,8 +66,8 @@ namespace HealthInstitution.Core.MedicalRecords.Repository
         public void LoadMedicalRecords()
         {
             Dictionary<string, Patient> patientByUsername = PatientRepository.GetInstance().patientByUsername;
-            Dictionary<string, Prescription> prescriptionById = PrescriptionRepository.GetInstance().prescriptionById;
-            Dictionary<string, Referral> referralById = ReferralRepository.GetInstance().referralById;
+            Dictionary<int, Prescription> prescriptionById = PrescriptionRepository.GetInstance().prescriptionById;
+            Dictionary<int, Referral> referralById = ReferralRepository.GetInstance().referralById;
             var medicalRecords = JArray.Parse(File.ReadAllText(fileName));
             //var medicalRecords = JsonSerializer.Deserialize<List<MedicalRecord>>(File.ReadAllText(@"..\..\..\Data\JSON\medicalRecords.json"), options);
             foreach (var medicalRecord in medicalRecords)
