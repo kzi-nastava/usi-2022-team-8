@@ -7,6 +7,7 @@ namespace HealthInstitution.Core.Examinations.Model;
 
 public class Examination
 {
+    public int id { get; set; }
     public Appointment appointment { get; set; }
     public ExaminationStatus status { get; set; }
     public Room room { get; set; }
@@ -15,8 +16,9 @@ public class Examination
     public String anamnesis { get; set; }
 
 
-    public Examination(Appointment appointment, ExaminationStatus status, Room room, Doctor doctor, MedicalRecord medicalRecord, string anamnesis)
+    public Examination(int id,Appointment appointment, ExaminationStatus status, Room room, Doctor doctor, MedicalRecord medicalRecord, string anamnesis)
     {
+        this.id = id;
         this.appointment = appointment;
         this.status = status;
         this.room = room;
