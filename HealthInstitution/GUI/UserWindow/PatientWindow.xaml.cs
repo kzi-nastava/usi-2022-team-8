@@ -13,6 +13,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using HealthInstitution.GUI.PatientWindows;
 using HealthInstitution.Core.SystemUsers.Users.Model;
+using HealthInstitution.Core.TrollCounters.Repository;
+using HealthInstitution.Core.TrollCounters.Model;
 
 namespace HealthInstitution.GUI.UserWindow
 {
@@ -41,6 +43,9 @@ namespace HealthInstitution.GUI.UserWindow
 
         private void Schedule_Button_Click(object sender, RoutedEventArgs e)
         {
+            var auto = TrollCounterRepository.GetInstance().GetTrollCounterById(loggedPatient.username);
+            Console.WriteLine(auto.ToString());
+
             new PatientScheduleWindow(this.loggedPatient).ShowDialog();
         }
     }

@@ -16,55 +16,54 @@ using HealthInstitution.Core.Examinations.Model;
 using HealthInstitution.Core.Examinations.Repository;
 using HealthInstitution.GUI.PatientView;
 
-namespace HealthInstitution.GUI.PatientWindows
+namespace HealthInstitution.GUI.PatientWindows;
+
+/// <summary>
+/// Interaction logic for PatientScheduleWindow.xaml
+/// </summary>
+public partial class PatientScheduleWindow : Window
 {
-    /// <summary>
-    /// Interaction logic for PatientScheduleWindow.xaml
-    /// </summary>
-    public partial class PatientScheduleWindow : Window
+    private ExaminationRepository examinationRepository = ExaminationRepository.GetInstance();
+    private User loggedPatient;
+
+    public PatientScheduleWindow(User loggedPatient)
     {
-        private ExaminationRepository examinationRepository = ExaminationRepository.GetInstance();
-        private User loggedPatient;
+        InitializeComponent();
+        this.loggedPatient = loggedPatient;
+    }
 
-        public PatientScheduleWindow(User loggedPatient)
-        {
-            InitializeComponent();
-            this.loggedPatient = loggedPatient;
-        }
+    private void addButton_click(object sender, RoutedEventArgs e)
+    {
+        AddExaminationDialog addExaminationDialog = new AddExaminationDialog();
+        addExaminationDialog.ShowDialog();
+    }
 
-        private void addButton_click(object sender, RoutedEventArgs e)
-        {
-            AddExaminationDialog addExaminationDialog = new AddExaminationDialog();
-            addExaminationDialog.ShowDialog();
-        }
+    private void editButton_click(object sender, RoutedEventArgs e)
+    {
+        Examination selectedExamination = (Examination)dataGrid.SelectedItem;
+        EditExaminationDialog editExaminationDialog = new EditExaminationDialog(selectedExamination);
+        editExaminationDialog.ShowDialog();
+    }
 
-        private void editButton_click(object sender, RoutedEventArgs e)
+    private void deleteButton_click(object sender, RoutedEventArgs e)
+    {
+        if (System.Windows.MessageBox.Show("Are you sure you want to delete selected examination", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
         {
             Examination selectedExamination = (Examination)dataGrid.SelectedItem;
-            EditExaminationDialog editExaminationDialog = new EditExaminationDialog(selectedExamination);
-            editExaminationDialog.ShowDialog();
+            dataGrid.Items.Remove(selectedExamination);
+            examinationRepository.DeleteExaminations(selectedExamination.id);
+            //dodaj isto za doktora.
         }
+    }
 
-        private void deleteButton_click(object sender, RoutedEventArgs e)
+    private void dataGrid_Loaded(object sender, RoutedEventArgs e)
+    {
+        foreach (Examination examination in ExaminationRepository.GetInstance().examinations)
         {
-            if (System.Windows.MessageBox.Show("Are you sure you want to delete selected examination", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
-            {
-                Examination selectedExamination = (Examination)dataGrid.SelectedItem;
-                dataGrid.Items.Remove(selectedExamination);
-                examinationRepository.DeleteExaminations(selectedExamination.id);
-                //dodaj isto za doktora.
-            }
-        }
+            if (examination.medicalRecord.patient.username.Equals(loggedPatient.username))
 
-        private void dataGrid_Loaded(object sender, RoutedEventArgs e)
-        {
-            foreach (Examination examination in ExaminationRepository.GetInstance().examinations)
-            {
-                if (examination.medicalRecord.patient.username.Equals(loggedPatient.username))
-
-                    dataGrid.Items.Add(examination);
-            }
-            dataGrid.Items.Refresh();
+                dataGrid.Items.Add(examination);
         }
+        dataGrid.Items.Refresh();
     }
 }
