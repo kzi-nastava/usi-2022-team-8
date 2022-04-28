@@ -26,17 +26,6 @@ namespace HealthInstitution.GUI.DoctorView
             ExaminationRadioButton.IsChecked = true;
             UpcomingDaysRadioButton.IsChecked = true;
         }
-
-        private void AppointmentChecked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void UpcomingDatesChecked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
         private void Show_Click(object sender, RoutedEventArgs e)
         {
 

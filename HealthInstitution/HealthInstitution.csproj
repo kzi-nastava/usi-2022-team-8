@@ -15,11 +15,9 @@
 
     <ItemGroup>
       <Folder Include="Controllers" />
-      <Folder Include="Core\Appointments\Repository" />
       <Folder Include="Core\Equipments\Repository" />
       <Folder Include="Core\EquipmentTransfers\Repository" />
       <Folder Include="Core\MedicalRecords\Repository" />
-      <Folder Include="Core\Operations\Repository" />
       <Folder Include="Core\Polls\Repository\" />
       <Folder Include="Core\Prescriptions\Repository" />
       <Folder Include="Core\Referrals\Repository" />
@@ -29,6 +27,10 @@
       <Folder Include="Core\SystemUsers\Doctors\Repository" />
       <Folder Include="Core\SystemUsers\Secretaries\Model" />
       <Folder Include="Core\SystemUsers\Secretaries\Repository" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     </ItemGroup>
 
     <ItemGroup>
@@ -53,12 +55,6 @@
         <Generator>ResXFileCodeGenerator</Generator>
         <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       </EmbeddedResource>
-    </ItemGroup>
-
-    <ItemGroup>
-      <None Update="GUI\MedicalRecordView\aaaa.xaml">
-        <Generator>MSBuild:Compile</Generator>
-      </None>
     </ItemGroup>
 
     <ItemGroup>

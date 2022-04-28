@@ -58,7 +58,6 @@ namespace HealthInstitution.GUI.DoctorView
             minutes.Add("30");
             minutes.Add("45");
             minuteComboBox.ItemsSource = minutes;
-            minuteComboBox.SelectedIndex = 0;
         }
 
         private void MinuteComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)

@@ -1,4 +1,6 @@
 ﻿using HealthInstitution.Core.Examinations.Model;
+using HealthInstitution.Core.Examinations.Repository;
+using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,11 +22,21 @@ namespace HealthInstitution.GUI.DoctorView
     /// </summary>
     public partial class ExaminationForm : Window
     {
-        public ExaminationForm()
+        ExaminationRepository examinationRepository = ExaminationRepository.GetInstance();
+        public ExaminationForm(Doctor loggedDoctor)
         {
             InitializeComponent();
+            LoadGridRows(loggedDoctor);
         }
-
+        
+        public void LoadGridRows(Doctor loggedDoctor)
+        {
+            List<Examination> doctorExaminations = loggedDoctor.examinations;
+            foreach (Examination examination in doctorExaminations)
+            {
+                dataGrid.Items.Add(examination);
+            }
+        }
         private void addButton_click(object sender, RoutedEventArgs e)
         {
             AddExaminationDialog addExaminationDialog = new AddExaminationDialog();
@@ -45,14 +57,10 @@ namespace HealthInstitution.GUI.DoctorView
             if (System.Windows.MessageBox.Show("Are you sure you want to delete selected examination", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
             {
                 Examination selectedExamination = (Examination)dataGrid.SelectedItem;
+                dataGrid.Items.Remove(selectedExamination);
+                examinationRepository.DeleteExamination(selectedExamination.id);
+                //dodaj isto za doktora.
             }
-        }
-
-        private void medicalRecordButton_click(object sender, RoutedEventArgs e)
-        {
-            Examination selectedExamination = (Examination)dataGrid.SelectedItem;
-            MedicalRecordDialog medicalRecordDialog = new MedicalRecordDialog();
-            medicalRecordDialog.ShowDialog();
         }
 
         /*[STAThread]
