@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="PatientScheduleWindow" Height="450" Width="750">
     <Grid>
-        <DataGrid  ItemsSource="{Binding Examination}" AutoGenerateColumns="True" Name="dataGrid" Grid.ColumnSpan="3" Margin="0,-108,0,108">
+        <DataGrid  ItemsSource="{Binding Examination}" AutoGenerateColumns="True" Name="dataGrid" Grid.ColumnSpan="3" Margin="0,0,0,0" Loaded="dataGrid_Loaded">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Time" FontSize="18" Binding="{Binding appointment}" Width ="150" />
                 <DataGridTextColumn Header="Status" FontSize="18" Binding="{Binding status}" Width =" 150" />

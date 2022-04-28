@@ -14,6 +14,7 @@ using System.Windows.Shapes;
 using HealthInstitution.Core.SystemUsers.Users.Model;
 using HealthInstitution.Core.Examinations.Model;
 using HealthInstitution.Core.Examinations.Repository;
+using HealthInstitution.GUI.PatientView;
 
 namespace HealthInstitution.GUI.PatientWindows
 {
@@ -23,28 +24,18 @@ namespace HealthInstitution.GUI.PatientWindows
     public partial class PatientScheduleWindow : Window
     {
         private ExaminationRepository examinationRepository = ExaminationRepository.GetInstance();
+        private User loggedPatient;
 
         public PatientScheduleWindow(User loggedPatient)
         {
             InitializeComponent();
-            LoadGridRows(loggedPatient);
-        }
-
-        public void LoadGridRows(User loggedPatient)
-        {
-            foreach (Examination examination in ExaminationRepository.GetInstance().examinations)
-            {
-                if (examination.medicalRecord.patient.username.Equals(loggedPatient.username))
-
-                    dataGrid.Items.Add(examination);
-            }
-            dataGrid.Items.Refresh();
+            this.loggedPatient = loggedPatient;
         }
 
         private void addButton_click(object sender, RoutedEventArgs e)
         {
-            /*AddExaminationDialog addExaminationDialog = new AddExaminationDialog();
-            addExaminationDialog.ShowDialog();*/
+            AddExaminationDialog addExaminationDialog = new AddExaminationDialog();
+            addExaminationDialog.ShowDialog();
         }
 
         private void editButton_click(object sender, RoutedEventArgs e)
@@ -63,6 +54,17 @@ namespace HealthInstitution.GUI.PatientWindows
                 examinationRepository.DeleteExaminations(selectedExamination.id);
                 //dodaj isto za doktora.
             }
+        }
+
+        private void dataGrid_Loaded(object sender, RoutedEventArgs e)
+        {
+            foreach (Examination examination in ExaminationRepository.GetInstance().examinations)
+            {
+                if (examination.medicalRecord.patient.username.Equals(loggedPatient.username))
+
+                    dataGrid.Items.Add(examination);
+            }
+            dataGrid.Items.Refresh();
         }
     }
 }
