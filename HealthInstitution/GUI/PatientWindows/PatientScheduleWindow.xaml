@@ -5,9 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:HealthInstitution.GUI.PatientWindows"
         mc:Ignorable="d"
-        Title="PatientScheduleWindow" Height="450" Width="800">
+        Title="PatientScheduleWindow" Height="450" Width="750">
     <Grid>
-        <DataGrid  ItemsSource="{Binding Examination}" AutoGenerateColumns="False" Name="dataGrid" Grid.ColumnSpan="3" Margin="0,-108,0,108">
+        <DataGrid  ItemsSource="{Binding Examination}" AutoGenerateColumns="True" Name="dataGrid" Grid.ColumnSpan="3" Margin="0,-108,0,108">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Time" FontSize="18" Binding="{Binding appointment}" Width ="150" />
                 <DataGridTextColumn Header="Status" FontSize="18" Binding="{Binding status}" Width =" 150" />
@@ -16,7 +16,7 @@
                     <DataGridTextColumn.Binding>
                         <MultiBinding StringFormat="{}{0} {1}">
                             <Binding Path="doctor.name" />
-                            <Binding Path="dorctor.surname" />
+                            <Binding Path="doctor.surname" />
                         </MultiBinding>
                     </DataGridTextColumn.Binding>
                 </DataGridTextColumn>

@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using HealthInstitution.GUI.PatientWindows;
+using HealthInstitution.Core.SystemUsers.Users.Model;
 
 namespace HealthInstitution.GUI.UserWindow
 {
@@ -20,9 +21,12 @@ namespace HealthInstitution.GUI.UserWindow
     /// </summary>
     public partial class PatientWindow : Window
     {
-        public PatientWindow()
+        private User loggedPatient;
+
+        public PatientWindow(User loggedPatient)
         {
             InitializeComponent();
+            this.loggedPatient = loggedPatient;
         }
 
         private void logout_button_Click(object sender, RoutedEventArgs e)
@@ -37,7 +41,7 @@ namespace HealthInstitution.GUI.UserWindow
 
         private void Schedule_Button_Click(object sender, RoutedEventArgs e)
         {
-            new PatientScheduleWindow().ShowDialog();
+            new PatientScheduleWindow(this.loggedPatient).ShowDialog();
         }
     }
 }

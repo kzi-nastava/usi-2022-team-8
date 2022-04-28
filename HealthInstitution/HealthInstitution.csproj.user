@@ -5,6 +5,9 @@
     <Compile Update="GUI\LoginWindow\LoginWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="GUI\PatientWindows\EditExaminationDialog.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="GUI\PatientWindows\PatientScheduleWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -14,6 +17,9 @@
   </ItemGroup>
   <ItemGroup>
     <Page Update="GUI\LoginWindow\LoginWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="GUI\PatientWindows\EditExaminationDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="GUI\PatientWindows\PatientScheduleWindow.xaml">

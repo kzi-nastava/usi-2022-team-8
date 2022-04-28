@@ -11,7 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using HealthInstitution.Core.SystemUsers.Patients.Model;
+using HealthInstitution.Core.SystemUsers.Users.Model;
 using HealthInstitution.Core.Examinations.Model;
 using HealthInstitution.Core.Examinations.Repository;
 
@@ -22,25 +22,29 @@ namespace HealthInstitution.GUI.PatientWindows
     /// </summary>
     public partial class PatientScheduleWindow : Window
     {
-        public PatientScheduleWindow(Patient loggedPatient)
+        private ExaminationRepository examinationRepository = ExaminationRepository.GetInstance();
+
+        public PatientScheduleWindow(User loggedPatient)
         {
             InitializeComponent();
+            LoadGridRows(loggedPatient);
         }
 
-        public void LoadGridRows(Patient loggedPatient)
+        public void LoadGridRows(User loggedPatient)
         {
             foreach (Examination examination in ExaminationRepository.GetInstance().examinations)
             {
-                if (examination.medicalRecord.patient.username == loggedPatient.username)
+                if (examination.medicalRecord.patient.username.Equals(loggedPatient.username))
 
                     dataGrid.Items.Add(examination);
             }
+            dataGrid.Items.Refresh();
         }
 
         private void addButton_click(object sender, RoutedEventArgs e)
         {
-            AddExaminationDialog addExaminationDialog = new AddExaminationDialog();
-            addExaminationDialog.ShowDialog();
+            /*AddExaminationDialog addExaminationDialog = new AddExaminationDialog();
+            addExaminationDialog.ShowDialog();*/
         }
 
         private void editButton_click(object sender, RoutedEventArgs e)
@@ -56,7 +60,7 @@ namespace HealthInstitution.GUI.PatientWindows
             {
                 Examination selectedExamination = (Examination)dataGrid.SelectedItem;
                 dataGrid.Items.Remove(selectedExamination);
-                examinationRepository.DeleteExamination(selectedExamination.id);
+                examinationRepository.DeleteExaminations(selectedExamination.id);
                 //dodaj isto za doktora.
             }
         }

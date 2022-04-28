@@ -17,6 +17,7 @@ using System.Windows.Shapes;
 using HealthInstitution.Core.Examinations.Repository;
 using HealthInstitution.Core.Examinations.Model;
 using HealthInstitution.Core.ScheduleEditRequests.Repository;
+using HealthInstitution.Core.SystemUsers.Patients.Model;
 
 namespace HealthInstitution.GUI.LoginWindow
 {
@@ -56,7 +57,8 @@ namespace HealthInstitution.GUI.LoginWindow
                         /*PatientRepository patientRepository = PatientRepository.GetInstance();
                         Patient patient = patientRepository.GetPatientById(usernameInput);*/
                         this.Close();
-                        new PatientWindow().ShowDialog();
+
+                        new PatientWindow(foundUser).ShowDialog();
                         break;
 
                     case UserType.Doctor:

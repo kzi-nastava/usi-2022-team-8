@@ -25,7 +25,18 @@
       "surname": "Jovanovic",
       "blocked": "NotBlocked"
     },
-    "medicalRecord": null,
+    "medicalRecord": {
+      "height": 180,
+      "weight": 80,
+      "patient": {
+        "type": "Patient",
+        "username": "pera",
+        "password": "pera",
+        "name": "Petar",
+        "surname": "Petrovic",
+        "blocked": "NotBlocked"
+      }
+    },
     "anamnesis": null
   },
   {
@@ -54,7 +65,18 @@
       "surname": "Jovanovic",
       "blocked": "NotBlocked"
     },
-    "medicalRecord": null,
+    "medicalRecord": {
+      "height": 180,
+      "weight": 80,
+      "patient": {
+        "type": "Patient",
+        "username": "pera",
+        "password": "pera",
+        "name": "Petar",
+        "surname": "Petrovic",
+        "blocked": "NotBlocked"
+      }
+    },
     "anamnesis": null
   }
 ]
