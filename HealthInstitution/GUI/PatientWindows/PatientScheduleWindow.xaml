@@ -7,12 +7,20 @@
         mc:Ignorable="d"
         Title="PatientScheduleWindow" Height="450" Width="800">
     <Grid>
-        <DataGrid SelectedCellsChanged="dataGrid_CellClick"  ItemsSource="{Binding User}" AutoGenerateColumns="False" Name="dataGrid" Grid.ColumnSpan="3" Margin="0,-108,0,108">
+        <DataGrid  ItemsSource="{Binding Examination}" AutoGenerateColumns="False" Name="dataGrid" Grid.ColumnSpan="3" Margin="0,-108,0,108">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Username" FontSize="18" Binding="{Binding username}" Width =" 200" />
-                <DataGridTextColumn Header="Password" FontSize="18" Binding="{Binding password}" Width =" 200" />
-                <DataGridTextColumn Header="Name" FontSize="18" Binding="{Binding name}" Width =" 200" />
-                <DataGridTextColumn Header="Surname" FontSize="18" Binding="{Binding surname}" Width =" 200" />
+                <DataGridTextColumn Header="Time" FontSize="18" Binding="{Binding appointment}" Width ="150" />
+                <DataGridTextColumn Header="Status" FontSize="18" Binding="{Binding status}" Width =" 150" />
+                <DataGridTextColumn Header="RoomNo" FontSize="18" Binding="{Binding room.number}" Width =" 150" />
+                <DataGridTextColumn Header="Doctor" FontSize="18" Width =" 150">
+                    <DataGridTextColumn.Binding>
+                        <MultiBinding StringFormat="{}{0} {1}">
+                            <Binding Path="doctor.name" />
+                            <Binding Path="dorctor.surname" />
+                        </MultiBinding>
+                    </DataGridTextColumn.Binding>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Anamnesis" FontSize="18" Width =" 150" Binding="{Binding anamnesis}" />
             </DataGrid.Columns>
         </DataGrid>
         <Button Name="addButton" Content="Add" Click="addButton_click" HorizontalAlignment="Center" Height="30" Margin="0,240,350,0" VerticalAlignment="Top" Width="111" RenderTransformOrigin="0.243,0.514" Cursor="Arrow" FontSize="18" Visibility="Visible" />
