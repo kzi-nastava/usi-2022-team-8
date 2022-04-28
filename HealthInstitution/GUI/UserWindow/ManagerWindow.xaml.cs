@@ -49,7 +49,9 @@ namespace HealthInstitution.GUI.UserWindow
 
         private void Rooms_Click(object sender, RoutedEventArgs e)
         {
-            //todo
+            RoomsTableWindow roomsTableWindow = new RoomsTableWindow();
+            roomsTableWindow.ShowDialog();
+            
         }
     }
 }

@@ -126,7 +126,7 @@ namespace HealthInstitution.Core.Rooms.Repository
             return null;
         }
 
-        public void AddRoom(RoomType type, int number, bool isRenovating)
+        public void AddRoom(RoomType type, int number, bool isRenovating=false)
         {
 
             this.maxId++;

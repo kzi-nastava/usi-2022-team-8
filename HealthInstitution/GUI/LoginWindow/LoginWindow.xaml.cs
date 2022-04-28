@@ -1,4 +1,7 @@
-﻿using HealthInstitution.Core.SystemUsers.Users.Model;
+﻿using HealthInstitution.Core.Equipments.Repository;
+using HealthInstitution.Core.EquipmentTransfers.Repository;
+using HealthInstitution.Core.Rooms.Repository;
+using HealthInstitution.Core.SystemUsers.Users.Model;
 using HealthInstitution.Core.SystemUsers.Users.Repository;
 using HealthInstitution.GUI.UserWindow;
 using System;
