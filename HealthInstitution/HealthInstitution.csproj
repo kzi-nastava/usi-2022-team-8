@@ -14,7 +14,6 @@
       <Folder Include="Core\Appointments\Repository" />
       <Folder Include="Core\Equipments\Repository" />
       <Folder Include="Core\EquipmentTransfers\Repository" />
-      <Folder Include="Core\Examinations\Repository" />
       <Folder Include="Core\MedicalRecords\Repository" />
       <Folder Include="Core\Operations\Repository" />
       <Folder Include="Core\Polls\Repository\" />
