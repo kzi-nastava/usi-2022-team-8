@@ -61,7 +61,13 @@ namespace HealthInstitution.GUI.ManagerView
                 System.Windows.MessageBox.Show("This room number already exist!", "Create error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
-    
+
+            if (number>9999)
+            {
+                System.Windows.MessageBox.Show("This room number is too high!", "Create error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
             if (typeComboBox.SelectedItem == null)
             {
                 System.Windows.MessageBox.Show("Must select room type!", "Create error", MessageBoxButton.OK, MessageBoxImage.Error);

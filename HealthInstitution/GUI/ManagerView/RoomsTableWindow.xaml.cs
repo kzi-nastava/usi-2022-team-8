@@ -34,6 +34,7 @@ namespace HealthInstitution.GUI.ManagerView
             List<Room> rooms = roomRepository.rooms;
             foreach (Room room in rooms)
             {
+
                 Console.WriteLine(room);
                 dataGrid.Items.Add(room);
             }
@@ -60,6 +61,7 @@ namespace HealthInstitution.GUI.ManagerView
        
             EditRoomDialog editRoomDialog = new EditRoomDialog(selectedRoom);
             editRoomDialog.ShowDialog();
+            dataGrid.SelectedItem = null;
             dataGrid.Items.Refresh();
         }
 
