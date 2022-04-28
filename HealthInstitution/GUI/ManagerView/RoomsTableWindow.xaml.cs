@@ -30,6 +30,7 @@ namespace HealthInstitution.GUI.ManagerView
 
         public void LoadGridRows()
         {
+            dataGrid.Items.Clear();
             List<Room> rooms = roomRepository.rooms;
             foreach (Room room in rooms)
             {
@@ -40,9 +41,11 @@ namespace HealthInstitution.GUI.ManagerView
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
-            this.Close();
             AddRoomDialog addRoomDialog = new AddRoomDialog();
             addRoomDialog.ShowDialog();
+
+            LoadGridRows();
+            dataGrid.Items.Refresh();
         }
 
         private void EditButton_Click(object sender, RoutedEventArgs e)
@@ -54,14 +57,27 @@ namespace HealthInstitution.GUI.ManagerView
                 dataGrid.SelectedItem = null;
                 return;
             }
-            this.Close();
+       
             EditRoomDialog editRoomDialog = new EditRoomDialog(selectedRoom);
             editRoomDialog.ShowDialog();
+            dataGrid.Items.Refresh();
         }
 
         private void DeleteButton_Click(object sender, RoutedEventArgs e)
         {
-            //todo
+            Room selectedRoom = (Room)dataGrid.SelectedItem;
+            if (selectedRoom.type == RoomType.Warehouse)
+            {
+                System.Windows.MessageBox.Show("You cant delete warehouse!", "Edit error", MessageBoxButton.OK, MessageBoxImage.Error);
+                dataGrid.SelectedItem = null;
+                return;
+            }
+
+            if (System.Windows.MessageBox.Show("Are you sure you want to delete selected room", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+            {
+                dataGrid.Items.Remove(selectedRoom);
+                roomRepository.DeleteRoom(selectedRoom.id);
+            }
         }
     }
 }

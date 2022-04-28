@@ -73,19 +73,20 @@ namespace HealthInstitution.GUI.ManagerView
                     return;
                 }
             }
-            RoomType type = (RoomType)typeComboBox.SelectedItem;
-            if (type == null)
+
+            if (typeComboBox.SelectedItem == null)
             {
                 System.Windows.MessageBox.Show("Must select room type!", "Create error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
+
+            RoomType type = (RoomType)typeComboBox.SelectedItem;
+
             room.number = number;
             room.type = type;
             System.Windows.MessageBox.Show("Room edited!", "Room edit", MessageBoxButton.OK, MessageBoxImage.Information);
 
             this.Close();
-            RoomsTableWindow roomsTable = new RoomsTableWindow();
-            roomsTable.ShowDialog();
         }
     }
 }

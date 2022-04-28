@@ -73,8 +73,6 @@ namespace HealthInstitution.GUI.ManagerView
             System.Windows.MessageBox.Show("Room added!", "Room creation", MessageBoxButton.OK, MessageBoxImage.Information);
             
             this.Close();
-            RoomsTableWindow roomsTable = new RoomsTableWindow();
-            roomsTable.ShowDialog();
         }
     }
 }
