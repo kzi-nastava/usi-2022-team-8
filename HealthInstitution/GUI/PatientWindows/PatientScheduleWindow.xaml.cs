@@ -23,5 +23,9 @@ namespace HealthInstitution.GUI.PatientWindows
         {
             InitializeComponent();
         }
+
+        private void addButton_click(object sender, RoutedEventArgs e)
+        {
+        }
     }
 }
