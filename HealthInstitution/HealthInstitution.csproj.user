@@ -5,7 +5,22 @@
     <Compile Update="GUI\LoginWindow\LoginWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="GUI\UserWindow\CreatePatientWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="GUI\UserWindow\CrudbPatients.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="GUI\UserWindow\DoctorWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="GUI\UserWindow\ExaminationRequestsReview.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="GUI\UserWindow\UnblockingWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="GUI\UserWindow\UpdatePatientWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
@@ -13,7 +28,22 @@
     <Page Update="GUI\LoginWindow\LoginWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="GUI\UserWindow\CreatePatientWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="GUI\UserWindow\CrudbPatients.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="GUI\UserWindow\DoctorWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="GUI\UserWindow\ExaminationRequestsReview.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="GUI\UserWindow\UnblockingWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="GUI\UserWindow\UpdatePatientWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>

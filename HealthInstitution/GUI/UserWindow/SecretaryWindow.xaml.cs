@@ -24,14 +24,14 @@ namespace HealthInstitution.GUI.UserWindow
             InitializeComponent();
         }
 
-        private void crudPatients_click(object sender, RoutedEventArgs e)
+        private void crudbPatients_click(object sender, RoutedEventArgs e)
         {
-            AddUserWindow addUserWindow = new AddUserWindow();
-            addUserWindow.ShowDialog();
+            CrudbPatients crudbPatientsWindow = new CrudbPatients();
+            crudbPatientsWindow.ShowDialog();
             this.Close();
         }
 
-        private void blockUnblock_click(object sender, RoutedEventArgs e)
+        private void unblock_click(object sender, RoutedEventArgs e)
         {
             AddUserWindow addUserWindow = new AddUserWindow();
             addUserWindow.ShowDialog();
@@ -40,8 +40,8 @@ namespace HealthInstitution.GUI.UserWindow
 
         private void examinationRequests_click(object sender, RoutedEventArgs e)
         {
-            AddUserWindow addUserWindow = new AddUserWindow();
-            addUserWindow.ShowDialog();
+            ExaminationRequestsReview examinationRequestsReview = new ExaminationRequestsReview();
+            examinationRequestsReview.ShowDialog();
             this.Close();
         }
 

@@ -1,0 +1,16 @@
+﻿<Window x:Class="HealthInstitution.GUI.UserWindow.CrudbPatients"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:HealthInstitution.GUI.UserWindow"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+        Title="Patient's operations" Height="350" Width="600">
+    <Grid>
+        <Button Content="Create" Click="createPatient_click" HorizontalAlignment="Center" Margin="-220,300,0,0" VerticalAlignment="Top" FontSize="18"/>
+        <Button Content="Update" Click="updatePatient_click" HorizontalAlignment="Center" Margin="-70,300,0,0" VerticalAlignment="Top" FontSize="18"/>
+        <Button Content="Delete" Click="deletePatient_click" HorizontalAlignment="Center" Margin="80,300,0,0" VerticalAlignment="Top" FontSize="18"/>
+        <Button Content="Block" Click="blockPatient_click" HorizontalAlignment="Center" Margin="210,300,0,0" VerticalAlignment="Top" FontSize="18"/>
+    </Grid>
+</Window>

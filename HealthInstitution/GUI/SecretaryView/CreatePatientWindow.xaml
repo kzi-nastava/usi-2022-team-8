@@ -1,0 +1,30 @@
+﻿<Window x:Class="HealthInstitution.GUI.UserWindow.CreatePatientWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:HealthInstitution.GUI.UserWindow"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+        Title="CreatePatientWindow" Height="350" Width="600">
+    <Grid>
+        <Button Content="Create patient" Click="createPatient_click" HorizontalAlignment="Center" Margin="0,300,0,0" VerticalAlignment="Top" FontSize="18"/>
+        <Label Content="Username:" HorizontalAlignment="Center" Height="25" Margin="-350,50,0,0" VerticalAlignment="Top" Width="100"/>
+        <Label Content="Password:" HorizontalAlignment="Center" Height="25" Margin="-350,100,0,0" VerticalAlignment="Top" Width="100"/>
+        <Label Content="Name:" HorizontalAlignment="Center" Height="25" Margin="-350,150,0,0" VerticalAlignment="Top" Width="100"/>
+        <Label Content="Surname:" HorizontalAlignment="Center" Height="25" Margin="-350,195,0,0" VerticalAlignment="Top" Width="100"/>
+        <TextBox HorizontalAlignment="Left" Height="13" Margin="130,50,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="143"/>
+        <TextBox HorizontalAlignment="Left" Height="13" Margin="130,100,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="143"/>
+        <TextBox HorizontalAlignment="Left" Height="13" Margin="130,150,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="143"/>
+        <TextBox HorizontalAlignment="Left" Height="13" Margin="130,200,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="143"/>
+
+        <Label Content="Username:" HorizontalAlignment="Center" Height="25" Margin="200,50,0,0" VerticalAlignment="Top" Width="100"/>
+        <Label Content="Password:" HorizontalAlignment="Center" Height="25" Margin="200,100,0,0" VerticalAlignment="Top" Width="100"/>
+        <Label Content="Name:" HorizontalAlignment="Center" Height="25" Margin="200,150,0,0" VerticalAlignment="Top" Width="100"/>
+        <Label Content="Surname:" HorizontalAlignment="Center" Height="25" Margin="200,195,0,0" VerticalAlignment="Top" Width="100"/>
+        <TextBox HorizontalAlignment="Left" Height="13" Margin="420,50,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="143"/>
+        <TextBox HorizontalAlignment="Left" Height="13" Margin="420,100,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="143"/>
+        <TextBox HorizontalAlignment="Left" Height="13" Margin="420,150,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="143"/>
+        <TextBox HorizontalAlignment="Left" Height="13" Margin="420,200,0,0" TextWrapping="Wrap" Text="TextBox" VerticalAlignment="Top" Width="143"/>
+    </Grid>
+</Window>

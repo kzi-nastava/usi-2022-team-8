@@ -17,13 +17,15 @@
       <Folder Include="Core\Examinations\Repository" />
       <Folder Include="Core\Operations\Repository" />
       <Folder Include="Core\Polls\Repository\" />
-      <Folder Include="Core\Prescriptions\Repository" />
-      <Folder Include="Core\Referrals\Repository" />
       <Folder Include="Core\Renovations\Repository" />
       <Folder Include="Core\RestRequests\Repository" />
       <Folder Include="Core\Rooms\Repository" />
       <Folder Include="Core\SystemUsers\Doctors\Repository" />
       <Folder Include="Core\SystemUsers\Secretaries\Repository" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     </ItemGroup>
 
     <ItemGroup>
