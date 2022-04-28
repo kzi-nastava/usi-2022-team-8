@@ -56,15 +56,23 @@ namespace HealthInstitution.GUI.ManagerView
         private void Edit_Click(object sender, RoutedEventArgs e)
         {
             string numberInput = numberBox.Text;
+
+            if (numberInput == "")
+            {
+                System.Windows.MessageBox.Show("Must input room number!", "Create error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
             int number = Int32.Parse(numberInput);
 
             int idx = roomRepository.rooms.FindIndex(room => room.number == number);
-            if (roomRepository.rooms[idx]!=room)
-            {  
-                System.Windows.MessageBox.Show("This room number already exist!", "Create error", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
+            if (idx >= 0)
+            {
+                if (roomRepository.rooms[idx] != room)
+                {
+                    System.Windows.MessageBox.Show("This room number already exist!", "Create error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    return;
+                }
             }
-
             RoomType type = (RoomType)typeComboBox.SelectedItem;
             if (type == null)
             {

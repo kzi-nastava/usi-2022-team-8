@@ -36,7 +36,7 @@ namespace HealthInstitution.GUI.ManagerView
             types.Add(RoomType.OperatingRoom);
             types.Add(RoomType.RestRoom);
             roomTypeComboBox.ItemsSource = types;
-            roomTypeComboBox.SelectedIndex = 0;
+            roomTypeComboBox.SelectedItem = null;
         }
 
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
@@ -48,6 +48,12 @@ namespace HealthInstitution.GUI.ManagerView
         private void Create_Click(object sender, RoutedEventArgs e)
         {
             string numberInput = numberBox.Text;
+
+            if (numberInput == "")
+            {
+                System.Windows.MessageBox.Show("Must input room number!", "Create error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
             int number = Int32.Parse(numberInput);
 
             if (roomRepository.rooms.Any(room => room.number == number))
@@ -55,14 +61,14 @@ namespace HealthInstitution.GUI.ManagerView
                 System.Windows.MessageBox.Show("This room number already exist!", "Create error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
-
-            RoomType type = (RoomType)typeComboBox.SelectedItem;
-            if (type == null)
+    
+            if (typeComboBox.SelectedItem == null)
             {
                 System.Windows.MessageBox.Show("Must select room type!", "Create error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
+            RoomType type = (RoomType)typeComboBox.SelectedItem;
             roomRepository.AddRoom(type, number);
             System.Windows.MessageBox.Show("Room added!", "Room creation", MessageBoxButton.OK, MessageBoxImage.Information);
             

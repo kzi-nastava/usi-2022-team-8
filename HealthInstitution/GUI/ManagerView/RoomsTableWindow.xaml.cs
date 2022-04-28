@@ -51,6 +51,7 @@ namespace HealthInstitution.GUI.ManagerView
             if (selectedRoom.type == RoomType.Warehouse)
             {
                 System.Windows.MessageBox.Show("You cant edit warehouse!", "Edit error", MessageBoxButton.OK, MessageBoxImage.Error);
+                dataGrid.SelectedItem = null;
                 return;
             }
             this.Close();
