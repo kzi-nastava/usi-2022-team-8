@@ -4,23 +4,21 @@ namespace HealthInstitution.Core.Rooms.Model;
 
 public class Room
 {
+    public int id { get; set; }
     public RoomType type { get; set; }
     public int number { get; set; }
     public bool isRenovating { get; set; }
     public List<Equipment> availableEquipment { get; set; }
-    public List<DateTime> scheduledAppointments { get; set; }
 
-    public Room(RoomType type, int number, bool isRenovating, List<Equipment> availableEquipment, List<DateTime> scheduledAppointments)
+    public Room(int id, RoomType type, int number, bool isRenovating, List<Equipment> availableEquipment)
     {
+        this.id = id;
         this.type = type;
         this.number = number;
         this.isRenovating = isRenovating;
         this.availableEquipment = availableEquipment;
-        this.scheduledAppointments = scheduledAppointments;
     }
 }
-
-
 
 public enum RoomType
 {
