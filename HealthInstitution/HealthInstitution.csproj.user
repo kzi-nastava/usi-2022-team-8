@@ -5,6 +5,21 @@
     <Compile Update="GUI\LoginWindow\LoginWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="GUI\ManagerView\AddRoomDialog.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="GUI\ManagerView\EditRoomDialog.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="GUI\ManagerView\EquipmentInspectionDialog.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="GUI\ManagerView\EquipmentTransferDialog.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="GUI\ManagerView\RoomsTableWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="GUI\SecretaryView\CreatePatientWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -15,6 +30,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="GUI\UserWindow\DoctorWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="GUI\UserWindow\ManagerWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="GUI\SecretaryView\ExaminationRequestsReview.xaml.cs">
@@ -28,6 +46,21 @@
     <Page Update="GUI\LoginWindow\LoginWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="GUI\ManagerView\AddRoomDialog.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="GUI\ManagerView\EditRoomDialog.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="GUI\ManagerView\EquipmentInspectionDialog.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="GUI\ManagerView\EquipmentTransferDialog.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="GUI\ManagerView\RoomsTableWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="GUI\SecretaryView\CreatePatientWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -38,6 +71,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="GUI\UserWindow\DoctorWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="GUI\UserWindow\ManagerWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="GUI\SecretaryView\ExaminationRequestsReview.xaml">
