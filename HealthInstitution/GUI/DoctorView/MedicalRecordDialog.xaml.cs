@@ -21,7 +21,7 @@ namespace HealthInstitution.GUI.DoctorView
     public partial class MedicalRecordDialog : Window
     {
         MedicalRecord medicalRecord;
-        public MedicalRecordDialog()
+        public MedicalRecordDialog(MedicalRecord medicalRecord)
         {
             /*medicalRecord = selectedMedicalRecord;
             PatientLabel.Content = medicalRecord.patient.ToString();
@@ -29,6 +29,7 @@ namespace HealthInstitution.GUI.DoctorView
             WeightLabel.Content = medicalRecord.weight.ToString();
             IllnessesListBox.DataContext = medicalRecord.previousIllnesses;
             AllergensListBox.DataContext = medicalRecord.allergens;*/
+            medicalRecord = medicalRecord;
             InitializeComponent();
         }
 

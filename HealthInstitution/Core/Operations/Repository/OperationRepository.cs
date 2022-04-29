@@ -1,8 +1,11 @@
 ﻿using HealthInstitution.Core.Examinations.Model;
 using HealthInstitution.Core.MedicalRecords.Model;
+using HealthInstitution.Core.MedicalRecords.Repository;
 using HealthInstitution.Core.Operations.Model;
 using HealthInstitution.Core.Rooms.Model;
+using HealthInstitution.Core.Rooms.Repository;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
+using HealthInstitution.Core.SystemUsers.Doctors.Repository;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -50,7 +53,7 @@ namespace HealthInstitution.Core.Operations.Repository
             var roomsById = RoomRepository.GetInstance().roomById;
             var doctorsByUsername = DoctorRepository.GetInstance().doctorsByUsername;
             //var medicalRecordsById = MedicalRecordRepository.GetInstance().medicalRecordById();
-            var medicalRecordsByUsername = MedicalRecordRepository.GetInstance().medicalRecordsByUsername();
+            var medicalRecordsByUsername = MedicalRecordRepository.GetInstance().medicalRecordByUsername;
             var operations = JArray.Parse(File.ReadAllText(this.fileName));
             foreach (var operation in operations)
             {

@@ -51,7 +51,7 @@ public partial class PatientScheduleWindow : Window
         {
             Examination selectedExamination = (Examination)dataGrid.SelectedItem;
             dataGrid.Items.Remove(selectedExamination);
-            examinationRepository.DeleteExaminations(selectedExamination.id);
+            examinationRepository.DeleteExamination(selectedExamination.id);
             //dodaj isto za doktora.
         }
     }

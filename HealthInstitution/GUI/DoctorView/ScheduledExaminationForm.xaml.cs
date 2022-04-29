@@ -132,5 +132,10 @@ namespace HealthInstitution.GUI.DoctorView
         {
 
         }
+
+        private void UpcomingDatesChecked(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

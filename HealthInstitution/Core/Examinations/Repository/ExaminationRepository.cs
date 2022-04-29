@@ -1,7 +1,10 @@
 ﻿using HealthInstitution.Core.Examinations.Model;
 using HealthInstitution.Core.MedicalRecords.Model;
+using HealthInstitution.Core.MedicalRecords.Repository;
 using HealthInstitution.Core.Rooms.Model;
+using HealthInstitution.Core.Rooms.Repository;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
+using HealthInstitution.Core.SystemUsers.Doctors.Repository;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -51,7 +54,7 @@ namespace HealthInstitution.Core.Examinations.Repository
         {
             var roomsById = RoomRepository.GetInstance().roomById;
             var doctorsByUsername = DoctorRepository.GetInstance().doctorsByUsername;
-            var medicalRecordsByUsername = MedicalRecordRepository.GetInstance().medicalRecordsByUsername();
+            var medicalRecordsByUsername = MedicalRecordRepository.GetInstance().medicalRecordByUsername;
             var examinations = JArray.Parse(File.ReadAllText(this.fileName));
             foreach (var examination in examinations)
             {
@@ -93,7 +96,8 @@ namespace HealthInstitution.Core.Examinations.Repository
                 });
             }
             return reducedExaminations
-        ;}
+        ;
+        }
 
         public void SaveExaminations()
         {
@@ -135,12 +139,13 @@ namespace HealthInstitution.Core.Examinations.Repository
         public void DeleteExamination(int id)
         {
             Examination examination = GetExaminationById(id);
-        if (examination != null)
-        {
-            this.examinationsById.Remove(examination.id);
-            this.examinations.Remove(examination);
-            this.examinationsById.Remove(id);
-            SaveExaminations();
+            if (examination != null)
+            {
+                this.examinationsById.Remove(examination.id);
+                this.examinations.Remove(examination);
+                this.examinationsById.Remove(id);
+                SaveExaminations();
+            }
         }
     }
 }

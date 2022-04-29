@@ -66,7 +66,7 @@ namespace HealthInstitution.GUI.DoctorView
 
         private void Save_Click(object sender, RoutedEventArgs e)
         {
-            string date = datePicker.Value.ToString("dd.MM.yyyy", System.Globalization.CultureInfo.InvariantCulture);
+            //string date = datePicker.Value.ToString("dd.MM.yyyy", System.Globalization.CultureInfo.InvariantCulture);
             String minutes = minuteComboBox.Text;
             String hours = hourComboBox.Text;
             var patient = (Patient)patientComboBox.SelectedItem;

@@ -1,5 +1,4 @@
-﻿using HealthInstitution.Core.Appointments.Model;
-using HealthInstitution.Core.RestRequests.Model;
+﻿using HealthInstitution.Core.RestRequests.Model;
 using HealthInstitution.Core.Examinations.Model;
 
 namespace HealthInstitution.Core.ScheduleEditRequests.Model;

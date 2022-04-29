@@ -69,12 +69,27 @@ namespace HealthInstitution.GUI.DoctorView
 
         private void Create_Click(object sender, RoutedEventArgs e)
         {
-            string date = datePicker.Value.ToString("dd.MM.yyyy", System.Globalization.CultureInfo.InvariantCulture);
+            //string date = datePicker.Value.ToString("dd.MM.yyyy", System.Globalization.CultureInfo.InvariantCulture);
             String minutes = minuteComboBox.Text;
             String hours = hourComboBox.Text;
-            var patient = (Patient)patientComboBox.SelectedItem;
+            //var patient = (Patient)patientComboBox.SelectedItem;
             //provera doktora, pacijenta i sobe
             //examination novi
+        }
+
+        private void patientComboBox_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void HourComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void MinuteComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
         }
     }
 }

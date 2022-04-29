@@ -42,7 +42,7 @@ namespace HealthInstitution.GUI.DoctorView
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
-            AddOpeationDialog addOpeationDialog = new AddOpeationDialog();
+            AddOpeationDialog addOpeationDialog = new AddOpeationDialog(this.loggedDoctor);
             addOpeationDialog.ShowDialog();
             LoadGridRows();
         }

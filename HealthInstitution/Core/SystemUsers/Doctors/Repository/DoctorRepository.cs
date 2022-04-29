@@ -20,7 +20,7 @@ namespace HealthInstitution.Core.SystemUsers.Doctors.Repository
     {
         public String fileName { get; set; }
         public List<Doctor> doctors { get; set; }
-        public Dictionary<String, Doctor> doctorsById { get; set; }
+        public Dictionary<String, Doctor> doctorsByUsername { get; set; }
 
         JsonSerializerOptions options = new JsonSerializerOptions
         {
@@ -31,7 +31,7 @@ namespace HealthInstitution.Core.SystemUsers.Doctors.Repository
         {
             this.fileName = fileName;
             this.doctors = new List<Doctor>();
-            this.doctorsById = new Dictionary<string, Doctor>();
+            this.doctorsByUsername = new Dictionary<string, Doctor>();
             this.LoadDoctors();
         }
 
@@ -85,7 +85,7 @@ namespace HealthInstitution.Core.SystemUsers.Doctors.Repository
                 List<Operation> doctorOperations = ConvertJTokenToOperation(doctor["operations"]);
                 Doctor loadedDoctor = new Doctor(username, password, name, surname, specialtyType, doctorExaminations, doctorOperations);
                 this.doctors.Add(loadedDoctor);
-                this.doctorsById.Add(username, loadedDoctor);
+                this.doctorsByUsername.Add(username, loadedDoctor);
             }
         }
 
@@ -137,8 +137,8 @@ namespace HealthInstitution.Core.SystemUsers.Doctors.Repository
 
         public Doctor GetDoctorByUsername(String username)
         {
-            if (this.doctorsById.ContainsKey(username))
-                return this.doctorsById[username];
+            if (this.doctorsByUsername.ContainsKey(username))
+                return this.doctorsByUsername[username];
             return null;
         }
 

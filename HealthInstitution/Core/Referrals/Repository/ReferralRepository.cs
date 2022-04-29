@@ -1,5 +1,6 @@
 ﻿using HealthInstitution.Core.Referrals.Model;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
+using HealthInstitution.Core.SystemUsers.Doctors.Repository;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -44,7 +45,7 @@ namespace HealthInstitution.Core.Referrals.Repository
         }
         public void LoadReferrals()
         {
-            Dictionary<string, Doctor> doctorByUsername = DoctorRepository.GetInstance().doctorByUsername;
+            Dictionary<string, Doctor> doctorByUsername = DoctorRepository.GetInstance().doctorsByUsername;
             var referrals = JArray.Parse(File.ReadAllText(fileName));
             //var referrals = JsonSerializer.Deserialize<List<Referral>>(File.ReadAllText(@"..\..\..\Data\JSON\referrals.json"), options);
             foreach (var referral in referrals)

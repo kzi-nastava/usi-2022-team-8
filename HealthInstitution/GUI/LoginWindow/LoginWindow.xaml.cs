@@ -69,8 +69,6 @@ namespace HealthInstitution.GUI.LoginWindow
 
                     case UserType.Doctor:
                         this.Close();
-                        DoctorWindow doctorWindow = new DoctorWindow();
-                        doctorWindow.ShowDialog();
                         DoctorRepository doctorRepository = DoctorRepository.GetInstance();
                         Doctor loggedDoctor = doctorRepository.GetDoctorByUsername(usernameInput);
                         DoctorWindow window = new DoctorWindow(loggedDoctor);
@@ -98,6 +96,6 @@ namespace HealthInstitution.GUI.LoginWindow
         {
             LoginWindow window = new LoginWindow();
             window.ShowDialog();
-        }*/
+        }
     }
 }

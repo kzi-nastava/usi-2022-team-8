@@ -63,11 +63,11 @@ namespace HealthInstitution.GUI.DoctorView
 
         private void Create_Click(object sender, RoutedEventArgs e)
         {
-            string date = datePicker.Value.ToString("dd.MM.yyyy", System.Globalization.CultureInfo.InvariantCulture);
+            //string date = datePicker.Value.ToString("dd.MM.yyyy", System.Globalization.CultureInfo.InvariantCulture);
             String minutes = minuteComboBox.Text;
             String hours = hourComboBox.Text;
             var duration = durationLabel.Content;
-            var patient = (Patient)patientComboBox.SelectedItem;
+            //var patient = (Patient)patientComboBox.SelectedItem;
         }
     }
 }
