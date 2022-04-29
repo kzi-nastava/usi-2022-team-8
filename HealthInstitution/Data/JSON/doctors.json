@@ -5,7 +5,8 @@
     "password": "jovan",
     "name": "Jovan",
     "surname": "Jovanovic",
-    "blocked": "NotBlocked"
+    "blocked": "NotBlocked",
+    "specialty": "Surgeon"
   },
   {
     "type": "Doctor",
@@ -13,6 +14,7 @@
     "password": "ivan",
     "name": "Ivan",
     "surname": "Ivanovic",
-    "blocked": "NotBlocked"
+    "blocked": "NotBlocked",
+    "specialty": "Surgeon"
   }
 ]

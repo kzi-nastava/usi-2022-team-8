@@ -42,38 +42,37 @@ internal class ExaminationRepository
 
     private static ExaminationRepository instance = null;
 
-    public static ExaminationRepository GetInstance()
-    {
+        public static ExaminationRepository GetInstance()
         {
-            if (instance == null)
             {
-                instance = new ExaminationRepository(@"..\..\..\Data\JSON\examinations.json");
+                if (instance == null)
+                {
+                    instance = new ExaminationRepository(@"..\..\..\Data\JSON\examinations.json");
+                }
+                return instance;
             }
-            return instance;
         }
-    }
-
-    public void LoadExaminations()
-    {
-        var roomsById = RoomRepository.GetInstance().roomById;
-        var doctorsByUsername = DoctorRepository.GetInstance().doctorsByUsername;
-        var medicalRecordsByUsername = MedicalRecordRepository.GetInstance().medicalRecordByUsername;
-        var examinations = JArray.Parse(File.ReadAllText(this.fileName));
-        foreach (var examination in examinations)
+        public void LoadExaminations()
         {
-            int id = (int)examination["id"];
-            ExaminationStatus status;
-            Enum.TryParse(examination["status"].ToString(), out status);
-            DateTime appointment = (DateTime)examination["appointment"];
-            int roomId = (int)examination["room"];
-            Room room = roomsById[roomId];
-            String doctorUsername = (String)examination["doctor"];
-            Doctor doctor = doctorsByUsername[doctorUsername];
-            String patientUsername = (String)examination["medicalRecord"];
-            MedicalRecord medicalRecord = medicalRecordsByUsername[patientUsername];
-            String anamnesis = (String)examination["anamnesis"];
+            var roomsById = RoomRepository.GetInstance().roomById;
+            //var doctorsByUsername = DoctorRepository.GetInstance().doctorsByUsername;
+            var medicalRecordsByUsername = MedicalRecordRepository.GetInstance().medicalRecordByUsername;
+            var examinations = JArray.Parse(File.ReadAllText(this.fileName));
+            foreach (var examination in examinations)
+            {
+                int id = (int)examination["id"];
+                ExaminationStatus status;
+                Enum.TryParse(examination["status"].ToString(), out status);
+                DateTime appointment = (DateTime)examination["appointment"];
+                int roomId = (int)examination["room"];
+                Room room = roomsById[roomId];
+                String doctorUsername = (String)examination["doctor"];
+                //Doctor doctor = doctorsByUsername[doctorUsername];
+                String patientUsername = (String)examination["medicalRecord"];
+                MedicalRecord medicalRecord = medicalRecordsByUsername[patientUsername];
+                String anamnesis = (String)examination["anamnesis"];
 
-            Examination loadedExamination = new Examination(id, status, appointment, room, doctor, medicalRecord);
+                Examination loadedExamination = new Examination(id, status, appointment, room, null, medicalRecord);
 
             if (id > maxId) { maxId = id; }
 
