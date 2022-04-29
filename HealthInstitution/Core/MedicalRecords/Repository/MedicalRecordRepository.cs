@@ -92,9 +92,9 @@ namespace HealthInstitution.Core.MedicalRecords.Repository
                 List<int> prescriptionsId = new List<int>();
                 List<int> referralsId = new List<int>();
                 foreach (var i in medicalRecord.prescriptions)
-                    prescriptionsId.Add(i.Id);
+                    prescriptionsId.Add(i.id);
                 foreach (var i in medicalRecord.referrals)
-                    referralsId.Add(i.Id);
+                    referralsId.Add(i.id);
                 reducedMedicalRecords.Add(new
                 {
                     height = medicalRecord.height,

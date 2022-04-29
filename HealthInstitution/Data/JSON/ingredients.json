@@ -1,11 +1,14 @@
 [
   {
+    "id": 1,
     "name": "diazepam"
   },
   {
+    "id": 2,
     "name": "bromazepam"
   },
   {
+    "id": 3,
     "name": "paracetamol"
   }
 ]

@@ -1,0 +1,14 @@
+[
+  {
+    "id": 1,
+    "dailyDose": 2,
+    "timeOfUse": "NotImportant",
+    "drug": 2
+  },
+  {
+    "id": 2,
+    "dailyDose": 4,
+    "timeOfUse": "PreMeal",
+    "drug": 1
+  }
+]
