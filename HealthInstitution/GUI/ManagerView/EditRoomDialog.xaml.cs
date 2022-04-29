@@ -57,7 +57,7 @@ namespace HealthInstitution.GUI.ManagerView
         {
             string numberInput = numberBox.Text;
 
-            if (numberInput == "")
+            if (numberInput.Trim() == "")
             {
                 System.Windows.MessageBox.Show("Must input room number!", "Create error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
