@@ -4,6 +4,7 @@ using HealthInstitution.Core.Rooms.Repository;
 using HealthInstitution.Core.SystemUsers.Users.Model;
 using HealthInstitution.Core.SystemUsers.Users.Repository;
 using HealthInstitution.GUI.UserWindow;
+using HealthInstitution.GUI.DoctorView;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +21,7 @@ using System.Windows.Shapes;
 using HealthInstitution.Core.Examinations.Repository;
 using HealthInstitution.Core.Examinations.Model;
 using HealthInstitution.Core.ScheduleEditRequests.Repository;
+using HealthInstitution.Core.SystemUsers.Patients.Model;
 
 namespace HealthInstitution.GUI.LoginWindow
 {
@@ -57,22 +59,10 @@ namespace HealthInstitution.GUI.LoginWindow
                 {
                     case UserType.Patient:
                         /*PatientRepository patientRepository = PatientRepository.GetInstance();
-                        Patient patient = patientRepository.GetPatientById(usernameInput);
-                        PatientWindow patientWindow = new PatientWindow();
-                        patientWindow.ShowDialog();
-                        break;*/
-                        Examination temp = ExaminationRepository.GetInstance().GetExaminationById(1);
-                        /* Console.WriteLine(temp.GetExaminationById(1));
-                         Examination examination = temp.GetExaminationById(1);
-                         ExaminationRepository.GetInstance().DeleteExaminations(examination.id);
-                         ExaminationRepository.GetInstance().AddExamination(examination.appointment, examination.status, examination.room, examination.doctor, examination.medicalRecord, examination.anamnesis);
-                         examination.anamnesis = "AAAAAAAAAAAA";
-                         examination.id = 2;
-                         ExaminationRepository.GetInstance().SwapExamination(examination);*/
+                        Patient patient = patientRepository.GetPatientById(usernameInput);*/
+                        this.Close();
 
-                        ScheduleEditRequestRepository.GetInstance().AddScheduleEditRequests(temp);
-                        ScheduleEditRequestRepository.GetInstance().DeleteScheduleEditRequests(1);
-
+                        new PatientWindow(foundUser).ShowDialog();
                         break;
 
                     case UserType.Doctor:
@@ -117,6 +107,6 @@ namespace HealthInstitution.GUI.LoginWindow
         {
             LoginWindow window = new LoginWindow();
             window.ShowDialog();
-        }
+        }*/
     }
 }

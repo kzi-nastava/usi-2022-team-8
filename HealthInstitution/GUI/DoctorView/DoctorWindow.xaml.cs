@@ -14,7 +14,7 @@ using System.Windows.Shapes;
 using System.Windows.Forms;
 using HealthInstitution.GUI.LoginWindow;
 
-namespace HealthInstitution.GUI.UserWindow
+namespace HealthInstitution.GUI.DoctorView
 {
     /// <summary>
     /// Interaction logic for DoctorWindow.xaml
@@ -36,12 +36,35 @@ namespace HealthInstitution.GUI.UserWindow
             }
         }
 
-        /*[STAThread]
+        private void Examinations_Click(object sender, RoutedEventArgs e)
+        {
+            ExaminationForm examinationForm = new ExaminationForm();
+            examinationForm.ShowDialog();
+        }
+
+        private void Operations_Click(object sender, RoutedEventArgs e)
+        {
+            OperationForm operationForm = new OperationForm();
+            operationForm.ShowDialog();
+        }
+
+        private void ScheduleReview_Click(object sender, RoutedEventArgs e)
+        {
+            ScheduledExaminationForm scheduledExaminationForm = new ScheduledExaminationForm();
+            scheduledExaminationForm.ShowDialog();
+        }
+
+        [STAThread]
         static void Main(string[] args)
         {
             DoctorWindow window = new DoctorWindow();
             window.ShowDialog();
-        }*/
+        }
+
+        private void BeginExamination_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 
 }

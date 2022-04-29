@@ -2,7 +2,16 @@
 <Project ToolsVersion="Current" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup />
   <ItemGroup>
-    <Compile Update="GUI\LoginWindow\LoginWindow.xaml.cs">
+    <Compile Update="GUI\DoctorView\AddExaminationDialog.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="GUI\PatientView\AddExaminationDialog.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="GUI\PatientView\EditExaminationDialog.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="GUI\PatientView\PatientScheduleWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="GUI\ManagerView\AddRoomDialog.xaml.cs">
@@ -30,6 +39,31 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="GUI\UserWindow\DoctorWindow.xaml.cs">
+    <Compile Update="GUI\DoctorView\AddOpeationDialog.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="GUI\DoctorView\EditExaminationDialog.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="GUI\DoctorView\EditOperationDialog.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="GUI\DoctorView\ExaminationForm.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="GUI\DoctorView\MedicalRecordDialog.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="GUI\DoctorView\OperationForm.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="GUI\DoctorView\PerformExaminationDialog.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="GUI\DoctorView\ScheduledExaminationForm.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="GUI\LoginWindow\LoginWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="GUI\UserWindow\ManagerWindow.xaml.cs">
@@ -43,7 +77,43 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <Page Update="GUI\LoginWindow\LoginWindow.xaml">
+    <Page Update="GUI\DoctorView\AddExaminationDialog.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="GUI\DoctorView\AddOpeationDialog.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="GUI\DoctorView\DoctorWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="GUI\DoctorView\EditExaminationDialog.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="GUI\DoctorView\EditOperationDialog.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="GUI\DoctorView\ExaminationForm.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="GUI\DoctorView\MedicalRecordDialog.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="GUI\DoctorView\OperationForm.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="GUI\DoctorView\PerformExaminationDialog.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="GUI\DoctorView\ScheduledExaminationForm.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="GUI\PatientView\AddExaminationDialog.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="GUI\PatientView\EditExaminationDialog.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="GUI\PatientView\PatientScheduleWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="GUI\ManagerView\AddRoomDialog.xaml">
@@ -71,6 +141,7 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="GUI\UserWindow\DoctorWindow.xaml">
+    <Page Update="GUI\LoginWindow\LoginWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="GUI\UserWindow\ManagerWindow.xaml">

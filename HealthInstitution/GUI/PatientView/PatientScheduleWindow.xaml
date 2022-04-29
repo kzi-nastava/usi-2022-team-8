@@ -1,0 +1,30 @@
+﻿<Window x:Class="HealthInstitution.GUI.PatientWindows.PatientScheduleWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:HealthInstitution.GUI.PatientWindows"
+        mc:Ignorable="d"
+        Title="PatientScheduleWindow" Height="450" Width="750">
+    <Grid>
+        <DataGrid  ItemsSource="{Binding Examination}" AutoGenerateColumns="True" Name="dataGrid" Grid.ColumnSpan="3" Margin="0,0,0,0" Loaded="dataGrid_Loaded">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Time" FontSize="18" Binding="{Binding appointment}" Width ="150" />
+                <DataGridTextColumn Header="Status" FontSize="18" Binding="{Binding status}" Width =" 150" />
+                <DataGridTextColumn Header="RoomNo" FontSize="18" Binding="{Binding room.number}" Width =" 150" />
+                <DataGridTextColumn Header="Doctor" FontSize="18" Width =" 150">
+                    <DataGridTextColumn.Binding>
+                        <MultiBinding StringFormat="{}{0} {1}">
+                            <Binding Path="doctor.name" />
+                            <Binding Path="doctor.surname" />
+                        </MultiBinding>
+                    </DataGridTextColumn.Binding>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Anamnesis" FontSize="18" Width =" 150" Binding="{Binding anamnesis}" />
+            </DataGrid.Columns>
+        </DataGrid>
+        <Button Name="addButton" Content="Add" Click="addButton_click" HorizontalAlignment="Center" Height="30" Margin="0,240,350,0" VerticalAlignment="Top" Width="111" RenderTransformOrigin="0.243,0.514" Cursor="Arrow" FontSize="18" Visibility="Visible" />
+        <Button Name="editButton" Content="Edit" Click="editButton_click" IsEnabled="{Binding ElementName=dataGrid, Path=SelectedItems.Count}" HorizontalAlignment="Center" Height="30" Margin="0,240,0,0" VerticalAlignment="Top" Width="111" RenderTransformOrigin="0.243,0.514" Cursor="Arrow" FontSize="18" Visibility="Visible" />
+        <Button Name="deleteButton" Content="Delete" Click="deleteButton_click" IsEnabled="{Binding ElementName=dataGrid, Path=SelectedItems.Count}" HorizontalAlignment="Center" Height="30" Margin="0,240,-350,0" VerticalAlignment="Top" Width="111" RenderTransformOrigin="0.243,0.514" Cursor="Arrow" FontSize="18" Visibility="Visible" />
+    </Grid>
+</Window>
