@@ -20,7 +20,7 @@
     <Compile Update="GUI\SecretaryView\CrudbPatients.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="GUI\SecretaryView\UpdatePatientWindow.xaml.cs">
+    <Compile Update="GUI\SecretaryView\UpdatePatientWindow.xaml.cs"></Compile>
     <Compile Update="GUI\ManagerView\AddRoomDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -34,6 +34,15 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="GUI\ManagerView\RoomsTableWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="GUI\SecretaryView\CreatePatientWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="GUI\SecretaryView\CrudbPatients.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="GUI\SecretaryView\UpdatePatientWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="GUI\UserWindow\DoctorWindow.xaml.cs">
@@ -64,10 +73,13 @@
     <Compile Update="GUI\LoginWindow\LoginWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="GUI\UserWindow\ManagerWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="GUI\SecretaryView\ExaminationRequestsReview.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="GUI\SecretaryView\UnblockingWindow.xaml.cs">
+    <Compile Update="GUI\SecretaryView\UnblockingWindow.xaml.cs"></Compile>
     <Compile Update="GUI\UserWindow\ManagerWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -118,7 +130,7 @@
     <Page Update="GUI\SecretaryView\CrudbPatients.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="GUI\SecretaryView\UpdatePatientWindow.xaml">
+    <Page Update="GUI\SecretaryView\UpdatePatientWindow.xaml"></Page>
     <Page Update="GUI\ManagerView\AddRoomDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -134,14 +146,26 @@
     <Page Update="GUI\ManagerView\RoomsTableWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="GUI\SecretaryView\CreatePatientWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="GUI\SecretaryView\CrudbPatients.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="GUI\SecretaryView\UpdatePatientWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="GUI\UserWindow\DoctorWindow.xaml">
     <Page Update="GUI\LoginWindow\LoginWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="GUI\UserWindow\ManagerWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="GUI\SecretaryView\ExaminationRequestsReview.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="GUI\SecretaryView\UnblockingWindow.xaml">
+    <Page Update="GUI\SecretaryView\UnblockingWindow.xaml"></Page>
     <Page Update="GUI\UserWindow\ManagerWindow.xaml">
       <SubType>Designer</SubType>
     </Page>

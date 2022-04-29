@@ -32,6 +32,10 @@
     </ItemGroup>
 
     <ItemGroup>
+      <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+    </ItemGroup>
+
+    <ItemGroup>
       <Resource Include="Data\Images\Hospital.png">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Resource>
@@ -61,5 +65,4 @@
         <SubType>Designer</SubType>
       </Page>
     </ItemGroup>
-
 </Project>
