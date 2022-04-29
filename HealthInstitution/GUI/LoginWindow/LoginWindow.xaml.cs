@@ -1,6 +1,7 @@
 ﻿using HealthInstitution.Core.SystemUsers.Users.Model;
 using HealthInstitution.Core.SystemUsers.Users.Repository;
 using HealthInstitution.GUI.UserWindow;
+using HealthInstitution.GUI.DoctorView;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -97,6 +98,6 @@ namespace HealthInstitution.GUI.LoginWindow
         {
             LoginWindow window = new LoginWindow();
             window.ShowDialog();
-        }
+        }*/
     }
 }

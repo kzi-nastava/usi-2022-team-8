@@ -1,0 +1,31 @@
+﻿<Window x:Class="HealthInstitution.GUI.DoctorView.PerformExaminationDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:HealthInstitution.GUI.DoctorView"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+        Title="Perform examination" Height="470" Width="800">
+    <Grid>
+
+        <Label Content="Patient" HorizontalAlignment="Left" Margin="70,42,0,0" VerticalAlignment="Top" FontSize="18" Height="34" Width="65"/>
+        <Label Content="Height" HorizontalAlignment="Left" Margin="70,93,0,0" VerticalAlignment="Top" FontSize="18" Height="34" Width="63"/>
+        <Label Content="Weight" HorizontalAlignment="Left" Margin="70,146,0,0" VerticalAlignment="Top" FontSize="18" Height="34" Width="67"/>
+        <Label Content="Previous illnesses" HorizontalAlignment="Left" Margin="30,226,0,0" VerticalAlignment="Top" FontSize="18" Height="34" Width="147"/>
+        <Label Content="Allergens" HorizontalAlignment="Left" Margin="70,326,0,0" VerticalAlignment="Top" FontSize="18" RenderTransformOrigin="6.208,-1.409" Height="34" Width="84"/>
+        <Label Content="Anamnesis" HorizontalAlignment="Left" Margin="388,93,0,0" VerticalAlignment="Top" FontSize="18"/>
+
+        <ListBox Name="IllnessListBox" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="206,200,316,169"/>
+        <ListBox Name="AllergenListBox" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="206,307,316,60"/>
+        <TextBox Name="AnamnesisTextBox" HorizontalAlignment="Left" Margin="523,42,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="230" Height="138"/>
+        <TextBox Name="PatientTextBox" IsReadOnly = "True" HorizontalAlignment="Left" Height="26" Margin="206,46,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="105" FontSize="18"/>
+        <TextBox Name="HeightTextBox" HorizontalAlignment="Left" Height="26" Margin="206,101,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="105" FontSize="18"/>
+        <TextBox Name="WeightTextBox" HorizontalAlignment="Left" Height="26" Margin="206,150,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="105" FontSize="18"/>
+        <TextBox Name="IllnessTextBox" HorizontalAlignment="Left" Height="26" Margin="560,217,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="161"/>
+        <TextBox Name="AllergenTextBox" HorizontalAlignment="Left" Height="26" Margin="560,325,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="161"/>
+        <Button Content="Add allergen" Click="AddAllergen_Click" HorizontalAlignment="Left" Margin="597,371,0,0" VerticalAlignment="Top" FontSize="14"/>
+        <Button Content="Add illness" Click="AddIllness_Click" HorizontalAlignment="Left" Margin="603,262,0,0" VerticalAlignment="Top" FontSize="14"/>
+        <Button Content="Finish" Click="Finish_Click" HorizontalAlignment="Center" Margin="0,411,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.327,-0.439" Width="100"/>
+    </Grid>
+</Window>

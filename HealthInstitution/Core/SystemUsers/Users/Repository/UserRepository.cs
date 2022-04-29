@@ -44,8 +44,8 @@ public class UserRepository
 
     public void SaveUsers()
     {
-        var allPatients = JsonSerializer.Serialize(this.users, options);
-        File.WriteAllText(this.fileName, allPatients);
+        var allUsers = JsonSerializer.Serialize(this.users, options);
+        File.WriteAllText(this.fileName, allUsers);
     }
 
     public List<User> GetUsers()
@@ -72,10 +72,10 @@ public class UserRepository
 
     public void UpdateUser(string username, string password, string name, string surname)
     {
-        User patient = GetUserByUsername(username);
-        patient.password = password;
-        patient.name = name;
-        patient.surname = surname;
+        User user = GetUserByUsername(username);
+        user.password = password;
+        user.name = name;
+        user.surname = surname;
         SaveUsers();
     }
 
