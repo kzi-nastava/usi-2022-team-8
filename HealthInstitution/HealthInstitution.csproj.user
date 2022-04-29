@@ -12,6 +12,19 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="GUI\SecretaryView\UpdatePatientWindow.xaml.cs">
+    <Compile Update="GUI\ManagerView\AddRoomDialog.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="GUI\ManagerView\EditRoomDialog.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="GUI\ManagerView\EquipmentInspectionDialog.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="GUI\ManagerView\EquipmentTransferDialog.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="GUI\ManagerView\RoomsTableWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="GUI\UserWindow\DoctorWindow.xaml.cs">
@@ -21,6 +34,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="GUI\SecretaryView\UnblockingWindow.xaml.cs">
+    <Compile Update="GUI\UserWindow\ManagerWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
   </ItemGroup>
@@ -35,6 +49,19 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="GUI\SecretaryView\UpdatePatientWindow.xaml">
+    <Page Update="GUI\ManagerView\AddRoomDialog.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="GUI\ManagerView\EditRoomDialog.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="GUI\ManagerView\EquipmentInspectionDialog.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="GUI\ManagerView\EquipmentTransferDialog.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="GUI\ManagerView\RoomsTableWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="GUI\UserWindow\DoctorWindow.xaml">
@@ -44,6 +71,7 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="GUI\SecretaryView\UnblockingWindow.xaml">
+    <Page Update="GUI\UserWindow\ManagerWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
   </ItemGroup>
