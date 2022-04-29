@@ -22,6 +22,8 @@ using HealthInstitution.Core.Examinations.Repository;
 using HealthInstitution.Core.Examinations.Model;
 using HealthInstitution.Core.ScheduleEditRequests.Repository;
 using HealthInstitution.Core.SystemUsers.Patients.Model;
+using HealthInstitution.Core.SystemUsers.Doctors.Repository;
+using HealthInstitution.Core.SystemUsers.Doctors.Model;
 
 namespace HealthInstitution.GUI.LoginWindow
 {
@@ -69,11 +71,10 @@ namespace HealthInstitution.GUI.LoginWindow
                         this.Close();
                         DoctorWindow doctorWindow = new DoctorWindow();
                         doctorWindow.ShowDialog();
-                        /*PatientRepository patientRepository = PatientRepository.GetInstance();
-                        Patient patient = patientRepository.GetPatientById(usernameInput);
-                        PatientWindow patientWindow = new PatientWindow();
-                        patientWindow.ShowDialog();
-                        break;*/
+                        DoctorRepository doctorRepository = DoctorRepository.GetInstance();
+                        Doctor loggedDoctor = doctorRepository.GetDoctorByUsername(usernameInput);
+                        DoctorWindow window = new DoctorWindow(loggedDoctor);
+                        window.ShowDialog();
 
                         break;
 
@@ -81,22 +82,12 @@ namespace HealthInstitution.GUI.LoginWindow
                         this.Close();
                         SecretaryWindow secretaryWindow = new SecretaryWindow();
                         secretaryWindow.ShowDialog();
-                        /*PatientRepository patientRepository = PatientRepository.GetInstance();
-                        Patient patient = patientRepository.GetPatientById(usernameInput);
-                        PatientWindow patientWindow = new PatientWindow();
-                        patientWindow.ShowDialog();
-                        break;*/
                         break;
 
                     case UserType.Manager:
                         this.Close();
                         ManagerWindow managerWindow = new ManagerWindow();
                         managerWindow.ShowDialog();
-                        /*PatientRepository patientRepository = PatientRepository.GetInstance();
-                        Patient patient = patientRepository.GetPatientById(usernameInput);
-                        PatientWindow patientWindow = new PatientWindow();
-                        patientWindow.ShowDialog();
-                        break;*/
                         break;
                 }
             }

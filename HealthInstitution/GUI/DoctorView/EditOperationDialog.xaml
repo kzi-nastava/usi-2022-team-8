@@ -10,7 +10,7 @@
     <Grid>
         <DatePicker SelectedDate="{Binding Date, StringFormat='dd/MM/yyyy HH:mm:ss'}" Margin="120,29,30,255" Height="50"/>
 
-        <ComboBox HorizontalAlignment="Left"   
+        <ComboBox Name="patientComboBox" HorizontalAlignment="Left"   
                   Margin="120,163,0,0"   
                   VerticalAlignment="Top"   
                   Width="150"
@@ -20,10 +20,10 @@
         <Label Content="Patient" HorizontalAlignment="Left" Margin="44,164,0,0" VerticalAlignment="Top" Height="30"/>
         <Label Content="Date" HorizontalAlignment="Left" Margin="44,53,0,0" VerticalAlignment="Top"/>
         <Label Content="Time" HorizontalAlignment="Left" Margin="44,117,0,0" VerticalAlignment="Top"/>
-        <ComboBox HorizontalAlignment="Left" Margin="120,119,0,0" Loaded="HourComboBox_Loaded" VerticalAlignment="Top" Width="45"/>
-        <ComboBox HorizontalAlignment="Left" Margin="225,117,0,0" VerticalAlignment="Top" Width="45" Loaded="MinuteComboBox_Loaded" />
+        <ComboBox Name="hourComboBox" HorizontalAlignment="Left" Margin="120,119,0,0" Loaded="HourComboBox_Loaded" VerticalAlignment="Top" Width="45"/>
+        <ComboBox Name="minuteComboBox" HorizontalAlignment="Left" Margin="225,117,0,0" VerticalAlignment="Top" Width="45" Loaded="MinuteComboBox_Loaded" />
         <Button Content="Save" Click="Save_Click" HorizontalAlignment="Center" Height="22" Margin="0,284,0,0" VerticalAlignment="Top" Width="74"/>
-        <Label Content="Duration" HorizontalAlignment="Left" Margin="44,215,0,0" VerticalAlignment="Top"/>
+        <Label Name="durationLabel" Content="Duration" HorizontalAlignment="Left" Margin="44,215,0,0" VerticalAlignment="Top"/>
         <TextBox HorizontalAlignment="Left" Margin="120,215,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="150" Height="26"/>
     </Grid>
 </Window>

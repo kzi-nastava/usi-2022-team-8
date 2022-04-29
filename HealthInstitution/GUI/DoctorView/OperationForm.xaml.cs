@@ -1,4 +1,7 @@
 ﻿using HealthInstitution.Core.Operations.Model;
+using HealthInstitution.Core.Operations.Repository;
+using HealthInstitution.Core.SystemUsers.Doctors.Model;
+using HealthInstitution.Core.SystemUsers.Doctors.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,30 +23,47 @@ namespace HealthInstitution.GUI.DoctorView
     /// </summary>
     public partial class OperationForm : Window
     {
-        public OperationForm()
+        OperationRepository operationRepository = OperationRepository.GetInstance();
+        DoctorRepository doctorRepository = DoctorRepository.GetInstance();
+        Doctor loggedDoctor;
+        public OperationForm(Doctor loggedDoctor)
         {
+            this.loggedDoctor = loggedDoctor;
             InitializeComponent();
         }
-
-        private void addButton_click(object sender, RoutedEventArgs e)
+        public void LoadGridRows()
         {
-            AddOpeationDialog addOpeationDialog = new AddOpeationDialog();
-            addOpeationDialog.ShowDialog();
-        }
-
-        private void deleteButton_click(object sender, RoutedEventArgs e)
-        {
-            if (System.Windows.MessageBox.Show("Are you sure you want to delete selected examination", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+            List<Operation> doctorOperations = this.loggedDoctor.operations;
+            foreach (Operation operation in doctorOperations)
             {
-                Operation selectedExamination = (Operation)dataGrid.SelectedItem;
+                dataGrid.Items.Add(operation);
             }
         }
 
-        private void editButton_click(object sender, RoutedEventArgs e)
+        private void AddButton_Click(object sender, RoutedEventArgs e)
+        {
+            AddOpeationDialog addOpeationDialog = new AddOpeationDialog();
+            addOpeationDialog.ShowDialog();
+            LoadGridRows();
+        }
+
+        private void EditButton_Click(object sender, RoutedEventArgs e)
         {
             Operation selectedOperation = (Operation)dataGrid.SelectedItem;
             EditOperationDialog editOperationDialog = new EditOperationDialog(selectedOperation);
             editOperationDialog.ShowDialog();
+            LoadGridRows();
+        }
+
+        private void DeleteButton_Click(object sender, RoutedEventArgs e)
+        {
+            if (System.Windows.MessageBox.Show("Are you sure you want to delete selected examination", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+            {
+                Operation selectedOperation = (Operation)dataGrid.SelectedItem;
+                dataGrid.Items.Remove(selectedOperation);
+                operationRepository.DeleteOperation(selectedOperation.id);
+                doctorRepository.DeleteDoctorOperation(loggedDoctor, selectedOperation);
+            }
         }
     }
 }

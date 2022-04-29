@@ -20,7 +20,7 @@ namespace HealthInstitution.GUI.DoctorView
     /// </summary>
     public partial class MedicalRecordDialog : Window
     {
-        public MedicalRecord medicalRecord { get; set; }
+        MedicalRecord medicalRecord;
         public MedicalRecordDialog()
         {
             /*medicalRecord = selectedMedicalRecord;

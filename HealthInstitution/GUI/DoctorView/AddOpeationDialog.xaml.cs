@@ -11,6 +11,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using HealthInstitution.Core.SystemUsers.Patients.Model;
 
 namespace HealthInstitution.GUI.DoctorView
@@ -20,8 +21,10 @@ namespace HealthInstitution.GUI.DoctorView
     /// </summary>
     public partial class AddOpeationDialog : Window
     {
-        public AddOpeationDialog()
+        Doctor loggedDoctor;
+        public AddOpeationDialog(Doctor loggedDoctor)
         {
+            this.loggedDoctor = loggedDoctor;
             InitializeComponent();
         }
 
@@ -60,13 +63,11 @@ namespace HealthInstitution.GUI.DoctorView
 
         private void Create_Click(object sender, RoutedEventArgs e)
         {
-            // TODO
+            string date = datePicker.Value.ToString("dd.MM.yyyy", System.Globalization.CultureInfo.InvariantCulture);
+            String minutes = minuteComboBox.Text;
+            String hours = hourComboBox.Text;
+            var duration = durationLabel.Content;
+            var patient = (Patient)patientComboBox.SelectedItem;
         }
-        /*[STAThread]
-                static void Main(string[] args)
-                {
-                    AddOpeationDialog window = new AddOpeationDialog();
-                    window.ShowDialog();
-                }*/
     }
 }
