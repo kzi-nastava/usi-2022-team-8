@@ -11,7 +11,7 @@
     <Grid>
         <Label Content="Equipment Inspection" HorizontalAlignment="Center" Margin="0,26,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.49,0.699" FontSize="20"/>
         <Button Click="ViewAll_Click" Content="view all" HorizontalAlignment="Left" Margin="184,91,0,0" VerticalAlignment="Top" FontSize="16" Height="34" Width="171"/>
-        <TextBox HorizontalAlignment="Left" Height="34" Margin="184,165,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="171" FontSize="16"/>
+        <TextBox x:Name="SearchBox" HorizontalAlignment="Left" Height="34" Margin="184,165,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="171" FontSize="16"/>
         <Button Click="Search_Click" Content="search" HorizontalAlignment="Left" Margin="413,165,0,0" VerticalAlignment="Top" Height="34" Width="148" RenderTransformOrigin="0.502,0.578" FontSize="16"/>
         <CheckBox Checked="RoomType_Checked" Unchecked="RoomType_Unchecked" Loaded="RoomTypeCheckBox_Loaded" HorizontalAlignment="Left" Margin="413,258,0,0" VerticalAlignment="Top" FontSize="16">
             <TextBlock Text="room type" Margin="4,-4,0,0"/>

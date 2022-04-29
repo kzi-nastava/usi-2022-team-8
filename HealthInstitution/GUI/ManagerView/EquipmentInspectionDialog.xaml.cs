@@ -1,5 +1,6 @@
 ﻿using HealthInstitution.Core.Equipments.Model;
 using HealthInstitution.Core.Rooms.Model;
+using HealthInstitution.Core.Rooms.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,6 +30,8 @@ namespace HealthInstitution.GUI.ManagerView
         private System.Windows.Controls.CheckBox roomTypeCheckBox;
         private System.Windows.Controls.CheckBox quantityCheckBox;
         private System.Windows.Controls.CheckBox equipmentTypeCheckBox;
+
+        RoomRepository roomRepository = RoomRepository.GetInstance();
         public EquipmentInspectionDialog()
         {
             InitializeComponent();
@@ -83,6 +86,7 @@ namespace HealthInstitution.GUI.ManagerView
         private void RoomType_Unchecked(object sender, RoutedEventArgs e)
         {
             roomTypeComboBox.IsEnabled = false;
+            roomTypeComboBox.SelectedItem = null;
         }
 
         private void RoomTypeCheckBox_Loaded(object sender, RoutedEventArgs e)
@@ -97,6 +101,7 @@ namespace HealthInstitution.GUI.ManagerView
         private void Quantity_Unchecked(object sender, RoutedEventArgs e)
         {
             quantityComboBox.IsEnabled = false;
+            quantityComboBox.SelectedItem = null;
         }
 
         private void QuantityCheckBox_Loaded(object sender, RoutedEventArgs e)
@@ -105,12 +110,13 @@ namespace HealthInstitution.GUI.ManagerView
         }
         private void EquipmentType_Checked(object sender, RoutedEventArgs e)
         {
-            equipmentTypeComboBox.IsEnabled = true;
+            equipmentTypeComboBox.IsEnabled = true;      
         }
 
         private void EquipmentType_Unchecked(object sender, RoutedEventArgs e)
         {
             equipmentTypeComboBox.IsEnabled = false;
+            equipmentTypeComboBox.SelectedItem = null;
         }
 
         private void EquipmentTypeCheckBox_Loaded(object sender, RoutedEventArgs e)
@@ -120,17 +126,182 @@ namespace HealthInstitution.GUI.ManagerView
 
         private void Filter_Click(object sender, RoutedEventArgs e)
         {
-            //todo
+            if (!CheckCompleteness())
+            {
+                System.Windows.MessageBox.Show("You need to select item in menu!", "Failed filter", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            List<TableItemEquipment> items = new List<TableItemEquipment>();
+            List<Room> rooms = roomRepository.rooms;
+            foreach (Room room in rooms)
+            {
+                if (!MatchRoomType(room))
+                    continue;
+                foreach (Equipment equipment in room.availableEquipment)
+                {
+                    if (!MatchEquipmentType(equipment))
+                        continue;
+                    if (!MatchQuantity(equipment))
+                        continue;
+                    
+                    TableItemEquipment equipmentByRoom = new TableItemEquipment(room, equipment);
+                    items.Add(equipmentByRoom);
+                }
+            }
+            if (items == null || !items.Any())
+            {
+                System.Windows.MessageBox.Show("No search results!", "Failed search", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            this.Close();
+            EquipmentTableWindow equipmentTableWindow = new EquipmentTableWindow(items);
+            equipmentTableWindow.ShowDialog();
+        }
+
+        private bool MatchQuantity(Equipment equipment)
+        {
+            if (!(bool)quantityCheckBox.IsChecked)
+            {
+                return true;
+            }
+            int selectedIdx = quantityComboBox.SelectedIndex;
+            switch (selectedIdx)
+            {
+                case 0:
+                    if (equipment.quantity != 0)
+                        return false;
+                    break;
+                case 1:
+                    if (equipment.quantity > 10)
+                        return false;
+                    break;
+                case 2:
+                    if (equipment.quantity < 10)
+                        return false;
+                    break;
+            }
+            return true;
+        }
+
+        private bool MatchEquipmentType(Equipment equipment)
+        {
+            if (!(bool)equipmentTypeCheckBox.IsChecked)
+            {
+                return true;
+            }
+            EquipmentType filteredEquipmentType = (EquipmentType)equipmentTypeComboBox.SelectedItem;
+            if (equipment.type == filteredEquipmentType)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        private bool MatchRoomType(Room room)
+        {
+            if (!(bool)roomTypeCheckBox.IsChecked)
+            {
+                return true;
+            }
+            RoomType filteredRoomType = (RoomType)roomTypeComboBox.SelectedItem;
+            if (room.type == filteredRoomType)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        private bool CheckCompleteness()
+        {
+            if((bool)equipmentTypeCheckBox.IsChecked && equipmentTypeComboBox.SelectedItem == null)
+            {
+                return false;
+            }
+            if ((bool)roomTypeCheckBox.IsChecked && roomTypeComboBox.SelectedItem == null)
+            {
+                return false;
+            }
+            if ((bool)quantityCheckBox.IsChecked && quantityComboBox.SelectedItem == null)
+            {
+                return false;
+            }
+            return true;
         }
 
         private void Search_Click(object sender, RoutedEventArgs e)
         {
-            //todo
+            string searchInput = SearchBox.Text;
+            if (searchInput.Trim() == "")
+            {
+                System.Windows.MessageBox.Show("Some search characters need to be placed!", "Failed search", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            List <TableItemEquipment> items = new List<TableItemEquipment>();
+            List<Room> rooms = roomRepository.rooms;
+            foreach (Room room in rooms)
+            {
+                foreach (Equipment equipment in room.availableEquipment)
+                {
+                    if (SearchMatch(room, equipment, searchInput))
+                    {
+                        TableItemEquipment equipmentByRoom = new TableItemEquipment(room, equipment);
+                        items.Add(equipmentByRoom);
+                    }
+                }
+            }
+            if (items == null || !items.Any())
+            {
+                System.Windows.MessageBox.Show("No search results!", "Failed search", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            this.Close();
+            EquipmentTableWindow equipmentTableWindow = new EquipmentTableWindow(items);
+            equipmentTableWindow.ShowDialog();
+        }
+
+        private bool SearchMatch(Room room, Equipment equipment, string searchInput)
+        {
+            if (room.type.ToString().ToLower().Contains(searchInput.ToLower()))
+                return true;
+            if (room.number.ToString().ToLower().Contains(searchInput.ToLower()))
+                return true;
+            if (equipment.type.ToString().ToLower().Contains(searchInput.ToLower()))
+                return true;
+            if (equipment.name.ToString().ToLower().Contains(searchInput.ToLower()))
+                return true;
+            return false;
         }
 
         private void ViewAll_Click(object sender, RoutedEventArgs e)
         {
-            //todo
+            List<TableItemEquipment> items = LoadAllEquipments();
+            if (items == null || !items.Any())
+            {
+                System.Windows.MessageBox.Show("There is no equipment!", "No equipment", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+            this.Close();
+            EquipmentTableWindow equipmentTableWindow = new EquipmentTableWindow(items);
+            equipmentTableWindow.ShowDialog();
+        }
+
+        private List<TableItemEquipment> LoadAllEquipments()
+        {
+            List<TableItemEquipment> items = new List<TableItemEquipment>();
+            List<Room> rooms = roomRepository.rooms;
+            foreach (Room room in rooms)
+            {
+                foreach (Equipment equipment in room.availableEquipment)
+                {                   
+                    TableItemEquipment equipmentByRoom = new TableItemEquipment(room, equipment);
+                    items.Add(equipmentByRoom);                    
+                }
+            }
+            return items;
         }
     }
 }

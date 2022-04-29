@@ -14,6 +14,9 @@
     <Compile Update="GUI\ManagerView\EquipmentInspectionDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="GUI\ManagerView\EquipmentTableWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="GUI\ManagerView\EquipmentTransferDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -38,6 +41,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="GUI\ManagerView\EquipmentInspectionDialog.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="GUI\ManagerView\EquipmentTableWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="GUI\ManagerView\EquipmentTransferDialog.xaml">

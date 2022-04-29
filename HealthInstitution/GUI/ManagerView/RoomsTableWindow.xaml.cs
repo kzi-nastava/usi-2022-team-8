@@ -34,8 +34,6 @@ namespace HealthInstitution.GUI.ManagerView
             List<Room> rooms = roomRepository.rooms;
             foreach (Room room in rooms)
             {
-
-                Console.WriteLine(room);
                 dataGrid.Items.Add(room);
             }
         }
