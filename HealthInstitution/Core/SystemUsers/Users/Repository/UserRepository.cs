@@ -20,6 +20,7 @@ public class UserRepository
     {
         this.fileName = fileName;
         this.users = new List<User>();
+        this.usersByUsername = new Dictionary<string, User>();
         this.LoadUsers();
     }
     private static UserRepository instance = null;
@@ -39,13 +40,14 @@ public class UserRepository
         foreach (User user in users)
         {
             this.users.Add(user);
+            this.usersByUsername[user.username] = user;
         }
     }
 
     public void SaveUsers()
     {
-        var allPatients = JsonSerializer.Serialize(this.users, options);
-        File.WriteAllText(this.fileName, allPatients);
+        var allUsers = JsonSerializer.Serialize(this.users, options);
+        File.WriteAllText(this.fileName, allUsers);
     }
 
     public List<User> GetUsers()
@@ -55,11 +57,8 @@ public class UserRepository
 
     public User GetUserByUsername(String username)
     {
-        foreach (User user in users)
-        {
-            if (user.username == username)
-                return user;
-        }
+        if (this.usersByUsername.ContainsKey(username))
+            return this.usersByUsername[username];
         return null;
     }
 
@@ -67,15 +66,17 @@ public class UserRepository
     {
         User user = new User(type, username, password, name, surname);
         this.users.Add(user);
+        this.usersByUsername[username] = user;
         SaveUsers();
     }
 
     public void UpdateUser(string username, string password, string name, string surname)
     {
-        User patient = GetUserByUsername(username);
-        patient.password = password;
-        patient.name = name;
-        patient.surname = surname;
+        User user = GetUserByUsername(username);
+        user.password = password;
+        user.name = name;
+        user.surname = surname;
+        this.usersByUsername[username]=user;
         SaveUsers();
     }
 
@@ -83,6 +84,7 @@ public class UserRepository
     {
         User user = GetUserByUsername(username);
         this.users.Remove(user);
+        this.usersByUsername.Remove(username);
         SaveUsers();
     }
 }

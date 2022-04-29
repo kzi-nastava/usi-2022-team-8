@@ -1,0 +1,62 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+
+        <OutputType>WinExe</OutputType>
+        <TargetFramework>net6.0-windows</TargetFramework>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <Nullable>enable</Nullable>
+        <UseWindowsForms>True</UseWindowsForms>
+        <UseWPF>True</UseWPF>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <None Remove="Data\Images\Hospital.png" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Controllers" />
+      <Folder Include="Core\Appointments\Repository" />
+      <Folder Include="Core\Equipments\Repository" />
+      <Folder Include="Core\EquipmentTransfers\Repository" />
+      <Folder Include="Core\Examinations\Repository" />
+      <Folder Include="Core\MedicalRecords\Repository" />
+      <Folder Include="Core\Operations\Repository" />
+
+      <Folder Include="Core\Polls\Repository\" />
+      <Folder Include="Core\Prescriptions\Repository" />
+      <Folder Include="Core\Referrals\Repository" />
+      <Folder Include="Core\Renovations\Repository" />
+      <Folder Include="Core\RestRequests\Repository" />
+      <Folder Include="Core\Rooms\Repository" />
+      <Folder Include="Core\SystemUsers\Doctors\Repository" />
+
+      <Folder Include="Core\SystemUsers\Patients\Repository" />
+
+      <Folder Include="Core\SystemUsers\Secretaries\Model" />
+      <Folder Include="Core\SystemUsers\Secretaries\Repository" />
+    </ItemGroup>
+
+
+    <ItemGroup>
+      <Resource Include="Data\Images\Hospital.png">
+        <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      </Resource>
+    </ItemGroup>
+
+    <ItemGroup>
+      <Compile Update="Properties\Resources.Designer.cs">
+        <DesignTime>True</DesignTime>
+        <AutoGen>True</AutoGen>
+        <DependentUpon>Resources.resx</DependentUpon>
+      </Compile>
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Update="Properties\Resources.resx">
+        <Generator>ResXFileCodeGenerator</Generator>
+        <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      </EmbeddedResource>
+    </ItemGroup>
+
+</Project>

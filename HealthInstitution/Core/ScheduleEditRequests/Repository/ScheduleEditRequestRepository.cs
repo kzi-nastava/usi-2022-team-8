@@ -8,6 +8,10 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using HealthInstitution.Core.ScheduleEditRequests.Model;
 using HealthInstitution.Core.Examinations.Model;
+using HealthInstitution.Core.Rooms.Repository;
+using HealthInstitution.Core.MedicalRecords.Repository;
+
+//using HealthInstitution.Core.SystemUsers.Doctors.Repository;
 
 namespace HealthInstitution.Core.ScheduleEditRequests.Repository;
 
@@ -48,6 +52,12 @@ public class ScheduleEditRequestRepository
         var requests = JsonSerializer.Deserialize<List<ScheduleEditRequest>>(File.ReadAllText(@"..\..\..\Data\JSON\scheduleEditRequests.json"), options);
         foreach (ScheduleEditRequest scheduleEditRequest in requests)
         {
+            scheduleEditRequest.examination.room = RoomRepository.GetInstance().GetRoomById(scheduleEditRequest.examination.room.id);
+            scheduleEditRequest.examination.medicalRecord =
+                MedicalRecordRepository.GetInstance().GetMedicalRecordByUsername(scheduleEditRequest.examination.medicalRecord.patient);
+            /*scheduleEditRequest.examination.doctor =
+               DoctorRepository.GetInstance().GetDoctorByUsername(scheduleEditRequest.examination.doctor);*/
+
             this.scheduleEditRequests.Add(scheduleEditRequest);
             this.scheduleEditRequestsById.Add(scheduleEditRequest.Id, scheduleEditRequest);
         }

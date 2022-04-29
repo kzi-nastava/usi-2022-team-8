@@ -1,0 +1,33 @@
+﻿<Window x:Class="HealthInstitution.GUI.UserWindow.CreatePatientWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:HealthInstitution.GUI.UserWindow"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+        Title="CreatePatientWindow" Height="350" Width="600">
+    <Grid>
+        <Button Content="Create patient" Click="createPatient_click" HorizontalAlignment="Center" Margin="0,300,0,0" VerticalAlignment="Top" FontSize="18"/>
+        <Label Content="Username:" HorizontalAlignment="Center" Height="25" Margin="-350,50,0,0" VerticalAlignment="Top" Width="100"/>
+        <Label Content="Password:" HorizontalAlignment="Center" Height="25" Margin="-350,100,0,0" VerticalAlignment="Top" Width="100"/>
+        <Label Content="Name:" HorizontalAlignment="Center" Height="25" Margin="-350,150,0,0" VerticalAlignment="Top" Width="100"/>
+        <Label Content="Surname:" HorizontalAlignment="Center" Height="25" Margin="-350,195,0,0" VerticalAlignment="Top" Width="100"/>
+        <TextBox Name="usernameBox" HorizontalAlignment="Center" Height="25" Margin="-170,50,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="100"/>
+        <PasswordBox Name="passwordBox" HorizontalAlignment="Center" Height="25" Margin="-170,100,0,0"  VerticalAlignment="Top" Width="100"/>
+        <TextBox Name="nameBox" HorizontalAlignment="Center" Height="25" Margin="-170,150,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="100"/>
+        <TextBox Name="surnameBox" HorizontalAlignment="Center" Height="25" Margin="-170,200,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="100"/>
+
+        <Label Content="Height:" HorizontalAlignment="Center" Height="25" Margin="150,50,0,0" VerticalAlignment="Top" Width="100"/>
+        <Label Content="Weight:" HorizontalAlignment="Center" Height="25" Margin="150,100,0,0" VerticalAlignment="Top" Width="100"/>
+        <Label Content="Allergens:" HorizontalAlignment="Center" Height="25" Margin="150,150,0,0" VerticalAlignment="Top" Width="100"/>
+        <Label Content="Previous ilnesses:" HorizontalAlignment="Center" Height="25" Margin="150,195,0,0" VerticalAlignment="Top" Width="100"/>
+        <TextBox Name="heightBox" HorizontalAlignment="Center" Height="25" Margin="350,50,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="100"/>
+        <TextBox Name="weightBox" HorizontalAlignment="Center" Height="25" Margin="350,100,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="100"/>
+        <TextBox Name="allergensBox" HorizontalAlignment="Center" Height="25" Margin="350,150,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="100"/>
+        <TextBox Name="previousIlnessesBox" HorizontalAlignment="Center" Height="25" Margin="350,200,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="100"/>
+        <Label Content="*Allergens and Previous ilnesses should contain list of items separated by comma." HorizontalAlignment="Right" Height="25" Margin="0,251,0,0" VerticalAlignment="Top" Width="336" FontSize="9"/>
+
+    </Grid>
+
+</Window>

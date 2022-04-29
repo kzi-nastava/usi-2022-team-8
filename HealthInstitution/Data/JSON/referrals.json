@@ -1,0 +1,16 @@
+[
+  {
+    "id": 1,
+    "type": "Specialty",
+    "prescriedBy": "jovan",
+    "referredDoctor": "ivan",
+    "referredSpecialty": "Surgeon"
+  },
+  {
+    "id": 2,
+    "type": "SpecificDoctor",
+    "prescriedBy": "ivan",
+    "referredDoctor": "jovan",
+    "referredSpecialty": "Radiologist"
+  }
+]

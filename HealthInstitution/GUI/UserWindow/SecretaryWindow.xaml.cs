@@ -24,11 +24,29 @@ namespace HealthInstitution.GUI.UserWindow
             InitializeComponent();
         }
 
-        private void addPatient_click(object sender, RoutedEventArgs e)
+        private void patients_click(object sender, RoutedEventArgs e)
         {
-            AddStudentWindow addStudentWindow = new AddStudentWindow();
-            addStudentWindow.ShowDialog();
-            this.Close();
+            CrudbPatients crudbPatientsWindow = new CrudbPatients();
+            crudbPatientsWindow.ShowDialog();
+            //this.Close();
+        }
+
+
+        private void examinationRequests_click(object sender, RoutedEventArgs e)
+        {
+            ExaminationRequestsReview examinationRequestsReview = new ExaminationRequestsReview();
+            examinationRequestsReview.ShowDialog();
+            //this.Close();
+        }
+
+        private void LogOut_Click(object sender, RoutedEventArgs e)
+        {
+            if (System.Windows.MessageBox.Show("Are you sure you want to log out?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+            {
+                this.Close();
+                LoginWindow.LoginWindow lw = new LoginWindow.LoginWindow();
+                lw.ShowDialog();
+            }
         }
 
         /*[STAThread]

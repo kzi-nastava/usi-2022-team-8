@@ -1,18 +1,14 @@
 [
   {
+    "id": 1,
     "name": "Brufen",
     "state": "Accepted",
-    "ingredients": [
-      "diazepam",
-      "paracetamol"
-    ]
+    "ingredients": [1,2]
   },
   {
+    "id": 2,
     "name": "Pertamol",
     "state": "Accepted",
-    "ingredients": [
-      "diazepam",
-      "bromazepam"
-    ]
+    "ingredients": [1,3]
   }
 ]

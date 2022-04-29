@@ -15,9 +15,9 @@ using System.Windows.Shapes;
 namespace HealthInstitution.GUI.UserWindow
 {
     /// <summary>
-    /// Interaction logic for AddStudentWindow.xaml
+    /// Interaction logic for AddUserWindow.xaml
     /// </summary>
-    public partial class AddStudentWindow : Window
+    public partial class AddUserWindow : Window
     {
         String usernameInput;
         String passwordInput;
@@ -28,7 +28,7 @@ namespace HealthInstitution.GUI.UserWindow
         String illnesesInput;
         String allergensInput;
 
-        public AddStudentWindow()
+        public AddUserWindow()
         {
             InitializeComponent();
         }

@@ -1,4 +1,4 @@
-﻿<Window x:Class="HealthInstitution.GUI.UserWindow.AddStudentWindow"
+﻿<Window x:Class="HealthInstitution.GUI.UserWindow.AddUserWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:HealthInstitution.GUI.UserWindow"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="AddStudentWindow" Height="450" Width="800">
+        Title="AddUserWindow" Height="450" Width="800">
     <Grid>
         <Button Content="Save" Click="saveButton_click" HorizontalAlignment="Center" Margin="0,374,0,0" VerticalAlignment="Top" FontSize="18" Width="104"/>
         <Label Content="Name" HorizontalAlignment="Left" Margin="230,85,0,0" VerticalAlignment="Top"/>
