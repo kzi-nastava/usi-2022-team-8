@@ -185,6 +185,24 @@ internal class ExaminationRepository
         return availableRooms[0];
     }
 
+    public void SwapExaminationValue(Examination examination)
+    {
+        var oldExamination = this.GetExaminationById(examination.id);
+        this.examinations.Remove(oldExamination);
+        this.examinations.Add(examination);
+        this.examinationsById[examination.id] = examination;
+    }
+
+    public void EditExamination(Examination examination, string patientUsername, string doctorUsername, DateTime dateTime)
+    {
+        Doctor doctor = DoctorRepository.GetInstance().GetDoctorByUsername(doctorUsername);
+        CheckAvailableDoctor(doctor, dateTime);
+        var room = CheckAvailableRoom(dateTime);
+        Patient patient = PatientRepository.GetInstance().GetPatientByUsername(patientUsername);
+        Examination e = new Examination(examination.id, examination.status, dateTime, room, doctor, examination.medicalRecord);
+        SwapExaminationValue(e);
+    }
+
     public void ReserveExamiantion(string patientUsername, string doctorUsername, DateTime dateTime)
     {
         Doctor doctor = DoctorRepository.GetInstance().GetDoctorByUsername(doctorUsername);

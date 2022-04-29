@@ -16,25 +16,44 @@ using HealthInstitution.Core.SystemUsers.Patients.Model;
 using HealthInstitution.Core.SystemUsers.Users.Repository;
 using HealthInstitution.Core.SystemUsers.Users.Model;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
+using HealthInstitution.Core.Examinations.Repository;
 
 namespace HealthInstitution.GUI.PatientWindows
 {
     /// <summary>
     /// Interaction logic for EditExaminationDialog.xaml
     /// </summary>
+    ///
+
     public partial class EditExaminationDialog : Window
     {
+        private string minutes;
+        private string hours;
+        private User loggedPatient;
+        private string doctorUsername;
         public Examination examination { get; set; }
 
         public EditExaminationDialog(Examination selectedExamination)
         {
             examination = selectedExamination;
+            loggedPatient = selectedExamination.medicalRecord.patient;
             InitializeComponent();
         }
 
         private void Save_Click(object sender, RoutedEventArgs e)
         {
-            //TODO
+            string formatDate = datePicker.SelectedDate.ToString();
+            formatDate = formatDate + "T" + hours + ":" + minutes;
+
+            DateTime.TryParse(formatDate, out var dateTime);
+            try
+            {
+                ExaminationRepository.GetInstance().ReserveExamiantion(loggedPatient.username, doctorUsername, dateTime);
+            }
+            catch (Exception ex)
+            {
+                System.Windows.MessageBox.Show(ex.Message, "Question", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
         }
 
         private void DoctorComboBox_Loaded(object sender, RoutedEventArgs e)
@@ -62,8 +81,7 @@ namespace HealthInstitution.GUI.PatientWindows
                 hours.Add(i.ToString());
             }
             hourComboBox.ItemsSource = hours;
-            hourComboBox.SelectedIndex = 0;
-            // TODO stavi sate
+            hourComboBox.SelectedValue = examination.appointment.Hour;
         }
 
         private void MinuteComboBox_Loaded(object sender, RoutedEventArgs e)
@@ -75,12 +93,32 @@ namespace HealthInstitution.GUI.PatientWindows
             minutes.Add("30");
             minutes.Add("45");
             minuteComboBox.ItemsSource = minutes;
-            minuteComboBox.SelectedIndex = 0;
-            // TODO stavi minute
+
+            if (examination.appointment.Minute == 0) minuteComboBox.SelectedIndex = 0;
+            if (examination.appointment.Minute == 15) minuteComboBox.SelectedIndex = 1;
+            if (examination.appointment.Minute == 30) minuteComboBox.SelectedIndex = 2;
+            if (examination.appointment.Minute == 45) minuteComboBox.SelectedIndex = 3;
         }
 
-        private void ComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void DoctorComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            var doctorComboBox = sender as System.Windows.Controls.ComboBox;
+            this.doctorUsername = (doctorComboBox.SelectedValue as Doctor).username;
+        }
+
+        private void HourComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var hourComboBox = sender as System.Windows.Controls.ComboBox;
+            int h = hourComboBox.SelectedIndex;
+            if (h == 9) hours = "09";
+            else
+                hours = h.ToString();
+        }
+
+        private void MinuteComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var minuteComboBox = sender as System.Windows.Controls.ComboBox;
+            minutes = minuteComboBox.SelectedValue.ToString();
         }
     }
 }
