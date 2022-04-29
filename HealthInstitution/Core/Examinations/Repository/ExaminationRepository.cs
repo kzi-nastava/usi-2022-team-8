@@ -53,7 +53,7 @@ namespace HealthInstitution.Core.Examinations.Repository
         public void LoadExaminations()
         {
             var roomsById = RoomRepository.GetInstance().roomById;
-            var doctorsByUsername = DoctorRepository.GetInstance().doctorsByUsername;
+            //var doctorsByUsername = DoctorRepository.GetInstance().doctorsByUsername;
             var medicalRecordsByUsername = MedicalRecordRepository.GetInstance().medicalRecordByUsername;
             var examinations = JArray.Parse(File.ReadAllText(this.fileName));
             foreach (var examination in examinations)
@@ -65,12 +65,12 @@ namespace HealthInstitution.Core.Examinations.Repository
                 int roomId = (int)examination["room"];
                 Room room = roomsById[roomId];
                 String doctorUsername = (String)examination["doctor"];
-                Doctor doctor = doctorsByUsername[doctorUsername];
+                //Doctor doctor = doctorsByUsername[doctorUsername];
                 String patientUsername = (String)examination["medicalRecord"];
                 MedicalRecord medicalRecord = medicalRecordsByUsername[patientUsername];
                 String anamnesis = (String)examination["anamnesis"];
 
-                Examination loadedExamination = new Examination(id, status, appointment, room, doctor, medicalRecord);
+                Examination loadedExamination = new Examination(id, status, appointment, room, null, medicalRecord);
 
                 if (id > maxId) { maxId = id; }
 
