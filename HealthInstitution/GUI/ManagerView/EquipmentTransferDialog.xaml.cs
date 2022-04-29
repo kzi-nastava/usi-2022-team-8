@@ -1,4 +1,6 @@
-﻿using System;
+﻿using HealthInstitution.Core.Rooms.Model;
+using HealthInstitution.Core.Rooms.Repository;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,6 +22,7 @@ namespace HealthInstitution.GUI.ManagerView
     /// </summary>
     public partial class EquipmentTransferDialog : Window
     {
+        RoomRepository roomRepository = RoomRepository.GetInstance();
         public EquipmentTransferDialog()
         {
             InitializeComponent();
@@ -37,18 +40,28 @@ namespace HealthInstitution.GUI.ManagerView
         }
 
         private void FromRoomComboBox_Loaded(object sender, RoutedEventArgs e)
-        {
-            //todo
+        {         
+            fromRoomComboBox.ItemsSource = roomRepository.rooms;
+            fromRoomComboBox.SelectedItem = null;
         }
 
         private void ToRoomComboBox_Loaded(object sender, RoutedEventArgs e)
         {
-            //todo
+            toRoomComboBox.ItemsSource = roomRepository.rooms;
+            toRoomComboBox.SelectedItem = null;
         }
 
         private void EquipmentComboBox_Loaded(object sender, RoutedEventArgs e)
         {
-            //todo
+            equipmentComboBox.IsEnabled = false;
+        }
+
+        private void FromRoomComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            equipmentComboBox.IsEnabled = true;
+            Room selectedRoomFrom = (Room)fromRoomComboBox.SelectedItem;
+            equipmentComboBox.ItemsSource = selectedRoomFrom.availableEquipment;
+            toRoomComboBox.SelectedItem = null;
         }
     }
 }

@@ -18,6 +18,11 @@ public class Room
         this.isRenovating = isRenovating;
         this.availableEquipment = availableEquipment;
     }
+
+    public override string? ToString()
+    {
+        return type.ToString()+" "+number;
+    }
 }
 
 public enum RoomType
