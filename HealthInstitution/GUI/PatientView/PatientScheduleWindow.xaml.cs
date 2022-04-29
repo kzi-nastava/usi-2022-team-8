@@ -34,7 +34,7 @@ public partial class PatientScheduleWindow : Window
 
     private void addButton_click(object sender, RoutedEventArgs e)
     {
-        AddExaminationDialog addExaminationDialog = new AddExaminationDialog();
+        AddExaminationDialog addExaminationDialog = new AddExaminationDialog(loggedPatient);
         addExaminationDialog.ShowDialog();
     }
 
@@ -52,7 +52,6 @@ public partial class PatientScheduleWindow : Window
             Examination selectedExamination = (Examination)dataGrid.SelectedItem;
             dataGrid.Items.Remove(selectedExamination);
             examinationRepository.DeleteExamination(selectedExamination.id);
-            //dodaj isto za doktora.
         }
     }
 
