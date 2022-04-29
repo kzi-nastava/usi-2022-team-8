@@ -24,6 +24,6 @@
         <Label Content="Equipment" HorizontalAlignment="Left" Margin="156,218,0,0" VerticalAlignment="Top"/>
         <Label Content="Quantity" HorizontalAlignment="Left" Margin="156,274,0,0" VerticalAlignment="Top"/>
         <Label Content="Date" HorizontalAlignment="Left" Margin="156,337,0,0" VerticalAlignment="Top"/>
-        <DatePicker HorizontalAlignment="Left" Margin="352,338,0,0" VerticalAlignment="Top" Width="217"/>
+        <DatePicker Name="transferDate" HorizontalAlignment="Left" Margin="352,338,0,0" VerticalAlignment="Top" Width="217"/>
     </Grid>
 </Window>

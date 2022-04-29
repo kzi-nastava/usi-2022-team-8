@@ -1,4 +1,7 @@
-﻿using HealthInstitution.Core.Rooms.Model;
+﻿using HealthInstitution.Core.Equipments.Model;
+using HealthInstitution.Core.Equipments.Repository;
+using HealthInstitution.Core.EquipmentTransfers.Repository;
+using HealthInstitution.Core.Rooms.Model;
 using HealthInstitution.Core.Rooms.Repository;
 using System;
 using System.Collections.Generic;
@@ -23,14 +26,11 @@ namespace HealthInstitution.GUI.ManagerView
     public partial class EquipmentTransferDialog : Window
     {
         RoomRepository roomRepository = RoomRepository.GetInstance();
+        EquipmentRepository equipmentRepository = EquipmentRepository.GetInstance(); 
+        EquipmentTransferRepository equipmentTransferRepository = EquipmentTransferRepository.GetInstance();
         public EquipmentTransferDialog()
         {
             InitializeComponent();
-        }
-
-        private void Transfer_Click(object sender, RoutedEventArgs e)
-        {
-            //todo
         }
 
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
@@ -62,6 +62,92 @@ namespace HealthInstitution.GUI.ManagerView
             Room selectedRoomFrom = (Room)fromRoomComboBox.SelectedItem;
             equipmentComboBox.ItemsSource = selectedRoomFrom.availableEquipment;
             toRoomComboBox.SelectedItem = null;
+        }
+
+        private void Transfer_Click(object sender, RoutedEventArgs e)
+        {
+            if (!CheckCompleteness())
+            {
+                System.Windows.MessageBox.Show("You need to select all data in form!", "Failed transfer", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            DateTime date = (DateTime)transferDate.SelectedDate;
+            if (date < DateTime.Today)
+            {
+                System.Windows.MessageBox.Show("You need to select future date!", "Failed transfer", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            Room fromRoom = (Room)fromRoomComboBox.SelectedItem;
+            Room toRoom = (Room)toRoomComboBox.SelectedItem;
+            if (fromRoom == toRoom)
+            {
+                System.Windows.MessageBox.Show("You cant transfer equipment to same room!", "Failed transfer", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            int quantity = Int32.Parse(quantityBox.Text);
+            Equipment equipment = (Equipment)equipmentComboBox.SelectedItem;
+            if (quantity > equipment.quantity)
+            {
+                System.Windows.MessageBox.Show("You cant transfer more equipment than room has!", "Failed transfer", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
+            if (date == DateTime.Today)
+            {
+                Transfer(toRoom, equipment, quantity);
+                System.Windows.MessageBox.Show("Equipment transfer completed!", "Equipment transfer", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            else
+            {
+                Equipment newEquipment = equipmentRepository.AddEquipment(quantity, equipment.name, equipment.type, equipment.isDynamic);
+                equipmentTransferRepository.AddEquipmentTransfer(newEquipment, fromRoom, toRoom, date);
+                System.Windows.MessageBox.Show("Equipment transfer scheduled!", "Equipment transfer", MessageBoxButton.OK, MessageBoxImage.Information);
+            }
+            this.Close();
+
+        }
+
+        public void Transfer(Room toRoom, Equipment equipment, int quantity)
+        {
+            equipment.quantity -= quantity;
+            int index = toRoom.availableEquipment.FindIndex(eq => (eq.name == equipment.name && eq.type == equipment.type));
+            if (index >= 0)
+            {
+                toRoom.availableEquipment[index].quantity += quantity;
+            }
+            else
+            {
+                Equipment newEquipment = equipmentRepository.AddEquipment(quantity, equipment.name, equipment.type, equipment.isDynamic);
+                toRoom.availableEquipment.Add(newEquipment);
+            }
+        }
+
+        private bool CheckCompleteness()
+        {
+            if (fromRoomComboBox.SelectedItem == null)
+            {
+                return false;
+            }
+            if (toRoomComboBox.SelectedItem == null)
+            {
+                return false;
+            }
+            if (equipmentComboBox.SelectedItem == null)
+            {
+                return false;
+            }
+            if (quantityBox.Text.Trim()=="")
+            {
+                return false;
+            }
+            if (transferDate.SelectedDate == null)
+            {
+                return false;
+            }
+            return true;
         }
     }
 }
