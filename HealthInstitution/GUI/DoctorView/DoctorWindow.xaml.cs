@@ -13,6 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Windows.Forms;
 using HealthInstitution.GUI.LoginWindow;
+using HealthInstitution.Core.SystemUsers.Doctors.Model;
 
 namespace HealthInstitution.GUI.DoctorView
 {
@@ -21,8 +22,10 @@ namespace HealthInstitution.GUI.DoctorView
     /// </summary>
     public partial class DoctorWindow : Window
     {
-        public DoctorWindow()
+        public Doctor loggedDoctor { get; set; }
+        public DoctorWindow(Doctor loggedDoctor)
         {
+            this.loggedDoctor = loggedDoctor;
             InitializeComponent();
         }
 
@@ -38,32 +41,20 @@ namespace HealthInstitution.GUI.DoctorView
 
         private void Examinations_Click(object sender, RoutedEventArgs e)
         {
-            ExaminationForm examinationForm = new ExaminationForm();
+            ExaminationForm examinationForm = new ExaminationForm(this.loggedDoctor);
             examinationForm.ShowDialog();
         }
 
         private void Operations_Click(object sender, RoutedEventArgs e)
         {
-            OperationForm operationForm = new OperationForm();
+            OperationForm operationForm = new OperationForm(this.loggedDoctor);
             operationForm.ShowDialog();
         }
 
         private void ScheduleReview_Click(object sender, RoutedEventArgs e)
         {
-            ScheduledExaminationForm scheduledExaminationForm = new ScheduledExaminationForm();
+            ScheduledExaminationForm scheduledExaminationForm = new ScheduledExaminationForm(this.loggedDoctor);
             scheduledExaminationForm.ShowDialog();
-        }
-
-        [STAThread]
-        static void Main(string[] args)
-        {
-            DoctorWindow window = new DoctorWindow();
-            window.ShowDialog();
-        }
-
-        private void BeginExamination_Click(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 

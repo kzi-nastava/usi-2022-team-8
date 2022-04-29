@@ -6,10 +6,9 @@ public class User
     public UserType type { get; set; }
     public String username { get; set; }
     public String password { get; set; }
-
-    [field: NonSerializedAttribute()] public String name { get; set; }
-    [field: NonSerializedAttribute()] public String surname { get; set; }
-    [field: NonSerializedAttribute()] public BlockState blocked { get; set; }
+    public String name { get; set; }
+    public String surname { get; set; }
+    public BlockState blocked { get; set; }
 
     public User(UserType type, string username, string password, string name, string surname)
     {
@@ -18,7 +17,7 @@ public class User
         this.password = password;
         this.name = name;
         this.surname = surname;
-        this.blocked = blocked;
+        this.blocked = BlockState.NotBlocked;
     }
 }
 

@@ -15,6 +15,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using HealthInstitution.Core.SystemUsers.Doctors.Repository;
+using HealthInstitution.Core.SystemUsers.Doctors.Model;
 
 namespace HealthInstitution.GUI.LoginWindow
 {
@@ -55,7 +57,9 @@ namespace HealthInstitution.GUI.LoginWindow
                         break;
                     case UserType.Doctor:
                         this.Close();
-                        DoctorWindow window = new DoctorWindow();
+                        DoctorRepository doctorRepository = DoctorRepository.GetInstance();
+                        Doctor loggedDoctor = doctorRepository.GetDoctorByUsername(usernameInput);
+                        DoctorWindow window = new DoctorWindow(loggedDoctor);
                         window.ShowDialog();
                         /*PatientRepository patientRepository = PatientRepository.GetInstance();
                         Patient patient = patientRepository.GetPatientById(usernameInput);

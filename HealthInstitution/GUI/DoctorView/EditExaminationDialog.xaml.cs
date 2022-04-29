@@ -22,10 +22,10 @@ namespace HealthInstitution.GUI.DoctorView
     public partial class EditExaminationDialog : Window
     {
 
-        public Examination examination { get; set; }    
+        public Examination selectedExamination { get; set; }    
         public EditExaminationDialog(Examination selectedExamination)
         {
-            examination = selectedExamination;
+            this.selectedExamination = selectedExamination;
             InitializeComponent();
         }
 
@@ -35,7 +35,7 @@ namespace HealthInstitution.GUI.DoctorView
             List<Patient> patients = new List<Patient>();
             //TODO  
             patientComboBox.ItemsSource = patients;
-            patientComboBox.SelectedItem = examination.medicalRecord.patient;
+            patientComboBox.SelectedItem = selectedExamination.medicalRecord.patient;
         }
 
         private void HourComboBox_Loaded(object sender, RoutedEventArgs e)
@@ -66,7 +66,10 @@ namespace HealthInstitution.GUI.DoctorView
 
         private void Save_Click(object sender, RoutedEventArgs e)
         {
-            // TODO
+            string date = datePicker.Value.ToString("dd.MM.yyyy", System.Globalization.CultureInfo.InvariantCulture);
+            String minutes = minuteComboBox.Text;
+            String hours = hourComboBox.Text;
+            var patient = (Patient)patientComboBox.SelectedItem;
         }
     }
 }

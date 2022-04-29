@@ -21,11 +21,11 @@ namespace HealthInstitution.GUI.DoctorView
     /// </summary>
     public partial class EditOperationDialog : Window
     {
-        public Operation operation { get; set; }
+        public Operation selectedOperation { get; set; }
 
         public EditOperationDialog(Operation selectedOperation)
         {
-            operation = selectedOperation;
+            this.selectedOperation = selectedOperation;
             InitializeComponent();
         }
 
@@ -35,7 +35,7 @@ namespace HealthInstitution.GUI.DoctorView
             List<Patient> patients = new List<Patient>();
             //TODO  
             patientComboBox.ItemsSource = patients;
-            patientComboBox.SelectedItem = operation.medicalRecord.patient;
+            patientComboBox.SelectedItem = selectedOperation.medicalRecord.patient;
         }
 
         private void HourComboBox_Loaded(object sender, RoutedEventArgs e)
@@ -65,7 +65,11 @@ namespace HealthInstitution.GUI.DoctorView
 
         private void Save_Click(object sender, RoutedEventArgs e)
         {
-            // TODO
+            string date = datePicker.Value.ToString("dd.MM.yyyy", System.Globalization.CultureInfo.InvariantCulture);
+            String minutes = minuteComboBox.Text;
+            String hours = hourComboBox.Text;
+            var duration = durationLabel.Content;
+            var patient = (Patient)patientComboBox.SelectedItem;
         }
 
        
