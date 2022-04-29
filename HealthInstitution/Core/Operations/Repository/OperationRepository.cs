@@ -65,14 +65,14 @@ namespace HealthInstitution.Core.Operations.Repository
                 int roomId = (int)operation["room"];
                 Room room = roomsById[roomId];
                 String doctorUsername = (String)operation["doctor"];
-                Doctor doctor = doctorsByUsername[doctorUsername];
+                //Doctor doctor = doctorsByUsername[doctorUsername];
                 //int medicalRecordId = (int)operation["medicalRecord"];
                 //MedicalRecord medicalRecord = medicalRecordsById[medicalRecordId];
                 String patientUsername = (String)operation["medicalRecord"];
                 MedicalRecord medicalRecord = medicalRecordsByUsername[patientUsername];
                 String report = (String)operation["report"];
 
-                Operation loadedOperation = new Operation(id, status, appointment, duration, room, doctor, medicalRecord);
+                Operation loadedOperation = new Operation(id, status, appointment, duration, room, null, medicalRecord);
 
                 if (id > maxId) { maxId = id; }
 
