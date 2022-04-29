@@ -1,4 +1,3 @@
-
 using HealthInstitution.Core.Equipments.Model;
 
 namespace HealthInstitution.Core.Rooms.Model;
@@ -20,7 +19,6 @@ public class Room
         this.availableEquipment = availableEquipment;
     }
 }
-
 
 public enum RoomType
 {

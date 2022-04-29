@@ -46,8 +46,8 @@ public class UserRepository
 
     public void SaveUsers()
     {
-        var allPatients = JsonSerializer.Serialize(this.users, options);
-        File.WriteAllText(this.fileName, allPatients);
+        var allUsers = JsonSerializer.Serialize(this.users, options);
+        File.WriteAllText(this.fileName, allUsers);
     }
 
     public List<User> GetUsers()

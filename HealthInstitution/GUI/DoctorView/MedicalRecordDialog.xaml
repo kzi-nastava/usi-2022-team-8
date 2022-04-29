@@ -1,0 +1,23 @@
+﻿<Window x:Class="HealthInstitution.GUI.DoctorView.MedicalRecordDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:HealthInstitution.GUI.DoctorView"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+        Title="Medical record" Height="350" Width="500">
+    <Grid>
+        <Label Content="Patient" HorizontalAlignment="Left" Margin="70,42,0,0" VerticalAlignment="Top"/>
+        <Label Content="Height" HorizontalAlignment="Left" Margin="70,72,0,0" VerticalAlignment="Top"/>
+        <Label Content="Weight" HorizontalAlignment="Left" Margin="70,102,0,0" VerticalAlignment="Top"/>
+        <Label Content="Previous illnesses" HorizontalAlignment="Left" Margin="70,0,0,0" VerticalAlignment="Center"/>
+        <Label Content="Allergens" HorizontalAlignment="Left" Margin="70,232,0,0" VerticalAlignment="Top"/>
+        <Label Name="PatientLabel" Content="" HorizontalAlignment="Left" Margin="328,42,0,0" VerticalAlignment="Top"/>
+        <Label Name="HeightLabel" Content="" HorizontalAlignment="Left" Margin="328,72,0,0" VerticalAlignment="Top"/>
+        <Label Name="WeightLabel" Content="" HorizontalAlignment="Left" Margin="328,102,0,0" VerticalAlignment="Top"/>
+        <ListBox Name="IllnessesListBox" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="230,150,64,118"/>
+        <ListBox Name="AllergensListBox" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="231,228,64,41"/>
+
+    </Grid>
+</Window>
