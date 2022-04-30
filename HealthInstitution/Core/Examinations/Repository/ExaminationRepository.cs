@@ -125,7 +125,7 @@ internal class ExaminationRepository
 
     public void AddExamination(DateTime appointment, Room room, Doctor doctor, MedicalRecord medicalRecord)
     {
-        int id = this.maxId++;
+        int id = ++this.maxId;
         Examination examination = new Examination(id, ExaminationStatus.Scheduled, appointment, room, doctor, medicalRecord, "");
         this.examinations.Add(examination);
         this.examinationsById.Add(id, examination);
@@ -137,6 +137,7 @@ internal class ExaminationRepository
         Examination examination = GetExaminationById(id);
         examination.appointment = appointment;
         examination.medicalRecord = medicalRecord;
+        this.examinationsById[id] = examination;
         SaveExaminations();
     }
 

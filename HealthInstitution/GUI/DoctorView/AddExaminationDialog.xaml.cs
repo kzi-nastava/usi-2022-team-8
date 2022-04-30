@@ -30,13 +30,6 @@ namespace HealthInstitution.GUI.DoctorView
             InitializeComponent();
         }
 
-        /*[STAThread]
-        static void Main(string[] args)
-        {
-            AddExaminationDialog window = new AddExaminationDialog();
-            window.ShowDialog();
-        }*/
-
         private void MinuteComboBox_Loaded(object sender, RoutedEventArgs e)
         {
             var minuteComboBox = sender as System.Windows.Controls.ComboBox;
