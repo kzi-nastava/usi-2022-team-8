@@ -2,6 +2,7 @@
 using HealthInstitution.Core.SystemUsers.Patients.Repository;
 using HealthInstitution.Core.SystemUsers.Users.Model;
 using HealthInstitution.Core.SystemUsers.Users.Repository;
+using HealthInstitution.Core.TrollCounters.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -66,6 +67,7 @@ namespace HealthInstitution.GUI.UserWindow
                     PatientRepository patientRepository = PatientRepository.GetInstance();
                     patientRepository.AddPatient(username, password, name, surname, heightValue, weightValue, allergens, previousIlnesses);
                     userRepository.AddUser(UserType.Patient, username, password, name, surname);
+                    TrollCounterFileRepository.GetInstance().AddTrollCounter(username);
                     this.Close();
                 }
             }
