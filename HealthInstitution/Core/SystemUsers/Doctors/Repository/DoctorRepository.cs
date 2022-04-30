@@ -3,16 +3,10 @@ using HealthInstitution.Core.Examinations.Repository;
 using HealthInstitution.Core.Operations.Model;
 using HealthInstitution.Core.Operations.Repository;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
-using HealthInstitution.Core.SystemUsers.Users.Model;
 using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.SystemUsers.Doctors.Repository
 {
@@ -27,7 +21,7 @@ namespace HealthInstitution.Core.SystemUsers.Doctors.Repository
             Converters = { new JsonStringEnumConverter() }
         };
 
-        private DoctorRepository(String filename)
+        private DoctorRepository(String fileName)
         {
             this.fileName = fileName;
             this.doctors = new List<Doctor>();
@@ -70,8 +64,6 @@ namespace HealthInstitution.Core.SystemUsers.Doctors.Repository
 
         public void LoadDoctors()
         {
-            var examinationsById = ExaminationRepository.GetInstance().examinationsById;
-            var operationsById = OperationRepository.GetInstance().operationsById;
             var doctors = JArray.Parse(File.ReadAllText(this.fileName));
             foreach (var doctor in doctors)
             {
@@ -81,9 +73,9 @@ namespace HealthInstitution.Core.SystemUsers.Doctors.Repository
                 String surname = (String)doctor["surname"];
                 SpecialtyType specialtyType;
                 Enum.TryParse(doctor["specialty"].ToString(), out specialtyType);
-                List<Examination> doctorExaminations = ConvertJTokenToExamination(doctor["examination"]);
-                List<Operation> doctorOperations = ConvertJTokenToOperation(doctor["operations"]);
-                Doctor loadedDoctor = new Doctor(username, password, name, surname, specialtyType, doctorExaminations, doctorOperations);
+                //List<Examination> doctorExaminations = ConvertJTokenToExamination(doctor["examination"]);
+                //List<Operation> doctorOperations = ConvertJTokenToOperation(doctor["operations"]);
+                Doctor loadedDoctor = new Doctor(username, password, name, surname, specialtyType);
                 this.doctors.Add(loadedDoctor);
                 this.doctorsByUsername.Add(username, loadedDoctor);
             }
@@ -116,9 +108,7 @@ namespace HealthInstitution.Core.SystemUsers.Doctors.Repository
                     password = doctor.password,
                     name = doctor.name,
                     surname = doctor.surname,
-                    specialty = doctor.specialty,
-                    examinations = FormListOfExaminationIds(doctor.examinations),
-                    operations = FormListOfOperationIds(doctor.operations)
+                    specialty = doctor.specialty
                 });
             }
             return reducedDoctors;

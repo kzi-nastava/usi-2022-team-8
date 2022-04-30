@@ -29,6 +29,7 @@ namespace HealthInstitution.GUI.DoctorView
             this.loggedDoctor = loggedDoctor;   
             InitializeComponent();
             ExaminationRadioButton.IsChecked = true;
+            datePicker.SelectedDate = DateTime.Now;
         }
 
         public void LoadOperationsGridRows()
@@ -47,10 +48,9 @@ namespace HealthInstitution.GUI.DoctorView
             }
             else
             {
-                DateTime today = DateTime.Now;
                 foreach (Operation operation in doctorOperations)
                 {
-                    if (operation.appointment == today)
+                    if (operation.appointment.Date == datePicker.SelectedDate.Value.Date)
                         dataGrid.Items.Add(operation);
                 }
             }
@@ -60,7 +60,7 @@ namespace HealthInstitution.GUI.DoctorView
         {
             dataGrid.Items.Clear();
             List<Examination> doctorExaminations = this.loggedDoctor.examinations;
-            if (UpcomingDaysRadioButton.IsChecked == true)
+            if ((bool)UpcomingDaysRadioButton.IsChecked)
             {
                 DateTime today = DateTime.Now;
                 DateTime dateForThreeDays = today.AddDays(3);
@@ -71,10 +71,9 @@ namespace HealthInstitution.GUI.DoctorView
                 }
             } else
             {
-                DateTime today = DateTime.Now;
                 foreach (Examination examination in doctorExaminations)
                 {
-                    if (examination.appointment == today)
+                    if (examination.appointment.Date == datePicker.SelectedDate.Value.Date)
                         dataGrid.Items.Add(examination);
                 }
             }
@@ -91,17 +90,10 @@ namespace HealthInstitution.GUI.DoctorView
             }
         }
 
-        /*[STAThread]
-        static void Main(string[] args)
-        {
-            ScheduledExaminationForm window = new ScheduledExaminationForm();
-            window.ShowDialog();
-        }*/
-
         private void ShowMedicalRecord_Click(object sender, RoutedEventArgs e)
         {
             MedicalRecord selectedMedicalRecord;
-            if (ExaminationRadioButton.IsChecked == true)
+            if ((bool)ExaminationRadioButton.IsChecked)
             {
                 Examination selectedExamination = (Examination)dataGrid.SelectedItem;
                 selectedMedicalRecord = selectedExamination.medicalRecord;
@@ -111,8 +103,7 @@ namespace HealthInstitution.GUI.DoctorView
                 Operation selectedOperation = (Operation)dataGrid.SelectedItem;
                 selectedMedicalRecord = selectedOperation.medicalRecord;
             }
-            MedicalRecordDialog medicalRecordDialog = new MedicalRecordDialog(selectedMedicalRecord);
-            medicalRecordDialog.ShowDialog();
+            new MedicalRecordDialog(selectedMedicalRecord).ShowDialog();
         }
 
         private void StartExamination_Click(object sender, RoutedEventArgs e)
@@ -120,22 +111,28 @@ namespace HealthInstitution.GUI.DoctorView
             if (!(bool)ExaminationRadioButton.IsChecked)
             {
                 System.Windows.MessageBox.Show("You have to check examination for it to start!", "Alert", MessageBoxButton.OKCancel, MessageBoxImage.Warning);
-            } else
-            {
+            } else if (dataGrid.SelectedIndex == -1) {
+                    System.Windows.MessageBox.Show("You have to select row to start examination!", "Alert", MessageBoxButton.OKCancel, MessageBoxImage.Warning);
+            } else 
+            { 
                 Examination selectedExamination = (Examination)dataGrid.SelectedItem;
-                PerformExaminationDialog performExaminationDialog = new PerformExaminationDialog(selectedExamination);
-                performExaminationDialog.ShowDialog();
+                if (selectedExamination.status == ExaminationStatus.Scheduled)
+                {
+                    new PerformExaminationDialog(selectedExamination).ShowDialog();
+                } else
+                {
+                    System.Windows.MessageBox.Show("Examination is already completed!", "Error", MessageBoxButton.OKCancel, MessageBoxImage.Error);
+                }
             }
+            dataGrid.Items.Refresh();
         }
 
         private void AppointmentChecked(object sender, RoutedEventArgs e)
         {
-
         }
 
-        private void UpcomingDatesChecked(object sender, RoutedEventArgs e)
+        private void DatesChecked(object sender, RoutedEventArgs e)
         {
-
         }
     }
 }

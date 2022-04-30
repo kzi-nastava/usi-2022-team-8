@@ -8,13 +8,13 @@
         WindowStartupLocation="CenterScreen"
         Title="Create examination" Height="300" Width="350">
     <Grid>
-        <DatePicker SelectedDate="{Binding Date, StringFormat='dd/MM/yyyy HH:mm:ss'}" Margin="120,-80,30,102" Height="50"/>
+        <DatePicker Name="datePicker" SelectedDate="{Binding Date, StringFormat='dd/MM/yyyy HH:mm:ss'}" Margin="120,-80,30,102" Height="50"/>
 
-        <ComboBox Name="PatientComboBox" HorizontalAlignment="Left"   
+        <ComboBox Name="patientComboBox" HorizontalAlignment="Left"   
                   Margin="120,152,0,0"   
                   VerticalAlignment="Top"   
                   Width="150"
-                  Loaded="patientComboBox_Loaded" SelectionChanged="HourComboBox_SelectionChanged"
+                  Loaded="PatientComboBox_Loaded" SelectionChanged="HourComboBox_SelectionChanged"
                   Height="30"
                   />
         <Label Content="Patient" HorizontalAlignment="Left" Margin="44,152,0,0" VerticalAlignment="Top" Height="30"/>

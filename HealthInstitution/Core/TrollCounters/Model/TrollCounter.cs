@@ -31,7 +31,7 @@ public class TrollCounter
 
     private void CheckDates(List<DateTime> dates)
     {
-        foreach (DateTime date in dates)
+        foreach (DateTime date in dates.ToList())
         {
             if (date.AddDays(30) < DateTime.Today)
                 dates.Remove(date);
@@ -48,7 +48,7 @@ public class TrollCounter
     public void AppendEditDeleteDates(DateTime date)
     {
         this.CheckDates(this.editDeleteDates);
-        if (createDates.Count > 5) throw new Exception("Montly quota spent");
-        this.createDates.Add(date);
+        //if (createDates.Count > 5) throw new Exception("Montly quota spent");
+        this.editDeleteDates.Add(date);
     }
 }

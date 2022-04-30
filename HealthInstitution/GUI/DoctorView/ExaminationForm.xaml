@@ -7,21 +7,30 @@
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         Title="Your examinations" Height="450" Width="750">
+    <Window.Resources>
+        <Style TargetType="DataGridCell">
+            <Setter Property="TextBlock.TextAlignment" Value="Center"/>
+        </Style>
+        <Style TargetType="DataGridColumnHeader">
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        </Style>
+    </Window.Resources>
     <Grid Margin="0,115,0,0">
         <DataGrid  ItemsSource="{Binding Examination}" AutoGenerateColumns="False" Name="dataGrid" Grid.ColumnSpan="3" Margin="0,-108,0,108">
+
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Time" FontSize="18" Binding="{Binding appointment}" Width ="150"/>
-                <DataGridTextColumn Header="Status" FontSize="18" Binding="{Binding status}" Width =" 150"/>
-                <DataGridTextColumn Header="RoomNo" FontSize="18" Binding="{Binding room.number}" Width =" 150"/>
-                <DataGridTextColumn Header="Patient" FontSize="18" Width =" 150">
+                <DataGridTextColumn Header="Patient" FontSize="15" Width =" 145">
                     <DataGridTextColumn.Binding>
                         <MultiBinding StringFormat="{}{0} {1}">
-                            <Binding Path="patient.name" />
-                            <Binding Path="patient.surname"/>
+                            <Binding Path="medicalRecord.patient.name" />
+                            <Binding Path="medicalRecord.patient.surname"/>
                         </MultiBinding>
                     </DataGridTextColumn.Binding>
                 </DataGridTextColumn>
-                <DataGridTextColumn Header="Anamnesis" FontSize="18" Width =" 150" Binding="{Binding anamnesis}"/>
+                <DataGridTextColumn Header="Time" FontSize="15" Binding="{Binding appointment}" Width ="155"/>
+                <DataGridTextColumn Header="Status" FontSize="15" Binding="{Binding status}" Width ="110"/>
+                <DataGridTextColumn Header="RoomNo" FontSize="15" Binding="{Binding room.number}" Width ="60"/>
+                <DataGridTextColumn Header="Anamnesis" FontSize="15" Width ="Auto" Binding="{Binding anamnesis}"/>
             </DataGrid.Columns>
         </DataGrid>
         <Button Name="addButton" Content="Add" Click="AddButton_Click" HorizontalAlignment="Center" Height="30" Margin="0,240,350,0" VerticalAlignment="Top" Width="111" RenderTransformOrigin="0.243,0.514" Cursor="Arrow" FontSize="18" Visibility="Visible"/>
