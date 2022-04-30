@@ -94,7 +94,6 @@ internal class ExaminationRepository
                 status = examination.status,
                 appointment = examination.appointment,
                 room = examination.room.id,
-                doctor = examination.doctor.username,
                 medicalRecord = examination.medicalRecord.patient.username,
                 anamnesis = examination.anamnesis
             });
@@ -158,7 +157,20 @@ internal class ExaminationRepository
         {
             if (examination.appointment == dateTime)
             {
-                throw new Exception("That doctor is not awailable");
+                throw new Exception("That doctor is not available");
+            }
+        }
+
+        foreach (var operation in doctor.operations)
+        {
+            if (operation.appointment <= dateTime && operation.appointment.AddMinutes(operation.duration) >= dateTime)
+            {
+                throw new Exception("That doctor is not available");
+            }
+
+            if (operation.appointment <= dateTime.AddMinutes(15) && operation.appointment.AddMinutes(operation.duration) >= dateTime.AddMinutes(15))
+            {
+                throw new Exception("That doctor is not available");
             }
         }
     }
