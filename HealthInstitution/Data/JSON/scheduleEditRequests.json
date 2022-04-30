@@ -1,1 +1,27 @@
-[{"Id":2,"examination":{"id":0,"appointment":{"startTime":"2022-04-26T14:00:00","isFree":true},"status":"Scheduled","room":{"type":"ExaminationRoom","number":204,"isRenovating":false,"availableEquipment":[]},"doctor":{"specialty":"GeneralPractitioner","examinations":null,"operations":null,"restRequests":null,"appointments":null,"type":"Doctor","username":"jovan","password":"jovan","name":"Jovan","surname":"Jovanovic","blocked":"NotBlocked"},"medicalRecord":null,"anamnesis":null},"examinationId":0,"state":"OnHold"},{"Id":1651102192,"examination":{"id":1,"appointment":{"startTime":"2022-04-26T13:00:00","isFree":true},"status":"Scheduled","room":{"type":"ExaminationRoom","number":204,"isRenovating":false,"availableEquipment":[]},"doctor":{"specialty":"GeneralPractitioner","examinations":null,"operations":null,"restRequests":null,"appointments":null,"type":"Doctor","username":"jovan","password":"jovan","name":"Jovan","surname":"Jovanovic","blocked":"NotBlocked"},"medicalRecord":null,"anamnesis":null},"examinationId":1,"state":"OnHold"}]
+[
+
+  {
+    "id": 1651341565,
+    "examinationId": 24,
+    "state": "OnHold"
+  },
+  {
+    "id": 1651341675,
+    "examinationId": 24,
+    "state": "OnHold"
+  },
+  {
+    "id": 1651341776,
+    "examinationId": 24,
+    "state": "OnHold",
+    "newExamination": {
+      "id": 24,
+      "status": "Scheduled",
+      "appointment": "2022-05-01T16:00:00",
+      "doctor": "jovan",
+      "room": 3,
+      "medicalRecord": "pera",
+      "anamnesis": ""
+    }
+  }
+]
