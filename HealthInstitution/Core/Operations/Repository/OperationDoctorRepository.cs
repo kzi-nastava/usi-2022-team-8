@@ -18,7 +18,7 @@ namespace HealthInstitution.Core.Operations.Repository
         private OperationDoctorRepository(String fileName)
         {
             this.fileName = fileName;
-            this.LoadOperationDoctor();
+            this.LoadFromFile();
         }
 
         private static OperationDoctorRepository instance = null;
@@ -34,12 +34,12 @@ namespace HealthInstitution.Core.Operations.Repository
             }
         }
 
-    public void LoadOperationDoctor()
+    public void LoadFromFile()
     {
         var doctorsByUsername = DoctorRepository.GetInstance().doctorsByUsername;
         var operationsById = OperationRepository.GetInstance().operationsById;
-        var pairs = JArray.Parse(File.ReadAllText(this.fileName));
-        foreach (var pair in pairs)
+        var operationIdsDoctorUsernames = JArray.Parse(File.ReadAllText(this.fileName));
+        foreach (var pair in operationIdsDoctorUsernames)
         {
             int id = (int)pair["id"];
             String username = (String)pair["username"];
@@ -50,16 +50,16 @@ namespace HealthInstitution.Core.Operations.Repository
         }
     }
 
-    public void SaveOperationDoctor()
+    public void SaveToFile()
     {
-        List<dynamic> operationsIdDoctorsUsername = new List<dynamic>();
+        List<dynamic> operationIdsDoctorUsernames = new List<dynamic>();
         var operations = OperationRepository.GetInstance().operations;
         foreach (var operation in operations)
         {
             Doctor doctor = operation.doctor;
-            operationsIdDoctorsUsername.Add(new { id = operation.id, username = doctor.username });
+            operationIdsDoctorUsernames.Add(new { id = operation.id, username = doctor.username });
         }
-            var allPairs = JsonSerializer.Serialize(operationsIdDoctorsUsername);
+            var allPairs = JsonSerializer.Serialize(operationIdsDoctorUsernames);
             File.WriteAllText(this.fileName, allPairs);
         }
 }

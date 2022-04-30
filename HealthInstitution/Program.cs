@@ -6,7 +6,7 @@ using System.Text.Json.Serialization;
 using System.IO;
 using HealthInstitution.Core.SystemUsers.Users.Model;
 using HealthInstitution.Core.SystemUsers.Patients.Model;
-using HealthInstitution.GUI.LoginWindow;
+using HealthInstitution.GUI.LoginView;
 
 
 /*

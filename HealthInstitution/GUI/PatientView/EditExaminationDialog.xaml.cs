@@ -59,7 +59,7 @@ namespace HealthInstitution.GUI.PatientWindows
                 else
                 {
                     ExaminationRepository.GetInstance().EditExamination(examination, loggedPatient.username, doctorUsername, dateTime);
-                    ExaminationDoctorRepository.GetInstance().SaveExaminationDoctor();
+                    ExaminationDoctorRepository.GetInstance().SaveToFile();
                 }
                 this.Close();
             }

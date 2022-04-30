@@ -20,16 +20,15 @@ using HealthInstitution.Core.SystemUsers.Patients.Repository;
 namespace HealthInstitution.GUI.DoctorView
 {
     /// <summary>
-    /// Interaction logic for AddOpeationDialog.xaml
+    /// Interaction logic for AddOperationDialog.xaml
     /// </summary>
-    public partial class AddOpeationDialog : Window
+    public partial class AddOperationDialog : Window
     {
         Doctor loggedDoctor;
-        public AddOpeationDialog(Doctor loggedDoctor)
+        public AddOperationDialog(Doctor doctor)
         {
-            this.loggedDoctor = loggedDoctor;
+            this.loggedDoctor = doctor;
             InitializeComponent();
-
         }
 
         private void HourComboBox_Loaded(object sender, RoutedEventArgs e)
@@ -65,23 +64,31 @@ namespace HealthInstitution.GUI.DoctorView
                 patientComboBox.Items.Add(patient);
             }
             patientComboBox.SelectedIndex = 0;
-            patientComboBox.Items.Refresh();
         }
 
         private void Create_Click(object sender, RoutedEventArgs e)
         {
-            DateTime dateTime = (DateTime)datePicker.SelectedDate;
-            int minutes = Int32.Parse(minuteComboBox.Text);
-            int hours = Int32.Parse(hourComboBox.Text);
-            dateTime = dateTime.AddHours(hours);
-            dateTime = dateTime.AddMinutes(minutes);
-            int duration = Int32.Parse(durationTextBox.Text);
-            Patient patient = (Patient)patientComboBox.SelectedItem;
             try
             {
-                OperationRepository.GetInstance().ReserveOperation(patient.username, loggedDoctor.username, dateTime, duration);
-                OperationDoctorRepository.GetInstance().SaveOperationDoctor();
-                this.Close();
+                DateTime appointment = (DateTime)datePicker.SelectedDate;
+                int minutes = Int32.Parse(minuteComboBox.Text);
+                int hours = Int32.Parse(hourComboBox.Text);
+                appointment = appointment.AddHours(hours);
+                appointment = appointment.AddMinutes(minutes);
+                int duration = Int32.Parse(durationTextBox.Text);
+                Patient patient = (Patient)patientComboBox.SelectedItem;
+                if (appointment <= DateTime.Now)
+                {
+                    System.Windows.MessageBox.Show("You have to change dates for upcoming ones!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                } else if (duration <= 15) {
+                    System.Windows.MessageBox.Show("Operation can't last less than 15 minutes!", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
+                else
+                {
+                    OperationRepository.GetInstance().ReserveOperation(patient.username, loggedDoctor.username, appointment, duration);
+                    OperationDoctorRepository.GetInstance().SaveToFile();
+                    this.Close();
+                }
             }
             catch (Exception ex)
             {

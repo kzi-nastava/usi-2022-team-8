@@ -1,5 +1,7 @@
 ﻿using HealthInstitution.Core.Examinations.Model;
 using HealthInstitution.Core.Examinations.Repository;
+using HealthInstitution.Core.MedicalRecords.Model;
+using HealthInstitution.Core.MedicalRecords.Repository;
 using HealthInstitution.Core.SystemUsers.Patients.Model;
 using HealthInstitution.Core.SystemUsers.Patients.Repository;
 using System;
@@ -25,10 +27,12 @@ namespace HealthInstitution.GUI.DoctorView
     {
 
         public Examination selectedExamination { get; set; }    
-        public EditExaminationDialog(Examination selectedExamination)
+        public EditExaminationDialog(Examination examination)
         {
-            this.selectedExamination = selectedExamination;
+            this.selectedExamination = examination;
             InitializeComponent();
+            datePicker.SelectedDate = this.selectedExamination.appointment.Date;
+            datePicker.Text = this.selectedExamination.appointment.Date.ToString();
         }
 
         private void PatientComboBox_Loaded(object sender, RoutedEventArgs e)
@@ -39,7 +43,7 @@ namespace HealthInstitution.GUI.DoctorView
             {
                 patientComboBox.Items.Add(patient);
             }
-            patientComboBox.SelectedIndex = 0;
+            patientComboBox.SelectedItem = this.selectedExamination.medicalRecord.patient;
         }
 
         private void HourComboBox_Loaded(object sender, RoutedEventArgs e)
@@ -51,7 +55,7 @@ namespace HealthInstitution.GUI.DoctorView
                 hours.Add(i.ToString());
             }
             hourComboBox.ItemsSource = hours;
-            hourComboBox.SelectedIndex = 0;
+            hourComboBox.SelectedItem = this.selectedExamination.appointment.Hour.ToString();
         }
 
         private void MinuteComboBox_Loaded(object sender, RoutedEventArgs e)
@@ -63,23 +67,35 @@ namespace HealthInstitution.GUI.DoctorView
             minutes.Add("30");
             minutes.Add("45");
             minuteComboBox.ItemsSource = minutes;
-            minuteComboBox.SelectedIndex = 0;
+            String examinationMinutes = this.selectedExamination.appointment.Minute.ToString();
+            if (examinationMinutes.Length == 1)
+            {
+                examinationMinutes = examinationMinutes + "0";
+            }
+            minuteComboBox.SelectedItem = examinationMinutes;
         }
 
         private void Save_Click(object sender, RoutedEventArgs e)
         {
-            DateTime dateTime = (DateTime)datePicker.SelectedDate;
-            int minutes = Int32.Parse(minuteComboBox.Text);
-            int hours = Int32.Parse(hourComboBox.Text);
-            dateTime = dateTime.AddHours(hours);
-            dateTime = dateTime.AddMinutes(minutes);
-
-            Patient patient = (Patient)patientComboBox.SelectedItem;
             try
             {
-                ExaminationRepository.GetInstance().EditExamination(selectedExamination, patient.username, selectedExamination.doctor.username, dateTime);
-                //ExaminationDoctorRepository.GetInstance().SaveExaminationDoctor();
-                this.Close();
+                DateTime appointment = (DateTime)datePicker.SelectedDate;
+                int minutes = Int32.Parse(minuteComboBox.Text);
+                int hours = Int32.Parse(hourComboBox.Text);
+                appointment = appointment.AddHours(hours);
+                appointment = appointment.AddMinutes(minutes);
+                Patient patient = (Patient)patientComboBox.SelectedItem;
+                MedicalRecord medicalRecord = MedicalRecordRepository.GetInstance().GetMedicalRecordByUsername(patient);
+                if (appointment <= DateTime.Now)
+                {
+                    System.Windows.MessageBox.Show("You have to change dates for upcoming ones!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                else
+                {
+                    ExaminationRepository.GetInstance().UpdateExamination(selectedExamination.id, appointment, medicalRecord);
+                    //ExaminationDoctorRepository.GetInstance().SaveToFile();
+                    this.Close();
+                }
             }
             catch (Exception ex)
             {

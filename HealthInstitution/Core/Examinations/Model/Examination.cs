@@ -20,7 +20,7 @@ public class Examination
         this.id = id;
         this.status = status;
         this.appointment = appointment;
-        this.status = ExaminationStatus.Scheduled;
+        this.status = status;
         this.room = room;
         this.doctor = doctor;
         this.medicalRecord = medicalRecord;

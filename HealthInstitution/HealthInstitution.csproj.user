@@ -49,7 +49,7 @@
     <Compile Update="GUI\SecretaryView\UpdatePatientWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="GUI\DoctorView\AddOpeationDialog.xaml.cs">
+    <Compile Update="GUI\DoctorView\AddOperationDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="GUI\DoctorView\EditExaminationDialog.xaml.cs">
@@ -58,22 +58,22 @@
     <Compile Update="GUI\DoctorView\EditOperationDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="GUI\DoctorView\ExaminationForm.xaml.cs">
+    <Compile Update="GUI\DoctorView\ExaminationTable.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="GUI\DoctorView\MedicalRecordDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="GUI\DoctorView\OperationForm.xaml.cs">
+    <Compile Update="GUI\DoctorView\OperationTable.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="GUI\DoctorView\PerformExaminationDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="GUI\DoctorView\ScheduledExaminationForm.xaml.cs">
+    <Compile Update="GUI\DoctorView\ScheduledExaminationTable.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="GUI\LoginWindow\LoginWindow.xaml.cs">
+    <Compile Update="GUI\LoginView\LoginWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="GUI\UserWindow\ManagerWindow.xaml.cs">
@@ -92,7 +92,7 @@
     <Page Update="GUI\DoctorView\AddExaminationDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="GUI\DoctorView\AddOpeationDialog.xaml">
+    <Page Update="GUI\DoctorView\AddOperationDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="GUI\DoctorView\DoctorWindow.xaml">
@@ -104,19 +104,19 @@
     <Page Update="GUI\DoctorView\EditOperationDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="GUI\DoctorView\ExaminationForm.xaml">
+    <Page Update="GUI\DoctorView\ExaminationTable.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="GUI\DoctorView\MedicalRecordDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="GUI\DoctorView\OperationForm.xaml">
+    <Page Update="GUI\DoctorView\OperationTable.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="GUI\DoctorView\PerformExaminationDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="GUI\DoctorView\ScheduledExaminationForm.xaml">
+    <Page Update="GUI\DoctorView\ScheduledExaminationTable.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="GUI\PatientView\AddExaminationDialog.xaml">
@@ -163,7 +163,7 @@
     <Page Update="GUI\SecretaryView\UpdatePatientWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="GUI\LoginWindow\LoginWindow.xaml">
+    <Page Update="GUI\LoginView\LoginWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="GUI\UserWindow\ManagerWindow.xaml">

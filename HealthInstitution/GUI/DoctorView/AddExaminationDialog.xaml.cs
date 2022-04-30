@@ -24,9 +24,9 @@ namespace HealthInstitution.GUI.DoctorView
     public partial class AddExaminationDialog : Window
     {
         Doctor loggedDoctor;
-        public AddExaminationDialog(Doctor loggedDoctor)
+        public AddExaminationDialog(Doctor doctor)
         {
-            this.loggedDoctor = loggedDoctor;
+            this.loggedDoctor = doctor;
             InitializeComponent();
         }
 
@@ -54,27 +54,6 @@ namespace HealthInstitution.GUI.DoctorView
             hourComboBox.SelectedIndex = 0;
         }
 
-        private void Create_Click(object sender, RoutedEventArgs e)
-        {
-            DateTime dateTime = (DateTime)datePicker.SelectedDate;
-            int minutes = Int32.Parse(minuteComboBox.Text);
-            int hours = Int32.Parse(hourComboBox.Text);
-            dateTime = dateTime.AddHours(hours);
-            dateTime = dateTime.AddMinutes(minutes);
-
-            Patient patient = (Patient)patientComboBox.SelectedItem;
-            try
-            {
-                ExaminationRepository.GetInstance().ReserveExamination(patient.username, loggedDoctor.username, dateTime);
-                ExaminationDoctorRepository.GetInstance().SaveExaminationDoctor();
-                this.Close();
-            }
-            catch (Exception ex)
-            {
-                System.Windows.MessageBox.Show(ex.Message, "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
-            }
-        }
-
         private void PatientComboBox_Loaded(object sender, RoutedEventArgs e)
         {
             patientComboBox.Items.Clear();
@@ -85,6 +64,33 @@ namespace HealthInstitution.GUI.DoctorView
             }
             patientComboBox.SelectedIndex = 0;
             patientComboBox.Items.Refresh();
+        }
+
+        private void Create_Click(object sender, RoutedEventArgs e)
+        {
+            try
+            {
+                DateTime appointment = (DateTime)datePicker.SelectedDate;
+                int minutes = Int32.Parse(minuteComboBox.Text);
+                int hours = Int32.Parse(hourComboBox.Text);
+                appointment = appointment.AddHours(hours);
+                appointment = appointment.AddMinutes(minutes);
+
+                Patient patient = (Patient)patientComboBox.SelectedItem;
+                if (appointment <= DateTime.Now)
+                {
+                    System.Windows.MessageBox.Show("You have to change dates for upcoming ones!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                } else
+                {
+                    ExaminationRepository.GetInstance().ReserveExamination(patient.username, loggedDoctor.username, appointment);
+                    ExaminationDoctorRepository.GetInstance().SaveToFile();
+                    this.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                System.Windows.MessageBox.Show(ex.Message, "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
         }
 
         private void HourComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)

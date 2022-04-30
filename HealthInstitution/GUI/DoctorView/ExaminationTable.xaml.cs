@@ -19,17 +19,17 @@ using System.Windows.Shapes;
 namespace HealthInstitution.GUI.DoctorView
 {
     /// <summary>
-    /// Interaction logic for ExaminationForm.xaml
+    /// Interaction logic for ExaminationTable.xaml
     /// </summary>
-    public partial class ExaminationForm : Window
+    public partial class ExaminationTable : Window
     {
         ExaminationRepository examinationRepository = ExaminationRepository.GetInstance();
         DoctorRepository doctorRepository = DoctorRepository.GetInstance();
         ExaminationDoctorRepository examinationDoctorRepository = ExaminationDoctorRepository.GetInstance();
         public Doctor loggedDoctor { get; set; }
-        public ExaminationForm(Doctor loggedDoctor)
+        public ExaminationTable(Doctor doctor)
         {
-            this.loggedDoctor = loggedDoctor;
+            this.loggedDoctor = doctor;
             InitializeComponent();
             LoadGridRows();
         }
@@ -42,11 +42,11 @@ namespace HealthInstitution.GUI.DoctorView
             {
                 dataGrid.Items.Add(examination);
             }
+            System.Windows.MessageBox.Show(doctorExaminations[0].status.ToString(), "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning);
         }
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
-            AddExaminationDialog addExaminationDialog = new AddExaminationDialog(this.loggedDoctor);
-            addExaminationDialog.ShowDialog();
+            new AddExaminationDialog(this.loggedDoctor).ShowDialog();
             LoadGridRows();
             dataGrid.Items.Refresh();
         }
@@ -67,8 +67,8 @@ namespace HealthInstitution.GUI.DoctorView
                 Examination selectedExamination = (Examination)dataGrid.SelectedItem;
                 dataGrid.Items.Remove(selectedExamination);
                 examinationRepository.DeleteExamination(selectedExamination.id);
-                doctorRepository.DeleteDoctorExamination(loggedDoctor, selectedExamination);
-                examinationDoctorRepository.SaveExaminationDoctor();
+                doctorRepository.DeleteExamination(loggedDoctor, selectedExamination);
+                examinationDoctorRepository.SaveToFile();
             }
         }
     }

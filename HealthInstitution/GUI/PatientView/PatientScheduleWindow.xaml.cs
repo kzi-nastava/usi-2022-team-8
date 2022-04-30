@@ -78,7 +78,7 @@ public partial class PatientScheduleWindow : Window
         try
         {
             TrollCounterRepository.GetInstance().CheckTroll(loggedPatient.username);
-            ExaminationDoctorRepository.GetInstance().SaveExaminationDoctor();
+            ExaminationDoctorRepository.GetInstance().SaveToFile();
             dataGrid.Items.Clear();
             LoadGrid();
             TrollCounterRepository.GetInstance().GetTrollCounterById(loggedPatient.username).AppendEditDeleteDates(DateTime.Today);

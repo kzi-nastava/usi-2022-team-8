@@ -26,10 +26,10 @@ namespace HealthInstitution.GUI.DoctorView
     public partial class PerformExaminationDialog : Window
     {
         public Examination selectedExamination { get; set; }
-        public PerformExaminationDialog(Examination selectedExamination)
+        public PerformExaminationDialog(Examination examination)
         {
             InitializeComponent();
-            this.selectedExamination= selectedExamination;
+            this.selectedExamination= examination;
             MedicalRecord medicalRecord = this.selectedExamination.medicalRecord;
             patientTextBox.Text = medicalRecord.patient.ToString();
             heightTextBox.Text = medicalRecord.height.ToString();
@@ -74,14 +74,13 @@ namespace HealthInstitution.GUI.DoctorView
                 MedicalRecordRepository.GetInstance().UpdateMedicalRecord(medicalRecord.patient, height, weight, previousIllnesses, allergens, prescriptions, referrals);
                 this.selectedExamination.anamnesis = anamnesisTextBox.Text;
                 this.selectedExamination.status = ExaminationStatus.Completed;
-                ExaminationRepository.GetInstance().SaveExaminations();
-                System.Windows.MessageBox.Show("You have finished the examination!", "Congrats", MessageBoxButton.OKCancel, MessageBoxImage.Information);
+                ExaminationRepository.GetInstance().SaveToFile();
+                System.Windows.MessageBox.Show("You have finished the examination!", "Congrats", MessageBoxButton.OK, MessageBoxImage.Information);
                 this.Close();
             }
             catch
             {
                 System.Windows.MessageBox.Show("You haven't fulfilled it the right way!", "Error", MessageBoxButton.OKCancel, MessageBoxImage.Error);
-
             }
         }
     }

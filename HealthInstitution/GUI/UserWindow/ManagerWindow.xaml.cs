@@ -12,6 +12,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using HealthInstitution.GUI.LoginView;
 
 namespace HealthInstitution.GUI.UserWindow
 {
@@ -30,8 +31,8 @@ namespace HealthInstitution.GUI.UserWindow
             if (System.Windows.MessageBox.Show("Are you sure you want to log out?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
             {
                 this.Close();
-                LoginWindow.LoginWindow lw = new LoginWindow.LoginWindow();
-                lw.ShowDialog();
+                LoginWindow window = new LoginWindow();
+                window.ShowDialog();
             }
         }
 
