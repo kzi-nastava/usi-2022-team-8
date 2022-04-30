@@ -1,13 +1,23 @@
 [
-	{
-    "id": 1651328078,
-    "examinationId": 15,
+  {
+    "id": 1651341565,
+    "examinationId": 24,
+    "state": "OnHold"
+  },
+  {
+    "id": 1651341675,
+    "examinationId": 24,
+    "state": "OnHold"
+  },
+  {
+    "id": 1651341776,
+    "examinationId": 24,
     "state": "OnHold",
-    "examination": {
-      "id": 15,
+    "newExamination": {
+      "id": 24,
       "status": "Scheduled",
-      "appointment": "2022-05-01T09:15:00",
-      "doctor": "ivan",
+      "appointment": "2022-05-01T16:00:00",
+      "doctor": "jovan",
       "room": 3,
       "medicalRecord": "pera",
       "anamnesis": ""

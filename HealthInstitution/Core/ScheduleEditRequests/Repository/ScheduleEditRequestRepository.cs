@@ -67,22 +67,26 @@ public class ScheduleEditRequestRepository
             RestRequestState state;
             Enum.TryParse(request["state"].ToString(), out state);
             int examinationId = (int)request["examinationId"];
+            if (request["newExamination"] is not null)
+            {
+                ExaminationStatus status;
+                Enum.TryParse(request["newExamination"]["status"].ToString(), out status);
+                DateTime appointment = (DateTime)request["newExamination"]["appointment"];
+                int roomId = (int)request["newExamination"]["room"];
+                Room room = roomsById[roomId];
+                String doctorUsername = (String)request["newExamination"]["doctor"];
+                Doctor doctor = doctorsByUsername[doctorUsername];
+                String patientUsername = (String)request["newExamination"]["medicalRecord"];
+                MedicalRecord medicalRecord = medicalRecordsByUsername[patientUsername];
+                String anamnesis = (String)request["newExamination"]["anamnesis"];
 
-            int exaimantionId = (int)request["examination"]["id"];
-            ExaminationStatus status;
-            Enum.TryParse(request["examination"]["status"].ToString(), out status);
-            DateTime appointment = (DateTime)request["examination"]["appointment"];
-            int roomId = (int)request["examination"]["room"];
-            Room room = roomsById[roomId];
-            String doctorUsername = (String)request["examination"]["doctor"];
-            Doctor doctor = doctorsByUsername[doctorUsername];
-            String patientUsername = (String)request["examination"]["medicalRecord"];
-            MedicalRecord medicalRecord = medicalRecordsByUsername[patientUsername];
-            String anamnesis = (String)request["examination"]["anamnesis"];
-
-            Examination loadedExamination = new Examination(id, status, appointment, room, doctor, medicalRecord, anamnesis);
-            ScheduleEditRequest scheduleEditRequest = new ScheduleEditRequest(id, loadedExamination, examinationId, state);
-
+                Examination loadedExamination = new Examination(id, status, appointment, room, doctor, medicalRecord, anamnesis);
+            }
+            else
+            {
+                Examination loadedExamination = null;
+            }
+            ScheduleEditRequest scheduleEditRequest = new ScheduleEditRequest(id, null, examinationId, state);
             this.scheduleEditRequests.Add(scheduleEditRequest);
             this.scheduleEditRequestsById.Add(id, scheduleEditRequest);
         }
@@ -99,22 +103,34 @@ public class ScheduleEditRequestRepository
         List<dynamic> reducedRequests = new List<dynamic>();
         foreach (ScheduleEditRequest scheduleEditRequest in this.scheduleEditRequests)
         {
-            reducedRequests.Add(new
+            if (scheduleEditRequest.newExamination is null)
             {
-                id = scheduleEditRequest.Id,
-                examinationId = scheduleEditRequest.examinationId,
-                state = scheduleEditRequest.state,
-                examination = new
+                reducedRequests.Add(new
                 {
-                    id = scheduleEditRequest.examination.id,
-                    status = scheduleEditRequest.examination.status,
-                    appointment = scheduleEditRequest.examination.appointment,
-                    doctor = scheduleEditRequest.examination.doctor.username,
-                    room = scheduleEditRequest.examination.room.id,
-                    medicalRecord = scheduleEditRequest.examination.medicalRecord.patient.username,
-                    anamnesis = scheduleEditRequest.examination.anamnesis
-                }
-            });
+                    id = scheduleEditRequest.Id,
+                    examinationId = scheduleEditRequest.currentExamination.id,
+                    state = scheduleEditRequest.state
+                });
+            }
+            else
+            {
+                reducedRequests.Add(new
+                {
+                    id = scheduleEditRequest.Id,
+                    examinationId = scheduleEditRequest.currentExamination.id,
+                    state = scheduleEditRequest.state,
+                    newExamination = new
+                    {
+                        id = scheduleEditRequest.newExamination.id,
+                        status = scheduleEditRequest.newExamination.status,
+                        appointment = scheduleEditRequest.newExamination.appointment,
+                        doctor = scheduleEditRequest.newExamination.doctor.username,
+                        room = scheduleEditRequest.newExamination.room.id,
+                        medicalRecord = scheduleEditRequest.newExamination.medicalRecord.patient.username,
+                        anamnesis = scheduleEditRequest.newExamination.anamnesis
+                    }
+                });
+            }
         }
         return reducedRequests;
     }
@@ -133,6 +149,15 @@ public class ScheduleEditRequestRepository
     {
         Int32 unixTimestamp = (int)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
         ScheduleEditRequest scheduleEditRequest = new ScheduleEditRequest(unixTimestamp, examination, examination.id, RestRequests.Model.RestRequestState.OnHold);
+        this.scheduleEditRequests.Add(scheduleEditRequest);
+        this.scheduleEditRequestsById.Add(unixTimestamp, scheduleEditRequest);
+        SaveScheduleEditRequests();
+    }
+
+    public void AddDeleteRequest(Examination examination)
+    {
+        Int32 unixTimestamp = (int)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
+        ScheduleEditRequest scheduleEditRequest = new ScheduleEditRequest(unixTimestamp, null, examination.id, RestRequests.Model.RestRequestState.OnHold);
         this.scheduleEditRequests.Add(scheduleEditRequest);
         this.scheduleEditRequestsById.Add(unixTimestamp, scheduleEditRequest);
         SaveScheduleEditRequests();

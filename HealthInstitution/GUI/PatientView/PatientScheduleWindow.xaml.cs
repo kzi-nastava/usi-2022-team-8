@@ -17,6 +17,7 @@ using HealthInstitution.Core.Examinations.Repository;
 using HealthInstitution.GUI.PatientView;
 using HealthInstitution.Core.TrollCounters.Repository;
 using HealthInstitution.Core.ScheduleEditRequests.Repository;
+using HealthInstitution.Core.ScheduleEditRequests.Model;
 
 namespace HealthInstitution.GUI.PatientWindows;
 
@@ -75,6 +76,7 @@ public partial class PatientScheduleWindow : Window
 
     private void deleteButton_click(object sender, RoutedEventArgs e)
     {
+        Examination selectedExamination = (Examination)dataGrid.SelectedItem;
         try
         {
             TrollCounterRepository.GetInstance().CheckTroll(loggedPatient.username);
@@ -91,10 +93,9 @@ public partial class PatientScheduleWindow : Window
         }
         if (System.Windows.MessageBox.Show("Are you sure you want to delete selected examination", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
         {
-            Examination selectedExamination = (Examination)dataGrid.SelectedItem;
             if (selectedExamination.appointment.AddDays(-2) < DateTime.Now)
             {
-                ScheduleEditRequestRepository.GetInstance().DeleteScheduleEditRequests(selectedExamination.id);
+                ScheduleEditRequestRepository.GetInstance().AddDeleteRequest(selectedExamination);
             }
             else
             {
