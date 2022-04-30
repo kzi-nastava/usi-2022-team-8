@@ -19,7 +19,7 @@ public class ScheduleEditRequestRepository
 {
     public String fileName { get; set; }
     public List<ScheduleEditRequest> scheduleEditRequests { get; set; }
-    public Dictionary<Int32, ScheduleEditRequest> scheduleEditRequestsById { get; set; }
+    public Dictionary<int, ScheduleEditRequest> scheduleEditRequestsById { get; set; }
 
     private JsonSerializerOptions options = new JsonSerializerOptions
     {
@@ -95,6 +95,24 @@ public class ScheduleEditRequestRepository
         {
             this.scheduleEditRequestsById.Remove(scheduleEditRequest.Id);
             this.scheduleEditRequests.Remove(scheduleEditRequest);
+            SaveScheduleEditRequests();
+        }
+    }
+    public void AcceptScheduleEditRequests(int id)
+    {
+        ScheduleEditRequest scheduleEditRequest = GetScheduleEditRequestById(id);
+        if (scheduleEditRequest != null)
+        {
+            scheduleEditRequest.state = RestRequests.Model.RestRequestState.Accepted;
+            SaveScheduleEditRequests();
+        }
+    }
+    public void RejectScheduleEditRequests(int id)
+    {
+        ScheduleEditRequest scheduleEditRequest = GetScheduleEditRequestById(id);
+        if (scheduleEditRequest != null)
+        {
+            scheduleEditRequest.state = RestRequests.Model.RestRequestState.Rejected;
             SaveScheduleEditRequests();
         }
     }

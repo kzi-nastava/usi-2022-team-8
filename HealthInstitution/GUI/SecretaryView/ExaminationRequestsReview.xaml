@@ -8,7 +8,17 @@
         WindowStartupLocation="CenterScreen"
         Title="ExaminationRequestsReview" Height="400" Width="600">
     <Grid>
-        <Button Content="Accept" Click="accept_click" HorizontalAlignment="Center" Margin="-100,300,0,0" VerticalAlignment="Top" FontSize="18"/>
-        <Button Content="Reject" Click="reject_click" HorizontalAlignment="Center" Margin="50,300,0,0" VerticalAlignment="Top" FontSize="18"/>
+        <DataGrid  ItemsSource="{Binding ScheduleEditRequest}" AutoGenerateColumns="False" Name="dataGrid"  Height="250" VerticalAlignment="Top">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Patient username" FontSize="18" Binding="{Binding username}" Width ="110"/>
+                <DataGridTextColumn Header="Current doctor" FontSize="18" Binding="{Binding doctor.username}" Width =" 100"/>
+                <DataGridTextColumn Header="New doctor" FontSize="18" Binding="{Binding surname}" Width =" 100"/>
+                <DataGridTextColumn Header="Current time" FontSize="18" Binding="{Binding name}" Width =" 100"/>
+                <DataGridTextColumn Header="New time" FontSize="18" Binding="{Binding surname}" Width =" 100"/>
+                <DataGridTextColumn Header="Request state" FontSize="18" Binding="{Binding blocked}" Width =" 90"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <Button Name="acceptButton" Content="Accept" Click="accept_click" HorizontalAlignment="Center" Margin="-100,300,0,0" VerticalAlignment="Top" FontSize="18"/>
+        <Button Name="rejectButton" Content="Reject" Click="reject_click" HorizontalAlignment="Center" Margin="50,300,0,0" VerticalAlignment="Top" FontSize="18"/>
     </Grid>
 </Window>
