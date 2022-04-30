@@ -15,7 +15,7 @@ public class Examination
     public MedicalRecord medicalRecord { get; set; }
     public String anamnesis { get; set; }
 
-    public Examination(int id, ExaminationStatus status, DateTime appointment, Room room, Doctor doctor, MedicalRecord medicalRecord)
+    public Examination(int id, ExaminationStatus status, DateTime appointment, Room room, Doctor doctor, MedicalRecord medicalRecord, String anamnesis)
     {
         this.id = id;
         this.status = status;
@@ -24,6 +24,7 @@ public class Examination
         this.room = room;
         this.doctor = doctor;
         this.medicalRecord = medicalRecord;
+        this.anamnesis = anamnesis;
     }
 }
 
