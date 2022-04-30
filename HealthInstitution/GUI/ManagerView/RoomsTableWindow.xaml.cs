@@ -1,4 +1,7 @@
-﻿using HealthInstitution.Core.Rooms.Model;
+﻿using HealthInstitution.Core.EquipmentTransfers.Repository;
+using HealthInstitution.Core.Examinations.Repository;
+using HealthInstitution.Core.Operations.Repository;
+using HealthInstitution.Core.Rooms.Model;
 using HealthInstitution.Core.Rooms.Repository;
 using System;
 using System.Collections.Generic;
@@ -72,12 +75,41 @@ namespace HealthInstitution.GUI.ManagerView
                 dataGrid.SelectedItem = null;
                 return;
             }
+            if (!CheckOccurrenceOfRoom(selectedRoom))
+            {
+                System.Windows.MessageBox.Show("You cant delete room because of scheduled connections!", "Edit error", MessageBoxButton.OK, MessageBoxImage.Error);
+                dataGrid.SelectedItem = null;
+                return;
+            }
 
             if (System.Windows.MessageBox.Show("Are you sure you want to delete selected room", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
             {
                 dataGrid.Items.Remove(selectedRoom);
                 roomRepository.DeleteRoom(selectedRoom.id);
             }
+        }
+
+        private bool CheckOccurrenceOfRoom(Room selectedRoom)
+        {
+            EquipmentTransferRepository equipmentTransferRepository = EquipmentTransferRepository.GetInstance();
+            if (equipmentTransferRepository.equipmentTransfers.Find(eqTransfer => eqTransfer.fromRoom == selectedRoom || eqTransfer.toRoom == selectedRoom) != null)
+            {
+                return false;
+            }
+
+            ExaminationRepository examinationRepository = ExaminationRepository.GetInstance();
+            if (examinationRepository.examinations.Find(examination => examination.room == selectedRoom) != null)
+            {
+                return false;
+            }
+
+            OperationRepository operationRepository = OperationRepository.GetInstance();
+            if (operationRepository.operations.Find(operation => operation.room == selectedRoom) != null)
+            {
+                return false;
+            }
+
+            return true;
         }
     }
 }
