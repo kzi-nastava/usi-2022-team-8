@@ -155,5 +155,12 @@ namespace HealthInstitution.Core.Rooms.Repository
             this.roomById.Remove(id);
             SaveRooms();
         }
+
+        public void AddEquipmentToRoom(int id, Equipment equipment)
+        {
+            roomById[id].availableEquipment.Add(equipment);
+            SaveRooms();
+        }
+
     }
 }
