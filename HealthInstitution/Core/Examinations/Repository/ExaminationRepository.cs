@@ -247,7 +247,10 @@ internal class ExaminationRepository
         var oldExamination = this.examinationsById[examination.id];
         this.examinations.Remove(oldExamination);
         this.examinations.Add(examination);
+        examination.doctor.examinations.Add(examination);
+        oldExamination.doctor.examinations.Remove(oldExamination);
         this.examinationsById[examination.id] = examination;
+        SaveToFile();
     }
 
     public Examination GenerateRequestExamination(Examination examination, string patientUsername, string doctorUsername, DateTime dateTime)
@@ -263,9 +266,10 @@ internal class ExaminationRepository
     public void EditExamination(Examination examination, string patientUsername, string doctorUsername, DateTime dateTime)
     {
         Doctor doctor = DoctorRepository.GetInstance().GetDoctorByUsername(doctorUsername);
-        CheckIfDoctorIsAvailable(doctor, dateTime);
-        var room = FindAvailableRoom(dateTime);
         Patient patient = PatientRepository.GetInstance().GetPatientByUsername(patientUsername);
+        CheckIfDoctorIsAvailable(doctor, dateTime);
+        CheckIfPatientIsAvailable(patient, dateTime);
+        var room = FindAvailableRoom(dateTime);       
         Examination e = new Examination(examination.id, examination.status, dateTime, room, doctor, examination.medicalRecord, "");
         SwapExaminationValue(e);
     }

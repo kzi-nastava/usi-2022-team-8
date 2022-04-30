@@ -42,7 +42,6 @@ namespace HealthInstitution.GUI.DoctorView
             {
                 dataGrid.Items.Add(examination);
             }
-            System.Windows.MessageBox.Show(doctorExaminations[0].status.ToString(), "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning);
         }
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {

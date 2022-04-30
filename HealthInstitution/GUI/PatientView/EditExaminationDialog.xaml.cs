@@ -47,6 +47,7 @@ namespace HealthInstitution.GUI.PatientWindows
                 {
                     ExaminationRepository.GetInstance().EditExamination(examination, loggedPatient.username, doctorUsername, dateTime);
                     ExaminationDoctorRepository.GetInstance().SaveToFile();
+                    ExaminationRepository.GetInstance().SaveToFile();
                 }
 
                 this.Close();

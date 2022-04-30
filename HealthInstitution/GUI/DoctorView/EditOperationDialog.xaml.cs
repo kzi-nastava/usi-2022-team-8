@@ -32,6 +32,7 @@ namespace HealthInstitution.GUI.DoctorView
             this.selectedOperation = operation;
             InitializeComponent();
             datePicker.SelectedDate = this.selectedOperation.appointment;
+            durationTextBox.Text = operation.duration.ToString();
         }
 
         private void PatientComboBox_Loaded(object sender, RoutedEventArgs e)

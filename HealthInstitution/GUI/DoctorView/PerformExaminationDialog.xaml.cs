@@ -42,14 +42,20 @@ namespace HealthInstitution.GUI.DoctorView
 
         private void AddIllness_Click(object sender, RoutedEventArgs e)
         {
-            illnessListBox.Items.Add(illnessesTextBox.Text);
-            illnessListBox.Items.Refresh();
+            if (illnessesTextBox.Text.Trim() != "")
+            {
+                illnessListBox.Items.Add(illnessesTextBox.Text);
+                illnessListBox.Items.Refresh();
+            }
         }
 
         private void AddAllergen_Click(object sender, RoutedEventArgs e)
         {
-            allergenListBox.Items.Add(allergensTextBox.Text);
-            allergenListBox.Items.Refresh();
+            if (illnessesTextBox.Text.Trim() != "")
+            {
+                allergenListBox.Items.Add(allergensTextBox.Text);
+                allergenListBox.Items.Refresh();
+            }
         }
 
         private void Finish_Click(object sender, RoutedEventArgs e)

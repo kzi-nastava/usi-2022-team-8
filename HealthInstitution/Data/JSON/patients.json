@@ -1,1 +1,18 @@
-[{"type":"Patient","username":"pera","password":"pera","name":"Petar","surname":"Petrovic","blocked":"NotBlocked"},{"type":"Patient","username":"marko","password":"marko","name":"Marko","surname":"Milosevic","blocked":"NotBlocked"},{"type":"Patient","username":"nikola","password":"nikola","name":"Nikola","surname":"Nikolic","blocked":"NotBlocked"},{"type":"Patient","username":"nada","password":"nada","name":"nada","surname":"sekulic","blocked":"BlockedBySecretary"}]
+[ 
+  {
+    "type": "Patient",
+    "username": "pera",
+    "password": "pera",
+    "name": "Petar",
+    "surname": "Petrovic",
+    "blocked": "NotBlocked"
+  },
+  {
+    "type": "Patient",
+    "username": "marko",
+    "password": "marko",
+    "name": "Marko",
+    "surname": "Milosevic",
+    "blocked": "NotBlocked"
+  }
+]
