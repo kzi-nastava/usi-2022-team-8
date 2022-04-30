@@ -32,7 +32,7 @@ namespace HealthInstitution.GUI.UserWindow
             List<ScheduleEditRequest> scheduleEditRequests = ScheduleEditRequestRepository.GetInstance().scheduleEditRequests;
             foreach (ScheduleEditRequest scheduleEditRequest in scheduleEditRequests)
             {
-                dataGrid.Items.Add(scheduleEditRequests);
+                dataGrid.Items.Add(scheduleEditRequest);
             }
             dataGrid.Items.Refresh();
         }

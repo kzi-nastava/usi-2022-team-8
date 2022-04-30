@@ -17,7 +17,7 @@
     <Compile Update="GUI\SecretaryView\CreatePatientDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="GUI\SecretaryView\CrudbPatients.xaml.cs">
+    <Compile Update="GUI\SecretaryView\PatientsTable.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="GUI\SecretaryView\UpdatePatientDialog.xaml.cs">
@@ -43,7 +43,7 @@
     <Compile Update="GUI\SecretaryView\CreatePatientDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="GUI\SecretaryView\CrudbPatients.xaml.cs">
+    <Compile Update="GUI\SecretaryView\PatientsTable.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="GUI\SecretaryView\UpdatePatientDialog.xaml.cs">
@@ -129,7 +129,7 @@
     <Page Update="GUI\SecretaryView\CreatePatientDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="GUI\SecretaryView\CrudbPatients.xaml">
+    <Page Update="GUI\SecretaryView\PatientsTable.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="GUI\SecretaryView\UpdatePatientDialog.xaml">
@@ -155,7 +155,7 @@
     <Page Update="GUI\SecretaryView\CreatePatientDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="GUI\SecretaryView\CrudbPatients.xaml">
+    <Page Update="GUI\SecretaryView\PatientsTable.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="GUI\SecretaryView\UpdatePatientDialog.xaml">

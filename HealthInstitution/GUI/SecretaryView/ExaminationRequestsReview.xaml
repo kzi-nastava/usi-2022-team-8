@@ -10,7 +10,7 @@
     <Grid>
         <DataGrid  ItemsSource="{Binding ScheduleEditRequest}" AutoGenerateColumns="False" Name="dataGrid"  Height="250" VerticalAlignment="Top">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Patient username" FontSize="18" Binding="{Binding examination.medicalRecord.patient.username}" Width ="110"/>
+                <DataGridTextColumn Header="Patient username" FontSize="18" Binding="{Binding currentExamination.medicalRecord.patient.username}" Width ="110"/>
                 <DataGridTextColumn Header="Current doctor" FontSize="18" Width ="100">
                     <DataGridTextColumn.Binding>
                         <MultiBinding StringFormat="{}{0} {1}">

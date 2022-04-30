@@ -13,7 +13,7 @@
                 <DataGridTextColumn Header="Username" FontSize="18" Binding="{Binding username}" Width ="150"/>
                 <DataGridTextColumn Header="Name" FontSize="18" Binding="{Binding name}" Width =" 150"/>
                 <DataGridTextColumn Header="Surname" FontSize="18" Binding="{Binding surname}" Width =" 150"/>
-                <DataGridTextColumn Header="Blocked status" FontSize="18" Binding="{Binding blocked}" Width =" 180"/>
+                <DataGridTextColumn Header="Blocked status" FontSize="18" Binding="{Binding blocked}" Width =" 170"/>
             </DataGrid.Columns>
         </DataGrid>
         <Button Content="Create" Name="createButton" Click="CreatePatient_click" HorizontalAlignment="Center" Margin="-450,300,0,0" VerticalAlignment="Top" FontSize="15" Width="130"/>

@@ -61,6 +61,7 @@ public class ScheduleEditRequestRepository
         var medicalRecordsByUsername = MedicalRecordRepository.GetInstance().medicalRecordByUsername;
 
         var requests = JArray.Parse(File.ReadAllText(this.fileName));
+        Examination loadedExamination;
         foreach (var request in requests)
         {
             int id = (int)request["id"];
@@ -80,13 +81,13 @@ public class ScheduleEditRequestRepository
                 MedicalRecord medicalRecord = medicalRecordsByUsername[patientUsername];
                 String anamnesis = (String)request["newExamination"]["anamnesis"];
 
-                Examination loadedExamination = new Examination(id, status, appointment, room, doctor, medicalRecord, anamnesis);
+                loadedExamination = new Examination(id, status, appointment, room, doctor, medicalRecord, anamnesis);
             }
             else
             {
-                Examination loadedExamination = null;
+                loadedExamination = null;
             }
-            ScheduleEditRequest scheduleEditRequest = new ScheduleEditRequest(id, null, examinationId, state);
+            ScheduleEditRequest scheduleEditRequest = new ScheduleEditRequest(id, loadedExamination, examinationId, state);
             this.scheduleEditRequests.Add(scheduleEditRequest);
             this.scheduleEditRequestsById.Add(id, scheduleEditRequest);
         }
