@@ -25,6 +25,6 @@
         </DataGrid>
         <Button Name="addButton" Content="Add" Click="addButton_click" HorizontalAlignment="Center" Height="30" Margin="0,240,350,0" VerticalAlignment="Top" Width="111" RenderTransformOrigin="0.243,0.514" Cursor="Arrow" FontSize="18" Visibility="Visible" />
         <Button Name="editButton" Content="Edit" Click="editButton_click" IsEnabled="{Binding ElementName=dataGrid, Path=SelectedItems.Count}" HorizontalAlignment="Center" Height="30" Margin="0,240,0,0" VerticalAlignment="Top" Width="111" RenderTransformOrigin="0.243,0.514" Cursor="Arrow" FontSize="18" Visibility="Visible" />
-        <Button Name="deleteButton" Content="Delete" Click="deleteButton_click" IsEnabled="{Binding ElementName=dataGrid, Path=SelectedItems.Count}" HorizontalAlignment="Center" Height="30" Margin="0,240,-350,0" VerticalAlignment="Top" Width="111" RenderTransformOrigin="0.243,0.514" Cursor="Arrow" FontSize="18" Visibility="Visible" />
+        <Button Name="deleteButton" Content="Delete" Click="deleteButton_click" IsEnabled="{Binding ElementName=dataGrid, Path=SelectedItems.Count}" HorizontalAlignment="Center" Height="30" Margin="0,240,-350,0" VerticalAlignment="Top" Width="111" RenderTransformOrigin="0.5,0.5" Cursor="Arrow" FontSize="18" Visibility="Visible" />
     </Grid>
 </Window>
