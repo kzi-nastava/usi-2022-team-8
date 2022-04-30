@@ -56,6 +56,7 @@ public partial class PatientScheduleWindow : Window
             Examination selectedExamination = (Examination)dataGrid.SelectedItem;
             dataGrid.Items.Remove(selectedExamination);
             examinationRepository.DeleteExamination(selectedExamination.id);
+            selectedExamination.doctor.examinations.Remove(selectedExamination);
         }
         ExaminationDoctorRepository.GetInstance().SaveExaminationDoctor();
         dataGrid.Items.Clear();
