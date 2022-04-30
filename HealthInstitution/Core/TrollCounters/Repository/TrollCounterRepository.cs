@@ -63,7 +63,7 @@ public class TrollCounterRepository
         return this.trollCountersById[id];
     }
 
-    public void AddScheduleEditRequests(string username)
+    public void AddTrollCounter(string username)
     {
         TrollCounter trollCounter = new TrollCounter(username);
         this.trollCounters.Add(trollCounter);
@@ -71,7 +71,7 @@ public class TrollCounterRepository
         SaveTrollCounters();
     }
 
-    public void DeleteScheduleEditRequests(string id)
+    public void DeleteTrollCounter(string id)
     {
         TrollCounter trollCounter = trollCountersById[id];
         if (trollCounter != null)
@@ -80,5 +80,21 @@ public class TrollCounterRepository
             this.trollCounters.Remove(trollCounter);
             SaveTrollCounters();
         }
+    }
+
+    public void CheckTroll(string username)
+    {
+        CheckCreateTroll(username);
+        CheckEditDeleteTroll(username);
+    }
+
+    public void CheckCreateTroll(string username)
+    {
+        if (this.trollCountersById[username].createDates.Count() > 8) throw new Exception("Created too many examinations");
+    }
+
+    public void CheckEditDeleteTroll(string username)
+    {
+        if (this.trollCountersById[username].editDeleteDates.Count() >= 5) throw new Exception("Edited too many examinations");
     }
 }

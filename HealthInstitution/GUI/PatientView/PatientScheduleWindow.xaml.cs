@@ -15,6 +15,7 @@ using HealthInstitution.Core.SystemUsers.Users.Model;
 using HealthInstitution.Core.Examinations.Model;
 using HealthInstitution.Core.Examinations.Repository;
 using HealthInstitution.GUI.PatientView;
+using HealthInstitution.Core.TrollCounters.Repository;
 
 namespace HealthInstitution.GUI.PatientWindows;
 
@@ -34,23 +35,60 @@ public partial class PatientScheduleWindow : Window
 
     private void addButton_click(object sender, RoutedEventArgs e)
     {
-        AddExaminationDialog addExaminationDialog = new AddExaminationDialog(loggedPatient);
-        addExaminationDialog.ShowDialog();
-        dataGrid.Items.Clear();
-        LoadGrid();
+        try
+        {
+            TrollCounterRepository.GetInstance().CheckTroll(loggedPatient.username);
+            AddExaminationDialog addExaminationDialog = new AddExaminationDialog(loggedPatient);
+            addExaminationDialog.ShowDialog();
+            dataGrid.Items.Clear();
+            LoadGrid();
+            TrollCounterRepository.GetInstance().GetTrollCounterById(loggedPatient.username).AppendCreateDates(DateTime.Today);
+            TrollCounterRepository.GetInstance().SaveTrollCounters();
+        }
+        catch (Exception ex)
+        {
+            System.Windows.MessageBox.Show(ex.Message, "Troll Alert", MessageBoxButton.OK, MessageBoxImage.Error);
+            this.Close();
+        }
     }
 
     private void editButton_click(object sender, RoutedEventArgs e)
     {
-        Examination selectedExamination = (Examination)dataGrid.SelectedItem;
-        EditExaminationDialog editExaminationDialog = new EditExaminationDialog(selectedExamination);
-        editExaminationDialog.ShowDialog();
-        dataGrid.Items.Clear();
-        LoadGrid();
+        try
+        {
+            TrollCounterRepository.GetInstance().CheckTroll(loggedPatient.username);
+            Examination selectedExamination = (Examination)dataGrid.SelectedItem;
+            EditExaminationDialog editExaminationDialog = new EditExaminationDialog(selectedExamination);
+            editExaminationDialog.ShowDialog();
+            dataGrid.Items.Clear();
+            LoadGrid();
+            TrollCounterRepository.GetInstance().GetTrollCounterById(loggedPatient.username).AppendEditDeleteDates(DateTime.Today);
+            TrollCounterRepository.GetInstance().SaveTrollCounters();
+        }
+        catch (Exception ex)
+        {
+            System.Windows.MessageBox.Show(ex.Message, "Troll Alert", MessageBoxButton.OK, MessageBoxImage.Error);
+            this.Close();
+        }
     }
 
     private void deleteButton_click(object sender, RoutedEventArgs e)
     {
+        try
+        {
+            TrollCounterRepository.GetInstance().CheckTroll(loggedPatient.username);
+
+            ExaminationDoctorRepository.GetInstance().SaveExaminationDoctor();
+            dataGrid.Items.Clear();
+            LoadGrid();
+            TrollCounterRepository.GetInstance().GetTrollCounterById(loggedPatient.username).AppendEditDeleteDates(DateTime.Today);
+            TrollCounterRepository.GetInstance().SaveTrollCounters();
+        }
+        catch (Exception ex)
+        {
+            System.Windows.MessageBox.Show(ex.Message, "Troll Alert", MessageBoxButton.OK, MessageBoxImage.Error);
+            this.Close();
+        }
         if (System.Windows.MessageBox.Show("Are you sure you want to delete selected examination", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
         {
             Examination selectedExamination = (Examination)dataGrid.SelectedItem;
@@ -58,9 +96,6 @@ public partial class PatientScheduleWindow : Window
             examinationRepository.DeleteExamination(selectedExamination.id);
             selectedExamination.doctor.examinations.Remove(selectedExamination);
         }
-        ExaminationDoctorRepository.GetInstance().SaveExaminationDoctor();
-        dataGrid.Items.Clear();
-        LoadGrid();
     }
 
     private void dataGrid_Loaded(object sender, RoutedEventArgs e)

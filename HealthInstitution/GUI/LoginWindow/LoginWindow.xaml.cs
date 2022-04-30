@@ -25,6 +25,7 @@ using HealthInstitution.Core.SystemUsers.Patients.Model;
 using HealthInstitution.Core.SystemUsers.Doctors.Repository;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using HealthInstitution.Core.Operations.Repository;
+using HealthInstitution.Core.TrollCounters.Repository;
 
 namespace HealthInstitution.GUI.LoginWindow
 {
@@ -64,8 +65,15 @@ namespace HealthInstitution.GUI.LoginWindow
                         /*PatientRepository patientRepository = PatientRepository.GetInstance();
                         Patient patient = patientRepository.GetPatientById(usernameInput);*/
                         this.Close();
-
-                        new PatientWindow(foundUser).ShowDialog();
+                        try
+                        {
+                            TrollCounterRepository.GetInstance().CheckTroll(foundUser.username);
+                            new PatientWindow(foundUser).ShowDialog();
+                        }
+                        catch (Exception ex)
+                        {
+                            System.Windows.MessageBox.Show(ex.Message, "Troll Alert", MessageBoxButton.OK, MessageBoxImage.Error);
+                        }
                         break;
 
                     case UserType.Doctor:
