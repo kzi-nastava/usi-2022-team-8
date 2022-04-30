@@ -1,5 +1,6 @@
 ﻿using HealthInstitution.Core.Equipments.Model;
 using HealthInstitution.Core.Equipments.Repository;
+using HealthInstitution.Core.EquipmentTransfers.Functionality;
 using HealthInstitution.Core.EquipmentTransfers.Model;
 using HealthInstitution.Core.EquipmentTransfers.Repository;
 using HealthInstitution.Core.Rooms.Model;
@@ -105,7 +106,7 @@ namespace HealthInstitution.GUI.ManagerView
 
             if (date == DateTime.Today)
             {
-                Transfer(toRoom, equipment, quantity);
+                EquipmentTransferChecker.Transfer(toRoom, equipment, quantity);
                 System.Windows.MessageBox.Show("Equipment transfer completed!", "Equipment transfer", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             else
@@ -117,22 +118,7 @@ namespace HealthInstitution.GUI.ManagerView
             this.Close();
 
         }
-
-        public void Transfer(Room toRoom, Equipment equipment, int quantity)
-        {
-            equipment.quantity -= quantity;
-            int index = toRoom.availableEquipment.FindIndex(eq => (eq.name == equipment.name && eq.type == equipment.type));
-            if (index >= 0)
-            {
-                toRoom.availableEquipment[index].quantity += quantity;
-                equipmentRepository.SaveEquipments();
-            }
-            else
-            {
-                Equipment newEquipment = equipmentRepository.AddEquipment(quantity, equipment.name, equipment.type, equipment.isDynamic);
-                roomRepository.AddEquipmentToRoom(toRoom.id, newEquipment);
-            }
-        }
+       
 
         private int CalculateProjectedQuantityLoss(Room fromRoom, Equipment equipment)
         {
