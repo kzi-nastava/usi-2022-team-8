@@ -19,7 +19,7 @@
         <Label Content="Date" HorizontalAlignment="Left" Margin="44,33,0,0" VerticalAlignment="Top" />
         <Label Content="Time" HorizontalAlignment="Left" Margin="44,96,0,0" VerticalAlignment="Top" />
         <ComboBox HorizontalAlignment="Left" Margin="120,96,0,0" Loaded="HourComboBox_Loaded" VerticalAlignment="Top" Width="45" SelectionChanged="HourComboBox_SelectionChanged" />
-        <ComboBox HorizontalAlignment="Left" Margin="225,96,0,0" VerticalAlignment="Top" Width="45" Loaded="MinuteComboBox_Loaded" SelectionChanged="ComboBox_SelectionChanged" />
+        <ComboBox HorizontalAlignment="Left" Margin="225,96,0,0" VerticalAlignment="Top" Width="45" Loaded="MinuteComboBox_Loaded" SelectionChanged="MinuteComboBox_SelectionChanged" />
         <Button Content="Save" Click="Save_Click" HorizontalAlignment="Center" Height="22" Margin="0,219,0,0" VerticalAlignment="Top" Width="74" />
     </Grid>
 </Window>

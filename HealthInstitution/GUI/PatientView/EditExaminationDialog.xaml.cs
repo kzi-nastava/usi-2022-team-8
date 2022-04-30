@@ -49,6 +49,7 @@ namespace HealthInstitution.GUI.PatientWindows
             try
             {
                 ExaminationRepository.GetInstance().ReserveExamiantion(loggedPatient.username, doctorUsername, dateTime);
+                this.Close();
             }
             catch (Exception ex)
             {

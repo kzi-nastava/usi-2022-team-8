@@ -36,6 +36,8 @@ public partial class PatientScheduleWindow : Window
     {
         AddExaminationDialog addExaminationDialog = new AddExaminationDialog(loggedPatient);
         addExaminationDialog.ShowDialog();
+        dataGrid.Items.Clear();
+        LoadGrid();
     }
 
     private void editButton_click(object sender, RoutedEventArgs e)
@@ -43,6 +45,8 @@ public partial class PatientScheduleWindow : Window
         Examination selectedExamination = (Examination)dataGrid.SelectedItem;
         EditExaminationDialog editExaminationDialog = new EditExaminationDialog(selectedExamination);
         editExaminationDialog.ShowDialog();
+        dataGrid.Items.Clear();
+        LoadGrid();
     }
 
     private void deleteButton_click(object sender, RoutedEventArgs e)
@@ -53,9 +57,16 @@ public partial class PatientScheduleWindow : Window
             dataGrid.Items.Remove(selectedExamination);
             examinationRepository.DeleteExamination(selectedExamination.id);
         }
+        dataGrid.Items.Clear();
+        LoadGrid();
     }
 
     private void dataGrid_Loaded(object sender, RoutedEventArgs e)
+    {
+        LoadGrid();
+    }
+
+    private void LoadGrid()
     {
         foreach (Examination examination in ExaminationRepository.GetInstance().examinations)
         {

@@ -15,6 +15,7 @@ using HealthInstitution.Core.SystemUsers.Users.Repository;
 using HealthInstitution.Core.Examinations.Repository;
 using HealthInstitution.Core.SystemUsers.Users.Model;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
+using HealthInstitution.Core.SystemUsers.Doctors.Repository;
 
 namespace HealthInstitution.GUI.PatientView
 {
@@ -23,8 +24,8 @@ namespace HealthInstitution.GUI.PatientView
     /// </summary>
     public partial class AddExaminationDialog : Window
     {
-        private string minutes;
-        private string hours;
+        private int minutes;
+        private int hours;
         private User loggedPatient;
         private string doctorUsername;
 
@@ -50,9 +51,7 @@ namespace HealthInstitution.GUI.PatientView
         {
             var hourComboBox = sender as System.Windows.Controls.ComboBox;
             int h = hourComboBox.SelectedIndex;
-            if (h == 9) hours = "09";
-            else
-                hours = h.ToString();
+            hours = h + 9;
         }
 
         private void MinuteComboBox_Loaded(object sender, RoutedEventArgs e)
@@ -69,12 +68,12 @@ namespace HealthInstitution.GUI.PatientView
         private void DoctorComboBox_Loaded(object sender, RoutedEventArgs e)
         {
             var doctorComboBox = sender as System.Windows.Controls.ComboBox;
-            List<User> doctors = new List<User>();
+            List<string> doctors = new List<string>();
 
             foreach (User user in UserRepository.GetInstance().GetUsers())
             {
                 if (user.type == UserType.Doctor)
-                    doctors.Add(user);
+                    doctors.Add(user.username);
             }
 
             doctorComboBox.ItemsSource = doctors;
@@ -85,12 +84,15 @@ namespace HealthInstitution.GUI.PatientView
         private void Create_Click(object sender, RoutedEventArgs e)
         {
             string formatDate = datePicker.SelectedDate.ToString();
-            formatDate = formatDate + "T" + hours + ":" + minutes;
+            formatDate = formatDate;
 
             DateTime.TryParse(formatDate, out var dateTime);
+            dateTime = dateTime.AddHours(hours);
+            dateTime = dateTime.AddMinutes(minutes);
             try
             {
                 ExaminationRepository.GetInstance().ReserveExamiantion(loggedPatient.username, doctorUsername, dateTime);
+                this.Close();
             }
             catch (Exception ex)
             {
@@ -101,13 +103,14 @@ namespace HealthInstitution.GUI.PatientView
         private void MinuteComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var minuteComboBox = sender as System.Windows.Controls.ComboBox;
-            minutes = minuteComboBox.SelectedValue.ToString();
+            int m = minuteComboBox.SelectedIndex;
+            this.minutes = m * 15;
         }
 
         private void DoctorComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var doctorComboBox = sender as System.Windows.Controls.ComboBox;
-            this.doctorUsername = (doctorComboBox.SelectedValue as Doctor).username;
+            this.doctorUsername = doctorComboBox.SelectedValue as string;
         }
     }
 }
