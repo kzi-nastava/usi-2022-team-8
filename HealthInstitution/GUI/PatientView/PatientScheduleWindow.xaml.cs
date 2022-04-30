@@ -16,6 +16,7 @@ using HealthInstitution.Core.Examinations.Model;
 using HealthInstitution.Core.Examinations.Repository;
 using HealthInstitution.GUI.PatientView;
 using HealthInstitution.Core.TrollCounters.Repository;
+using HealthInstitution.Core.ScheduleEditRequests.Repository;
 
 namespace HealthInstitution.GUI.PatientWindows;
 
@@ -77,7 +78,6 @@ public partial class PatientScheduleWindow : Window
         try
         {
             TrollCounterRepository.GetInstance().CheckTroll(loggedPatient.username);
-
             ExaminationDoctorRepository.GetInstance().SaveExaminationDoctor();
             dataGrid.Items.Clear();
             LoadGrid();
@@ -92,9 +92,16 @@ public partial class PatientScheduleWindow : Window
         if (System.Windows.MessageBox.Show("Are you sure you want to delete selected examination", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
         {
             Examination selectedExamination = (Examination)dataGrid.SelectedItem;
-            dataGrid.Items.Remove(selectedExamination);
-            examinationRepository.DeleteExamination(selectedExamination.id);
-            selectedExamination.doctor.examinations.Remove(selectedExamination);
+            if (selectedExamination.appointment.AddDays(-2) < DateTime.Now)
+            {
+                ScheduleEditRequestRepository.GetInstance().DeleteScheduleEditRequests(selectedExamination.id);
+            }
+            else
+            {
+                dataGrid.Items.Remove(selectedExamination);
+                examinationRepository.DeleteExamination(selectedExamination.id);
+                selectedExamination.doctor.examinations.Remove(selectedExamination);
+            }
         }
     }
 

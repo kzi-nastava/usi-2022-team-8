@@ -17,6 +17,7 @@ using HealthInstitution.Core.SystemUsers.Users.Repository;
 using HealthInstitution.Core.SystemUsers.Users.Model;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using HealthInstitution.Core.Examinations.Repository;
+using HealthInstitution.Core.ScheduleEditRequests.Repository;
 
 namespace HealthInstitution.GUI.PatientWindows
 {
@@ -50,8 +51,16 @@ namespace HealthInstitution.GUI.PatientWindows
             dateTime = dateTime.AddMinutes(minutes);
             try
             {
-                ExaminationRepository.GetInstance().EditExamination(examination, loggedPatient.username, doctorUsername, dateTime);
-                ExaminationDoctorRepository.GetInstance().SaveExaminationDoctor();
+                if (examination.appointment.AddDays(-2) < DateTime.Today)
+                {
+                    Examination new_examination = ExaminationRepository.GetInstance().GenerateRequestExamination(examination, loggedPatient.username, doctorUsername, dateTime);
+                    ScheduleEditRequestRepository.GetInstance().AddScheduleEditRequests(new_examination);
+                }
+                else
+                {
+                    ExaminationRepository.GetInstance().EditExamination(examination, loggedPatient.username, doctorUsername, dateTime);
+                    ExaminationDoctorRepository.GetInstance().SaveExaminationDoctor();
+                }
                 this.Close();
             }
             catch (Exception ex)

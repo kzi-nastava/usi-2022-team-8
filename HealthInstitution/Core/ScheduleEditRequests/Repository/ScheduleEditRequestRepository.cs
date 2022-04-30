@@ -11,7 +11,7 @@ using HealthInstitution.Core.Examinations.Model;
 using HealthInstitution.Core.Rooms.Repository;
 using HealthInstitution.Core.MedicalRecords.Repository;
 
-//using HealthInstitution.Core.SystemUsers.Doctors.Repository;
+using HealthInstitution.Core.SystemUsers.Doctors.Repository;
 
 namespace HealthInstitution.Core.ScheduleEditRequests.Repository;
 
@@ -23,6 +23,7 @@ public class ScheduleEditRequestRepository
 
     private JsonSerializerOptions options = new JsonSerializerOptions
     {
+        ReferenceHandler = ReferenceHandler.IgnoreCycles,
         Converters = { new JsonStringEnumConverter() }
     };
 
@@ -55,8 +56,8 @@ public class ScheduleEditRequestRepository
             scheduleEditRequest.examination.room = RoomRepository.GetInstance().GetRoomById(scheduleEditRequest.examination.room.id);
             scheduleEditRequest.examination.medicalRecord =
                 MedicalRecordRepository.GetInstance().GetMedicalRecordByUsername(scheduleEditRequest.examination.medicalRecord.patient);
-            /*scheduleEditRequest.examination.doctor =
-               DoctorRepository.GetInstance().GetDoctorByUsername(scheduleEditRequest.examination.doctor);*/
+            scheduleEditRequest.examination.doctor =
+               DoctorRepository.GetInstance().GetDoctorByUsername(scheduleEditRequest.examination.doctor.username);
 
             this.scheduleEditRequests.Add(scheduleEditRequest);
             this.scheduleEditRequestsById.Add(scheduleEditRequest.Id, scheduleEditRequest);
