@@ -70,7 +70,7 @@ namespace HealthInstitution.Core.Examinations.Repository
                 MedicalRecord medicalRecord = medicalRecordsByUsername[patientUsername];
                 String anamnesis = (String)examination["anamnesis"];
 
-                Examination loadedExamination = new Examination(id, status, appointment, room, null, medicalRecord);
+                Examination loadedExamination = new Examination(id, status, appointment, room, null, medicalRecord, anamnesis);
 
                 if (id > maxId) { maxId = id; }
 
@@ -122,7 +122,7 @@ namespace HealthInstitution.Core.Examinations.Repository
         public void AddExamination(DateTime appointment, Room room, Doctor doctor, MedicalRecord medicalRecord)
         {
             int id = this.maxId++;
-            Examination examination = new Examination(id, ExaminationStatus.Scheduled, appointment, room, doctor, medicalRecord);
+            Examination examination = new Examination(id, ExaminationStatus.Scheduled, appointment, room, doctor, medicalRecord, "");
             this.examinations.Add(examination);
             this.examinationsById.Add(id, examination);
             SaveExaminations();

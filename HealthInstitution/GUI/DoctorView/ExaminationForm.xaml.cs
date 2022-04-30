@@ -25,6 +25,7 @@ namespace HealthInstitution.GUI.DoctorView
     {
         ExaminationRepository examinationRepository = ExaminationRepository.GetInstance();
         DoctorRepository doctorRepository = DoctorRepository.GetInstance();
+        ExaminationDoctorRepository examinationDoctorRepository = ExaminationDoctorRepository.GetInstance();
         public Doctor loggedDoctor { get; set; }
         public ExaminationForm(Doctor loggedDoctor)
         {
@@ -67,6 +68,7 @@ namespace HealthInstitution.GUI.DoctorView
                 dataGrid.Items.Remove(selectedExamination);
                 examinationRepository.DeleteExamination(selectedExamination.id);
                 doctorRepository.DeleteDoctorExamination(loggedDoctor, selectedExamination);
+                examinationDoctorRepository.SaveExaminationDoctor();
             }
         }
     }
