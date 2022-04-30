@@ -37,7 +37,7 @@ namespace HealthInstitution.GUI.UserWindow
             dataGrid.Items.Refresh();
         }
 
-        private void accept_click(object sender, RoutedEventArgs e)
+        private void Accept_click(object sender, RoutedEventArgs e)
         {
             ScheduleEditRequest selectedRequest = (ScheduleEditRequest)dataGrid.SelectedItem;  
             if(selectedRequest!=null)
@@ -48,7 +48,7 @@ namespace HealthInstitution.GUI.UserWindow
             LoadGridRows();
         }
 
-        private void reject_click(object sender, RoutedEventArgs e)
+        private void Reject_click(object sender, RoutedEventArgs e)
         {
             ScheduleEditRequest selectedRequest = (ScheduleEditRequest)dataGrid.SelectedItem;
             if (selectedRequest != null)

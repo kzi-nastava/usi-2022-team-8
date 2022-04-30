@@ -34,7 +34,7 @@ namespace HealthInstitution.GUI.SecretaryView
             surnameBox.Text = patient.surname;
         }
 
-        private void updatePatient_click(object sender, RoutedEventArgs e)
+        private void UpdatePatient_click(object sender, RoutedEventArgs e)
         {
             string username = usernameBox.Text;
             string password = passwordBox.Password.ToString();

@@ -19,16 +19,16 @@ using System.Windows.Shapes;
 namespace HealthInstitution.GUI.UserWindow
 {
     /// <summary>
-    /// Interaction logic for CreatePatientWindow.xaml
+    /// Interaction logic for CreatePatientDialog.xaml
     /// </summary>
-    public partial class CreatePatientWindow : Window
+    public partial class CreatePatientDialog : Window
     {
-        public CreatePatientWindow()
+        public CreatePatientDialog()
         {
             InitializeComponent();
         }
 
-        private void createPatient_click(object sender, RoutedEventArgs e)
+        private void CreatePatient_click(object sender, RoutedEventArgs e)
         {
             string username = usernameBox.Text.Trim();
             string password=passwordBox.Password.ToString().Trim();
@@ -36,12 +36,14 @@ namespace HealthInstitution.GUI.UserWindow
             string surname=surnameBox.Text.Trim();
             string allergensNotParsed=allergensBox.Text.Trim();
             string previousIlnessesNotParsed=previousIlnessesBox.Text.Trim();
+            string height = heightBox.Text;
+            string weight = weightBox.Text;
             UserRepository userRepository = UserRepository.GetInstance();
             try {
                 
-                if (username == "" || password == "" || name == "" || surname == "")
+                if (username == "" || password == "" || name == "" || surname == "" ||height==""||weight=="")
                 {
-                    System.Windows.MessageBox.Show("All fields must be filled!", "Create patient error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    System.Windows.MessageBox.Show("All fields excluding Allergens and Previous ilnesses must be filled!", "Create patient error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
                 else if(userRepository.usersByUsername.ContainsKey(username))
                 {
@@ -49,8 +51,8 @@ namespace HealthInstitution.GUI.UserWindow
                 }
                 else
                 {
-                    double height = Convert.ToDouble(heightBox.Text);
-                    double weight = Convert.ToDouble(weightBox.Text);
+                    double heightValue = Convert.ToDouble(height);
+                    double weightValue = Convert.ToDouble(weight);
                     List<string> allergens = new List<string>();
                     List<string> previousIlnesses = new List<string>();
                     if(allergensNotParsed!="")
@@ -62,7 +64,7 @@ namespace HealthInstitution.GUI.UserWindow
                         previousIlnesses = previousIlnessesNotParsed.Split(",").ToList();
                     }
                     PatientRepository patientRepository = PatientRepository.GetInstance();
-                    patientRepository.AddPatient(username, password, name, surname, height, weight, allergens, previousIlnesses);
+                    patientRepository.AddPatient(username, password, name, surname, heightValue, weightValue, allergens, previousIlnesses);
                     userRepository.AddUser(UserType.Patient, username, password, name, surname);
                     this.Close();
                 }

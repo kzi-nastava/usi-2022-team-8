@@ -19,11 +19,11 @@ using System.Windows.Shapes;
 namespace HealthInstitution.GUI.UserWindow
 {
     /// <summary>
-    /// Interaction logic for CrudbPatients.xaml
+    /// Interaction logic for PatientsTable.xaml
     /// </summary>
-    public partial class CrudbPatients : Window
+    public partial class PatientsTable : Window
     {
-        public CrudbPatients()
+        public PatientsTable()
         {
             InitializeComponent();
             LoadGridRows();
@@ -38,14 +38,14 @@ namespace HealthInstitution.GUI.UserWindow
             }
             dataGrid.Items.Refresh();
         }
-        private void createPatient_click(object sender, RoutedEventArgs e)
+        private void CreatePatient_click(object sender, RoutedEventArgs e)
         {
-            CreatePatientWindow createPatientWindow = new CreatePatientWindow();
-            createPatientWindow.ShowDialog();
+            CreatePatientDialog createPatientDialog = new CreatePatientDialog();
+            createPatientDialog.ShowDialog();
             LoadGridRows();
         }
 
-        private void updatePatient_click(object sender, RoutedEventArgs e)
+        private void UpdatePatient_click(object sender, RoutedEventArgs e)
         {
             Patient selectedPatient = (Patient)dataGrid.SelectedItem;
             if (selectedPatient != null) 
@@ -58,7 +58,7 @@ namespace HealthInstitution.GUI.UserWindow
             }
         }
 
-        private void deletePatient_click(object sender, RoutedEventArgs e)
+        private void DeletePatient_click(object sender, RoutedEventArgs e)
         {
             Patient selectedPatient = (Patient)dataGrid.SelectedItem;
             if (selectedPatient != null)
@@ -72,7 +72,7 @@ namespace HealthInstitution.GUI.UserWindow
             }
         }
 
-        private void blockPatient_click(object sender, RoutedEventArgs e)
+        private void BlockPatient_click(object sender, RoutedEventArgs e)
         {
             Patient selectedPatient = (Patient)dataGrid.SelectedItem;
             if (selectedPatient != null)

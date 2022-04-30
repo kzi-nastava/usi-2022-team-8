@@ -1,16 +1,10 @@
 ﻿using HealthInstitution.Core.Drugs.Model;
 using HealthInstitution.Core.Drugs.Repository;
-using HealthInstitution.Core.Ingredients.Model;
 using HealthInstitution.Core.Prescriptions.Model;
 using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.Prescriptions.Repository
 {
