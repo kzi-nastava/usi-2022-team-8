@@ -158,7 +158,20 @@ internal class ExaminationRepository
         {
             if (examination.appointment == dateTime)
             {
-                throw new Exception("Selected doctor is not available!");
+                throw new Exception("That doctor is not available");
+            }
+        }
+
+        foreach (var operation in doctor.operations)
+        {
+            if (operation.appointment <= dateTime && operation.appointment.AddMinutes(operation.duration) >= dateTime)
+            {
+                throw new Exception("That doctor is not available");
+            }
+
+            if (operation.appointment <= dateTime.AddMinutes(15) && operation.appointment.AddMinutes(operation.duration) >= dateTime.AddMinutes(15))
+            {
+                throw new Exception("That doctor is not available");
             }
         }
     }
@@ -193,6 +206,16 @@ internal class ExaminationRepository
         this.examinations.Remove(oldExamination);
         this.examinations.Add(examination);
         this.examinationsById[examination.id] = examination;
+    }
+
+    public Examination GenerateRequestExamination(Examination examination, string patientUsername, string doctorUsername, DateTime dateTime)
+    {
+        Doctor doctor = DoctorRepository.GetInstance().GetDoctorByUsername(doctorUsername);
+        CheckAvailableDoctor(doctor, dateTime);
+        var room = CheckAvailableRoom(dateTime);
+        Patient patient = PatientRepository.GetInstance().GetPatientByUsername(patientUsername);
+        Examination e = new Examination(examination.id, examination.status, dateTime, room, doctor, examination.medicalRecord, "");
+        return e;
     }
 
     public void EditExamination(Examination examination, string patientUsername, string doctorUsername, DateTime dateTime)
