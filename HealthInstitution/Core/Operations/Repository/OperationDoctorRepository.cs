@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.Operations.Repository
@@ -58,7 +59,9 @@ namespace HealthInstitution.Core.Operations.Repository
             Doctor doctor = operation.doctor;
             operationsIdDoctorsUsername.Add(new { id = operation.id, username = doctor.username });
         }
-    }
+            var allPairs = JsonSerializer.Serialize(operationsIdDoctorsUsername);
+            File.WriteAllText(this.fileName, allPairs);
+        }
 }
 }
 
