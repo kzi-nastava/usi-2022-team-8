@@ -46,18 +46,7 @@ namespace HealthInstitution.Core.Prescriptions.Repository
         }
         public void LoadPrescriptions()
         {
-            //Dictionary<int, Drug> drugById = DrugRepository.GetInstance().drugById;
-            Dictionary<int, Drug> drugById = new Dictionary<int, Drug>();
-            List<Ingredient> lista = new List<Ingredient>();
-            List<Ingredient> lista2 = new List<Ingredient>();
-            lista.Add(new Ingredient(1, "diazepam"));
-            lista.Add(new Ingredient(2, "bromazepam"));
-            lista2.Add(new Ingredient(1, "diazepam"));
-            lista2.Add(new Ingredient(3, "paracetamol"));
-            drugById[1] = new Drug(1, "Brufen", DrugState.Accepted, lista);
-            drugById[2] = new Drug(2, "Pertamol", DrugState.Accepted, lista2);
-
-
+            Dictionary<int, Drug> drugById = DrugRepository.GetInstance().drugById;
             var prescriptions = JArray.Parse(File.ReadAllText(fileName));
             //var prescriptions = JsonSerializer.Deserialize<List<Prescription>>(File.ReadAllText(@"..\..\..\Data\JSON\prescriptions.json"), options);
             foreach (var prescription in prescriptions)

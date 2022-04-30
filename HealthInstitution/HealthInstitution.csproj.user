@@ -82,8 +82,6 @@
     <Compile Update="GUI\SecretaryView\ExaminationRequestsReview.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="GUI\SecretaryView\UnblockingWindow.xaml.cs">
-    </Compile>
     <Compile Update="GUI\UserWindow\ManagerWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -171,8 +169,6 @@
     </Page>
     <Page Update="GUI\SecretaryView\ExaminationRequestsReview.xaml">
       <SubType>Designer</SubType>
-    </Page>
-    <Page Update="GUI\SecretaryView\UnblockingWindow.xaml">
     </Page>
     <Page Update="GUI\UserWindow\ManagerWindow.xaml">
       <SubType>Designer</SubType>

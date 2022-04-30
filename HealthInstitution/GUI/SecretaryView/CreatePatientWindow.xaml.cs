@@ -44,8 +44,8 @@ namespace HealthInstitution.GUI.UserWindow
                 }
                 else
                 {
-                    double height = double.Parse(heightBox.Text);
-                    double weight = double.Parse(weightBox.Text);
+                    double height = Convert.ToDouble(heightBox.Text);
+                    double weight = Convert.ToDouble(weightBox.Text);
                     List<string> allergens = new List<string>();
                     List<string> previousIlnesses = new List<string>();
                     if(allergensNotParsed!="")
@@ -58,7 +58,7 @@ namespace HealthInstitution.GUI.UserWindow
                     }
                     UserRepository userRepository = UserRepository.GetInstance();
                     PatientRepository patientRepository = PatientRepository.GetInstance();
-                    patientRepository.AddPatient(username, password, name, surname, height, weight,allergens,previousIlnesses);
+                    patientRepository.AddPatient(username, password, name, surname, height, weight, allergens, previousIlnesses);
                     userRepository.AddUser(UserType.Patient, username, password, name, surname);
                 }
             }
@@ -67,8 +67,8 @@ namespace HealthInstitution.GUI.UserWindow
                 System.Windows.MessageBox.Show("Height and weight must be numbers!", "Create patient error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             
-            
-            
+
+
         }
     }
 }

@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:HealthInstitution.GUI.UserWindow"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="CreatePatientWindow" Height="350" Width="600">
+        Title="CreatePatientWindow" Height="400" Width="600">
     <Grid>
         <Button Content="Create patient" Click="createPatient_click" HorizontalAlignment="Center" Margin="0,300,0,0" VerticalAlignment="Top" FontSize="18"/>
         <Label Content="Username:" HorizontalAlignment="Center" Height="25" Margin="-350,50,0,0" VerticalAlignment="Top" Width="100"/>

@@ -26,23 +26,23 @@ namespace HealthInstitution.GUI.UserWindow
         public CrudbPatients()
         {
             InitializeComponent();
-            /*updateButton.IsEnabled = false;
-            deleteButton.IsEnabled = false;
-            blockButton.IsEnabled = false;*/
+            LoadGridRows();
         }
         public void LoadGridRows()
         {
+            dataGrid.Items.Clear();
             List<Patient> patients = PatientRepository.GetInstance().patients;
             foreach (Patient patient in patients)
             {
                 dataGrid.Items.Add(patient);
             }
+            dataGrid.Items.Refresh();
         }
         private void createPatient_click(object sender, RoutedEventArgs e)
         {
             CreatePatientWindow createPatientWindow = new CreatePatientWindow();
             createPatientWindow.ShowDialog();
-            this.Close();
+            LoadGridRows();
         }
 
         private void updatePatient_click(object sender, RoutedEventArgs e)
@@ -52,7 +52,9 @@ namespace HealthInstitution.GUI.UserWindow
             {
                 UpdatePatientWindow updatePatientWindow = new UpdatePatientWindow(selectedPatient);
                 updatePatientWindow.ShowDialog();
-                this.Close();
+                dataGrid.SelectedItem = null;
+                LoadGridRows();
+                
             }
         }
 
@@ -65,6 +67,8 @@ namespace HealthInstitution.GUI.UserWindow
                 PatientRepository patientRepository = PatientRepository.GetInstance();
                 patientRepository.DeletePatient(selectedPatient.username);
                 userRepository.DeleteUser(selectedPatient.username);
+                dataGrid.SelectedItem = null;
+                LoadGridRows();
             }
         }
 
@@ -75,6 +79,8 @@ namespace HealthInstitution.GUI.UserWindow
             {
                 PatientRepository patientRepository = PatientRepository.GetInstance();
                 patientRepository.ChangeBlockedStatus(selectedPatient.username);
+                dataGrid.SelectedItem = null;
+                LoadGridRows();
             }
         }
     }

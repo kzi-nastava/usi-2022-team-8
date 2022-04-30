@@ -50,6 +50,7 @@ namespace HealthInstitution.GUI.SecretaryView
                 PatientRepository patientRepository = PatientRepository.GetInstance();
                 patientRepository.UpdatePatient(username, password, name, surname, patient.blocked);
                 userRepository.UpdateUser(username, password, name, surname);
+                this.Close();
             }
         }
     }
