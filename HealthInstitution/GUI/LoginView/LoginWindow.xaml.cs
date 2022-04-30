@@ -28,7 +28,7 @@ using HealthInstitution.Core.Operations.Repository;
 using HealthInstitution.Core.TrollCounters.Repository;
 using HealthInstitution.Core.EquipmentTransfers.Functionality;
 
-namespace HealthInstitution.GUI.LoginWindow
+namespace HealthInstitution.GUI.LoginView
 {
     /// <summary>
     /// Interaction logic for LoginWindow.xaml
@@ -84,8 +84,7 @@ namespace HealthInstitution.GUI.LoginWindow
                         ExaminationDoctorRepository.GetInstance();
                         OperationDoctorRepository.GetInstance();
                         Doctor loggedDoctor = doctorRepository.GetDoctorByUsername(usernameInput);
-                        DoctorWindow window = new DoctorWindow(loggedDoctor);
-                        window.ShowDialog();
+                        new DoctorWindow(loggedDoctor).ShowDialog();
 
                         break;
 

@@ -20,17 +20,15 @@ namespace HealthInstitution.GUI.DoctorView
     /// </summary>
     public partial class MedicalRecordDialog : Window
     {
-        MedicalRecord medicalRecord;
         public MedicalRecordDialog(MedicalRecord selectedMedicalRecord)
         {
-            this.medicalRecord = selectedMedicalRecord;
             InitializeComponent();
-            PatientLabel.Content = medicalRecord.patient.ToString();
-            HeightLabel.Content = medicalRecord.height.ToString() + " cm";
-            WeightLabel.Content = medicalRecord.weight.ToString() + " kg";
-            foreach (String illness in medicalRecord.previousIllnesses)
+            PatientLabel.Content = selectedMedicalRecord.patient.ToString();
+            HeightLabel.Content = selectedMedicalRecord.height.ToString() + " cm";
+            WeightLabel.Content = selectedMedicalRecord.weight.ToString() + " kg";
+            foreach (String illness in selectedMedicalRecord.previousIllnesses)
                 IllnessesListBox.Items.Add(illness);
-            foreach (String allergen in medicalRecord.allergens)
+            foreach (String allergen in selectedMedicalRecord.allergens)
                 AllergensListBox.Items.Add(allergen);
         }
     }

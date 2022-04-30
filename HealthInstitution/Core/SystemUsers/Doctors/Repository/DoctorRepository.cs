@@ -26,7 +26,7 @@ namespace HealthInstitution.Core.SystemUsers.Doctors.Repository
             this.fileName = fileName;
             this.doctors = new List<Doctor>();
             this.doctorsByUsername = new Dictionary<string, Doctor>();
-            this.LoadDoctors();
+            this.LoadFromFile();
         }
 
         private static DoctorRepository instance = null;
@@ -62,10 +62,10 @@ namespace HealthInstitution.Core.SystemUsers.Doctors.Repository
             return doctorOperations;
         }
 
-        public void LoadDoctors()
+        public void LoadFromFile()
         {
-            var doctors = JArray.Parse(File.ReadAllText(this.fileName));
-            foreach (var doctor in doctors)
+            var allDoctors = JArray.Parse(File.ReadAllText(this.fileName));
+            foreach (var doctor in allDoctors)
             {
                 String username = (String)doctor["username"];
                 String password = (String)doctor["password"];
@@ -73,8 +73,6 @@ namespace HealthInstitution.Core.SystemUsers.Doctors.Repository
                 String surname = (String)doctor["surname"];
                 SpecialtyType specialtyType;
                 Enum.TryParse(doctor["specialty"].ToString(), out specialtyType);
-                //List<Examination> doctorExaminations = ConvertJTokenToExamination(doctor["examination"]);
-                //List<Operation> doctorOperations = ConvertJTokenToOperation(doctor["operations"]);
                 Doctor loadedDoctor = new Doctor(username, password, name, surname, specialtyType);
                 this.doctors.Add(loadedDoctor);
                 this.doctorsByUsername.Add(username, loadedDoctor);
@@ -97,7 +95,8 @@ namespace HealthInstitution.Core.SystemUsers.Doctors.Repository
             return ids;
         }
 
-        public List<dynamic> ShortenDoctor()
+
+        public void SaveToFile()
         {
             List<dynamic> reducedDoctors = new List<dynamic>();
             foreach (Doctor doctor in this.doctors)
@@ -111,16 +110,11 @@ namespace HealthInstitution.Core.SystemUsers.Doctors.Repository
                     specialty = doctor.specialty
                 });
             }
-            return reducedDoctors;
-        }
-
-        public void SaveDoctors()
-        {
-            var allDoctors = JsonSerializer.Serialize(ShortenDoctor(), options);
+            var allDoctors = JsonSerializer.Serialize(reducedDoctors, options);
             File.WriteAllText(this.fileName, allDoctors);
         }
 
-        public List<Doctor> GetDoctors()
+        public List<Doctor> Get()
         {
             return this.doctors;
         }
@@ -132,16 +126,16 @@ namespace HealthInstitution.Core.SystemUsers.Doctors.Repository
             return null;
         }
 
-        public void DeleteDoctorExamination(Doctor doctor, Examination examination)
+        public void DeleteExamination(Doctor doctor, Examination examination)
         {
             doctor.examinations.Remove(examination);
-            SaveDoctors();
+            SaveToFile();
         }
 
-        public void DeleteDoctorOperation(Doctor doctor, Operation operation)
+        public void DeleteOperation(Doctor doctor, Operation operation)
         {
             doctor.operations.Remove(operation);
-            SaveDoctors();
+            SaveToFile();
         }
     }
 }

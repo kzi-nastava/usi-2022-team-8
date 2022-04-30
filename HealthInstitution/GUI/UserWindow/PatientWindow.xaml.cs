@@ -2,6 +2,19 @@
 using HealthInstitution.Core.SystemUsers.Users.Model;
 using HealthInstitution.GUI.PatientWindows;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Shapes;
+using HealthInstitution.GUI.PatientWindows;
+using HealthInstitution.Core.SystemUsers.Users.Model;
+using HealthInstitution.Core.TrollCounters.Repository;
+using HealthInstitution.Core.TrollCounters.Model;
+using HealthInstitution.Core.Examinations.Repository;
+using HealthInstitution.GUI.LoginView;
 
 namespace HealthInstitution.GUI.UserWindow
 {
@@ -24,7 +37,8 @@ namespace HealthInstitution.GUI.UserWindow
             if (System.Windows.MessageBox.Show("Are you sure you want to log out?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
             {
                 this.Close();
-                new LoginWindow.LoginWindow().ShowDialog();
+                LoginWindow window = new LoginWindow();
+                window.ShowDialog();
             }
         }
 

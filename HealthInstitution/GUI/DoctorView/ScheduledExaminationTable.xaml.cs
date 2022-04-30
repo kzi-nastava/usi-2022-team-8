@@ -19,24 +19,24 @@ using System.Windows.Shapes;
 namespace HealthInstitution.GUI.DoctorView
 {
     /// <summary>
-    /// Interaction logic for ScheduledExaminationForm.xaml
+    /// Interaction logic for ScheduledExaminationTable.xaml
     /// </summary>
-    public partial class ScheduledExaminationForm : Window
+    public partial class ScheduledExaminationTable : Window
     {
         Doctor loggedDoctor;
-        public ScheduledExaminationForm(Doctor loggedDoctor)
+        public ScheduledExaminationTable(Doctor doctor)
         {
-            this.loggedDoctor = loggedDoctor;   
+            this.loggedDoctor = doctor;   
             InitializeComponent();
-            ExaminationRadioButton.IsChecked = true;
+            examinationRadioButton.IsChecked = true;
             datePicker.SelectedDate = DateTime.Now;
         }
 
-        public void LoadOperationsGridRows()
+        public void LoadOperationGridRows()
         {
             dataGrid.Items.Clear();
             List<Operation> doctorOperations = this.loggedDoctor.operations;
-            if (UpcomingDaysRadioButton.IsChecked == true)
+            if (upcomingDaysRadioButton.IsChecked == true)
             {
                 DateTime today = DateTime.Now;
                 DateTime dateForThreeDays = today.AddDays(3);
@@ -56,11 +56,11 @@ namespace HealthInstitution.GUI.DoctorView
             }
         }
 
-        public void LoadExaminationsGridRows()
+        public void LoadExaminationGridRows()
         {
             dataGrid.Items.Clear();
             List<Examination> doctorExaminations = this.loggedDoctor.examinations;
-            if ((bool)UpcomingDaysRadioButton.IsChecked)
+            if ((bool)upcomingDaysRadioButton.IsChecked)
             {
                 DateTime today = DateTime.Now;
                 DateTime dateForThreeDays = today.AddDays(3);
@@ -81,19 +81,19 @@ namespace HealthInstitution.GUI.DoctorView
         }
         private void Show_Click(object sender, RoutedEventArgs e)
         {
-            if (ExaminationRadioButton.IsChecked == true)
+            if (examinationRadioButton.IsChecked == true)
             {
-                LoadExaminationsGridRows();
+                LoadExaminationGridRows();
             } else
             {
-                LoadOperationsGridRows();
+                LoadOperationGridRows();
             }
         }
 
         private void ShowMedicalRecord_Click(object sender, RoutedEventArgs e)
         {
             MedicalRecord selectedMedicalRecord;
-            if ((bool)ExaminationRadioButton.IsChecked)
+            if ((bool)examinationRadioButton.IsChecked)
             {
                 Examination selectedExamination = (Examination)dataGrid.SelectedItem;
                 selectedMedicalRecord = selectedExamination.medicalRecord;
@@ -108,7 +108,7 @@ namespace HealthInstitution.GUI.DoctorView
 
         private void StartExamination_Click(object sender, RoutedEventArgs e)
         {
-            if (!(bool)ExaminationRadioButton.IsChecked)
+            if (!(bool)examinationRadioButton.IsChecked)
             {
                 System.Windows.MessageBox.Show("You have to check examination for it to start!", "Alert", MessageBoxButton.OKCancel, MessageBoxImage.Warning);
             } else if (dataGrid.SelectedIndex == -1) {

@@ -19,17 +19,19 @@ using System.Windows.Shapes;
 namespace HealthInstitution.GUI.DoctorView
 {
     /// <summary>
-    /// Interaction logic for OperationForm.xaml
+    /// Interaction logic for OperationTable.xaml
     /// </summary>
-    public partial class OperationForm : Window
+    public partial class OperationTable : Window
     {
         OperationRepository operationRepository = OperationRepository.GetInstance();
         DoctorRepository doctorRepository = DoctorRepository.GetInstance();
+        OperationDoctorRepository operationDoctorRepository = OperationDoctorRepository.GetInstance();  
         Doctor loggedDoctor;
-        public OperationForm(Doctor loggedDoctor)
+        public OperationTable(Doctor doctor)
         {
-            this.loggedDoctor = loggedDoctor;
+            this.loggedDoctor = doctor;
             InitializeComponent();
+            LoadGridRows();
         }
         public void LoadGridRows()
         {
@@ -43,8 +45,7 @@ namespace HealthInstitution.GUI.DoctorView
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
-            AddOpeationDialog addOpeationDialog = new AddOpeationDialog(this.loggedDoctor);
-            addOpeationDialog.ShowDialog();
+            new AddOperationDialog(this.loggedDoctor).ShowDialog();
             LoadGridRows();
             dataGrid.Items.Refresh();
         }
@@ -52,8 +53,7 @@ namespace HealthInstitution.GUI.DoctorView
         private void EditButton_Click(object sender, RoutedEventArgs e)
         {
             Operation selectedOperation = (Operation)dataGrid.SelectedItem;
-            EditOperationDialog editOperationDialog = new EditOperationDialog(selectedOperation);
-            editOperationDialog.ShowDialog();
+            new EditOperationDialog(selectedOperation).ShowDialog();
             LoadGridRows();
             dataGrid.Items.Refresh();
         }
@@ -65,7 +65,8 @@ namespace HealthInstitution.GUI.DoctorView
                 Operation selectedOperation = (Operation)dataGrid.SelectedItem;
                 dataGrid.Items.Remove(selectedOperation);
                 operationRepository.DeleteOperation(selectedOperation.id);
-                doctorRepository.DeleteDoctorOperation(loggedDoctor, selectedOperation);
+                doctorRepository.DeleteOperation(loggedDoctor, selectedOperation);
+                operationDoctorRepository.SaveToFile();
             }
         }
     }

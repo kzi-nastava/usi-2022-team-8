@@ -79,7 +79,7 @@ namespace HealthInstitution.GUI.PatientView
             try
             {
                 ExaminationRepository.GetInstance().ReserveExamination(loggedPatient.username, doctorUsername, dateTime);
-                ExaminationDoctorRepository.GetInstance().SaveExaminationDoctor();
+                ExaminationDoctorRepository.GetInstance().SaveToFile();
                 this.Close();
             }
             catch (Exception ex)

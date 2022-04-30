@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Windows.Forms;
-using HealthInstitution.GUI.LoginWindow;
+using HealthInstitution.GUI.LoginView;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
 
 namespace HealthInstitution.GUI.DoctorView
@@ -23,9 +23,9 @@ namespace HealthInstitution.GUI.DoctorView
     public partial class DoctorWindow : Window
     {
         public Doctor loggedDoctor { get; set; }
-        public DoctorWindow(Doctor loggedDoctor)
+        public DoctorWindow(Doctor doctor)
         {
-            this.loggedDoctor = loggedDoctor;
+            this.loggedDoctor = doctor;
             InitializeComponent();
         }
 
@@ -34,27 +34,24 @@ namespace HealthInstitution.GUI.DoctorView
             if (System.Windows.MessageBox.Show("Are you sure you want to log out?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
             {
                 this.Close();
-                LoginWindow.LoginWindow lw = new LoginWindow.LoginWindow();
-                lw.ShowDialog();
+                LoginWindow window = new LoginWindow();
+                window.ShowDialog();
             }
         }
 
         private void Examinations_Click(object sender, RoutedEventArgs e)
         {
-            ExaminationForm examinationForm = new ExaminationForm(this.loggedDoctor);
-            examinationForm.ShowDialog();
+            new ExaminationTable(this.loggedDoctor).ShowDialog();
         }
 
         private void Operations_Click(object sender, RoutedEventArgs e)
         {
-            OperationForm operationForm = new OperationForm(this.loggedDoctor);
-            operationForm.ShowDialog();
+            new OperationTable(this.loggedDoctor).ShowDialog();
         }
 
         private void ScheduleReview_Click(object sender, RoutedEventArgs e)
         {
-            ScheduledExaminationForm scheduledExaminationForm = new ScheduledExaminationForm(this.loggedDoctor);
-            scheduledExaminationForm.ShowDialog();
+            new ScheduledExaminationTable(this.loggedDoctor).ShowDialog();
         }
     }
 

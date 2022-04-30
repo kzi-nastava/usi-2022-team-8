@@ -175,7 +175,7 @@ public class ScheduleEditRequestFileRepository
         if (scheduleEditRequest != null)
         {
             scheduleEditRequest.state = RestRequests.Model.RestRequestState.Accepted;
-            SaveScheduleEditRequests();
+            Save();
         }
     }
     public void RejectScheduleEditRequests(int id)
@@ -184,7 +184,7 @@ public class ScheduleEditRequestFileRepository
         if (scheduleEditRequest != null)
         {
             scheduleEditRequest.state = RestRequests.Model.RestRequestState.Rejected;
-            SaveScheduleEditRequests();
+            Save();
         }
     }
 }

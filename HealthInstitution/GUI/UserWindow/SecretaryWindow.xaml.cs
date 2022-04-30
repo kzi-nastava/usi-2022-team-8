@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HealthInstitution.GUI.LoginView;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -42,8 +43,8 @@ namespace HealthInstitution.GUI.UserWindow
             if (System.Windows.MessageBox.Show("Are you sure you want to log out?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
             {
                 this.Close();
-                LoginWindow.LoginWindow lw = new LoginWindow.LoginWindow();
-                lw.ShowDialog();
+                LoginWindow window = new LoginWindow();
+                window.ShowDialog();
             }
         }
     }

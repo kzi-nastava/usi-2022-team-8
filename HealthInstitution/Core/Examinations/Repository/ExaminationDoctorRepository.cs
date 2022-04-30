@@ -18,7 +18,7 @@ namespace HealthInstitution.Core.Examinations.Repository
         private ExaminationDoctorRepository(String fileName)
         {
             this.fileName = fileName;
-            this.LoadExaminationDoctor();
+            this.LoadFromFile();
         }
 
         private static ExaminationDoctorRepository instance = null;
@@ -34,12 +34,12 @@ namespace HealthInstitution.Core.Examinations.Repository
             }
         }
 
-        public void LoadExaminationDoctor()
+        public void LoadFromFile()
         {
             var doctorsByUsername = DoctorRepository.GetInstance().doctorsByUsername;
             var examinationsById = ExaminationRepository.GetInstance().examinationsById;
-            var pairs = JArray.Parse(File.ReadAllText(this.fileName));
-            foreach (var pair in pairs)
+            var examinationIdsDoctorUsernames = JArray.Parse(File.ReadAllText(this.fileName));
+            foreach (var pair in examinationIdsDoctorUsernames)
             {
                 int id = (int)pair["id"];
                 String username = (String)pair["username"];
@@ -50,16 +50,16 @@ namespace HealthInstitution.Core.Examinations.Repository
             }
         }
 
-        public void SaveExaminationDoctor()
+        public void SaveToFile()
         {
-            List<dynamic> examinationsIdDoctorsUsername = new List<dynamic>();
+            List<dynamic> examinationIdsDoctorUsernames = new List<dynamic>();
             var examinations = ExaminationRepository.GetInstance().examinations;
             foreach (var examination in examinations)
             {
                 Doctor doctor = examination.doctor;
-                examinationsIdDoctorsUsername.Add(new { id = examination.id, username = doctor.username });
+                examinationIdsDoctorUsernames.Add(new { id = examination.id, username = doctor.username });
             }
-            var allPairs = JsonSerializer.Serialize(examinationsIdDoctorsUsername);
+            var allPairs = JsonSerializer.Serialize(examinationIdsDoctorUsernames);
             File.WriteAllText(this.fileName, allPairs);
         }
     }
