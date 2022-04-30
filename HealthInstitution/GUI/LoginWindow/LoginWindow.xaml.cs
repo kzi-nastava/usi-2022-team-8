@@ -26,6 +26,7 @@ using HealthInstitution.Core.SystemUsers.Doctors.Repository;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using HealthInstitution.Core.Operations.Repository;
 using HealthInstitution.Core.TrollCounters.Repository;
+using HealthInstitution.Core.EquipmentTransfers.Functionality;
 
 namespace HealthInstitution.GUI.LoginWindow
 {
@@ -67,7 +68,7 @@ namespace HealthInstitution.GUI.LoginWindow
                         this.Close();
                         try
                         {
-                            TrollCounterRepository.GetInstance().CheckTroll(foundUser.username);
+                            TrollCounterFileRepository.GetInstance().TrollCheck(foundUser.username);
                             new PatientWindow(foundUser).ShowDialog();
                         }
                         catch (Exception ex)
@@ -106,6 +107,7 @@ namespace HealthInstitution.GUI.LoginWindow
         [STAThread]
         private static void Main(string[] args)
         {
+            EquipmentTransferChecker.UpdateEquipmentByTransfer();
             LoginWindow window = new LoginWindow();
             window.ShowDialog();
         }

@@ -1,23 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using HealthInstitution.Core.SystemUsers.Users.Model;
-using HealthInstitution.Core.Examinations.Model;
+﻿using HealthInstitution.Core.Examinations.Model;
 using HealthInstitution.Core.Examinations.Repository;
-using HealthInstitution.GUI.PatientView;
-using HealthInstitution.Core.TrollCounters.Repository;
 using HealthInstitution.Core.ScheduleEditRequests.Repository;
-using HealthInstitution.Core.ScheduleEditRequests.Model;
+using HealthInstitution.Core.SystemUsers.Users.Model;
+using HealthInstitution.Core.TrollCounters.Repository;
+using HealthInstitution.GUI.PatientView;
+using System.Windows;
 
 namespace HealthInstitution.GUI.PatientWindows;
 
@@ -39,13 +26,13 @@ public partial class PatientScheduleWindow : Window
     {
         try
         {
-            TrollCounterRepository.GetInstance().CheckTroll(loggedPatient.username);
+            TrollCounterFileRepository.GetInstance().TrollCheck(loggedPatient.username);
             AddExaminationDialog addExaminationDialog = new AddExaminationDialog(loggedPatient);
             addExaminationDialog.ShowDialog();
             dataGrid.Items.Clear();
             LoadGrid();
-            TrollCounterRepository.GetInstance().GetTrollCounterById(loggedPatient.username).AppendCreateDates(DateTime.Today);
-            TrollCounterRepository.GetInstance().SaveTrollCounters();
+            TrollCounterFileRepository.GetInstance().GetTrollCounterById(loggedPatient.username).AppendCreateDates(DateTime.Today);
+            TrollCounterFileRepository.GetInstance().Save();
         }
         catch (Exception ex)
         {
@@ -58,14 +45,14 @@ public partial class PatientScheduleWindow : Window
     {
         try
         {
-            TrollCounterRepository.GetInstance().CheckTroll(loggedPatient.username);
+            TrollCounterFileRepository.GetInstance().TrollCheck(loggedPatient.username);
             Examination selectedExamination = (Examination)dataGrid.SelectedItem;
             EditExaminationDialog editExaminationDialog = new EditExaminationDialog(selectedExamination);
             editExaminationDialog.ShowDialog();
             dataGrid.Items.Clear();
             LoadGrid();
-            TrollCounterRepository.GetInstance().GetTrollCounterById(loggedPatient.username).AppendEditDeleteDates(DateTime.Today);
-            TrollCounterRepository.GetInstance().SaveTrollCounters();
+            TrollCounterFileRepository.GetInstance().GetTrollCounterById(loggedPatient.username).AppendEditDeleteDates(DateTime.Today);
+            TrollCounterFileRepository.GetInstance().Save();
         }
         catch (Exception ex)
         {
@@ -79,12 +66,12 @@ public partial class PatientScheduleWindow : Window
         Examination selectedExamination = (Examination)dataGrid.SelectedItem;
         try
         {
-            TrollCounterRepository.GetInstance().CheckTroll(loggedPatient.username);
+            TrollCounterFileRepository.GetInstance().TrollCheck(loggedPatient.username);
             ExaminationDoctorRepository.GetInstance().SaveExaminationDoctor();
             dataGrid.Items.Clear();
             LoadGrid();
-            TrollCounterRepository.GetInstance().GetTrollCounterById(loggedPatient.username).AppendEditDeleteDates(DateTime.Today);
-            TrollCounterRepository.GetInstance().SaveTrollCounters();
+            TrollCounterFileRepository.GetInstance().GetTrollCounterById(loggedPatient.username).AppendEditDeleteDates(DateTime.Today);
+            TrollCounterFileRepository.GetInstance().Save();
         }
         catch (Exception ex)
         {
@@ -95,7 +82,7 @@ public partial class PatientScheduleWindow : Window
         {
             if (selectedExamination.appointment.AddDays(-2) < DateTime.Now)
             {
-                ScheduleEditRequestRepository.GetInstance().AddDeleteRequest(selectedExamination);
+                ScheduleEditRequestFileRepository.GetInstance().AddDeleteRequest(selectedExamination);
             }
             else
             {

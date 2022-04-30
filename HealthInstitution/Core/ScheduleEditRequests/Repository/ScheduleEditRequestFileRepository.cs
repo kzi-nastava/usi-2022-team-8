@@ -1,30 +1,25 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using HealthInstitution.Core.Examinations.Model;
+using HealthInstitution.Core.Examinations.Repository;
+using HealthInstitution.Core.MedicalRecords.Model;
+using HealthInstitution.Core.MedicalRecords.Repository;
+using HealthInstitution.Core.RestRequests.Model;
+using HealthInstitution.Core.Rooms.Model;
+using HealthInstitution.Core.Rooms.Repository;
+using HealthInstitution.Core.ScheduleEditRequests.Model;
+using HealthInstitution.Core.SystemUsers.Doctors.Model;
+using HealthInstitution.Core.SystemUsers.Doctors.Repository;
+using Newtonsoft.Json.Linq;
 using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using HealthInstitution.Core.ScheduleEditRequests.Model;
-using HealthInstitution.Core.Examinations.Model;
-using HealthInstitution.Core.Rooms.Repository;
-using HealthInstitution.Core.Rooms.Model;
-using HealthInstitution.Core.MedicalRecords.Model;
-using HealthInstitution.Core.MedicalRecords.Repository;
-using HealthInstitution.Core.Examinations.Repository;
-using Newtonsoft.Json.Linq;
-using HealthInstitution.Core.RestRequests.Model;
-using HealthInstitution.Core.SystemUsers.Doctors.Model;
-using HealthInstitution.Core.SystemUsers.Doctors.Repository;
 
 namespace HealthInstitution.Core.ScheduleEditRequests.Repository;
 
-public class ScheduleEditRequestRepository
+public class ScheduleEditRequestFileRepository
 {
     public String fileName { get; set; }
-    public List<ScheduleEditRequest> scheduleEditRequests { get; set; }
-    public Dictionary<int, ScheduleEditRequest> scheduleEditRequestsById { get; set; }
+    public List<ScheduleEditRequest> allRequests { get; set; }
+    public Dictionary<Int32, ScheduleEditRequest> allRequestsById { get; set; }
 
     private JsonSerializerOptions options = new JsonSerializerOptions
     {
@@ -32,22 +27,22 @@ public class ScheduleEditRequestRepository
         Converters = { new JsonStringEnumConverter() }
     };
 
-    private ScheduleEditRequestRepository(String fileName)
+    private ScheduleEditRequestFileRepository(String fileName)
     {
         this.fileName = fileName;
-        this.scheduleEditRequests = new List<ScheduleEditRequest>();
-        this.scheduleEditRequestsById = new Dictionary<int, ScheduleEditRequest>();
+        this.allRequests = new List<ScheduleEditRequest>();
+        this.allRequestsById = new Dictionary<int, ScheduleEditRequest>();
         this.LoadRequests();
     }
 
-    private static ScheduleEditRequestRepository instance = null;
+    private static ScheduleEditRequestFileRepository instance = null;
 
-    public static ScheduleEditRequestRepository GetInstance()
+    public static ScheduleEditRequestFileRepository GetInstance()
     {
         {
             if (instance == null)
             {
-                instance = new ScheduleEditRequestRepository(@"..\..\..\Data\JSON\scheduleEditRequests.json");
+                instance = new ScheduleEditRequestFileRepository(@"..\..\..\Data\JSON\scheduleEditRequests.json");
             }
             return instance;
         }
@@ -87,13 +82,13 @@ public class ScheduleEditRequestRepository
             {
                 loadedExamination = null;
             }
-            ScheduleEditRequest scheduleEditRequest = new ScheduleEditRequest(id, loadedExamination, examinationId, state);
-            this.scheduleEditRequests.Add(scheduleEditRequest);
-            this.scheduleEditRequestsById.Add(id, scheduleEditRequest);
+            ScheduleEditRequest scheduleEditRequest = new ScheduleEditRequest(id, null, examinationId, state);
+            this.allRequests.Add(scheduleEditRequest);
+            this.allRequestsById.Add(id, scheduleEditRequest);
         }
     }
 
-    public void SaveScheduleEditRequests()
+    public void Save()
     {
         var allExaminations = JsonSerializer.Serialize(ShortenRequests(), options);
         File.WriteAllText(this.fileName, allExaminations);
@@ -102,7 +97,7 @@ public class ScheduleEditRequestRepository
     public List<dynamic> ShortenRequests()
     {
         List<dynamic> reducedRequests = new List<dynamic>();
-        foreach (ScheduleEditRequest scheduleEditRequest in this.scheduleEditRequests)
+        foreach (ScheduleEditRequest scheduleEditRequest in this.allRequests)
         {
             if (scheduleEditRequest.newExamination is null)
             {
@@ -138,40 +133,40 @@ public class ScheduleEditRequestRepository
 
     public List<ScheduleEditRequest> GetScheduleEditRequests()
     {
-        return this.scheduleEditRequests;
+        return this.allRequests;
     }
 
     public ScheduleEditRequest GetScheduleEditRequestById(int id)
     {
-        return this.scheduleEditRequestsById[id];
+        return this.allRequestsById[id];
     }
 
-    public void AddScheduleEditRequests(Examination examination)
+    public void AddEditRequests(Examination examination)
     {
         Int32 unixTimestamp = (int)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
         ScheduleEditRequest scheduleEditRequest = new ScheduleEditRequest(unixTimestamp, examination, examination.id, RestRequests.Model.RestRequestState.OnHold);
-        this.scheduleEditRequests.Add(scheduleEditRequest);
-        this.scheduleEditRequestsById.Add(unixTimestamp, scheduleEditRequest);
-        SaveScheduleEditRequests();
+        this.allRequests.Add(scheduleEditRequest);
+        this.allRequestsById.Add(unixTimestamp, scheduleEditRequest);
+        Save();
     }
 
     public void AddDeleteRequest(Examination examination)
     {
         Int32 unixTimestamp = (int)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
         ScheduleEditRequest scheduleEditRequest = new ScheduleEditRequest(unixTimestamp, null, examination.id, RestRequests.Model.RestRequestState.OnHold);
-        this.scheduleEditRequests.Add(scheduleEditRequest);
-        this.scheduleEditRequestsById.Add(unixTimestamp, scheduleEditRequest);
-        SaveScheduleEditRequests();
+        this.allRequests.Add(scheduleEditRequest);
+        this.allRequestsById.Add(unixTimestamp, scheduleEditRequest);
+        Save();
     }
 
-    public void DeleteScheduleEditRequests(int id)
+    public void DeleteRequest(int id)
     {
         ScheduleEditRequest scheduleEditRequest = GetScheduleEditRequestById(id);
         if (scheduleEditRequest != null)
         {
-            this.scheduleEditRequestsById.Remove(scheduleEditRequest.Id);
-            this.scheduleEditRequests.Remove(scheduleEditRequest);
-            SaveScheduleEditRequests();
+            this.allRequestsById.Remove(scheduleEditRequest.Id);
+            this.allRequests.Remove(scheduleEditRequest);
+            Save();
         }
     }
     public void AcceptScheduleEditRequests(int id)
