@@ -94,7 +94,6 @@ internal class ExaminationRepository
                 status = examination.status,
                 appointment = examination.appointment,
                 room = examination.room.id,
-                doctor = examination.doctor.username,
                 medicalRecord = examination.medicalRecord.patient.username,
                 anamnesis = examination.anamnesis
             });

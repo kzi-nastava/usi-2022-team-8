@@ -96,7 +96,6 @@ namespace HealthInstitution.Core.Operations.Repository
                     status = operation.status,
                     room = operation.room.number,
                     duration = operation.duration,
-                    doctor = operation.doctor.username,
                     medicalRecord = operation.medicalRecord.patient.username,
                     report = operation.report
                 });
