@@ -67,7 +67,7 @@ namespace HealthInstitution.GUI.LoginWindow
                         this.Close();
                         try
                         {
-                            TrollCounterRepository.GetInstance().CheckTroll(foundUser.username);
+                            TrollCounterFileRepository.GetInstance().TrollCheck(foundUser.username);
                             new PatientWindow(foundUser).ShowDialog();
                         }
                         catch (Exception ex)

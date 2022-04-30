@@ -1,6 +1,6 @@
-﻿using HealthInstitution.Core.RestRequests.Model;
-using HealthInstitution.Core.Examinations.Model;
+﻿using HealthInstitution.Core.Examinations.Model;
 using HealthInstitution.Core.Examinations.Repository;
+using HealthInstitution.Core.RestRequests.Model;
 
 namespace HealthInstitution.Core.ScheduleEditRequests.Model;
 
