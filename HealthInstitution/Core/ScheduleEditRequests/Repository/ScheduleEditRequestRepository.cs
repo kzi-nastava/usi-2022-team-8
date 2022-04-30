@@ -9,8 +9,13 @@ using System.Text.Json.Serialization;
 using HealthInstitution.Core.ScheduleEditRequests.Model;
 using HealthInstitution.Core.Examinations.Model;
 using HealthInstitution.Core.Rooms.Repository;
+using HealthInstitution.Core.Rooms.Model;
+using HealthInstitution.Core.MedicalRecords.Model;
 using HealthInstitution.Core.MedicalRecords.Repository;
-
+using HealthInstitution.Core.Examinations.Repository;
+using Newtonsoft.Json.Linq;
+using HealthInstitution.Core.RestRequests.Model;
+using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using HealthInstitution.Core.SystemUsers.Doctors.Repository;
 
 namespace HealthInstitution.Core.ScheduleEditRequests.Repository;
@@ -50,24 +55,68 @@ public class ScheduleEditRequestRepository
 
     public void LoadRequests()
     {
-        var requests = JsonSerializer.Deserialize<List<ScheduleEditRequest>>(File.ReadAllText(@"..\..\..\Data\JSON\scheduleEditRequests.json"), options);
-        foreach (ScheduleEditRequest scheduleEditRequest in requests)
+        var roomsById = RoomRepository.GetInstance().roomById;
+        var doctorsByUsername = DoctorRepository.GetInstance().doctorsByUsername;
+        ExaminationDoctorRepository.GetInstance();
+        var medicalRecordsByUsername = MedicalRecordRepository.GetInstance().medicalRecordByUsername;
+
+        var requests = JArray.Parse(File.ReadAllText(this.fileName));
+        foreach (var request in requests)
         {
-            scheduleEditRequest.examination.room = RoomRepository.GetInstance().GetRoomById(scheduleEditRequest.examination.room.id);
-            scheduleEditRequest.examination.medicalRecord =
-                MedicalRecordRepository.GetInstance().GetMedicalRecordByUsername(scheduleEditRequest.examination.medicalRecord.patient);
-            scheduleEditRequest.examination.doctor =
-               DoctorRepository.GetInstance().GetDoctorByUsername(scheduleEditRequest.examination.doctor.username);
+            int id = (int)request["id"];
+            RestRequestState state;
+            Enum.TryParse(request["state"].ToString(), out state);
+            int examinationId = (int)request["examinationId"];
+
+            int exaimantionId = (int)request["examination"]["id"];
+            ExaminationStatus status;
+            Enum.TryParse(request["examination"]["status"].ToString(), out status);
+            DateTime appointment = (DateTime)request["examination"]["appointment"];
+            int roomId = (int)request["examination"]["room"];
+            Room room = roomsById[roomId];
+            String doctorUsername = (String)request["examination"]["doctor"];
+            Doctor doctor = doctorsByUsername[doctorUsername];
+            String patientUsername = (String)request["examination"]["medicalRecord"];
+            MedicalRecord medicalRecord = medicalRecordsByUsername[patientUsername];
+            String anamnesis = (String)request["examination"]["anamnesis"];
+
+            Examination loadedExamination = new Examination(id, status, appointment, room, doctor, medicalRecord, anamnesis);
+            ScheduleEditRequest scheduleEditRequest = new ScheduleEditRequest(id, loadedExamination, examinationId, state);
 
             this.scheduleEditRequests.Add(scheduleEditRequest);
-            this.scheduleEditRequestsById.Add(scheduleEditRequest.Id, scheduleEditRequest);
+            this.scheduleEditRequestsById.Add(id, scheduleEditRequest);
         }
     }
 
     public void SaveScheduleEditRequests()
     {
-        var allScheduleEditRequest = JsonSerializer.Serialize(this.scheduleEditRequests, options);
-        File.WriteAllText(this.fileName, allScheduleEditRequest);
+        var allExaminations = JsonSerializer.Serialize(ShortenRequests(), options);
+        File.WriteAllText(this.fileName, allExaminations);
+    }
+
+    public List<dynamic> ShortenRequests()
+    {
+        List<dynamic> reducedRequests = new List<dynamic>();
+        foreach (ScheduleEditRequest scheduleEditRequest in this.scheduleEditRequests)
+        {
+            reducedRequests.Add(new
+            {
+                id = scheduleEditRequest.Id,
+                examinationId = scheduleEditRequest.examinationId,
+                state = scheduleEditRequest.state,
+                examination = new
+                {
+                    id = scheduleEditRequest.examination.id,
+                    status = scheduleEditRequest.examination.status,
+                    appointment = scheduleEditRequest.examination.appointment,
+                    doctor = scheduleEditRequest.examination.doctor.username,
+                    room = scheduleEditRequest.examination.room.id,
+                    medicalRecord = scheduleEditRequest.examination.medicalRecord.patient.username,
+                    anamnesis = scheduleEditRequest.examination.anamnesis
+                }
+            });
+        }
+        return reducedRequests;
     }
 
     public List<ScheduleEditRequest> GetScheduleEditRequests()
