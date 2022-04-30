@@ -1,8 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using HealthInstitution.Core.Examinations.Repository;
+using HealthInstitution.Core.SystemUsers.Users.Model;
+using HealthInstitution.GUI.PatientWindows;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -46,8 +44,8 @@ namespace HealthInstitution.GUI.UserWindow
 
         private void Schedule_Button_Click(object sender, RoutedEventArgs e)
         {
-            var auto = TrollCounterRepository.GetInstance().GetTrollCounterById(loggedPatient.username);
-            Console.WriteLine(auto.ToString());
+            /* var check = TrollCounterRepository.GetInstance().GetTrollCounterById(loggedPatient.username);
+             Console.WriteLine(check.ToString());*/
 
             new PatientScheduleWindow(this.loggedPatient).ShowDialog();
         }

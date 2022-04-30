@@ -34,7 +34,7 @@ namespace HealthInstitution.GUI.SecretaryView
             surnameBox.Text = patient.surname;
         }
 
-        private void updatePatient_click(object sender, RoutedEventArgs e)
+        private void UpdatePatient_click(object sender, RoutedEventArgs e)
         {
             string username = usernameBox.Text;
             string password = passwordBox.Password.ToString();
@@ -50,6 +50,7 @@ namespace HealthInstitution.GUI.SecretaryView
                 PatientRepository patientRepository = PatientRepository.GetInstance();
                 patientRepository.UpdatePatient(username, password, name, surname, patient.blocked);
                 userRepository.UpdateUser(username, password, name, surname);
+                this.Close();
             }
         }
     }

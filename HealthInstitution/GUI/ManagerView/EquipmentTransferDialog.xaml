@@ -11,19 +11,19 @@
     <Grid>
         <Label Content="Equipment Transfer" HorizontalAlignment="Center" Margin="0,26,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.49,0.699" FontSize="20"/>
 
-        <TextBox HorizontalAlignment="Left" PreviewTextInput="NumberValidationTextBox" Height="34" Margin="413,273,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="171" FontSize="16"/>
+        <TextBox Name ="quantityBox" HorizontalAlignment="Left" PreviewTextInput="NumberValidationTextBox" Height="34" Margin="352,273,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="217" FontSize="16"/>
 
-        <ComboBox HorizontalAlignment="Left" Loaded="FromRoomComboBox_Loaded" Margin="413,108,0,0" VerticalAlignment="Top" Width="171" Height="34" FontSize="16"/>
+        <ComboBox Name="fromRoomComboBox" SelectionChanged="FromRoomComboBox_SelectionChanged"  HorizontalAlignment="Left" Loaded="FromRoomComboBox_Loaded" Margin="352,108,0,0" VerticalAlignment="Top" Width="217" Height="34" FontSize="16"/>
 
-        <ComboBox HorizontalAlignment="Left" Margin="413,165,0,0" Loaded="ToRoomComboBox_Loaded" VerticalAlignment="Top" Width="171" Height="34"/>
+        <ComboBox Name="toRoomComboBox" HorizontalAlignment="Left" Margin="352,165,0,0" Loaded="ToRoomComboBox_Loaded" VerticalAlignment="Top" Width="217" Height="34"/>
 
-        <ComboBox HorizontalAlignment="Left" Height="34" Margin="413,217,0,0" Loaded="EquipmentComboBox_Loaded"  VerticalAlignment="Top" Width="171"/>
-        <Button Content="transfer" Click="Transfer_Click" HorizontalAlignment="Left" Margin="413,402,0,0" VerticalAlignment="Top"  Height="34" Width="171" />
-        <Label Content="From room" HorizontalAlignment="Left" Margin="217,109,0,0" VerticalAlignment="Top"/>
-        <Label Content="To room" HorizontalAlignment="Left" Margin="217,166,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.424,-0.329"/>
-        <Label Content="Equipment" HorizontalAlignment="Left" Margin="217,218,0,0" VerticalAlignment="Top"/>
-        <Label Content="Quantity" HorizontalAlignment="Left" Margin="217,274,0,0" VerticalAlignment="Top"/>
-        <Label Content="Date" HorizontalAlignment="Left" Margin="217,337,0,0" VerticalAlignment="Top"/>
-        <DatePicker HorizontalAlignment="Left" Margin="413,338,0,0" VerticalAlignment="Top" Width="171"/>
+        <ComboBox Name="equipmentComboBox" HorizontalAlignment="Left" Height="34" Margin="352,217,0,0" Loaded="EquipmentComboBox_Loaded"  VerticalAlignment="Top" Width="217"/>
+        <Button Content="transfer" Click="Transfer_Click" HorizontalAlignment="Left" Margin="352,402,0,0" VerticalAlignment="Top"  Height="34" Width="217" />
+        <Label Content="From room" HorizontalAlignment="Left" Margin="156,109,0,0" VerticalAlignment="Top"/>
+        <Label Content="To room" HorizontalAlignment="Left" Margin="156,166,0,0" VerticalAlignment="Top" RenderTransformOrigin="-0.424,-0.329"/>
+        <Label Content="Equipment" HorizontalAlignment="Left" Margin="156,218,0,0" VerticalAlignment="Top"/>
+        <Label Content="Quantity" HorizontalAlignment="Left" Margin="156,274,0,0" VerticalAlignment="Top"/>
+        <Label Content="Date" HorizontalAlignment="Left" Margin="156,337,0,0" VerticalAlignment="Top"/>
+        <DatePicker Name="transferDate" HorizontalAlignment="Left" Margin="352,338,0,0" VerticalAlignment="Top" Width="217"/>
     </Grid>
 </Window>

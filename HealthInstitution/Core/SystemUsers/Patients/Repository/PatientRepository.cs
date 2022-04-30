@@ -1,13 +1,8 @@
 ﻿using HealthInstitution.Core.MedicalRecords.Repository;
 using HealthInstitution.Core.SystemUsers.Patients.Model;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.SystemUsers.Patients.Repository
 {
@@ -69,9 +64,10 @@ namespace HealthInstitution.Core.SystemUsers.Patients.Repository
 
         public void AddPatient(string username, string password, string name, string surname, double height, double weight, List<string> allergens, List<string> previousIlnesses)
         {
-            MedicalRecordRepository medicalRecordRepository = MedicalRecordRepository.GetInstance();
             Patient patient = new Patient(Users.Model.UserType.Patient, username, password, name, surname, Users.Model.BlockState.NotBlocked);
-            medicalRecordRepository.AddMedicalRecord(height, weight,previousIlnesses, allergens,patient);
+            
+            MedicalRecordRepository medicalRecordRepository = MedicalRecordRepository.GetInstance();
+            medicalRecordRepository.AddMedicalRecord(height, weight, previousIlnesses, allergens, patient);
             this.patients.Add(patient);
             this.patientByUsername[username] = patient;
             SavePatients();

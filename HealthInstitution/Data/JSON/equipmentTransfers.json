@@ -1,9 +1,1 @@
-[
-  {
-    "id": 1,
-    "equipment": 1,
-    "fromRoom": 1,
-    "toRoom": 2,
-    "transferTime": "2022-07-26T00:00:00"
-  }
-]
+[{"id":1,"equipment":1,"fromRoom":1,"toRoom":2,"transferTime":"2022-07-26T00:00:00"},{"id":2,"equipment":5,"fromRoom":1,"toRoom":3,"transferTime":"2022-09-13T00:00:00"},{"id":3,"equipment":13,"fromRoom":2,"toRoom":1,"transferTime":"2022-07-14T00:00:00"}]

@@ -16,6 +16,11 @@ public class Equipment
         this.type = type;
         this.isDynamic = isDynamic;
     }
+
+    public override string? ToString()
+    {
+        return name+" (has "+quantity+")";
+    }
 }
 
 public enum EquipmentType

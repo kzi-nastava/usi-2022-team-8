@@ -1,23 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using HealthInstitution.Core.Examinations.Model;
-using HealthInstitution.Core.SystemUsers.Patients.Model;
-using HealthInstitution.Core.SystemUsers.Users.Repository;
-using HealthInstitution.Core.SystemUsers.Users.Model;
-using HealthInstitution.Core.SystemUsers.Doctors.Model;
+﻿using HealthInstitution.Core.Examinations.Model;
 using HealthInstitution.Core.Examinations.Repository;
 using HealthInstitution.Core.ScheduleEditRequests.Repository;
+using HealthInstitution.Core.SystemUsers.Users.Model;
+using HealthInstitution.Core.SystemUsers.Users.Repository;
+using System.Windows;
+using System.Windows.Controls;
 
 namespace HealthInstitution.GUI.PatientWindows
 {
@@ -53,14 +40,15 @@ namespace HealthInstitution.GUI.PatientWindows
             {
                 if (examination.appointment.AddDays(-2) < DateTime.Today)
                 {
-                    Examination new_examination = ExaminationRepository.GetInstance().GenerateRequestExamination(examination, loggedPatient.username, doctorUsername, dateTime);
-                    ScheduleEditRequestRepository.GetInstance().AddScheduleEditRequests(new_examination);
+                    Examination newExamination = ExaminationRepository.GetInstance().GenerateRequestExamination(examination, loggedPatient.username, doctorUsername, dateTime);
+                    ScheduleEditRequestFileRepository.GetInstance().AddEditRequests(newExamination);
                 }
                 else
                 {
                     ExaminationRepository.GetInstance().EditExamination(examination, loggedPatient.username, doctorUsername, dateTime);
                     ExaminationDoctorRepository.GetInstance().SaveToFile();
                 }
+
                 this.Close();
             }
             catch (Exception ex)

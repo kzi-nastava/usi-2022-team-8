@@ -73,7 +73,7 @@ namespace HealthInstitution.Core.Equipments.Repository
             return null;
         }
 
-        public void AddEquipment(int quantity, string name, EquipmentType type, bool isDynamic)
+        public Equipment AddEquipment(int quantity, string name, EquipmentType type, bool isDynamic)
         {
 
             this.maxId++;
@@ -83,6 +83,7 @@ namespace HealthInstitution.Core.Equipments.Repository
             this.equipments.Add(equipment);
             this.equipmentById.Add(equipment.id, equipment);
             SaveEquipments();
+            return equipment;
         }
 
         public void UpdateEquipment(int id, int quantity, string name, EquipmentType type, bool isDynamic)
