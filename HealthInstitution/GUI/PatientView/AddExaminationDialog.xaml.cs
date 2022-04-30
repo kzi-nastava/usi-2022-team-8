@@ -92,6 +92,7 @@ namespace HealthInstitution.GUI.PatientView
             try
             {
                 ExaminationRepository.GetInstance().ReserveExamiantion(loggedPatient.username, doctorUsername, dateTime);
+                ExaminationDoctorRepository.GetInstance().SaveExaminationDoctor();
                 this.Close();
             }
             catch (Exception ex)

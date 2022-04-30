@@ -15,6 +15,7 @@ using HealthInstitution.GUI.PatientWindows;
 using HealthInstitution.Core.SystemUsers.Users.Model;
 using HealthInstitution.Core.TrollCounters.Repository;
 using HealthInstitution.Core.TrollCounters.Model;
+using HealthInstitution.Core.Examinations.Repository;
 
 namespace HealthInstitution.GUI.UserWindow
 {
@@ -28,6 +29,7 @@ namespace HealthInstitution.GUI.UserWindow
         public PatientWindow(User loggedPatient)
         {
             InitializeComponent();
+            ExaminationDoctorRepository.GetInstance();
             this.loggedPatient = loggedPatient;
         }
 

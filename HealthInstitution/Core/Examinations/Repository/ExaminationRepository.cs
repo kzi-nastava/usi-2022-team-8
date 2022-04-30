@@ -42,37 +42,38 @@ internal class ExaminationRepository
 
     private static ExaminationRepository instance = null;
 
-        public static ExaminationRepository GetInstance()
+    public static ExaminationRepository GetInstance()
+    {
         {
+            if (instance == null)
             {
-                if (instance == null)
-                {
-                    instance = new ExaminationRepository(@"..\..\..\Data\JSON\examinations.json");
-                }
-                return instance;
+                instance = new ExaminationRepository(@"..\..\..\Data\JSON\examinations.json");
             }
+            return instance;
         }
-        public void LoadExaminations()
-        {
-            var roomsById = RoomRepository.GetInstance().roomById;
-            //var doctorsByUsername = DoctorRepository.GetInstance().doctorsByUsername;
-            var medicalRecordsByUsername = MedicalRecordRepository.GetInstance().medicalRecordByUsername;
-            var examinations = JArray.Parse(File.ReadAllText(this.fileName));
-            foreach (var examination in examinations)
-            {
-                int id = (int)examination["id"];
-                ExaminationStatus status;
-                Enum.TryParse(examination["status"].ToString(), out status);
-                DateTime appointment = (DateTime)examination["appointment"];
-                int roomId = (int)examination["room"];
-                Room room = roomsById[roomId];
-                String doctorUsername = (String)examination["doctor"];
-                //Doctor doctor = doctorsByUsername[doctorUsername];
-                String patientUsername = (String)examination["medicalRecord"];
-                MedicalRecord medicalRecord = medicalRecordsByUsername[patientUsername];
-                String anamnesis = (String)examination["anamnesis"];
+    }
 
-                Examination loadedExamination = new Examination(id, status, appointment, room, null, medicalRecord, anamnesis);
+    public void LoadExaminations()
+    {
+        var roomsById = RoomRepository.GetInstance().roomById;
+        //var doctorsByUsername = DoctorRepository.GetInstance().doctorsByUsername;
+        var medicalRecordsByUsername = MedicalRecordRepository.GetInstance().medicalRecordByUsername;
+        var examinations = JArray.Parse(File.ReadAllText(this.fileName));
+        foreach (var examination in examinations)
+        {
+            int id = (int)examination["id"];
+            ExaminationStatus status;
+            Enum.TryParse(examination["status"].ToString(), out status);
+            DateTime appointment = (DateTime)examination["appointment"];
+            int roomId = (int)examination["room"];
+            Room room = roomsById[roomId];
+            String doctorUsername = (String)examination["doctor"];
+            //Doctor doctor = doctorsByUsername[doctorUsername];
+            String patientUsername = (String)examination["medicalRecord"];
+            MedicalRecord medicalRecord = medicalRecordsByUsername[patientUsername];
+            String anamnesis = (String)examination["anamnesis"];
+
+            Examination loadedExamination = new Examination(id, status, appointment, room, null, medicalRecord, anamnesis);
 
             if (id > maxId) { maxId = id; }
 
@@ -122,14 +123,14 @@ internal class ExaminationRepository
         return null;
     }
 
-        public void AddExamination(DateTime appointment, Room room, Doctor doctor, MedicalRecord medicalRecord)
-        {
-            int id = this.maxId++;
-            Examination examination = new Examination(id, ExaminationStatus.Scheduled, appointment, room, doctor, medicalRecord, "");
-            this.examinations.Add(examination);
-            this.examinationsById.Add(id, examination);
-            SaveExaminations();
-        }
+    public void AddExamination(DateTime appointment, Room room, Doctor doctor, MedicalRecord medicalRecord)
+    {
+        int id = this.maxId++;
+        Examination examination = new Examination(id, ExaminationStatus.Scheduled, appointment, room, doctor, medicalRecord, "");
+        this.examinations.Add(examination);
+        this.examinationsById.Add(id, examination);
+        SaveExaminations();
+    }
 
     public void UpdateExamination(int id, DateTime appointment, MedicalRecord medicalRecord)
     {
@@ -199,7 +200,7 @@ internal class ExaminationRepository
         CheckAvailableDoctor(doctor, dateTime);
         var room = CheckAvailableRoom(dateTime);
         Patient patient = PatientRepository.GetInstance().GetPatientByUsername(patientUsername);
-        Examination e = new Examination(examination.id, examination.status, dateTime, room, doctor, examination.medicalRecord);
+        Examination e = new Examination(examination.id, examination.status, dateTime, room, doctor, examination.medicalRecord, "");
         SwapExaminationValue(e);
     }
 

@@ -1,1 +1,1 @@
-[{"id":1,"status":"Scheduled","appointment":"2022-05-16T13:00:00","room":2,"doctor":"jovan","medicalRecord":"pera","anamnesis":"bbbbbbbbbbbbbbbbbbbbbbbbbb"}]
+[{"id":1,"status":"Scheduled","appointment":"2022-05-16T13:00:00","room":2,"doctor":"jovan","medicalRecord":"pera","anamnesis":"bbbbbbbbbbbbbbbbbbbbbbbbbb"},{"id":3,"status":"Scheduled","appointment":"2022-06-02T09:30:00","room":3,"doctor":"ivan","medicalRecord":"pera","anamnesis":""}]
