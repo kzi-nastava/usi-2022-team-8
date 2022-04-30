@@ -98,8 +98,7 @@ internal class ExaminationRepository
                 anamnesis = examination.anamnesis
             });
         }
-        return reducedExaminations
-    ;
+        return reducedExaminations;
     }
 
     public void SaveExaminations()

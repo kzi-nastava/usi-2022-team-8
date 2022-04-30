@@ -1,1 +1,17 @@
-[{"Id":1651285908,"examination":{"id":19,"status":"Scheduled","appointment":"0001-01-01T09:00:00","room":{"id":3,"type":"ExaminationRoom","number":3,"isRenovating":false,"availableEquipment":[]},"doctor":{"specialty":"Surgeon","examinations":[{"id":1,"status":"Scheduled","appointment":"2022-05-16T13:00:00","room":{"id":2,"type":"OperatingRoom","number":2,"isRenovating":false,"availableEquipment":[]},"doctor":null,"medicalRecord":{"height":189.2,"weight":84.4,"previousIllnesses":["Headaches","Diarrhea"],"allergens":["Gluten","Nuts"],"patient":{"type":"Patient","username":"pera","password":"pera","name":"Petar","surname":"Petrovic","blocked":"NotBlocked"},"prescriptions":[],"referrals":[]},"anamnesis":"bbbbbbbbbbbbbbbbbbbbbbbbbb"},{"id":19,"status":"Scheduled","appointment":"2022-05-01T09:00:00","room":{"id":3,"type":"ExaminationRoom","number":3,"isRenovating":false,"availableEquipment":[]},"doctor":null,"medicalRecord":{"height":174,"weight":75.1,"previousIllnesses":["Headaches","Mononucleosis"],"allergens":["Milk","Soya","Nuts"],"patient":{"type":"Patient","username":"marko","password":"marko","name":"Marko","surname":"Markovic","blocked":"NotBlocked"},"prescriptions":[],"referrals":[]},"anamnesis":""}],"operations":[],"restRequests":[],"type":"Doctor","username":"jovan","password":"jovan","name":"Jovan","surname":"Jovanovic","blocked":"NotBlocked"},"medicalRecord":{"height":174,"weight":75.1,"previousIllnesses":["Headaches","Mononucleosis"],"allergens":["Milk","Soya","Nuts"],"patient":{"type":"Patient","username":"marko","password":"marko","name":"Marko","surname":"Markovic","blocked":"NotBlocked"},"prescriptions":[],"referrals":[]},"anamnesis":""},"examinationId":19,"state":"OnHold"}]
+[
+
+  {
+    "id": 1651328078,
+    "examinationId": 15,
+    "state": "OnHold",
+    "examination": {
+      "id": 15,
+      "status": "Scheduled",
+      "appointment": "2022-05-01T09:15:00",
+      "doctor": "ivan",
+      "room": 3,
+      "medicalRecord": "pera",
+      "anamnesis": ""
+    }
+  }
+]
