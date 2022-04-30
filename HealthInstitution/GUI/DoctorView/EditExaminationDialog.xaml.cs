@@ -1,5 +1,7 @@
 ﻿using HealthInstitution.Core.Examinations.Model;
+using HealthInstitution.Core.Examinations.Repository;
 using HealthInstitution.Core.SystemUsers.Patients.Model;
+using HealthInstitution.Core.SystemUsers.Patients.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,10 +34,12 @@ namespace HealthInstitution.GUI.DoctorView
         private void PatientComboBox_Loaded(object sender, RoutedEventArgs e)
         {
             var patientComboBox = sender as System.Windows.Controls.ComboBox;
-            List<Patient> patients = new List<Patient>();
-            //TODO  
-            patientComboBox.ItemsSource = patients;
-            patientComboBox.SelectedItem = selectedExamination.medicalRecord.patient;
+            List<Patient> patients = PatientRepository.GetInstance().patients;
+            foreach (Patient patient in patients)
+            {
+                patientComboBox.Items.Add(patient);
+            }
+            patientComboBox.SelectedIndex = 0;
         }
 
         private void HourComboBox_Loaded(object sender, RoutedEventArgs e)
@@ -48,7 +52,6 @@ namespace HealthInstitution.GUI.DoctorView
             }
             hourComboBox.ItemsSource = hours;
             hourComboBox.SelectedIndex = 0;
-            // TODO stavi sate
         }
 
         private void MinuteComboBox_Loaded(object sender, RoutedEventArgs e)
@@ -61,15 +64,27 @@ namespace HealthInstitution.GUI.DoctorView
             minutes.Add("45");
             minuteComboBox.ItemsSource = minutes;
             minuteComboBox.SelectedIndex = 0;
-            // TODO stavi minute
         }
 
         private void Save_Click(object sender, RoutedEventArgs e)
         {
-            //string date = datePicker.Value.ToString("dd.MM.yyyy", System.Globalization.CultureInfo.InvariantCulture);
-            String minutes = minuteComboBox.Text;
-            String hours = hourComboBox.Text;
-            var patient = (Patient)patientComboBox.SelectedItem;
+            DateTime dateTime = (DateTime)datePicker.SelectedDate;
+            int minutes = Int32.Parse(minuteComboBox.Text);
+            int hours = Int32.Parse(hourComboBox.Text);
+            dateTime = dateTime.AddHours(hours);
+            dateTime = dateTime.AddMinutes(minutes);
+
+            Patient patient = (Patient)patientComboBox.SelectedItem;
+            try
+            {
+                ExaminationRepository.GetInstance().EditExamination(selectedExamination, patient.username, selectedExamination.doctor.username, dateTime);
+                //ExaminationDoctorRepository.GetInstance().SaveExaminationDoctor();
+                this.Close();
+            }
+            catch (Exception ex)
+            {
+                System.Windows.MessageBox.Show(ex.Message, "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
         }
     }
 }

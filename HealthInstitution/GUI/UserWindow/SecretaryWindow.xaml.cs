@@ -24,19 +24,17 @@ namespace HealthInstitution.GUI.UserWindow
             InitializeComponent();
         }
 
-        private void patients_click(object sender, RoutedEventArgs e)
+        private void Patients_click(object sender, RoutedEventArgs e)
         {
-            CrudbPatients crudbPatientsWindow = new CrudbPatients();
-            crudbPatientsWindow.ShowDialog();
-            //this.Close();
+            PatientsTable patientsTableWindow = new PatientsTable();
+            patientsTableWindow.ShowDialog();
         }
 
 
-        private void examinationRequests_click(object sender, RoutedEventArgs e)
+        private void ExaminationRequests_click(object sender, RoutedEventArgs e)
         {
             ExaminationRequestsReview examinationRequestsReview = new ExaminationRequestsReview();
             examinationRequestsReview.ShowDialog();
-            //this.Close();
         }
 
         private void LogOut_Click(object sender, RoutedEventArgs e)
@@ -48,12 +46,5 @@ namespace HealthInstitution.GUI.UserWindow
                 lw.ShowDialog();
             }
         }
-
-        /*[STAThread]
-        static void Main(string[] args)
-        {
-            SecretaryWindow secretaryWindow = new SecretaryWindow();
-            secretaryWindow.ShowDialog();   
-        }*/
     }
 }

@@ -78,13 +78,13 @@ namespace HealthInstitution.GUI.PatientView
             dateTime = dateTime.AddMinutes(minutes);
             try
             {
-                ExaminationRepository.GetInstance().ReserveExamiantion(loggedPatient.username, doctorUsername, dateTime);
+                ExaminationRepository.GetInstance().ReserveExamination(loggedPatient.username, doctorUsername, dateTime);
                 ExaminationDoctorRepository.GetInstance().SaveExaminationDoctor();
                 this.Close();
             }
             catch (Exception ex)
             {
-                System.Windows.MessageBox.Show(ex.Message, "Question", MessageBoxButton.OK, MessageBoxImage.Warning);
+                System.Windows.MessageBox.Show(ex.Message, "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
 

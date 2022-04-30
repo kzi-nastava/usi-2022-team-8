@@ -56,6 +56,7 @@ public class ScheduleEditRequestFileRepository
         var medicalRecordsByUsername = MedicalRecordRepository.GetInstance().medicalRecordByUsername;
 
         var requests = JArray.Parse(File.ReadAllText(this.fileName));
+        Examination loadedExamination;
         foreach (var request in requests)
         {
             int id = (int)request["id"];
@@ -75,11 +76,11 @@ public class ScheduleEditRequestFileRepository
                 MedicalRecord medicalRecord = medicalRecordsByUsername[patientUsername];
                 String anamnesis = (String)request["newExamination"]["anamnesis"];
 
-                Examination loadedExamination = new Examination(id, status, appointment, room, doctor, medicalRecord, anamnesis);
+                loadedExamination = new Examination(id, status, appointment, room, doctor, medicalRecord, anamnesis);
             }
             else
             {
-                Examination loadedExamination = null;
+                loadedExamination = null;
             }
             ScheduleEditRequest scheduleEditRequest = new ScheduleEditRequest(id, null, examinationId, state);
             this.allRequests.Add(scheduleEditRequest);
@@ -166,6 +167,24 @@ public class ScheduleEditRequestFileRepository
             this.allRequestsById.Remove(scheduleEditRequest.Id);
             this.allRequests.Remove(scheduleEditRequest);
             Save();
+        }
+    }
+    public void AcceptScheduleEditRequests(int id)
+    {
+        ScheduleEditRequest scheduleEditRequest = GetScheduleEditRequestById(id);
+        if (scheduleEditRequest != null)
+        {
+            scheduleEditRequest.state = RestRequests.Model.RestRequestState.Accepted;
+            SaveScheduleEditRequests();
+        }
+    }
+    public void RejectScheduleEditRequests(int id)
+    {
+        ScheduleEditRequest scheduleEditRequest = GetScheduleEditRequestById(id);
+        if (scheduleEditRequest != null)
+        {
+            scheduleEditRequest.state = RestRequests.Model.RestRequestState.Rejected;
+            SaveScheduleEditRequests();
         }
     }
 }

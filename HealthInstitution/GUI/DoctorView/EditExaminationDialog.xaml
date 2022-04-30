@@ -8,7 +8,7 @@
         WindowStartupLocation="CenterScreen"
         Title="Edit examination" Height="300" Width="350">
     <Grid>
-        <DatePicker SelectedDate="{Binding Date, StringFormat='dd/MM/yyyy HH:mm:ss'}" Margin="120,-80,30,102" Height="50"/>
+        <DatePicker Name="datePicker" SelectedDate="{Binding Date, StringFormat='dd/MM/yyyy HH:mm:ss'}" Margin="120,-80,30,102" Height="50"/>
 
         <ComboBox Name="patientComboBox" HorizontalAlignment="Left"   
                   Margin="120,152,0,0"   

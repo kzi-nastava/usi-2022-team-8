@@ -123,7 +123,7 @@ internal class ExaminationRepository
 
     public void AddExamination(DateTime appointment, Room room, Doctor doctor, MedicalRecord medicalRecord)
     {
-        int id = this.maxId++;
+        int id = ++this.maxId;
         Examination examination = new Examination(id, ExaminationStatus.Scheduled, appointment, room, doctor, medicalRecord, "");
         this.examinations.Add(examination);
         this.examinationsById.Add(id, examination);
@@ -135,6 +135,7 @@ internal class ExaminationRepository
         Examination examination = GetExaminationById(id);
         examination.appointment = appointment;
         examination.medicalRecord = medicalRecord;
+        this.examinationsById[id] = examination;
         SaveExaminations();
     }
 
@@ -150,7 +151,7 @@ internal class ExaminationRepository
         }
     }
 
-    private void CheckAvailableDoctor(Doctor doctor, DateTime dateTime)
+    private void CheckIfDoctorIsAvailable(Doctor doctor, DateTime dateTime)
     {
         foreach (var examination in doctor.examinations)
         {
@@ -174,26 +175,27 @@ internal class ExaminationRepository
         }
     }
 
-    private Room CheckAvailableRoom(DateTime dateTime)
+    private Room FindAvailableRoom(DateTime dateTime)
     {
-        bool isBreak = false;
+        bool isAvailable;
         List<Room> availableRooms = new List<Room>();
         foreach (var room in RoomRepository.GetInstance().GetRooms())
         {
             if (room.type != RoomType.ExaminationRoom) continue;
-            isBreak = false;
+            isAvailable = true;
             foreach (var examination in ExaminationRepository.GetInstance().examinations)
             {
                 if (examination.appointment == dateTime && examination.room.id == room.id)
                 {
-                    isBreak = true;
+                    isAvailable = false;
                     break;
                 }
             }
-            availableRooms.Add(room);
+            if (isAvailable)
+                availableRooms.Add(room);
         }
 
-        if (availableRooms.Count == 0) throw new Exception("No avalable rooms");
+        if (availableRooms.Count == 0) throw new Exception("There are no available rooms!");
         return availableRooms[0];
     }
 
@@ -208,8 +210,8 @@ internal class ExaminationRepository
     public Examination GenerateRequestExamination(Examination examination, string patientUsername, string doctorUsername, DateTime dateTime)
     {
         Doctor doctor = DoctorRepository.GetInstance().GetDoctorByUsername(doctorUsername);
-        CheckAvailableDoctor(doctor, dateTime);
-        var room = CheckAvailableRoom(dateTime);
+        CheckIfDoctorIsAvailable(doctor, dateTime);
+        var room = FindAvailableRoom(dateTime);
         Patient patient = PatientRepository.GetInstance().GetPatientByUsername(patientUsername);
         Examination e = new Examination(examination.id, examination.status, dateTime, room, doctor, examination.medicalRecord, "");
         return e;
@@ -218,18 +220,19 @@ internal class ExaminationRepository
     public void EditExamination(Examination examination, string patientUsername, string doctorUsername, DateTime dateTime)
     {
         Doctor doctor = DoctorRepository.GetInstance().GetDoctorByUsername(doctorUsername);
-        CheckAvailableDoctor(doctor, dateTime);
-        var room = CheckAvailableRoom(dateTime);
+        CheckIfDoctorIsAvailable(doctor, dateTime);
+        var room = FindAvailableRoom(dateTime);
         Patient patient = PatientRepository.GetInstance().GetPatientByUsername(patientUsername);
         Examination e = new Examination(examination.id, examination.status, dateTime, room, doctor, examination.medicalRecord, "");
         SwapExaminationValue(e);
+        // da li moze samo examination.dateTime = dateTime...
     }
 
-    public void ReserveExamiantion(string patientUsername, string doctorUsername, DateTime dateTime)
+    public void ReserveExamination(string patientUsername, string doctorUsername, DateTime dateTime)
     {
         Doctor doctor = DoctorRepository.GetInstance().GetDoctorByUsername(doctorUsername);
-        CheckAvailableDoctor(doctor, dateTime);
-        var room = CheckAvailableRoom(dateTime);
+        CheckIfDoctorIsAvailable(doctor, dateTime);
+        var room = FindAvailableRoom(dateTime);
         Patient patient = PatientRepository.GetInstance().GetPatientByUsername(patientUsername);
         var medicalRecord = MedicalRecordRepository.GetInstance().GetMedicalRecordByUsername(patient);
         ExaminationRepository.GetInstance().AddExamination(dateTime, room, doctor, medicalRecord);

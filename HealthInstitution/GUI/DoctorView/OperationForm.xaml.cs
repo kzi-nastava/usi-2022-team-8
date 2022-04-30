@@ -33,6 +33,7 @@ namespace HealthInstitution.GUI.DoctorView
         }
         public void LoadGridRows()
         {
+            dataGrid.Items.Clear();
             List<Operation> doctorOperations = this.loggedDoctor.operations;
             foreach (Operation operation in doctorOperations)
             {
@@ -45,6 +46,7 @@ namespace HealthInstitution.GUI.DoctorView
             AddOpeationDialog addOpeationDialog = new AddOpeationDialog(this.loggedDoctor);
             addOpeationDialog.ShowDialog();
             LoadGridRows();
+            dataGrid.Items.Refresh();
         }
 
         private void EditButton_Click(object sender, RoutedEventArgs e)
@@ -53,6 +55,7 @@ namespace HealthInstitution.GUI.DoctorView
             EditOperationDialog editOperationDialog = new EditOperationDialog(selectedOperation);
             editOperationDialog.ShowDialog();
             LoadGridRows();
+            dataGrid.Items.Refresh();
         }
 
         private void DeleteButton_Click(object sender, RoutedEventArgs e)

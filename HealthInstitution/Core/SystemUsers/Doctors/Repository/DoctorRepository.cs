@@ -108,9 +108,7 @@ namespace HealthInstitution.Core.SystemUsers.Doctors.Repository
                     password = doctor.password,
                     name = doctor.name,
                     surname = doctor.surname,
-                    specialty = doctor.specialty,
-                    examinations = FormListOfExaminationIds(doctor.examinations),
-                    operations = FormListOfOperationIds(doctor.operations)
+                    specialty = doctor.specialty
                 });
             }
             return reducedDoctors;

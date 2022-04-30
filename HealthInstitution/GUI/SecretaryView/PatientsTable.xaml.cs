@@ -19,44 +19,46 @@ using System.Windows.Shapes;
 namespace HealthInstitution.GUI.UserWindow
 {
     /// <summary>
-    /// Interaction logic for CrudbPatients.xaml
+    /// Interaction logic for PatientsTable.xaml
     /// </summary>
-    public partial class CrudbPatients : Window
+    public partial class PatientsTable : Window
     {
-        public CrudbPatients()
+        public PatientsTable()
         {
             InitializeComponent();
-            /*updateButton.IsEnabled = false;
-            deleteButton.IsEnabled = false;
-            blockButton.IsEnabled = false;*/
+            LoadGridRows();
         }
         public void LoadGridRows()
         {
+            dataGrid.Items.Clear();
             List<Patient> patients = PatientRepository.GetInstance().patients;
             foreach (Patient patient in patients)
             {
                 dataGrid.Items.Add(patient);
             }
+            dataGrid.Items.Refresh();
         }
-        private void createPatient_click(object sender, RoutedEventArgs e)
+        private void CreatePatient_click(object sender, RoutedEventArgs e)
         {
-            CreatePatientWindow createPatientWindow = new CreatePatientWindow();
-            createPatientWindow.ShowDialog();
-            this.Close();
+            CreatePatientDialog createPatientDialog = new CreatePatientDialog();
+            createPatientDialog.ShowDialog();
+            LoadGridRows();
         }
 
-        private void updatePatient_click(object sender, RoutedEventArgs e)
+        private void UpdatePatient_click(object sender, RoutedEventArgs e)
         {
             Patient selectedPatient = (Patient)dataGrid.SelectedItem;
             if (selectedPatient != null) 
             {
                 UpdatePatientWindow updatePatientWindow = new UpdatePatientWindow(selectedPatient);
                 updatePatientWindow.ShowDialog();
-                this.Close();
+                dataGrid.SelectedItem = null;
+                LoadGridRows();
+                
             }
         }
 
-        private void deletePatient_click(object sender, RoutedEventArgs e)
+        private void DeletePatient_click(object sender, RoutedEventArgs e)
         {
             Patient selectedPatient = (Patient)dataGrid.SelectedItem;
             if (selectedPatient != null)
@@ -65,16 +67,20 @@ namespace HealthInstitution.GUI.UserWindow
                 PatientRepository patientRepository = PatientRepository.GetInstance();
                 patientRepository.DeletePatient(selectedPatient.username);
                 userRepository.DeleteUser(selectedPatient.username);
+                dataGrid.SelectedItem = null;
+                LoadGridRows();
             }
         }
 
-        private void blockPatient_click(object sender, RoutedEventArgs e)
+        private void BlockPatient_click(object sender, RoutedEventArgs e)
         {
             Patient selectedPatient = (Patient)dataGrid.SelectedItem;
             if (selectedPatient != null)
             {
                 PatientRepository patientRepository = PatientRepository.GetInstance();
                 patientRepository.ChangeBlockedStatus(selectedPatient.username);
+                dataGrid.SelectedItem = null;
+                LoadGridRows();
             }
         }
     }

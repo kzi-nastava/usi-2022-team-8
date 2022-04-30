@@ -6,28 +6,38 @@
         xmlns:local="clr-namespace:HealthInstitution.GUI.DoctorView"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="Scheduled examinations" Height="450" Width="800">
+        Title="Scheduled appointments" Height="450" Width="800">
+    <Window.Resources>
+        <Style TargetType="DataGridCell">
+            <Setter Property="TextBlock.TextAlignment" Value="Center"/>
+        </Style>
+        <Style TargetType="DataGridColumnHeader">
+            <Setter Property="HorizontalContentAlignment" Value="Center"/>
+        </Style>
+    </Window.Resources>
     <Grid Margin="0,0,0,0">
         <DataGrid  ItemsSource="{Binding Examination}" AutoGenerateColumns="False" Name="dataGrid" Grid.ColumnSpan="3" Margin="0,-50,0,108" Height="250">
+
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Time" FontSize="18" Binding="{Binding appointment}" Width ="150"/>
-                <DataGridTextColumn Header="Status" FontSize="18" Binding="{Binding status}" Width =" 150"/>
-                <DataGridTextColumn Header="RoomNo" FontSize="18" Binding="{Binding room.number}" Width =" 150"/>
-                <DataGridTextColumn Header="Patient" FontSize="18" Width =" 150">
+                <DataGridTextColumn Header="Patient" FontSize="15" Width =" 145">
                     <DataGridTextColumn.Binding>
                         <MultiBinding StringFormat="{}{0} {1}">
-                            <Binding Path="patient.name" />
-                            <Binding Path="patient.surname"/>
+                            <Binding Path="medicalRecord.patient.name" />
+                            <Binding Path="medicalRecord.patient.surname"/>
                         </MultiBinding>
                     </DataGridTextColumn.Binding>
                 </DataGridTextColumn>
-                <DataGridTextColumn Header="Anamnesis" FontSize="18" Width =" 150" Binding="{Binding anamnesis}"/>
+                <DataGridTextColumn Header="Time" FontSize="15" Binding="{Binding appointment}" Width ="155"/>
+                <DataGridTextColumn Header="Status" FontSize="15" Binding="{Binding status}" Width ="110"/>
+                <DataGridTextColumn Header="RoomNo" FontSize="15" Binding="{Binding room.number}" Width ="60"/>
+                <DataGridTextColumn Header="Anamnesis/report" FontSize="15" Width ="Auto" Binding="{Binding anamnesis}"/>
             </DataGrid.Columns>
         </DataGrid>
         <RadioButton Name="ExaminationRadioButton" GroupName="Appointments" Content="Examinations" Checked = "AppointmentChecked" HorizontalAlignment="Left" Margin="112,325,0,0" VerticalAlignment="Top" FontSize="18"/>
         <RadioButton Name="OperationRadioButton" GroupName="Appointments" Content="Operations" Checked = "AppointmentChecked" HorizontalAlignment="Left" Margin="112,364,0,0" VerticalAlignment="Top" FontSize="18"/>
-        <RadioButton Name="UpcomingDaysRadioButton" Content="Three upcoming days" Checked="UpcomingDatesChecked" HorizontalAlignment="Left" Margin="529,324,0,0" VerticalAlignment="Top" FontSize="18"/>
-        <DatePicker HorizontalAlignment="Left" Margin="556,363,0,0" VerticalAlignment="Top" FontSize="18"/>
+        <RadioButton Name="UpcomingDaysRadioButton" Content="Three upcoming days" Checked="DatesChecked" HorizontalAlignment="Left" Margin="529,324,0,0" VerticalAlignment="Top" FontSize="18"/>
+        <RadioButton Name="SelectedDateRadioButton" Content="" Checked="DatesChecked" HorizontalAlignment="Left" Margin="529,364,0,0" VerticalAlignment="Top" FontSize="18"/>
+        <DatePicker Name="datePicker" HorizontalAlignment="Left" Margin="556,363,0,0" VerticalAlignment="Top" FontSize="18"/>
         <Label Content="Select type of appointment" HorizontalAlignment="Left" Margin="97,278,0,0" VerticalAlignment="Top"/>
         <Label Content="Select dates" HorizontalAlignment="Left" Margin="587,278,0,0" VerticalAlignment="Top"/>
         <Button Content="Show" Click="Show_Click" Width="100" HorizontalAlignment="Center" Margin="0,281,0,0" VerticalAlignment="Top" RenderTransformOrigin="6.868,-4.965"/>
