@@ -17,18 +17,4 @@ public class ScheduleEditRequest
         this.state = state;
         this.examinationId = examinationId;
     }
-
-    public void Accept()
-    {
-        state = RestRequestState.Accepted;
-
-        //TODO add when u do exemination repository
-    }
-
-    public void Reject()
-    {
-        state = RestRequestState.Rejected;
-
-        //TODO examination repository
-    }
 }

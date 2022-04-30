@@ -36,11 +36,16 @@ namespace HealthInstitution.GUI.UserWindow
             string surname=surnameBox.Text.Trim();
             string allergensNotParsed=allergensBox.Text.Trim();
             string previousIlnessesNotParsed=previousIlnessesBox.Text.Trim();
+            UserRepository userRepository = UserRepository.GetInstance();
             try {
                 
                 if (username == "" || password == "" || name == "" || surname == "")
                 {
                     System.Windows.MessageBox.Show("All fields must be filled!", "Create patient error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                else if(userRepository.usersByUsername.ContainsKey(username))
+                {
+                    System.Windows.MessageBox.Show("This username is already used!", "Create patient error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
                 else
                 {
@@ -56,10 +61,10 @@ namespace HealthInstitution.GUI.UserWindow
                     {
                         previousIlnesses = previousIlnessesNotParsed.Split(",").ToList();
                     }
-                    UserRepository userRepository = UserRepository.GetInstance();
                     PatientRepository patientRepository = PatientRepository.GetInstance();
                     patientRepository.AddPatient(username, password, name, surname, height, weight, allergens, previousIlnesses);
                     userRepository.AddUser(UserType.Patient, username, password, name, surname);
+                    this.Close();
                 }
             }
             catch

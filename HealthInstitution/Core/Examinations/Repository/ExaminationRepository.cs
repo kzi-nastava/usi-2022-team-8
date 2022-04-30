@@ -211,8 +211,8 @@ internal class ExaminationRepository
     public Examination GenerateRequestExamination(Examination examination, string patientUsername, string doctorUsername, DateTime dateTime)
     {
         Doctor doctor = DoctorRepository.GetInstance().GetDoctorByUsername(doctorUsername);
-        CheckAvailableDoctor(doctor, dateTime);
-        var room = CheckAvailableRoom(dateTime);
+        CheckIfDoctorIsAvailable(doctor, dateTime);
+        var room = FindAvailableRoom(dateTime);
         Patient patient = PatientRepository.GetInstance().GetPatientByUsername(patientUsername);
         Examination e = new Examination(examination.id, examination.status, dateTime, room, doctor, examination.medicalRecord, "");
         return e;

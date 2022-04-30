@@ -69,9 +69,10 @@ namespace HealthInstitution.Core.SystemUsers.Patients.Repository
 
         public void AddPatient(string username, string password, string name, string surname, double height, double weight, List<string> allergens, List<string> previousIlnesses)
         {
-            MedicalRecordRepository medicalRecordRepository = MedicalRecordRepository.GetInstance();
             Patient patient = new Patient(Users.Model.UserType.Patient, username, password, name, surname, Users.Model.BlockState.NotBlocked);
-            medicalRecordRepository.AddMedicalRecord(height, weight,previousIlnesses, allergens,patient);
+            
+            MedicalRecordRepository medicalRecordRepository = MedicalRecordRepository.GetInstance();
+            medicalRecordRepository.AddMedicalRecord(height, weight, previousIlnesses, allergens, patient);
             this.patients.Add(patient);
             this.patientByUsername[username] = patient;
             SavePatients();

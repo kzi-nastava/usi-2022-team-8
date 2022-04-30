@@ -39,7 +39,7 @@ namespace HealthInstitution.Core.Prescriptions.Repository
             {
                 if (instance == null)
                 {
-                    instance = new PrescriptionRepository(@"..\..\..\Data\JSON\prescription.json");
+                    instance = new PrescriptionRepository(@"..\..\..\Data\JSON\prescriptions.json");
                 }
                 return instance;
             }
