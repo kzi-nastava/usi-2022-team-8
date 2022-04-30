@@ -25,6 +25,7 @@ using HealthInstitution.Core.SystemUsers.Patients.Model;
 using HealthInstitution.Core.SystemUsers.Doctors.Repository;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using HealthInstitution.Core.Operations.Repository;
+using HealthInstitution.Core.EquipmentTransfers.Functionality;
 
 namespace HealthInstitution.GUI.LoginWindow
 {
@@ -98,6 +99,7 @@ namespace HealthInstitution.GUI.LoginWindow
         [STAThread]
         private static void Main(string[] args)
         {
+            EquipmentTransferChecker.UpdateEquipmentByTransfer();
             LoginWindow window = new LoginWindow();
             window.ShowDialog();
         }
