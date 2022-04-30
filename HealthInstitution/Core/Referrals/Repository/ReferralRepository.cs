@@ -51,9 +51,9 @@ namespace HealthInstitution.Core.Referrals.Repository
             foreach (var referral in referrals)
             {
                 ReferralType referralType;
-                Enum.TryParse<ReferralType>((string)referral["type"], out referralType);
+                Enum.TryParse(referral["type"].ToString(), out referralType);
                 SpecialtyType specialtyType;
-                Enum.TryParse<SpecialtyType>((string)referral["referredSpecialty"], out specialtyType);
+                Enum.TryParse(referral["referredSpecialty"].ToString(), out specialtyType);
                 Referral referralTemp = new Referral((int)referral["id"],
                                                        referralType,
                                                        doctorByUsername[(string)referral["prescribedBy"]],

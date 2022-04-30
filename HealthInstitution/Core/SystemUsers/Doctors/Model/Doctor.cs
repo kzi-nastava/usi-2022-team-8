@@ -12,11 +12,11 @@ public class Doctor : User
     public List<Operation> operations { get; set; }
     public List<RestRequest> restRequests { get; set; }
 
-    public Doctor(string username, string password, string name, string surname, SpecialtyType specialty, List<Examination> examinations, List<Operation> operations) : base(UserType.Doctor, username, password, name, surname)
+    public Doctor(string username, string password, string name, string surname, SpecialtyType specialty) : base(UserType.Doctor, username, password, name, surname)
     {
         this.specialty = specialty;
-        this.examinations = examinations;
-        this.operations = operations;
+        this.examinations = new List<Examination>();
+        this.operations = new List<Operation>();
         this.restRequests = new List<RestRequest>();
     }
 }

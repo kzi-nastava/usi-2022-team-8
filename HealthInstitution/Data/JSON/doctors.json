@@ -1,18 +1,1 @@
-[
-  {
-    "type": "Doctor",
-    "username": "jovan",
-    "password": "jovan",
-    "name": "Jovan",
-    "surname": "Jovanovic",
-    "blocked": "NotBlocked"
-  },
-  {
-    "type": "Doctor",
-    "username": "ivan",
-    "password": "ivan",
-    "name": "Ivan",
-    "surname": "Ivanovic",
-    "blocked": "NotBlocked"
-  }
-]
+[{"username":"jovan","password":"jovan","name":"Jovan","surname":"Jovanovic","specialty":"Surgeon","examinations":[1],"operations":[]},{"username":"ivan","password":"ivan","name":"Ivan","surname":"Ivanovic","specialty":"Surgeon","examinations":[],"operations":[]}]

@@ -75,7 +75,7 @@ namespace HealthInstitution.Core.MedicalRecords.Repository
                 MedicalRecord medicalRecordTemp = new MedicalRecord((double)medicalRecord["height"],
                                                                     (double)medicalRecord["weight"],
                                                                     JToken2Strings(medicalRecord["previousIlnesses"]),
-                                                                    JToken2Strings(medicalRecord["alergens"]),
+                                                                    JToken2Strings(medicalRecord["allergens"]),
                                                                     patientByUsername[(string)medicalRecord["patientUsername"]],
                                                                     JToken2Prescriptions(medicalRecord["prescriptionsId"]),
                                                                     JToken2Referrals(medicalRecord["referralsId"])
