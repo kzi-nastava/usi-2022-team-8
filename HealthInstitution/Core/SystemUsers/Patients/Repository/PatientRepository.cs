@@ -1,5 +1,7 @@
 ﻿using HealthInstitution.Core.MedicalRecords.Repository;
 using HealthInstitution.Core.SystemUsers.Patients.Model;
+using HealthInstitution.Core.SystemUsers.Users.Model;
+using HealthInstitution.Core.SystemUsers.Users.Repository;
 using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -11,6 +13,8 @@ namespace HealthInstitution.Core.SystemUsers.Patients.Repository
         public string fileName { get; set; }
         public List<Patient> patients { get; set; }
         public Dictionary<string, Patient> patientByUsername { get; set; }
+
+        UserRepository userRepository = UserRepository.GetInstance();
 
         JsonSerializerOptions options = new JsonSerializerOptions
         {
@@ -82,6 +86,7 @@ namespace HealthInstitution.Core.SystemUsers.Patients.Repository
             patient.blocked = blockState;
             this.patientByUsername[username] = patient;
             SavePatients();
+            userRepository.UpdateUser(username, password, name, surname);
         }
 
         public void DeletePatient(string username)
@@ -89,15 +94,24 @@ namespace HealthInstitution.Core.SystemUsers.Patients.Repository
             Patient patient = GetPatientByUsername(username);
             this.patients.Remove(patient);
             this.patientByUsername.Remove(username);
+            userRepository.DeleteUser(username);
             SavePatients();
         }
         public void ChangeBlockedStatus(string username)
         {
             Patient patient = this.GetPatientByUsername(username);
+            User user = userRepository.GetUserByUsername(username);
             if (patient.blocked == Users.Model.BlockState.NotBlocked)
+            {
                 patient.blocked = Users.Model.BlockState.BlockedBySecretary;
-            else
+                user.blocked = Users.Model.BlockState.BlockedBySecretary;
+            } else
+            {
                 patient.blocked = Users.Model.BlockState.NotBlocked;
+                user.blocked = Users.Model.BlockState.NotBlocked;
+            }
+            SavePatients();
+            userRepository.SaveUsers();
         }
     }
 }

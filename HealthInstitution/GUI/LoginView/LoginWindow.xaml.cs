@@ -57,12 +57,16 @@ namespace HealthInstitution.GUI.LoginView
             else if (foundUser.password != passwordInput)
             {
                 System.Windows.MessageBox.Show("Username and password don't match!", "Log in error", MessageBoxButton.OK, MessageBoxImage.Error);
+            } else if (foundUser.blocked == BlockState.BlockedBySecretary || foundUser.blocked == BlockState.BlockedBySystem)
+            {
+                System.Windows.MessageBox.Show("Account is blocked!", "Log in error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             else
             {
                 switch (foundUser.type)
                 {
                     case UserType.Patient:
+                        
                         /*PatientRepository patientRepository = PatientRepository.GetInstance();
                         Patient patient = patientRepository.GetPatientById(usernameInput);*/
                         this.Close();

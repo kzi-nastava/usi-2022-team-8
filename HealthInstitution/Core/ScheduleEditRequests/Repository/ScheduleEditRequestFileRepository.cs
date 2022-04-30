@@ -175,6 +175,7 @@ public class ScheduleEditRequestFileRepository
         if (scheduleEditRequest != null)
         {
             scheduleEditRequest.state = RestRequests.Model.RestRequestState.Accepted;
+            ExaminationRepository.GetInstance().SwapExaminationValue(scheduleEditRequest.newExamination);
             Save();
         }
     }
