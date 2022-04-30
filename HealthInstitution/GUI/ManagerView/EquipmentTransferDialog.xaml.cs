@@ -1,5 +1,6 @@
 ﻿using HealthInstitution.Core.Equipments.Model;
 using HealthInstitution.Core.Equipments.Repository;
+using HealthInstitution.Core.EquipmentTransfers.Model;
 using HealthInstitution.Core.EquipmentTransfers.Repository;
 using HealthInstitution.Core.Rooms.Model;
 using HealthInstitution.Core.Rooms.Repository;
@@ -95,6 +96,13 @@ namespace HealthInstitution.GUI.ManagerView
                 return;
             }
 
+            int projectedQuantityLoss = CalculateProjectedQuantityLoss(fromRoom, equipment);
+            if (quantity > equipment.quantity - projectedQuantityLoss)
+            {
+                System.Windows.MessageBox.Show("You cant transfer more equipment than room has because of projected transfers!", "Failed transfer", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
             if (date == DateTime.Today)
             {
                 Transfer(toRoom, equipment, quantity);
@@ -117,12 +125,29 @@ namespace HealthInstitution.GUI.ManagerView
             if (index >= 0)
             {
                 toRoom.availableEquipment[index].quantity += quantity;
+                equipmentRepository.SaveEquipments();
             }
             else
             {
                 Equipment newEquipment = equipmentRepository.AddEquipment(quantity, equipment.name, equipment.type, equipment.isDynamic);
-                toRoom.availableEquipment.Add(newEquipment);
+                roomRepository.AddEquipmentToRoom(toRoom.id, newEquipment);
             }
+        }
+
+        private int CalculateProjectedQuantityLoss(Room fromRoom, Equipment equipment)
+        {
+            int projectedQuantityLoss = 0;
+            foreach (EquipmentTransfer equipmentTransfer in equipmentTransferRepository.equipmentTransfers)
+            {
+                if (equipmentTransfer.fromRoom == fromRoom)
+                {
+                    if (equipmentTransfer.equipment.name == equipment.name && equipmentTransfer.equipment.type == equipment.type)
+                    {
+                        projectedQuantityLoss += equipmentTransfer.equipment.quantity;
+                    }
+                }
+            }
+            return projectedQuantityLoss;
         }
 
         private bool CheckCompleteness()
