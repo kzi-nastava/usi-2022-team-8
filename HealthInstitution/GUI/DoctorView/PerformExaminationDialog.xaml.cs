@@ -40,7 +40,7 @@ namespace HealthInstitution.GUI.DoctorView
                 allergenListBox.Items.Add(allergen);
         }
 
-        private void addIllness_Click(object sender, RoutedEventArgs e)
+        private void AddIllness_Click(object sender, RoutedEventArgs e)
         {
             if (illnessesTextBox.Text.Trim() != "")
             {
@@ -49,7 +49,7 @@ namespace HealthInstitution.GUI.DoctorView
             }
         }
 
-        private void addAllergen_Click(object sender, RoutedEventArgs e)
+        private void AddAllergen_Click(object sender, RoutedEventArgs e)
         {
             if (illnessesTextBox.Text.Trim() != "")
             {
@@ -58,7 +58,7 @@ namespace HealthInstitution.GUI.DoctorView
             }
         }
 
-        private void finish_Click(object sender, RoutedEventArgs e)
+        private void Finish_Click(object sender, RoutedEventArgs e)
         {
             try
             {

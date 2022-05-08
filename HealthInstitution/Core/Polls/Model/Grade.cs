@@ -9,13 +9,13 @@ namespace HealthInstitution.Core.Polls.Model
 {
     internal class Grade
     {
-        public String comment { get; set; }
-        public int rate { get; set; }
+        public String Comment { get; set; }
+        public int Rate { get; set; }
 
         public Grade(string comment, int rate)
         {
-            this.comment = comment;
-            this.rate = rate;
+            this.Comment = comment;
+            this.Rate = rate;
         }
     }
 }

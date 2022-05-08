@@ -79,7 +79,7 @@ namespace HealthInstitution.GUI.DoctorView
             }
     
         }
-        private void show_Click(object sender, RoutedEventArgs e)
+        private void Show_Click(object sender, RoutedEventArgs e)
         {
             if (examinationRadioButton.IsChecked == true)
             {
@@ -90,7 +90,7 @@ namespace HealthInstitution.GUI.DoctorView
             }
         }
 
-        private void showMedicalRecord_Click(object sender, RoutedEventArgs e)
+        private void ShowMedicalRecord_Click(object sender, RoutedEventArgs e)
         {
             MedicalRecord selectedMedicalRecord;
             if ((bool)examinationRadioButton.IsChecked)
@@ -106,7 +106,7 @@ namespace HealthInstitution.GUI.DoctorView
             new MedicalRecordDialog(selectedMedicalRecord).ShowDialog();
         }
 
-        private void startExamination_Click(object sender, RoutedEventArgs e)
+        private void StartExamination_Click(object sender, RoutedEventArgs e)
         {
             if (!(bool)examinationRadioButton.IsChecked)
             {
@@ -127,11 +127,11 @@ namespace HealthInstitution.GUI.DoctorView
             dataGrid.Items.Refresh();
         }
 
-        private void appointmentChecked(object sender, RoutedEventArgs e)
+        private void AppointmentChecked(object sender, RoutedEventArgs e)
         {
         }
 
-        private void datesChecked(object sender, RoutedEventArgs e)
+        private void DatesChecked(object sender, RoutedEventArgs e)
         {
         }
     }

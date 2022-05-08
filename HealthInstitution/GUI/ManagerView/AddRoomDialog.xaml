@@ -8,10 +8,10 @@
         WindowStartupLocation="CenterScreen"
         Title="Create room" Height="350" Width="350" FontSize="16">
     <Grid>
-        <Button Content="Create" Click="create_Click" HorizontalAlignment="Center" Height="29" Margin="0,231,0,0" VerticalAlignment="Top" Width="114"/>
+        <Button Content="Create" Click="Create_Click" HorizontalAlignment="Center" Height="29" Margin="0,231,0,0" VerticalAlignment="Top" Width="114"/>
         <Label Content="Room type" HorizontalAlignment="Left" Margin="41,72,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.044,0.712"/>
         <Label Content="Room number" HorizontalAlignment="Left" Margin="41,138,0,0" VerticalAlignment="Top"/>
-        <ComboBox Name="typeComboBox" HorizontalAlignment="Left" Margin="175,75,0,0" VerticalAlignment="Top" Width="138" Height="26" Loaded="roomTypeComboBox_Loaded"/>
-        <TextBox x:Name="numberBox" PreviewTextInput="numberValidationTextBox" HorizontalAlignment="Left" Margin="175,141,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="138" Height="26"/>
+        <ComboBox Name="typeComboBox" HorizontalAlignment="Left" Margin="175,75,0,0" VerticalAlignment="Top" Width="138" Height="26" Loaded="RoomTypeComboBox_Loaded"/>
+        <TextBox x:Name="numberBox" PreviewTextInput="NumberValidationTextBox" HorizontalAlignment="Left" Margin="175,141,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="138" Height="26"/>
     </Grid>
 </Window>

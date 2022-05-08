@@ -32,7 +32,7 @@ namespace HealthInstitution.GUI.UserWindow
             this._loggedPatient = loggedPatient;
         }
 
-        private void logOut_Click(object sender, RoutedEventArgs e)
+        private void LogOut_Click(object sender, RoutedEventArgs e)
         {
             if (System.Windows.MessageBox.Show("Are you sure you want to log out?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
             {
@@ -42,7 +42,7 @@ namespace HealthInstitution.GUI.UserWindow
             }
         }
 
-        private void schedule_Click(object sender, RoutedEventArgs e)
+        private void Schedule_Click(object sender, RoutedEventArgs e)
         {
             /* var check = TrollCounterRepository.GetInstance().GetTrollCounterById(loggedPatient.Username);
              Console.WriteLine(check.ToString());*/

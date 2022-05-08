@@ -20,10 +20,10 @@ public partial class PatientScheduleWindow : Window
     {
         InitializeComponent();
         this._loggedPatient = loggedPatient;
-        loadRows();
+        LoadRows();
     }
 
-    private void addButton_click(object sender, RoutedEventArgs e)
+    private void AddButton_click(object sender, RoutedEventArgs e)
     {
         try
         {
@@ -31,7 +31,7 @@ public partial class PatientScheduleWindow : Window
             AddExaminationDialog addExaminationDialog = new AddExaminationDialog(_loggedPatient);
             addExaminationDialog.ShowDialog();
             dataGrid.Items.Clear();
-            loadRows();
+            LoadRows();
             TrollCounterFileRepository.GetInstance().GetById(_loggedPatient.Username).AppendCreateDates(DateTime.Today);
             TrollCounterFileRepository.GetInstance().Save();
         }
@@ -42,7 +42,7 @@ public partial class PatientScheduleWindow : Window
         }
     }
 
-    private void editButton_click(object sender, RoutedEventArgs e)
+    private void EditButton_click(object sender, RoutedEventArgs e)
     {
         try
         {
@@ -51,7 +51,7 @@ public partial class PatientScheduleWindow : Window
             EditExaminationDialog editExaminationDialog = new EditExaminationDialog(selectedExamination);
             editExaminationDialog.ShowDialog();
             dataGrid.Items.Clear();
-            loadRows();
+            LoadRows();
             TrollCounterFileRepository.GetInstance().GetById(_loggedPatient.Username).AppendEditDeleteDates(DateTime.Today);
             TrollCounterFileRepository.GetInstance().Save();
         }
@@ -62,7 +62,7 @@ public partial class PatientScheduleWindow : Window
         }
     }
 
-    private void deleteButton_click(object sender, RoutedEventArgs e)
+    private void DeleteButton_click(object sender, RoutedEventArgs e)
     {
         Examination selectedExamination = (Examination)dataGrid.SelectedItem;
         try
@@ -70,7 +70,7 @@ public partial class PatientScheduleWindow : Window
             TrollCounterFileRepository.GetInstance().TrollCheck(_loggedPatient.Username);
             ExaminationDoctorRepository.GetInstance().Save();
             dataGrid.Items.Clear();
-            loadRows();
+            LoadRows();
             TrollCounterFileRepository.GetInstance().GetById(_loggedPatient.Username).AppendEditDeleteDates(DateTime.Today);
             TrollCounterFileRepository.GetInstance().Save();
         }
@@ -99,7 +99,7 @@ public partial class PatientScheduleWindow : Window
         LoadGrid();
     }*/
 
-    private void loadRows()
+    private void LoadRows()
     {
         foreach (Examination examination in ExaminationRepository.GetInstance().Examinations)
         {

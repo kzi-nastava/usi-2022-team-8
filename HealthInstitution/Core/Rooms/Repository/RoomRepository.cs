@@ -46,7 +46,7 @@ namespace HealthInstitution.Core.Rooms.Repository
             }
         }
 
-        private List<Equipment> convertJTokenToEquipments(JToken tokens)
+        private List<Equipment> ConvertJTokenToEquipments(JToken tokens)
         {
             var equipmentById = EquipmentRepository.GetInstance().EquipmentById;
             List<Equipment> equipments = new List<Equipment>();
@@ -70,7 +70,7 @@ namespace HealthInstitution.Core.Rooms.Repository
                 Enum.TryParse(room["type"].ToString(), out type);
                 int number = (int)room["number"];
                 bool isRenovating = (bool)room["isRenovating"];
-                List<Equipment> availableEquipment = convertJTokenToEquipments(room["availableEquipment"]);
+                List<Equipment> availableEquipment = ConvertJTokenToEquipments(room["availableEquipment"]);
 
                 Room roomTemp = new Room(id,type,number,isRenovating,availableEquipment);
 
@@ -84,7 +84,7 @@ namespace HealthInstitution.Core.Rooms.Repository
             }
         }
 
-        private List<int> formListOfIds(List<Equipment> equipments)
+        private List<int> FormListOfIds(List<Equipment> equipments)
         {
             var ids = new List<int>();
             foreach(var equipment in equipments)
@@ -93,7 +93,7 @@ namespace HealthInstitution.Core.Rooms.Repository
             }
             return ids;
         }
-        private List<dynamic> shortenRoom()
+        private List<dynamic> ShortenRoom()
         {
             List<dynamic> reducedRooms = new List<dynamic>();
             foreach (var room in this.Rooms)
@@ -104,14 +104,14 @@ namespace HealthInstitution.Core.Rooms.Repository
                     type = room.Type,
                     number = room.Number,
                     isRenovating = room.IsRenovating,
-                    availableEquipment = formListOfIds(room.AvailableEquipment)
+                    availableEquipment = FormListOfIds(room.AvailableEquipment)
                 });
             }
             return reducedRooms;
         }
         public void Save()
         {
-            var allRooms = JsonSerializer.Serialize(shortenRoom(), _options);
+            var allRooms = JsonSerializer.Serialize(ShortenRoom(), _options);
             File.WriteAllText(this._fileName, allRooms);
         }
 

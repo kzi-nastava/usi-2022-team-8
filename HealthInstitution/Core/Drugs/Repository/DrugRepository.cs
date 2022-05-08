@@ -39,7 +39,7 @@ public class DrugRepository
             return s_instance;
         }
     }
-    private List<Ingredient> jToken2Ingredients(JToken tokens)
+    private List<Ingredient> JToken2Ingredients(JToken tokens)
     {
         Dictionary<int, Ingredient> ingredientById = IngredientRepository.GetInstance().IngredientById;
         List<Ingredient> items = new List<Ingredient>();
@@ -56,7 +56,7 @@ public class DrugRepository
             Drug drugTemp = new Drug((int)drug["id"],
                                       (string)drug["name"],
                                       drugState,
-                                      jToken2Ingredients(drug["ingredients"]));
+                                      JToken2Ingredients(drug["ingredients"]));
             if (drugTemp.Id > _maxId)
             {
                 _maxId = drugTemp.Id;
@@ -65,7 +65,7 @@ public class DrugRepository
             this.DrugById[drugTemp.Id] = drugTemp;
         }
     }
-    private List<dynamic> shortenDrug()
+    private List<dynamic> ShortenDrug()
     {
         List<dynamic> reducedDrugs = new List<dynamic>();
         foreach (var drug in this.Drugs)
@@ -85,7 +85,7 @@ public class DrugRepository
     }
     public void Save()
     {
-        var allDrugs = JsonSerializer.Serialize(shortenDrug(), _options);
+        var allDrugs = JsonSerializer.Serialize(ShortenDrug(), _options);
         File.WriteAllText(this._fileName, allDrugs);
     }
 

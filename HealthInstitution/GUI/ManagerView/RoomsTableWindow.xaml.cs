@@ -28,10 +28,10 @@ namespace HealthInstitution.GUI.ManagerView
         public RoomsTableWindow()
         {
             InitializeComponent();
-            loadRows();
+            LoadRows();
         }
 
-        private void loadRows()
+        private void LoadRows()
         {
             dataGrid.Items.Clear();
             List<Room> rooms = _roomRepository.Rooms;
@@ -41,16 +41,16 @@ namespace HealthInstitution.GUI.ManagerView
             }
         }
 
-        private void addButton_Click(object sender, RoutedEventArgs e)
+        private void AddButton_Click(object sender, RoutedEventArgs e)
         {
             AddRoomDialog addRoomDialog = new AddRoomDialog();
             addRoomDialog.ShowDialog();
 
-            loadRows();
+            LoadRows();
             dataGrid.Items.Refresh();
         }
 
-        private void editButton_Click(object sender, RoutedEventArgs e)
+        private void EditButton_Click(object sender, RoutedEventArgs e)
         {
             Room selectedRoom = (Room)dataGrid.SelectedItem;
             if (selectedRoom.Type == RoomType.Warehouse)
@@ -66,7 +66,7 @@ namespace HealthInstitution.GUI.ManagerView
             dataGrid.Items.Refresh();
         }
 
-        private void deleteButton_Click(object sender, RoutedEventArgs e)
+        private void DeleteButton_Click(object sender, RoutedEventArgs e)
         {
             Room selectedRoom = (Room)dataGrid.SelectedItem;
             if (selectedRoom.Type == RoomType.Warehouse)
@@ -75,7 +75,7 @@ namespace HealthInstitution.GUI.ManagerView
                 dataGrid.SelectedItem = null;
                 return;
             }
-            if (!checkOccurrenceOfRoom(selectedRoom))
+            if (!CheckOccurrenceOfRoom(selectedRoom))
             {
                 System.Windows.MessageBox.Show("You cant delete room because of scheduled connections!", "Edit error", MessageBoxButton.OK, MessageBoxImage.Error);
                 dataGrid.SelectedItem = null;
@@ -89,7 +89,7 @@ namespace HealthInstitution.GUI.ManagerView
             }
         }
 
-        private bool checkOccurrenceOfRoom(Room selectedRoom)
+        private bool CheckOccurrenceOfRoom(Room selectedRoom)
         {
             EquipmentTransferRepository equipmentTransferRepository = EquipmentTransferRepository.GetInstance();
             if (equipmentTransferRepository.EquipmentTransfers.Find(eqTransfer => eqTransfer.FromRoom == selectedRoom || eqTransfer.ToRoom == selectedRoom) != null)

@@ -29,7 +29,7 @@ namespace HealthInstitution.GUI.UserWindow
             InitializeComponent();
         }
 
-        private void createPatient_Click(object sender, RoutedEventArgs e)
+        private void CreatePatient_Click(object sender, RoutedEventArgs e)
         {
             string username = usernameBox.Text.Trim();
             string password=passwordBox.Password.ToString().Trim();

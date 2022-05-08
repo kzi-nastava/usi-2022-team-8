@@ -62,7 +62,7 @@ namespace HealthInstitution.Core.Prescriptions.Repository
                 this.PrescriptionById[prescriptionTemp.Id] = prescriptionTemp;
             }
         }
-        private List<dynamic> shortenPrescription()
+        private List<dynamic> ShortenPrescription()
         {
             List<dynamic> reducedPrescriptions = new List<dynamic>();
             foreach (var prescription in this.Prescriptions)
@@ -80,7 +80,7 @@ namespace HealthInstitution.Core.Prescriptions.Repository
         public void Save()
         {
 
-            var allPrescriptions = JsonSerializer.Serialize(shortenPrescription(), _options);
+            var allPrescriptions = JsonSerializer.Serialize(ShortenPrescription(), _options);
             File.WriteAllText(this._fileName, allPrescriptions);
         }
 

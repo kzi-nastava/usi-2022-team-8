@@ -72,7 +72,7 @@ namespace HealthInstitution.Core.Referrals.Repository
                 this.ReferralById[referralTemp.Id] = referralTemp;
             }
         }
-        private List<dynamic> shortenReferral()
+        private List<dynamic> ShortenReferral()
         {
             List<dynamic> reducedReferrals = new List<dynamic>();
             foreach (var referral in this.Referrals)
@@ -90,7 +90,7 @@ namespace HealthInstitution.Core.Referrals.Repository
         }
         public void Save()
         {
-            var allReferrals = JsonSerializer.Serialize(shortenReferral(), _options);
+            var allReferrals = JsonSerializer.Serialize(ShortenReferral(), _options);
             File.WriteAllText(this._fileName, allReferrals);
         }
 

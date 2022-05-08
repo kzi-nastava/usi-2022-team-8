@@ -35,7 +35,7 @@ namespace HealthInstitution.GUI.DoctorView
             durationTextBox.Text = operation.Duration.ToString();
         }
 
-        private void patientComboBox_Loaded(object sender, RoutedEventArgs e)
+        private void PatientComboBox_Loaded(object sender, RoutedEventArgs e)
         {
             var patientComboBox = sender as System.Windows.Controls.ComboBox;
             List<Patient> patients = PatientRepository.GetInstance().Patients;
@@ -46,7 +46,7 @@ namespace HealthInstitution.GUI.DoctorView
             patientComboBox.SelectedItem = this._selectedOperation.MedicalRecord.Patient;
         }
 
-        private void hourComboBox_Loaded(object sender, RoutedEventArgs e)
+        private void HourComboBox_Loaded(object sender, RoutedEventArgs e)
         {
             var hourComboBox = sender as System.Windows.Controls.ComboBox;
             List<String> hours = new List<String>();
@@ -58,7 +58,7 @@ namespace HealthInstitution.GUI.DoctorView
             hourComboBox.SelectedItem = this._selectedOperation.Appointment.Hour.ToString();
         }
 
-        private void minuteComboBox_Loaded(object sender, RoutedEventArgs e)
+        private void MinuteComboBox_Loaded(object sender, RoutedEventArgs e)
         {
             var minuteComboBox = sender as System.Windows.Controls.ComboBox;
             List<String> minutes = new List<String>();
@@ -75,7 +75,7 @@ namespace HealthInstitution.GUI.DoctorView
             minuteComboBox.SelectedItem = operationMinutes;
         }
 
-        private void save_Click(object sender, RoutedEventArgs e)
+        private void Save_Click(object sender, RoutedEventArgs e)
         {
             try
             {

@@ -20,7 +20,7 @@
                 </DataGridTextColumn>
                 <DataGridTextColumn Header="Name" FontSize="18" Binding="{Binding Equipment.Name}" Width ="160"/>
                 <DataGridTextColumn Header="Equipment type" FontSize="18" Binding="{Binding Equipment.Type}" Width ="210"/>
-                <DataGridTextColumn Header="Is dynamic" FontSize="18" Binding="{Binding equipment.IsDynamic}" Width ="160"/>
+                <DataGridTextColumn Header="Is dynamic" FontSize="18" Binding="{Binding Equipment.IsDynamic}" Width ="160"/>
                 <DataGridTextColumn Header="Quantity" FontSize="18" Binding="{Binding Equipment.Quantity}" Width ="auto"/>
             </DataGrid.Columns>
         </DataGrid>

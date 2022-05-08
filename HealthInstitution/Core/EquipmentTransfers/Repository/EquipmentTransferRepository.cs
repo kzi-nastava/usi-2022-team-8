@@ -78,7 +78,7 @@ namespace HealthInstitution.Core.EquipmentTransfers.Repository
             }
         }
 
-        private List<dynamic> shortenEquipmentTransfer()
+        private List<dynamic> ShortenEquipmentTransfer()
         {
             List<dynamic> reducedEquipmentTransfers = new List<dynamic>();
             foreach (var equipmentTransfer in this.EquipmentTransfers)
@@ -96,7 +96,7 @@ namespace HealthInstitution.Core.EquipmentTransfers.Repository
         }
         public void Save()
         {
-            var allEquipmentTransfers = JsonSerializer.Serialize(shortenEquipmentTransfer(), _options);
+            var allEquipmentTransfers = JsonSerializer.Serialize(ShortenEquipmentTransfer(), _options);
             File.WriteAllText(this._fileName, allEquipmentTransfers);
         }
 
