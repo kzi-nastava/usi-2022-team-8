@@ -7,16 +7,16 @@
         mc:Ignorable="d"
         Title="PatientScheduleWindow" Height="450" Width="750">
     <Grid>
-        <DataGrid  ItemsSource="{Binding Examination}" AutoGenerateColumns="True" Name="dataGrid" Grid.ColumnSpan="3" Margin="0,0,0,0" Loaded="dataGrid_Loaded">
+        <DataGrid  ItemsSource="{Binding Examination}" AutoGenerateColumns="True" Name="dataGrid" Grid.ColumnSpan="3" Margin="0,0,0,0">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Time" FontSize="18" Binding="{Binding appointment}" Width ="150" />
                 <DataGridTextColumn Header="Status" FontSize="18" Binding="{Binding status}" Width =" 150" />
-                <DataGridTextColumn Header="RoomNo" FontSize="18" Binding="{Binding room.number}" Width =" 150" />
+                <DataGridTextColumn Header="RoomNo" FontSize="18" Binding="{Binding room.Number}" Width =" 150" />
                 <DataGridTextColumn Header="Doctor" FontSize="18" Width =" 150">
                     <DataGridTextColumn.Binding>
                         <MultiBinding StringFormat="{}{0} {1}">
-                            <Binding Path="doctor.name" />
-                            <Binding Path="doctor.surname" />
+                            <Binding Path="doctor.Name" />
+                            <Binding Path="doctor.Surname" />
                         </MultiBinding>
                     </DataGridTextColumn.Binding>
                 </DataGridTextColumn>

@@ -23,17 +23,16 @@ namespace HealthInstitution.GUI.ManagerView
     
     public partial class EquipmentTableWindow : Window
     {
-        RoomRepository roomRepository = RoomRepository.GetInstance();
         public EquipmentTableWindow(List<TableItemEquipment> items)
         {
             InitializeComponent();
-            LoadGridRows(items);
+            load(items);
         }
 
-        public void LoadGridRows(List<TableItemEquipment> items)
+        private void load(List<TableItemEquipment> items)
         {
             dataGrid.Items.Clear();
-           foreach (var item in items)
+            foreach (var item in items)
             {
                 dataGrid.Items.Add(item);
             }

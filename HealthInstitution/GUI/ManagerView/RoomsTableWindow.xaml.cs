@@ -24,36 +24,36 @@ namespace HealthInstitution.GUI.ManagerView
     /// </summary>
     public partial class RoomsTableWindow : Window
     {
-        RoomRepository roomRepository = RoomRepository.GetInstance();
+        private RoomRepository _roomRepository = RoomRepository.GetInstance();
         public RoomsTableWindow()
         {
             InitializeComponent();
-            LoadGridRows();
+            loadRows();
         }
 
-        public void LoadGridRows()
+        private void loadRows()
         {
             dataGrid.Items.Clear();
-            List<Room> rooms = roomRepository.rooms;
+            List<Room> rooms = _roomRepository.Rooms;
             foreach (Room room in rooms)
             {
                 dataGrid.Items.Add(room);
             }
         }
 
-        private void AddButton_Click(object sender, RoutedEventArgs e)
+        private void addButton_Click(object sender, RoutedEventArgs e)
         {
             AddRoomDialog addRoomDialog = new AddRoomDialog();
             addRoomDialog.ShowDialog();
 
-            LoadGridRows();
+            loadRows();
             dataGrid.Items.Refresh();
         }
 
-        private void EditButton_Click(object sender, RoutedEventArgs e)
+        private void editButton_Click(object sender, RoutedEventArgs e)
         {
             Room selectedRoom = (Room)dataGrid.SelectedItem;
-            if (selectedRoom.type == RoomType.Warehouse)
+            if (selectedRoom.Type == RoomType.Warehouse)
             {
                 System.Windows.MessageBox.Show("You cant edit warehouse!", "Edit error", MessageBoxButton.OK, MessageBoxImage.Error);
                 dataGrid.SelectedItem = null;
@@ -66,16 +66,16 @@ namespace HealthInstitution.GUI.ManagerView
             dataGrid.Items.Refresh();
         }
 
-        private void DeleteButton_Click(object sender, RoutedEventArgs e)
+        private void deleteButton_Click(object sender, RoutedEventArgs e)
         {
             Room selectedRoom = (Room)dataGrid.SelectedItem;
-            if (selectedRoom.type == RoomType.Warehouse)
+            if (selectedRoom.Type == RoomType.Warehouse)
             {
                 System.Windows.MessageBox.Show("You cant delete warehouse!", "Edit error", MessageBoxButton.OK, MessageBoxImage.Error);
                 dataGrid.SelectedItem = null;
                 return;
             }
-            if (!CheckOccurrenceOfRoom(selectedRoom))
+            if (!checkOccurrenceOfRoom(selectedRoom))
             {
                 System.Windows.MessageBox.Show("You cant delete room because of scheduled connections!", "Edit error", MessageBoxButton.OK, MessageBoxImage.Error);
                 dataGrid.SelectedItem = null;
@@ -85,26 +85,26 @@ namespace HealthInstitution.GUI.ManagerView
             if (System.Windows.MessageBox.Show("Are you sure you want to delete selected room", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
             {
                 dataGrid.Items.Remove(selectedRoom);
-                roomRepository.DeleteRoom(selectedRoom.id);
+                _roomRepository.Delete(selectedRoom.Id);
             }
         }
 
-        private bool CheckOccurrenceOfRoom(Room selectedRoom)
+        private bool checkOccurrenceOfRoom(Room selectedRoom)
         {
             EquipmentTransferRepository equipmentTransferRepository = EquipmentTransferRepository.GetInstance();
-            if (equipmentTransferRepository.equipmentTransfers.Find(eqTransfer => eqTransfer.fromRoom == selectedRoom || eqTransfer.toRoom == selectedRoom) != null)
+            if (equipmentTransferRepository.EquipmentTransfers.Find(eqTransfer => eqTransfer.FromRoom == selectedRoom || eqTransfer.ToRoom == selectedRoom) != null)
             {
                 return false;
             }
 
             ExaminationRepository examinationRepository = ExaminationRepository.GetInstance();
-            if (examinationRepository.examinations.Find(examination => examination.room == selectedRoom) != null)
+            if (examinationRepository.Examinations.Find(examination => examination.Room == selectedRoom) != null)
             {
                 return false;
             }
 
             OperationRepository operationRepository = OperationRepository.GetInstance();
-            if (operationRepository.operations.Find(operation => operation.room == selectedRoom) != null)
+            if (operationRepository.Operations.Find(operation => operation.Room == selectedRoom) != null)
             {
                 return false;
             }

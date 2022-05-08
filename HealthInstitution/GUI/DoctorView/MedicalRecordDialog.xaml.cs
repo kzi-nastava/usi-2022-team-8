@@ -23,13 +23,13 @@ namespace HealthInstitution.GUI.DoctorView
         public MedicalRecordDialog(MedicalRecord selectedMedicalRecord)
         {
             InitializeComponent();
-            PatientLabel.Content = selectedMedicalRecord.patient.ToString();
-            HeightLabel.Content = selectedMedicalRecord.height.ToString() + " cm";
-            WeightLabel.Content = selectedMedicalRecord.weight.ToString() + " kg";
-            foreach (String illness in selectedMedicalRecord.previousIllnesses)
-                IllnessesListBox.Items.Add(illness);
-            foreach (String allergen in selectedMedicalRecord.allergens)
-                AllergensListBox.Items.Add(allergen);
+            patientLabel.Content = selectedMedicalRecord.Patient.ToString();
+            heightLabel.Content = selectedMedicalRecord.Height.ToString() + " cm";
+            weightLabel.Content = selectedMedicalRecord.Weight.ToString() + " kg";
+            foreach (String illness in selectedMedicalRecord.PreviousIllnesses)
+                illnessesListBox.Items.Add(illness);
+            foreach (String allergen in selectedMedicalRecord.Allergens)
+                allergensListBox.Items.Add(allergen);
         }
     }
 }

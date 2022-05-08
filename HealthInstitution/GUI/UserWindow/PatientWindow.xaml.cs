@@ -23,16 +23,16 @@ namespace HealthInstitution.GUI.UserWindow
     /// </summary>
     public partial class PatientWindow : Window
     {
-        private User loggedPatient;
+        private User _loggedPatient;
 
         public PatientWindow(User loggedPatient)
         {
             InitializeComponent();
             ExaminationDoctorRepository.GetInstance();
-            this.loggedPatient = loggedPatient;
+            this._loggedPatient = loggedPatient;
         }
 
-        private void logout_button_Click(object sender, RoutedEventArgs e)
+        private void logOut_Click(object sender, RoutedEventArgs e)
         {
             if (System.Windows.MessageBox.Show("Are you sure you want to log out?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
             {
@@ -42,12 +42,12 @@ namespace HealthInstitution.GUI.UserWindow
             }
         }
 
-        private void Schedule_Button_Click(object sender, RoutedEventArgs e)
+        private void schedule_Click(object sender, RoutedEventArgs e)
         {
-            /* var check = TrollCounterRepository.GetInstance().GetTrollCounterById(loggedPatient.username);
+            /* var check = TrollCounterRepository.GetInstance().GetTrollCounterById(loggedPatient.Username);
              Console.WriteLine(check.ToString());*/
 
-            new PatientScheduleWindow(this.loggedPatient).ShowDialog();
+            new PatientScheduleWindow(this._loggedPatient).ShowDialog();
         }
     }
 }

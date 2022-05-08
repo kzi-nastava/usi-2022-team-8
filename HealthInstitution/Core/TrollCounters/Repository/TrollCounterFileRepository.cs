@@ -7,72 +7,72 @@ namespace HealthInstitution.Core.TrollCounters.Repository;
 
 public class TrollCounterFileRepository
 {
-    public String fileName { get; set; }
-    public List<TrollCounter> allCounters { get; set; }
-    public Dictionary<String, TrollCounter> allCountersById { get; set; }
+    private String _fileName;
+    public List<TrollCounter> Counters { get; set; }
+    public Dictionary<String, TrollCounter> CountersById { get; set; }
 
-    private JsonSerializerOptions options = new JsonSerializerOptions
+    private JsonSerializerOptions _options = new JsonSerializerOptions
     {
         Converters = { new JsonStringEnumConverter() }
     };
 
     private TrollCounterFileRepository(String fileName)
     {
-        this.fileName = fileName;
-        this.allCounters = new List<TrollCounter>();
-        this.allCountersById = new Dictionary<string, TrollCounter>();
-        this.LoadCounters();
+        this._fileName = fileName;
+        this.Counters = new List<TrollCounter>();
+        this.CountersById = new Dictionary<string, TrollCounter>();
+        this.LoadFromFile();
     }
 
-    private static TrollCounterFileRepository instance = null;
+    private static TrollCounterFileRepository s_instance = null;
 
     public static TrollCounterFileRepository GetInstance()
     {
         {
-            if (instance == null)
+            if (s_instance == null)
             {
-                instance = new TrollCounterFileRepository(@"..\..\..\Data\JSON\trollCounters.json");
+                s_instance = new TrollCounterFileRepository(@"..\..\..\Data\JSON\trollCounters.json");
             }
-            return instance;
+            return s_instance;
         }
     }
 
-    public void LoadCounters()
+    public void LoadFromFile()
     {
-        var counters = JsonSerializer.Deserialize<List<TrollCounter>>(File.ReadAllText(@"..\..\..\Data\JSON\trollCounters.json"), options);
+        var counters = JsonSerializer.Deserialize<List<TrollCounter>>(File.ReadAllText(@"..\..\..\Data\JSON\trollCounters.json"), _options);
         foreach (TrollCounter trollCounter in counters)
         {
-            this.allCounters.Add(trollCounter);
-            this.allCountersById.Add(trollCounter.username, trollCounter);
+            this.Counters.Add(trollCounter);
+            this.CountersById.Add(trollCounter.Username, trollCounter);
         }
     }
 
     public void Save()
     {
-        var allTrollCounters = JsonSerializer.Serialize(this.allCounters, options);
-        File.WriteAllText(this.fileName, allTrollCounters);
+        var allTrollCounters = JsonSerializer.Serialize(this.Counters, _options);
+        File.WriteAllText(this._fileName, allTrollCounters);
     }
 
-    public TrollCounter GetTrollCounterById(string id)
+    public TrollCounter GetById(string id)
     {
-        return this.allCountersById[id];
+        return this.CountersById[id];
     }
 
-    public void AddTrollCounter(string username)
+    public void Add(string username)
     {
         TrollCounter trollCounter = new TrollCounter(username);
-        this.allCounters.Add(trollCounter);
-        this.allCountersById.Add(username, trollCounter);
+        this.Counters.Add(trollCounter);
+        this.CountersById.Add(username, trollCounter);
         Save();
     }
 
-    public void DeleteTrollCounter(string id)
+    public void Delete(string id)
     {
-        TrollCounter trollCounter = allCountersById[id];
+        TrollCounter trollCounter = CountersById[id];
         if (trollCounter != null)
         {
-            this.allCountersById.Remove(trollCounter.username);
-            this.allCounters.Remove(trollCounter);
+            this.CountersById.Remove(trollCounter.Username);
+            this.Counters.Remove(trollCounter);
             Save();
         }
     }
@@ -85,11 +85,11 @@ public class TrollCounterFileRepository
 
     public void CheckCreateTroll(string username)
     {
-        if (this.allCountersById[username].createDates.Count() > 8) throw new Exception("Created too many examinations");
+        if (this.CountersById[username].CreateDates.Count() > 8) throw new Exception("Created too many examinations");
     }
 
     public void CheckEditDeleteTroll(string username)
     {
-        if (this.allCountersById[username].editDeleteDates.Count() >= 5) throw new Exception("Edited too many examinations");
+        if (this.CountersById[username].EditDeleteDates.Count() >= 5) throw new Exception("Edited too many examinations");
     }
 }

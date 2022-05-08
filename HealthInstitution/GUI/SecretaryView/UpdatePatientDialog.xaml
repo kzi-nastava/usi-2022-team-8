@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="UpdatePatientWindow" Height="400" Width="650">
     <Grid Margin="0,0,0,0">
-        <Button Content="Update patient" Click="UpdatePatient_click" HorizontalAlignment="Center" Margin="0,300,0,0" VerticalAlignment="Top" FontSize="18"/>
+        <Button Content="Update patient" Click="updatePatient_Click" HorizontalAlignment="Center" Margin="0,300,0,0" VerticalAlignment="Top" FontSize="18"/>
         <Label Content="Username:" HorizontalAlignment="Center" Height="25" Margin="-150,50,0,0" VerticalAlignment="Top" Width="100"/>
         <Label Content="Password:" HorizontalAlignment="Center" Height="25" Margin="-150,100,0,0" VerticalAlignment="Top" Width="100"/>
         <Label Content="Name:" HorizontalAlignment="Center" Height="25" Margin="-150,150,0,0" VerticalAlignment="Top" Width="100"/>

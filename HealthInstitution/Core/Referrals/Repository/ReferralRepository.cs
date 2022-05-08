@@ -15,39 +15,39 @@ namespace HealthInstitution.Core.Referrals.Repository
 {
     internal class ReferralRepository
     {
-        public string fileName { get; set; }
-        private int maxId;
-        public List<Referral> referrals { get; set; }
-        public Dictionary<int, Referral> referralById { get; set; }
+        private String _fileName;
+        private int _maxId;
+        public List<Referral> Referrals { get; set; }
+        public Dictionary<int, Referral> ReferralById { get; set; }
 
-        JsonSerializerOptions options = new JsonSerializerOptions
+        private JsonSerializerOptions _options = new JsonSerializerOptions
         {
             Converters = { new JsonStringEnumConverter() }
         };
         private ReferralRepository(string fileName) 
         {
-            this.maxId = 0;
-            this.fileName = fileName;
-            this.referrals = new List<Referral>();
-            this.referralById = new Dictionary<int, Referral>();
-            this.LoadReferrals(); 
+            this._maxId = 0;
+            this._fileName = fileName;
+            this.Referrals = new List<Referral>();
+            this.ReferralById = new Dictionary<int, Referral>();
+            this.LoadFromFile(); 
         }
-        private static ReferralRepository instance = null;
+        private static ReferralRepository s_instance = null;
         public static ReferralRepository GetInstance()
         {
             {
-                if (instance == null)
+                if (s_instance == null)
                 {
-                    instance = new ReferralRepository(@"..\..\..\Data\JSON\referrals.json");
+                    s_instance = new ReferralRepository(@"..\..\..\Data\JSON\referrals.json");
                 }
-                return instance;
+                return s_instance;
             }
         }
-        public void LoadReferrals()
+        public void LoadFromFile()
         {
-            Dictionary<string, Doctor> doctorByUsername = DoctorRepository.GetInstance().doctorsByUsername;
-            var referrals = JArray.Parse(File.ReadAllText(fileName));
-            //var referrals = JsonSerializer.Deserialize<List<Referral>>(File.ReadAllText(@"..\..\..\Data\JSON\referrals.json"), options);
+            Dictionary<string, Doctor> doctorByUsername = DoctorRepository.GetInstance().DoctorsByUsername;
+            var referrals = JArray.Parse(File.ReadAllText(_fileName));
+            //var referrals = JsonSerializer.Deserialize<List<Referral>>(File.ReadAllText(@"..\..\..\Data\JSON\referrals.json"), _options);
             foreach (var referral in referrals)
             {
                 ReferralType referralType;
@@ -59,76 +59,75 @@ namespace HealthInstitution.Core.Referrals.Repository
                                                        doctorByUsername[(string)referral["prescribedBy"]],
                                                        doctorByUsername[(string)referral["referredDoctor"]],
                                                        specialtyType);
-                if (referralTemp.id > maxId)
+                if (referralTemp.Id > _maxId)
                 {
-                    maxId = referralTemp.id;
+                    _maxId = referralTemp.Id;
                 }
 
-                this.referrals.Add(referralTemp);
-                this.referralById[referralTemp.id] = referralTemp;
+                this.Referrals.Add(referralTemp);
+                this.ReferralById[referralTemp.Id] = referralTemp;
             }
         }
-        public List<dynamic> ShortenReferral()
+        private List<dynamic> shortenReferral()
         {
             List<dynamic> reducedReferrals = new List<dynamic>();
-            foreach (var referral in this.referrals)
+            foreach (var referral in this.Referrals)
             {
                 reducedReferrals.Add(new
                 {
-                    id=referral.id,
-                    type=referral.type,
-                    prescribedBy=referral.prescribedBy.username,
-                    referredDoctor=referral.referredDoctor.username,
-                    referredSpecialty=referral.referredSpecialty
+                    id=referral.Id,
+                    type=referral.Type,
+                    prescribedBy=referral.PrescribedBy.Username,
+                    referredDoctor=referral.ReferredDoctor.Username,
+                    referredSpecialty=referral.ReferredSpecialty
                 });
             }
             return reducedReferrals;
         }
-        public void SaveReferrals()
+        public void Save()
         {
-
-            var allReferrals = JsonSerializer.Serialize(ShortenReferral(), options);
-            File.WriteAllText(this.fileName, allReferrals);
+            var allReferrals = JsonSerializer.Serialize(shortenReferral(), _options);
+            File.WriteAllText(this._fileName, allReferrals);
         }
 
-        public List<Referral> GetReferrals()
+        public List<Referral> GetAll()
         {
-            return this.referrals;
+            return this.Referrals;
         }
 
-        public Referral GetReferralById(int id)
+        public Referral GetById(int id)
         {
-            if (referralById.ContainsKey(id))
-                return referralById[id];
+            if (ReferralById.ContainsKey(id))
+                return ReferralById[id];
             return null;
         }
 
-        public void AddReferral(ReferralType type, Doctor prescribedBy, Doctor referredDoctor, SpecialtyType referredSpecialty)
+        public void Add(ReferralType type, Doctor prescribedBy, Doctor referredDoctor, SpecialtyType referredSpecialty)
         {
-            this.maxId++;
-            int id = this.maxId;
+            this._maxId++;
+            int id = this._maxId;
             Referral referral = new Referral(id, type, prescribedBy, referredDoctor, referredSpecialty);
-            this.referrals.Add(referral);
-            this.referralById[id] = referral;
-            SaveReferrals();
+            this.Referrals.Add(referral);
+            this.ReferralById[id] = referral;
+            Save();
         }
 
-        public void UpdateReferral(int id, ReferralType type, Doctor prescribedBy, Doctor referredDoctor, SpecialtyType referredSpecialty)
+        public void Update(int id, ReferralType type, Doctor prescribedBy, Doctor referredDoctor, SpecialtyType referredSpecialty)
         {
-            Referral referral = GetReferralById(id);
-            referral.prescribedBy = prescribedBy;
-            referral.referredDoctor = referredDoctor;
-            referral.referredSpecialty = referredSpecialty;
-            referralById[id] = referral;
-            SaveReferrals();
+            Referral referral = GetById(id);
+            referral.PrescribedBy = prescribedBy;
+            referral.ReferredDoctor = referredDoctor;
+            referral.ReferredSpecialty = referredSpecialty;
+            ReferralById[id] = referral;
+            Save();
         }
 
-        public void DeleteReferral(int id)
+        public void Delete(int id)
         {
-            Referral referral = GetReferralById(id);
-            this.referrals.Remove(referral);
-            this.referralById.Remove(referral.id);
-            SaveReferrals();
+            Referral referral = GetById(id);
+            this.Referrals.Remove(referral);
+            this.ReferralById.Remove(referral.Id);
+            Save();
         }
     }
 }

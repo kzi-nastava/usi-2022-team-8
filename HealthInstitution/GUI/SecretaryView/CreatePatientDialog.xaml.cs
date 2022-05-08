@@ -29,7 +29,7 @@ namespace HealthInstitution.GUI.UserWindow
             InitializeComponent();
         }
 
-        private void CreatePatient_click(object sender, RoutedEventArgs e)
+        private void createPatient_Click(object sender, RoutedEventArgs e)
         {
             string username = usernameBox.Text.Trim();
             string password=passwordBox.Password.ToString().Trim();
@@ -46,7 +46,7 @@ namespace HealthInstitution.GUI.UserWindow
                 {
                     System.Windows.MessageBox.Show("All fields excluding Allergens and Previous ilnesses must be filled!", "Create patient error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
-                else if(userRepository.usersByUsername.ContainsKey(username))
+                else if(userRepository.UsersByUsername.ContainsKey(username))
                 {
                     System.Windows.MessageBox.Show("This username is already used!", "Create patient error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
@@ -65,9 +65,9 @@ namespace HealthInstitution.GUI.UserWindow
                         previousIlnesses = previousIlnessesNotParsed.Split(",").ToList();
                     }
                     PatientRepository patientRepository = PatientRepository.GetInstance();
-                    patientRepository.AddPatient(username, password, name, surname, heightValue, weightValue, allergens, previousIlnesses);
-                    userRepository.AddUser(UserType.Patient, username, password, name, surname);
-                    TrollCounterFileRepository.GetInstance().AddTrollCounter(username);
+                    patientRepository.Add(username, password, name, surname, heightValue, weightValue, allergens, previousIlnesses);
+                    userRepository.Add(UserType.Patient, username, password, name, surname);
+                    TrollCounterFileRepository.GetInstance().Add(username);
                     this.Close();
                 }
             }

@@ -8,12 +8,12 @@ namespace HealthInstitution.Core.Polls.Model
 {
     internal class PollItem
     {
-        public String name { get; set; }
+        public String Name { get; set; }
         public List<Grade> grades { get; set; }
 
         public PollItem(string name, List<Grade> grades)
         {
-            this.name = name;
+            this.Name = name;
             this.grades = grades;
         }
     }

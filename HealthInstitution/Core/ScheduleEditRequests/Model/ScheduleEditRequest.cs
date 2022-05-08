@@ -7,15 +7,15 @@ namespace HealthInstitution.Core.ScheduleEditRequests.Model;
 public class ScheduleEditRequest
 {
     public int Id { get; set; }
-    public Examination currentExamination { get; set; }
-    public Examination newExamination { get; set; }
-    public RestRequestState state { get; set; }
+    public Examination CurrentExamination { get; set; }
+    public Examination NewExamination { get; set; }
+    public RestRequestState State { get; set; }
 
     public ScheduleEditRequest(int id, Examination examination, int examinationId, RestRequestState state)
     {
         this.Id = id;
-        this.newExamination = examination;
-        this.state = state;
-        this.currentExamination = ExaminationRepository.GetInstance().examinationsById[examinationId];
+        this.NewExamination = examination;
+        this.State = state;
+        this.CurrentExamination = ExaminationRepository.GetInstance().ExaminationsById[examinationId];
     }
 }

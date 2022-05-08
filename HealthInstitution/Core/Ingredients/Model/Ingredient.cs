@@ -2,12 +2,12 @@ namespace HealthInstitution.Core.Ingredients.Model;
 
 public class Ingredient
 {
-    public int id { get; set; }
-    public String name { get; set; }
+    public int Id { get; set; }
+    public String Name { get; set; }
 
     public Ingredient(int id, string name)
     {
-        this.id = id;
-        this.name = name;
+        this.Id = id;
+        this.Name = name;
     }
 }

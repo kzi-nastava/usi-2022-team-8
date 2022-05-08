@@ -4,15 +4,15 @@ namespace HealthInstitution.Core.Operations.Model;
 
 public class EquipmentCost
 {
-    public Operation operation { get; set; }
-    public Equipment equipment { get; set; }
-    public int quantity { get; set; }
+    public Operation Operation { get; set; }
+    public Equipment Equipment { get; set; }
+    public int Quantity { get; set; }
 
 
     public EquipmentCost(Operation operation, Equipment equipment, int quantity)
     {
-        this.operation = operation;
-        this.equipment = equipment;
-        this.quantity = quantity;
+        this.Operation = operation;
+        this.Equipment = equipment;
+        this.Quantity = quantity;
     }
 }

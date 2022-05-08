@@ -3,21 +3,21 @@ namespace HealthInstitution.Core.SystemUsers.Users.Model;
 
 public class User
 {
-    public UserType type { get; set; }
-    public String username { get; set; }
-    public String password { get; set; }
-    public String name { get; set; }
-    public String surname { get; set; }
-    public BlockState blocked { get; set; }
+    public UserType Type { get; set; }
+    public String Username { get; set; }
+    public String Password { get; set; }
+    public String Name { get; set; }
+    public String Surname { get; set; }
+    public BlockState Blocked { get; set; }
 
     public User(UserType type, string username, string password, string name, string surname)
     {
-        this.type = type;
-        this.username = username;
-        this.password = password;
-        this.name = name;
-        this.surname = surname;
-        this.blocked = BlockState.NotBlocked;
+        this.Type = type;
+        this.Username = username;
+        this.Password = password;
+        this.Name = name;
+        this.Surname = surname;
+        this.Blocked = BlockState.NotBlocked;
     }
 }
 

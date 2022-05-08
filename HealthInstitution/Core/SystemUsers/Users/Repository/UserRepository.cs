@@ -8,83 +8,83 @@ namespace HealthInstitution.Core.SystemUsers.Users.Repository;
 
 public class UserRepository
 {
-    public String fileName { get; set; }
-    public List<User> users { get; set; }
-    public Dictionary<String, User> usersByUsername { get; set; }
+    private String _fileName;
+    public List<User> Users { get; set; }
+    public Dictionary<String, User> UsersByUsername { get; set; }
 
-    JsonSerializerOptions options = new JsonSerializerOptions
+    private JsonSerializerOptions _options = new JsonSerializerOptions
     {
         Converters = { new JsonStringEnumConverter() }
     };
     private UserRepository(String fileName)
     {
-        this.fileName = fileName;
-        this.users = new List<User>();
-        this.usersByUsername = new Dictionary<string, User>();
-        this.LoadUsers();
+        this._fileName = fileName;
+        this.Users = new List<User>();
+        this.UsersByUsername = new Dictionary<string, User>();
+        this.LoadFromFile();
     }
-    private static UserRepository instance = null;
+    private static UserRepository s_instance = null;
     public static UserRepository GetInstance()
     {
         {
-            if (instance == null)
+            if (s_instance == null)
             {
-                instance = new UserRepository(@"..\..\..\Data\JSON\users.json");
+                s_instance = new UserRepository(@"..\..\..\Data\JSON\users.json");
             }
-            return instance;
+            return s_instance;
         }
     }
-    public void LoadUsers()
+    public void LoadFromFile()
     {
-        var users = JsonSerializer.Deserialize<List<User>>(File.ReadAllText(@"..\..\..\Data\JSON\users.json"), options);
+        var users = JsonSerializer.Deserialize<List<User>>(File.ReadAllText(@"..\..\..\Data\JSON\users.json"), _options);
         foreach (User user in users)
         {
-            this.users.Add(user);
-            this.usersByUsername[user.username] = user;
+            this.Users.Add(user);
+            this.UsersByUsername[user.Username] = user;
         }
     }
 
-    public void SaveUsers()
+    public void Save()
     {
-        var allUsers = JsonSerializer.Serialize(this.users, options);
-        File.WriteAllText(this.fileName, allUsers);
+        var allUsers = JsonSerializer.Serialize(this.Users, _options);
+        File.WriteAllText(this._fileName, allUsers);
     }
 
-    public List<User> GetUsers()
+    public List<User> GetAll()
     {
-        return this.users;
+        return this.Users;
     }
 
-    public User GetUserByUsername(String username)
+    public User GetByUsername(String username)
     {
-        if (this.usersByUsername.ContainsKey(username))
-            return this.usersByUsername[username];
+        if (this.UsersByUsername.ContainsKey(username))
+            return this.UsersByUsername[username];
         return null;
     }
 
-    public void AddUser(UserType type, string username, string password, string name, string surname)
+    public void Add(UserType type, string username, string password, string name, string surname)
     {
         User user = new User(type, username, password, name, surname);
-        this.users.Add(user);
-        this.usersByUsername[username] = user;
-        SaveUsers();
+        this.Users.Add(user);
+        this.UsersByUsername[username] = user;
+        Save();
     }
 
-    public void UpdateUser(string username, string password, string name, string surname)
+    public void Update(string username, string password, string name, string surname)
     {
-        User user = GetUserByUsername(username);
-        user.password = password;
-        user.name = name;
-        user.surname = surname;
-        this.usersByUsername[username]=user;
-        SaveUsers();
+        User user = GetByUsername(username);
+        user.Password = password;
+        user.Name = name;
+        user.Surname = surname;
+        this.UsersByUsername[username]=user;
+        Save();
     }
 
-    public void DeleteUser(string username)
+    public void Delete(string username)
     {
-        User user = GetUserByUsername(username);
-        this.users.Remove(user);
-        this.usersByUsername.Remove(username);
-        SaveUsers();
+        User user = GetByUsername(username);
+        this.Users.Remove(user);
+        this.UsersByUsername.Remove(username);
+        Save();
     }
 }

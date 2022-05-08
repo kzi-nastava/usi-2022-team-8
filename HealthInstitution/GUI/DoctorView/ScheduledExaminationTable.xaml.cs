@@ -23,26 +23,26 @@ namespace HealthInstitution.GUI.DoctorView
     /// </summary>
     public partial class ScheduledExaminationTable : Window
     {
-        Doctor loggedDoctor;
+        private Doctor _loggedDoctor;
         public ScheduledExaminationTable(Doctor doctor)
         {
-            this.loggedDoctor = doctor;   
+            this._loggedDoctor = doctor;   
             InitializeComponent();
             examinationRadioButton.IsChecked = true;
             datePicker.SelectedDate = DateTime.Now;
         }
 
-        public void LoadOperationGridRows()
+        private void LoadOperationGridRows()
         {
             dataGrid.Items.Clear();
-            List<Operation> doctorOperations = this.loggedDoctor.operations;
+            List<Operation> doctorOperations = this._loggedDoctor.Operations;
             if (upcomingDaysRadioButton.IsChecked == true)
             {
                 DateTime today = DateTime.Now;
                 DateTime dateForThreeDays = today.AddDays(3);
                 foreach (Operation operation in doctorOperations)
                 {
-                    if (operation.appointment <= dateForThreeDays && operation.appointment >= today)
+                    if (operation.Appointment <= dateForThreeDays && operation.Appointment >= today)
                         dataGrid.Items.Add(operation);
                 }
             }
@@ -50,7 +50,7 @@ namespace HealthInstitution.GUI.DoctorView
             {
                 foreach (Operation operation in doctorOperations)
                 {
-                    if (operation.appointment.Date == datePicker.SelectedDate.Value.Date)
+                    if (operation.Appointment.Date == datePicker.SelectedDate.Value.Date)
                         dataGrid.Items.Add(operation);
                 }
             }
@@ -59,27 +59,27 @@ namespace HealthInstitution.GUI.DoctorView
         public void LoadExaminationGridRows()
         {
             dataGrid.Items.Clear();
-            List<Examination> doctorExaminations = this.loggedDoctor.examinations;
+            List<Examination> doctorExaminations = this._loggedDoctor.Examinations;
             if ((bool)upcomingDaysRadioButton.IsChecked)
             {
                 DateTime today = DateTime.Now;
                 DateTime dateForThreeDays = today.AddDays(3);
                 foreach (Examination examination in doctorExaminations)
                 {
-                    if (examination.appointment <= dateForThreeDays && examination.appointment >= today)
+                    if (examination.Appointment <= dateForThreeDays && examination.Appointment >= today)
                         dataGrid.Items.Add(examination);
                 }
             } else
             {
                 foreach (Examination examination in doctorExaminations)
                 {
-                    if (examination.appointment.Date == datePicker.SelectedDate.Value.Date)
+                    if (examination.Appointment.Date == datePicker.SelectedDate.Value.Date)
                         dataGrid.Items.Add(examination);
                 }
             }
     
         }
-        private void Show_Click(object sender, RoutedEventArgs e)
+        private void show_Click(object sender, RoutedEventArgs e)
         {
             if (examinationRadioButton.IsChecked == true)
             {
@@ -90,23 +90,23 @@ namespace HealthInstitution.GUI.DoctorView
             }
         }
 
-        private void ShowMedicalRecord_Click(object sender, RoutedEventArgs e)
+        private void showMedicalRecord_Click(object sender, RoutedEventArgs e)
         {
             MedicalRecord selectedMedicalRecord;
             if ((bool)examinationRadioButton.IsChecked)
             {
                 Examination selectedExamination = (Examination)dataGrid.SelectedItem;
-                selectedMedicalRecord = selectedExamination.medicalRecord;
+                selectedMedicalRecord = selectedExamination.MedicalRecord;
             }
             else
             {
                 Operation selectedOperation = (Operation)dataGrid.SelectedItem;
-                selectedMedicalRecord = selectedOperation.medicalRecord;
+                selectedMedicalRecord = selectedOperation.MedicalRecord;
             }
             new MedicalRecordDialog(selectedMedicalRecord).ShowDialog();
         }
 
-        private void StartExamination_Click(object sender, RoutedEventArgs e)
+        private void startExamination_Click(object sender, RoutedEventArgs e)
         {
             if (!(bool)examinationRadioButton.IsChecked)
             {
@@ -116,7 +116,7 @@ namespace HealthInstitution.GUI.DoctorView
             } else 
             { 
                 Examination selectedExamination = (Examination)dataGrid.SelectedItem;
-                if (selectedExamination.status == ExaminationStatus.Scheduled)
+                if (selectedExamination.Status == ExaminationStatus.Scheduled)
                 {
                     new PerformExaminationDialog(selectedExamination).ShowDialog();
                 } else
@@ -127,11 +127,11 @@ namespace HealthInstitution.GUI.DoctorView
             dataGrid.Items.Refresh();
         }
 
-        private void AppointmentChecked(object sender, RoutedEventArgs e)
+        private void appointmentChecked(object sender, RoutedEventArgs e)
         {
         }
 
-        private void DatesChecked(object sender, RoutedEventArgs e)
+        private void datesChecked(object sender, RoutedEventArgs e)
         {
         }
     }

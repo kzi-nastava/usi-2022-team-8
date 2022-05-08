@@ -7,25 +7,25 @@ namespace HealthInstitution.Core.Operations.Model;
 
 public class Operation
 {
-    public int id { get; set; }
-    public DateTime appointment { get; set; }
-    public int duration { get; set; }
-    public ExaminationStatus status { get; set; }
-    public Room room { get; set; }
-    public Doctor doctor { get; set; }
-    public MedicalRecord medicalRecord { get; set; }
-    public String report { get; set; }
-    public List<EquipmentCost> equipmentCosts { get; set; }
+    public int Id { get; set; }
+    public DateTime Appointment { get; set; }
+    public int Duration { get; set; }
+    public ExaminationStatus Status { get; set; }
+    public Room Room { get; set; }
+    public Doctor Doctor { get; set; }
+    public MedicalRecord MedicalRecord { get; set; }
+    public String Report { get; set; }
+    public List<EquipmentCost> EquipmentCosts { get; set; }
 
     public Operation(int id, ExaminationStatus status, DateTime appointment, int duration, Room room, Doctor doctor, MedicalRecord medicalRecord)
     {
-        this.id = id;
-        this.status = status;
-        this.appointment = appointment;
-        this.duration = duration;
-        this.room = room;
-        this.doctor = doctor;
-        this.medicalRecord = medicalRecord;
-        this.equipmentCosts = new List<EquipmentCost>();
+        this.Id = id;
+        this.Status = status;
+        this.Appointment = appointment;
+        this.Duration = duration;
+        this.Room = room;
+        this.Doctor = doctor;
+        this.MedicalRecord = medicalRecord;
+        this.EquipmentCosts = new List<EquipmentCost>();
     }
 }

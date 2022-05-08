@@ -14,41 +14,41 @@ namespace HealthInstitution.Core.EquipmentTransfers.Functionality
 {
     public class EquipmentTransferChecker
     {
-        static EquipmentRepository equipmentRepository = EquipmentRepository.GetInstance();
-        static RoomRepository roomRepository = RoomRepository.GetInstance();
-        static EquipmentTransferRepository equipmentTransferRepository = EquipmentTransferRepository.GetInstance();
-        public static void UpdateEquipmentByTransfer()
+        static EquipmentRepository s_equipmentRepository = EquipmentRepository.GetInstance();
+        static RoomRepository s_roomRepository = RoomRepository.GetInstance();
+        static EquipmentTransferRepository s_equipmentTransferRepository = EquipmentTransferRepository.GetInstance();
+        public static void UpdateByTransfer()
         {
             List<int> equipmentTransfersToRemove = new List<int>();
-            foreach (EquipmentTransfer equipmentTransfer in equipmentTransferRepository.equipmentTransfers)
+            foreach (EquipmentTransfer equipmentTransfer in s_equipmentTransferRepository.EquipmentTransfers)
             {
-                if (equipmentTransfer.transferTime == DateTime.Today)
+                if (equipmentTransfer.TransferTime == DateTime.Today)
                 {
-                    Equipment equipmentFromRoom = equipmentTransfer.fromRoom.availableEquipment.Find(eq => (eq.type == equipmentTransfer.equipment.type && eq.name == equipmentTransfer.equipment.name));
-                    Transfer(equipmentTransfer.toRoom, equipmentFromRoom, equipmentTransfer.equipment.quantity);
-                    equipmentTransfersToRemove.Add(equipmentTransfer.id);
+                    Equipment equipmentFromRoom = equipmentTransfer.FromRoom.AvailableEquipment.Find(eq => (eq.Type == equipmentTransfer.Equipment.Type && eq.Name == equipmentTransfer.Equipment.Name));
+                    Transfer(equipmentTransfer.ToRoom, equipmentFromRoom, equipmentTransfer.Equipment.Quantity);
+                    equipmentTransfersToRemove.Add(equipmentTransfer.Id);
                 }
             }
 
             foreach (int id in equipmentTransfersToRemove)
             {
-                equipmentTransferRepository.DeleteEquipmentTransfer(id);
+                s_equipmentTransferRepository.Delete(id);
             }
         }
 
         public static void Transfer(Room toRoom, Equipment equipment, int quantity)
         {
-            equipment.quantity -= quantity;
-            int index = toRoom.availableEquipment.FindIndex(eq => (eq.name == equipment.name && eq.type == equipment.type));
+            equipment.Quantity -= quantity;
+            int index = toRoom.AvailableEquipment.FindIndex(eq => (eq.Name == equipment.Name && eq.Type == equipment.Type));
             if (index >= 0)
             {
-                toRoom.availableEquipment[index].quantity += quantity;
-                equipmentRepository.SaveEquipments();
+                toRoom.AvailableEquipment[index].Quantity += quantity;
+                s_equipmentRepository.Save();
             }
             else
             {
-                Equipment newEquipment = equipmentRepository.AddEquipment(quantity, equipment.name, equipment.type, equipment.isDynamic);
-                roomRepository.AddEquipmentToRoom(toRoom.id, newEquipment);
+                Equipment newEquipment = s_equipmentRepository.Add(quantity, equipment.Name, equipment.Type, equipment.IsDynamic);
+                s_roomRepository.AddToRoom(toRoom.Id, newEquipment);
             }
         }
     }

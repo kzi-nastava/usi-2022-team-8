@@ -4,19 +4,19 @@ namespace HealthInstitution.Core.Referrals.Model;
 
 public class Referral
 {
-    public int id { get; set; }
-    public ReferralType type { get; set; }
-    public Doctor prescribedBy { get; set; }
-    public Doctor referredDoctor { get; set; }
-    public SpecialtyType referredSpecialty { get; set; }
+    public int Id { get; set; }
+    public ReferralType Type { get; set; }
+    public Doctor PrescribedBy { get; set; }
+    public Doctor ReferredDoctor { get; set; }
+    public SpecialtyType ReferredSpecialty { get; set; }
 
     public Referral(int id, ReferralType type, Doctor prescribedBy, Doctor referredDoctor, SpecialtyType referredSpecialty)
     {
-        this.id = id;
-        this.type = type;
-        this.prescribedBy = prescribedBy;
-        this.referredDoctor = referredDoctor;
-        this.referredSpecialty = referredSpecialty;
+        this.Id = id;
+        this.Type = type;
+        this.PrescribedBy = prescribedBy;
+        this.ReferredDoctor = referredDoctor;
+        this.ReferredSpecialty = referredSpecialty;
     }
 }
 

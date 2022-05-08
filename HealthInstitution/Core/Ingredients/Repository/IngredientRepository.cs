@@ -6,84 +6,84 @@ namespace HealthInstitution.Core.Ingredients.Repository;
 
 public class IngredientRepository
 {
-    private int maxId;
-    public string fileName { get; set; }
-    public List<Ingredient> ingredients { get; set; }
-    public Dictionary<int, Ingredient> ingredientById { get; set; }
+    private int _maxId;
+    private String _fileName;
+    public List<Ingredient> Ingredients { get; set; }
+    public Dictionary<int, Ingredient> IngredientById { get; set; }
 
     private IngredientRepository(string fileName) 
     {
-        this.fileName = fileName;
-        this.ingredients = new List<Ingredient>();
-        this.ingredientById = new Dictionary<int, Ingredient>();
-        this.maxId = 0;
-        this.LoadIngredients();
+        this._fileName = fileName;
+        this.Ingredients = new List<Ingredient>();
+        this.IngredientById = new Dictionary<int, Ingredient>();
+        this._maxId = 0;
+        this.LoadFromFile();
     }
-    private static IngredientRepository instance = null;
+    private static IngredientRepository s_instance = null;
     public static IngredientRepository GetInstance()
     {
         {
-            if (instance == null)
+            if (s_instance == null)
             {
-                instance = new IngredientRepository(@"..\..\..\Data\JSON\ingredients.json");
+                s_instance = new IngredientRepository(@"..\..\..\Data\JSON\ingredients.json");
             }
-            return instance;
+            return s_instance;
         }
     }
-    public void LoadIngredients()
+    public void LoadFromFile()
     {
         var ingredients = JsonSerializer.Deserialize<List<Ingredient>>(File.ReadAllText(@"..\..\..\Data\JSON\ingredients.json"));
         foreach (Ingredient ingredient in ingredients)
         {
-            if (ingredient.id > maxId)
+            if (ingredient.Id > _maxId)
             {
-                maxId = ingredient.id;
+                _maxId = ingredient.Id;
             }
-            this.ingredients.Add(ingredient);
-            this.ingredientById[ingredient.id] = ingredient;
+            this.Ingredients.Add(ingredient);
+            this.IngredientById[ingredient.Id] = ingredient;
         }
     }
-    public void SaveIngredients()
+    public void Save()
     {
-        var allIngredients = JsonSerializer.Serialize(this.ingredients);
-        File.WriteAllText(this.fileName, allIngredients);
+        var allIngredients = JsonSerializer.Serialize(this.Ingredients);
+        File.WriteAllText(this._fileName, allIngredients);
     }
 
-    public List<Ingredient> GetIngredients()
+    public List<Ingredient> GetAll()
     {
-        return this.ingredients;
+        return this.Ingredients;
     }
 
-    public Ingredient GetIngredientById(int id)
+    public Ingredient GetById(int id)
     {
-        if (this.ingredientById.ContainsKey(id))
-            return this.ingredientById[id];
+        if (this.IngredientById.ContainsKey(id))
+            return this.IngredientById[id];
         return null;
     }
 
-    public void AddIngredient(string name)
+    public void Add(string name)
     {
-        this.maxId++;
-        int id = this.maxId;
+        this._maxId++;
+        int id = this._maxId;
         Ingredient ingredient = new Ingredient(id, name);
-        this.ingredients.Add(ingredient);
-        this.ingredientById[id] = ingredient;
-        SaveIngredients();
+        this.Ingredients.Add(ingredient);
+        this.IngredientById[id] = ingredient;
+        Save();
     }
 
-    public void UpdateIngredient(int id, string name)
+    public void Update(int id, string name)
     {
-        Ingredient ingredient = GetIngredientById(id);
-        ingredient.name = name;
-        this.ingredientById[id] = ingredient;
-        SaveIngredients();
+        Ingredient ingredient = GetById(id);
+        ingredient.Name = name;
+        this.IngredientById[id] = ingredient;
+        Save();
     }
 
-    public void DeleteIngredient(int id)
+    public void Delete(int id)
     {
-        Ingredient ingredient = GetIngredientById(id);
-        this.ingredients.Remove(ingredient);
-        this.ingredientById.Remove(id);
-        SaveIngredients();
+        Ingredient ingredient = GetById(id);
+        this.Ingredients.Remove(ingredient);
+        this.IngredientById.Remove(id);
+        Save();
     }
 }

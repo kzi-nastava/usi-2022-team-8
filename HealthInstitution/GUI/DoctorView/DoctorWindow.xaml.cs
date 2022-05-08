@@ -22,14 +22,14 @@ namespace HealthInstitution.GUI.DoctorView
     /// </summary>
     public partial class DoctorWindow : Window
     {
-        public Doctor loggedDoctor { get; set; }
+        private Doctor _loggedDoctor;
         public DoctorWindow(Doctor doctor)
         {
-            this.loggedDoctor = doctor;
+            this._loggedDoctor = doctor;
             InitializeComponent();
         }
 
-        private void LogOut_Click(object sender, RoutedEventArgs e)
+        private void logOut_Click(object sender, RoutedEventArgs e)
         {
             if (System.Windows.MessageBox.Show("Are you sure you want to log out?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
             {
@@ -39,19 +39,19 @@ namespace HealthInstitution.GUI.DoctorView
             }
         }
 
-        private void Examinations_Click(object sender, RoutedEventArgs e)
+        private void examinations_Click(object sender, RoutedEventArgs e)
         {
-            new ExaminationTable(this.loggedDoctor).ShowDialog();
+            new ExaminationTable(this._loggedDoctor).ShowDialog();
         }
 
-        private void Operations_Click(object sender, RoutedEventArgs e)
+        private void operations_Click(object sender, RoutedEventArgs e)
         {
-            new OperationTable(this.loggedDoctor).ShowDialog();
+            new OperationTable(this._loggedDoctor).ShowDialog();
         }
 
-        private void ScheduleReview_Click(object sender, RoutedEventArgs e)
+        private void scheduleReview_Click(object sender, RoutedEventArgs e)
         {
-            new ScheduledExaminationTable(this.loggedDoctor).ShowDialog();
+            new ScheduledExaminationTable(this._loggedDoctor).ShowDialog();
         }
     }
 

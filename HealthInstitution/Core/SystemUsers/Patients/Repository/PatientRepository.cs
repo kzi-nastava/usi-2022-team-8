@@ -10,108 +10,108 @@ namespace HealthInstitution.Core.SystemUsers.Patients.Repository
 {
     internal class PatientRepository
     {
-        public string fileName { get; set; }
-        public List<Patient> patients { get; set; }
-        public Dictionary<string, Patient> patientByUsername { get; set; }
+        private String _fileName;
+        public List<Patient> Patients { get; set; }
+        public Dictionary<string, Patient> PatientByUsername { get; set; }
 
         UserRepository userRepository = UserRepository.GetInstance();
 
-        JsonSerializerOptions options = new JsonSerializerOptions
+        private JsonSerializerOptions _options = new JsonSerializerOptions
         {
             Converters = { new JsonStringEnumConverter() }
         };
         private PatientRepository(string fileName)
         {
-            this.fileName = fileName;
-            this.patients = new List<Patient>();
-            this.patientByUsername = new Dictionary<string, Patient>();
-            this.LoadPatients();
+            this._fileName = fileName;
+            this.Patients = new List<Patient>();
+            this.PatientByUsername = new Dictionary<string, Patient>();
+            this.LoadFromFile();
         }
-        private static PatientRepository instance = null;
+        private static PatientRepository s_instance = null;
         public static PatientRepository GetInstance()
         {
             {
-                if (instance == null)
+                if (s_instance == null)
                 {
-                    instance = new PatientRepository(@"..\..\..\Data\JSON\patients.json");
+                    s_instance = new PatientRepository(@"..\..\..\Data\JSON\patients.json");
                 }
-                return instance;
+                return s_instance;
             }
         }
-        public void LoadPatients()
+        public void LoadFromFile()
         {
-            var patients = JsonSerializer.Deserialize<List<Patient>>(File.ReadAllText(@"..\..\..\Data\JSON\patients.json"), options);
+            var patients = JsonSerializer.Deserialize<List<Patient>>(File.ReadAllText(@"..\..\..\Data\JSON\patients.json"), _options);
             foreach (Patient patient in patients)
             {
-                this.patients.Add(patient);
-                this.patientByUsername[patient.username] = patient;
+                this.Patients.Add(patient);
+                this.PatientByUsername[patient.Username] = patient;
             }
         }
 
-        public void SavePatients()
+        public void Save()
         {
-            var allPatients = JsonSerializer.Serialize(this.patients, options);
-            File.WriteAllText(this.fileName, allPatients);
+            var allPatients = JsonSerializer.Serialize(this.Patients, _options);
+            File.WriteAllText(this._fileName, allPatients);
         }
 
-        public List<Patient> GetPatients()
+        public List<Patient> GetAll()
         {
-            return this.patients;
+            return this.Patients;
         }
 
-        public Patient GetPatientByUsername(string username)
+        public Patient GetByUsername(string username)
         {
-            if (patientByUsername.ContainsKey(username))
-                return patientByUsername[username];
+            if (PatientByUsername.ContainsKey(username))
+                return PatientByUsername[username];
             return null;
         }
 
-        public void AddPatient(string username, string password, string name, string surname, double height, double weight, List<string> allergens, List<string> previousIlnesses)
+        public void Add(string username, string password, string name, string surname, double height, double weight, List<string> allergens, List<string> previousIlnesses)
         {
             Patient patient = new Patient(Users.Model.UserType.Patient, username, password, name, surname, Users.Model.BlockState.NotBlocked);
             
             MedicalRecordRepository medicalRecordRepository = MedicalRecordRepository.GetInstance();
-            medicalRecordRepository.AddMedicalRecord(height, weight, previousIlnesses, allergens, patient);
-            this.patients.Add(patient);
-            this.patientByUsername[username] = patient;
-            SavePatients();
+            medicalRecordRepository.Add(height, weight, previousIlnesses, allergens, patient);
+            this.Patients.Add(patient);
+            this.PatientByUsername[username] = patient;
+            Save();
         }
 
-        public void UpdatePatient(string username, string password, string name, string surname, Users.Model.BlockState blockState)
+        public void Update(string username, string password, string name, string surname, Users.Model.BlockState blockState)
         {
-            Patient patient = this.GetPatientByUsername(username);
-            patient.password = password;
-            patient.name = name;
-            patient.surname = surname;
-            patient.blocked = blockState;
-            this.patientByUsername[username] = patient;
-            SavePatients();
-            userRepository.UpdateUser(username, password, name, surname);
+            Patient patient = this.GetByUsername(username);
+            patient.Password = password;
+            patient.Name = name;
+            patient.Surname = surname;
+            patient.Blocked = blockState;
+            this.PatientByUsername[username] = patient;
+            Save();
+            userRepository.Update(username, password, name, surname);
         }
 
-        public void DeletePatient(string username)
+        public void Delete(string username)
         {
-            Patient patient = GetPatientByUsername(username);
-            this.patients.Remove(patient);
-            this.patientByUsername.Remove(username);
-            userRepository.DeleteUser(username);
-            SavePatients();
+            Patient patient = GetByUsername(username);
+            this.Patients.Remove(patient);
+            this.PatientByUsername.Remove(username);
+            userRepository.Delete(username);
+            Save();
         }
         public void ChangeBlockedStatus(string username)
         {
-            Patient patient = this.GetPatientByUsername(username);
-            User user = userRepository.GetUserByUsername(username);
-            if (patient.blocked == Users.Model.BlockState.NotBlocked)
+            Patient patient = this.GetByUsername(username);
+            User user = userRepository.GetByUsername(username);
+            if (patient.Blocked == Users.Model.BlockState.NotBlocked)
             {
-                patient.blocked = Users.Model.BlockState.BlockedBySecretary;
-                user.blocked = Users.Model.BlockState.BlockedBySecretary;
+                patient.Blocked = Users.Model.BlockState.BlockedBySecretary;
+                user.Blocked = Users.Model.BlockState.BlockedBySecretary;
             } else
             {
-                patient.blocked = Users.Model.BlockState.NotBlocked;
-                user.blocked = Users.Model.BlockState.NotBlocked;
+                patient.Blocked = Users.Model.BlockState.NotBlocked;
+                user.Blocked = Users.Model.BlockState.NotBlocked;
             }
-            SavePatients();
-            userRepository.SaveUsers();
+            Save();
+            userRepository.Save();
         }
     }
 }

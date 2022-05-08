@@ -8,11 +8,11 @@ public class Patient : User
     // public MedicalRecord medicalRecord { get; set; } ??
     public Patient (UserType type, string username, string password, string name, string surname, BlockState blocked) : base(type, username, password, name, surname)
     {
-        this.blocked = blocked;
+        this.Blocked = blocked;
     }
 
     public override string? ToString()
     {
-        return this.name+" "+this.surname;
+        return this.Name+" "+this.Surname;
     }
 }

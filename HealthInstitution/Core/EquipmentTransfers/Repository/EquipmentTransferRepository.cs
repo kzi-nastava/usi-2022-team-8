@@ -17,42 +17,42 @@ namespace HealthInstitution.Core.EquipmentTransfers.Repository
 {
     public class EquipmentTransferRepository
     {
-        public String fileName { get; set; }
+        private String _fileName;
 
-        private int maxId;
-        public List<EquipmentTransfer> equipmentTransfers { get; set; }
-        public Dictionary<int, EquipmentTransfer> equipmentTransferById { get; set; }
+        private int _maxId;
+        public List<EquipmentTransfer> EquipmentTransfers { get; set; }
+        public Dictionary<int, EquipmentTransfer> EquipmentTransferById { get; set; }
 
-        JsonSerializerOptions options = new JsonSerializerOptions
+        private JsonSerializerOptions _options = new JsonSerializerOptions
         {
             Converters = { new JsonStringEnumConverter() }
         };
         private EquipmentTransferRepository(String fileName)
         {
-            this.fileName = fileName;
-            this.equipmentTransfers = new List<EquipmentTransfer>();
-            this.equipmentTransferById = new Dictionary<int, EquipmentTransfer>();
-            this.maxId = 0;
-            this.LoadEquipmentTransfers();
+            this._fileName = fileName;
+            this.EquipmentTransfers = new List<EquipmentTransfer>();
+            this.EquipmentTransferById = new Dictionary<int, EquipmentTransfer>();
+            this._maxId = 0;
+            this.LoadFromFile();
         }
-        private static EquipmentTransferRepository instance = null;
+        private static EquipmentTransferRepository s_instance = null;
         public static EquipmentTransferRepository GetInstance()
         {
             {
-                if (instance == null)
+                if (s_instance == null)
                 {
-                    instance = new EquipmentTransferRepository(@"..\..\..\Data\JSON\equipmentTransfers.json");
+                    s_instance = new EquipmentTransferRepository(@"..\..\..\Data\JSON\equipmentTransfers.json");
                 }
-                return instance;
+                return s_instance;
             }
         }
 
-        public void LoadEquipmentTransfers()
+        public void LoadFromFile()
         {
-            var equipmentById = EquipmentRepository.GetInstance().equipmentById;
-            var roomById = RoomRepository.GetInstance().roomById;
-            var equipmentTransfers = JArray.Parse(File.ReadAllText(fileName));
-            //var equipmentTransfers = JsonSerializer.Deserialize<List<Room>>(File.ReadAllText(@"..\..\..\Data\JSON\equipmentTransfers.json"), options);
+            var equipmentById = EquipmentRepository.GetInstance().EquipmentById;
+            var roomById = RoomRepository.GetInstance().RoomById;
+            var equipmentTransfers = JArray.Parse(File.ReadAllText(_fileName));
+            //var equipmentTransfers = JsonSerializer.Deserialize<List<Room>>(File.ReadAllText(@"..\..\..\Data\JSON\equipmentTransfers.json"), _options);
             foreach (var equipmentTransfer in equipmentTransfers)
             {
 
@@ -67,78 +67,77 @@ namespace HealthInstitution.Core.EquipmentTransfers.Repository
 
                 EquipmentTransfer eqTransferTemp = new EquipmentTransfer(id, equipment, fromRoom, toRoom, transferTime);
 
-                if (id > maxId)
+                if (id > _maxId)
                 {
-                    maxId = id;
+                    _maxId = id;
                 }
 
-                this.equipmentTransfers.Add(eqTransferTemp);
-                this.equipmentTransferById.Add(eqTransferTemp.id, eqTransferTemp);
+                this.EquipmentTransfers.Add(eqTransferTemp);
+                this.EquipmentTransferById.Add(eqTransferTemp.Id, eqTransferTemp);
             }
         }
 
-        public List<dynamic> ShortenEquipmentTransfer()
+        private List<dynamic> shortenEquipmentTransfer()
         {
             List<dynamic> reducedEquipmentTransfers = new List<dynamic>();
-            foreach (var equipmentTransfer in this.equipmentTransfers)
+            foreach (var equipmentTransfer in this.EquipmentTransfers)
             {
                 reducedEquipmentTransfers.Add(new
                 {
-                    id = equipmentTransfer.id,
-                    equipment = equipmentTransfer.equipment.id,
-                    fromRoom = equipmentTransfer.fromRoom.id,
-                    toRoom = equipmentTransfer.toRoom.id,
-                    transferTime = equipmentTransfer.transferTime
+                    id = equipmentTransfer.Id,
+                    equipment = equipmentTransfer.Equipment.Id,
+                    fromRoom = equipmentTransfer.FromRoom.Id,
+                    toRoom = equipmentTransfer.ToRoom.Id,
+                    transferTime = equipmentTransfer.TransferTime
                 });
             }
             return reducedEquipmentTransfers;
         }
-        public void SaveEquipmentTransfers()
+        public void Save()
         {
-            var allEquipmentTransfers = JsonSerializer.Serialize(ShortenEquipmentTransfer(), options);
-            File.WriteAllText(this.fileName, allEquipmentTransfers);
+            var allEquipmentTransfers = JsonSerializer.Serialize(shortenEquipmentTransfer(), _options);
+            File.WriteAllText(this._fileName, allEquipmentTransfers);
         }
 
-        public List<EquipmentTransfer> GetEquipmentTransfers()
+        public List<EquipmentTransfer> GetAll()
         {
-            return this.equipmentTransfers;
+            return this.EquipmentTransfers;
         }
 
-        public EquipmentTransfer GetEquipmentTransferById(int id)
+        public EquipmentTransfer GetById(int id)
         {
-            if (equipmentTransferById.ContainsKey(id))
-                return equipmentTransferById[id];
+            if (EquipmentTransferById.ContainsKey(id))
+                return EquipmentTransferById[id];
             return null;
         }
 
-        public void AddEquipmentTransfer(Equipment equipment, Room fromRoom, Room toRoom, DateTime transferTime)
+        public void Add(Equipment equipment, Room fromRoom, Room toRoom, DateTime transferTime)
         {
-            this.maxId++;
-            int id = this.maxId;
+            this._maxId++;
+            int id = this._maxId;
             EquipmentTransfer equipmentTransfer = new EquipmentTransfer(id,equipment,fromRoom,toRoom,transferTime);
-            this.equipmentTransfers.Add(equipmentTransfer);
-            this.equipmentTransferById.Add(equipmentTransfer.id, equipmentTransfer);
-            SaveEquipmentTransfers();
+            this.EquipmentTransfers.Add(equipmentTransfer);
+            this.EquipmentTransferById.Add(equipmentTransfer.Id, equipmentTransfer);
+            Save();
         }
 
-        public void UpdateEquipmentTransfer(int id,Equipment equipment, Room fromRoom, Room toRoom, DateTime transferTime)
+        public void Update(int id,Equipment equipment, Room fromRoom, Room toRoom, DateTime transferTime)
         {
-            EquipmentTransfer equipmentTransfer = GetEquipmentTransferById(id);
-            equipmentTransfer.equipment = equipment;
-            equipmentTransfer.fromRoom = fromRoom;
-            equipmentTransfer.toRoom = toRoom;
-            equipmentTransfer.transferTime = transferTime;
-            
-            SaveEquipmentTransfers();
+            EquipmentTransfer equipmentTransfer = GetById(id);
+            equipmentTransfer.Equipment = equipment;
+            equipmentTransfer.FromRoom = fromRoom;
+            equipmentTransfer.ToRoom = toRoom;
+            equipmentTransfer.TransferTime = transferTime;
+            Save();
         }
 
 
-        public void DeleteEquipmentTransfer(int id)
+        public void Delete(int id)
         {
-            EquipmentTransfer equipmentTransfer = GetEquipmentTransferById(id);
-            this.equipmentTransfers.Remove(equipmentTransfer);
-            this.equipmentTransferById.Remove(id);
-            SaveEquipmentTransfers();
+            EquipmentTransfer equipmentTransfer = GetById(id);
+            this.EquipmentTransfers.Remove(equipmentTransfer);
+            this.EquipmentTransferById.Remove(id);
+            Save();
         }
 
     }

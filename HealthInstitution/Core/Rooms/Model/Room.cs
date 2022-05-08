@@ -4,24 +4,24 @@ namespace HealthInstitution.Core.Rooms.Model;
 
 public class Room
 {
-    public int id { get; set; }
-    public RoomType type { get; set; }
-    public int number { get; set; }
-    public bool isRenovating { get; set; }
-    public List<Equipment> availableEquipment { get; set; }
+    public int Id { get; set; }
+    public RoomType Type { get; set; }
+    public int Number { get; set; }
+    public bool IsRenovating { get; set; }
+    public List<Equipment> AvailableEquipment { get; set; }
 
     public Room(int id, RoomType type, int number, bool isRenovating, List<Equipment> availableEquipment)
     {
-        this.id = id;
-        this.type = type;
-        this.number = number;
-        this.isRenovating = isRenovating;
-        this.availableEquipment = availableEquipment;
+        this.Id = id;
+        this.Type = type;
+        this.Number = number;
+        this.IsRenovating = isRenovating;
+        this.AvailableEquipment = availableEquipment;
     }
 
     public override string? ToString()
     {
-        return type.ToString()+" "+number;
+        return Type.ToString()+" "+Number;
     }
 }
 

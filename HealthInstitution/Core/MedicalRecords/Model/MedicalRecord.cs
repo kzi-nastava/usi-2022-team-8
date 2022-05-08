@@ -6,29 +6,29 @@ namespace HealthInstitution.Core.MedicalRecords.Model;
 
 public class MedicalRecord
 {
-    public double height { get; set; }
-    public double weight { get; set; }
-    public List<String> previousIllnesses { get; set; }
-    public List<String> allergens { get; set; }
+    public double Height { get; set; }
+    public double Weight { get; set; }
+    public List<String> PreviousIllnesses { get; set; }
+    public List<String> Allergens { get; set; }
     //public string patientUsername { get; set; }
-    public Patient patient { get; set; }
-    public List<Prescription> prescriptions { get; set; }
-    public List<Referral> referrals { get; set; }
+    public Patient Patient { get; set; }
+    public List<Prescription> Prescriptions { get; set; }
+    public List<Referral> Referrals { get; set; }
 
     public MedicalRecord(double height, double weight, List<string> previousIllnesses, List<string> allergens, Patient patient)
     {
-        this.height = height;
-        this.weight = weight;
-        this.previousIllnesses = previousIllnesses;
-        this.allergens = allergens;
-        this.patient = patient;
-        this.prescriptions = new List<Prescription>();
-        this.referrals = new List<Referral>();
+        this.Height = height;
+        this.Weight = weight;
+        this.PreviousIllnesses = previousIllnesses;
+        this.Allergens = allergens;
+        this.Patient = patient;
+        this.Prescriptions = new List<Prescription>();
+        this.Referrals = new List<Referral>();
     }
 
     public MedicalRecord(double height, double weight, List<string> previousIllnesses, List<string> allergens, Patient patient, List<Prescription> prescriptions, List<Referral> referrals) : this(height, weight, previousIllnesses, allergens, patient)
     {
-        this.prescriptions = prescriptions;
-        this.referrals = referrals;
+        this.Prescriptions = prescriptions;
+        this.Referrals = referrals;
     }
 }

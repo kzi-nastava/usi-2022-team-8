@@ -23,14 +23,14 @@ namespace HealthInstitution.GUI.DoctorView
     /// </summary>
     public partial class AddExaminationDialog : Window
     {
-        Doctor loggedDoctor;
+        private Doctor _loggedDoctor;
         public AddExaminationDialog(Doctor doctor)
         {
-            this.loggedDoctor = doctor;
+            this._loggedDoctor = doctor;
             InitializeComponent();
         }
 
-        private void MinuteComboBox_Loaded(object sender, RoutedEventArgs e)
+        private void minuteComboBox_Loaded(object sender, RoutedEventArgs e)
         {
             var minuteComboBox = sender as System.Windows.Controls.ComboBox;
             List<String> minutes = new List<String>();
@@ -42,7 +42,7 @@ namespace HealthInstitution.GUI.DoctorView
             minuteComboBox.SelectedIndex = 0;
         }
 
-        private void HourComboBox_Loaded(object sender, RoutedEventArgs e)
+        private void hourComboBox_Loaded(object sender, RoutedEventArgs e)
         {
             var hourComboBox = sender as System.Windows.Controls.ComboBox;
             List<String> hours = new List<String>();
@@ -54,10 +54,10 @@ namespace HealthInstitution.GUI.DoctorView
             hourComboBox.SelectedIndex = 0;
         }
 
-        private void PatientComboBox_Loaded(object sender, RoutedEventArgs e)
+        private void patientComboBox_Loaded(object sender, RoutedEventArgs e)
         {
             patientComboBox.Items.Clear();
-            List<Patient> patients = PatientRepository.GetInstance().patients;
+            List<Patient> patients = PatientRepository.GetInstance().Patients;
             foreach (Patient patient in patients)
             {
                 patientComboBox.Items.Add(patient);
@@ -66,7 +66,7 @@ namespace HealthInstitution.GUI.DoctorView
             patientComboBox.Items.Refresh();
         }
 
-        private void Create_Click(object sender, RoutedEventArgs e)
+        private void create_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -82,8 +82,8 @@ namespace HealthInstitution.GUI.DoctorView
                     System.Windows.MessageBox.Show("You have to change dates for upcoming ones!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 } else
                 {
-                    ExaminationRepository.GetInstance().ReserveExamination(patient.username, loggedDoctor.username, appointment);
-                    ExaminationDoctorRepository.GetInstance().SaveToFile();
+                    ExaminationRepository.GetInstance().ReserveExamination(patient.Username, _loggedDoctor.Username, appointment);
+                    ExaminationDoctorRepository.GetInstance().Save();
                     this.Close();
                 }
             }
@@ -93,12 +93,17 @@ namespace HealthInstitution.GUI.DoctorView
             }
         }
 
-        private void HourComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void hourComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
 
         }
 
-        private void MinuteComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void minuteComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
+        }
+
+        private void patientComboBox_Loaded(object sender, SelectionChangedEventArgs e)
         {
 
         }

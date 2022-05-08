@@ -23,38 +23,38 @@ namespace HealthInstitution.GUI.DoctorView
     /// </summary>
     public partial class OperationTable : Window
     {
-        OperationRepository operationRepository = OperationRepository.GetInstance();
-        DoctorRepository doctorRepository = DoctorRepository.GetInstance();
-        OperationDoctorRepository operationDoctorRepository = OperationDoctorRepository.GetInstance();  
-        Doctor loggedDoctor;
+        private OperationRepository _operationRepository = OperationRepository.GetInstance();
+        private DoctorRepository _doctorRepository = DoctorRepository.GetInstance();
+        private OperationDoctorRepository _operationDoctorRepository = OperationDoctorRepository.GetInstance();  
+        private Doctor _loggedDoctor;
         public OperationTable(Doctor doctor)
         {
-            this.loggedDoctor = doctor;
+            this._loggedDoctor = doctor;
             InitializeComponent();
-            LoadGridRows();
+            loadRows();
         }
-        public void LoadGridRows()
+        private void loadRows()
         {
             dataGrid.Items.Clear();
-            List<Operation> doctorOperations = this.loggedDoctor.operations;
+            List<Operation> doctorOperations = this._loggedDoctor.Operations;
             foreach (Operation operation in doctorOperations)
             {
                 dataGrid.Items.Add(operation);
             }
         }
 
-        private void AddButton_Click(object sender, RoutedEventArgs e)
+        private void addButton_Click(object sender, RoutedEventArgs e)
         {
-            new AddOperationDialog(this.loggedDoctor).ShowDialog();
-            LoadGridRows();
+            new AddOperationDialog(this._loggedDoctor).ShowDialog();
+            loadRows();
             dataGrid.Items.Refresh();
         }
 
-        private void EditButton_Click(object sender, RoutedEventArgs e)
+        private void editButton_Click(object sender, RoutedEventArgs e)
         {
             Operation selectedOperation = (Operation)dataGrid.SelectedItem;
             new EditOperationDialog(selectedOperation).ShowDialog();
-            LoadGridRows();
+            loadRows();
             dataGrid.Items.Refresh();
         }
 
@@ -64,9 +64,9 @@ namespace HealthInstitution.GUI.DoctorView
             {
                 Operation selectedOperation = (Operation)dataGrid.SelectedItem;
                 dataGrid.Items.Remove(selectedOperation);
-                operationRepository.DeleteOperation(selectedOperation.id);
-                doctorRepository.DeleteOperation(loggedDoctor, selectedOperation);
-                operationDoctorRepository.SaveToFile();
+                _operationRepository.Delete(selectedOperation.Id);
+                _doctorRepository.DeleteOperation(_loggedDoctor, selectedOperation);
+                _operationDoctorRepository.Save();
             }
         }
     }

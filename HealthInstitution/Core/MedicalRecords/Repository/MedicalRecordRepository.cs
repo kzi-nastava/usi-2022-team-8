@@ -14,144 +14,144 @@ namespace HealthInstitution.Core.MedicalRecords.Repository
 {
     internal class MedicalRecordRepository
     {
-        public string fileName { get; set; }
-        public List<MedicalRecord> medicalRecords { get; set; }
-        public Dictionary<string, MedicalRecord> medicalRecordByUsername { get; set; }
+        private String _fileName;
+        public List<MedicalRecord> MedicalRecords { get; set; }
+        public Dictionary<string, MedicalRecord> MedicalRecordByUsername { get; set; }
 
-        JsonSerializerOptions options = new JsonSerializerOptions
+        private JsonSerializerOptions _options = new JsonSerializerOptions
         {
             Converters = { new JsonStringEnumConverter() }
         };
         private MedicalRecordRepository(string fileName) //singleton
         {
-            this.fileName = fileName;
-            this.medicalRecords = new List<MedicalRecord>();
-            this.medicalRecordByUsername = new Dictionary<string, MedicalRecord>();
-            this.LoadMedicalRecords();
+            this._fileName = fileName;
+            this.MedicalRecords = new List<MedicalRecord>();
+            this.MedicalRecordByUsername = new Dictionary<string, MedicalRecord>();
+            this.LoadFromFile();
         }
-        private static MedicalRecordRepository instance = null;
+        private static MedicalRecordRepository s_instance = null;
         public static MedicalRecordRepository GetInstance()
         {
             {
-                if (instance == null)
+                if (s_instance == null)
                 {
-                    instance = new MedicalRecordRepository(@"..\..\..\Data\JSON\medicalRecords.json");
+                    s_instance = new MedicalRecordRepository(@"..\..\..\Data\JSON\medicalRecords.json");
                 }
-                return instance;
+                return s_instance;
             }
         }
-        public List<string> JToken2Strings(JToken tokens)
+        private List<string> jToken2Strings(JToken tokens)
         {
             List<string> items = new List<string>();
             foreach(string token in tokens)
                 items.Add(token);
             return items;
         }
-        public List<Prescription> JToken2Prescriptions(JToken tokens)
+        private List<Prescription> jToken2Prescriptions(JToken tokens)
         {
-            Dictionary<int, Prescription> prescriptionById = PrescriptionRepository.GetInstance().prescriptionById;
+            Dictionary<int, Prescription> prescriptionById = PrescriptionRepository.GetInstance().PrescriptionById;
             List<Prescription> items = new List<Prescription>();
             foreach (int token in tokens)
                 items.Add(prescriptionById[token]);
             return items;
         }
-        public List<Referral> JToken2Referrals(JToken tokens)
+        private List<Referral> jToken2Referrals(JToken tokens)
         {
-            Dictionary<int, Referral> referralById = ReferralRepository.GetInstance().referralById;
+            Dictionary<int, Referral> referralById = ReferralRepository.GetInstance().ReferralById;
             List<Referral> items = new List<Referral>();
             foreach (int token in tokens)
                 items.Add(referralById[token]);
             return items;
         }
-        public void LoadMedicalRecords()
+        public void LoadFromFile()
         {
-            Dictionary<string, Patient> patientByUsername = PatientRepository.GetInstance().patientByUsername;
-            var medicalRecords = JArray.Parse(File.ReadAllText(fileName));
-            //var medicalRecords = JsonSerializer.Deserialize<List<MedicalRecord>>(File.ReadAllText(@"..\..\..\Data\JSON\medicalRecords.json"), options);
+            Dictionary<string, Patient> patientByUsername = PatientRepository.GetInstance().PatientByUsername;
+            var medicalRecords = JArray.Parse(File.ReadAllText(_fileName));
+            //var medicalRecords = JsonSerializer.Deserialize<List<MedicalRecord>>(File.ReadAllText(@"..\..\..\Data\JSON\medicalRecords.json"), _options);
             foreach (var medicalRecord in medicalRecords)
             {
                 MedicalRecord medicalRecordTemp = new MedicalRecord((double)medicalRecord["height"],
                                                                     (double)medicalRecord["weight"],
-                                                                    JToken2Strings(medicalRecord["previousIlnesses"]),
-                                                                    JToken2Strings(medicalRecord["allergens"]),
+                                                                    jToken2Strings(medicalRecord["previousIlnesses"]),
+                                                                    jToken2Strings(medicalRecord["allergens"]),
                                                                     patientByUsername[(string)medicalRecord["patientUsername"]],
-                                                                    JToken2Prescriptions(medicalRecord["prescriptionsId"]),
-                                                                    JToken2Referrals(medicalRecord["referralsId"])
+                                                                    jToken2Prescriptions(medicalRecord["prescriptionsId"]),
+                                                                    jToken2Referrals(medicalRecord["referralsId"])
                                                                     );
-                this.medicalRecords.Add(medicalRecordTemp);
-                this.medicalRecordByUsername[medicalRecordTemp.patient.username] = medicalRecordTemp;
+                this.MedicalRecords.Add(medicalRecordTemp);
+                this.MedicalRecordByUsername[medicalRecordTemp.Patient.Username] = medicalRecordTemp;
             }
         }
-        public List<dynamic> ShortenMedicalRecord()
+        private List<dynamic> shortenMedicalRecord()
         {
             List <dynamic> reducedMedicalRecords = new List<dynamic>();
-            foreach (var medicalRecord in this.medicalRecords)
+            foreach (var medicalRecord in this.MedicalRecords)
             {
                 List<int> prescriptionsId = new List<int>();
                 List<int> referralsId = new List<int>();
-                foreach (var i in medicalRecord.prescriptions)
-                    prescriptionsId.Add(i.id);
-                foreach (var i in medicalRecord.referrals)
-                    referralsId.Add(i.id);
+                foreach (var i in medicalRecord.Prescriptions)
+                    prescriptionsId.Add(i.Id);
+                foreach (var i in medicalRecord.Referrals)
+                    referralsId.Add(i.Id);
                 reducedMedicalRecords.Add(new
                 {
-                    height = medicalRecord.height,
-                    weight = medicalRecord.weight,
-                    patientUsername = medicalRecord.patient.username,
-                    previousIlnesses = medicalRecord.previousIllnesses,
-                    allergens = medicalRecord.allergens,
+                    height = medicalRecord.Height,
+                    weight = medicalRecord.Weight,
+                    patientUsername = medicalRecord.Patient.Username,
+                    previousIlnesses = medicalRecord.PreviousIllnesses,
+                    allergens = medicalRecord.Allergens,
                     prescriptionsId = prescriptionsId,
                     referralsId = referralsId
                 });
             }
             return reducedMedicalRecords;
         }
-        public void SaveMedicalRecords()
+        public void Save()
         {
             
-            var allMedicalRecords = JsonSerializer.Serialize(ShortenMedicalRecord(), options);
-            File.WriteAllText(this.fileName, allMedicalRecords);
+            var allMedicalRecords = JsonSerializer.Serialize(shortenMedicalRecord(), _options);
+            File.WriteAllText(this._fileName, allMedicalRecords);
         }
         
-        public List<MedicalRecord> GetMedicalRecords()
+        public List<MedicalRecord> GetAll()
         {
-            return this.medicalRecords;
+            return this.MedicalRecords;
         }
 
-        public MedicalRecord GetMedicalRecordByUsername(Patient patient)
+        public MedicalRecord GetByPatientUsername(Patient patient)
         {
-            if (medicalRecordByUsername.ContainsKey(patient.username))
-                return medicalRecordByUsername[patient.username];
+            if (MedicalRecordByUsername.ContainsKey(patient.Username))
+                return MedicalRecordByUsername[patient.Username];
             return null;
         }
 
-        public void AddMedicalRecord(double height, double weight, List<string> previousIlnesses, List<string> allergens, Patient patient)
+        public void Add(double height, double weight, List<string> previousIlnesses, List<string> allergens, Patient patient)
         { 
             MedicalRecord medicalRecord = new MedicalRecord(height, weight, previousIlnesses, allergens, patient);
-            this.medicalRecords.Add(medicalRecord);
-            this.medicalRecordByUsername[patient.username]=medicalRecord;
-            SaveMedicalRecords();
+            this.MedicalRecords.Add(medicalRecord);
+            this.MedicalRecordByUsername[patient.Username]=medicalRecord;
+            Save();
         }
 
-        public void UpdateMedicalRecord(Patient patient, double height, double weight, List<string> previousIlnesses, List<string> allergens, List<Prescription> prescriptions, List<Referral> referrals)
+        public void Update(Patient patient, double height, double weight, List<string> previousIlnesses, List<string> allergens, List<Prescription> prescriptions, List<Referral> referrals)
         {
-            MedicalRecord medicalRecord = GetMedicalRecordByUsername(patient);
-            medicalRecord.height = height;
-            medicalRecord.weight = weight;
-            medicalRecord.prescriptions = prescriptions;
-            medicalRecord.referrals = referrals;
-            medicalRecord.previousIllnesses = previousIlnesses;
-            medicalRecord.allergens = allergens;
-            medicalRecordByUsername[patient.username] = medicalRecord;
-            SaveMedicalRecords();
+            MedicalRecord medicalRecord = GetByPatientUsername(patient);
+            medicalRecord.Height = height;
+            medicalRecord.Weight = weight;
+            medicalRecord.Prescriptions = prescriptions;
+            medicalRecord.Referrals = referrals;
+            medicalRecord.PreviousIllnesses = previousIlnesses;
+            medicalRecord.Allergens = allergens;
+            MedicalRecordByUsername[patient.Username] = medicalRecord;
+            Save();
         }
 
-        public void DeleteMedicalRecord(Patient patient)
+        public void Delete(Patient patient)
         {
-            MedicalRecord medicalRecord = GetMedicalRecordByUsername(patient);
-            this.medicalRecords.Remove(medicalRecord);
-            this.medicalRecordByUsername.Remove(patient.username);
-            SaveMedicalRecords();
+            MedicalRecord medicalRecord = GetByPatientUsername(patient);
+            this.MedicalRecords.Remove(medicalRecord);
+            this.MedicalRecordByUsername.Remove(patient.Username);
+            Save();
         }
     }
 }

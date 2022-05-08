@@ -11,18 +11,18 @@ namespace HealthInstitution.GUI.PatientView
     /// </summary>
     public partial class AddExaminationDialog : Window
     {
-        private int minutes;
-        private int hours;
-        private User loggedPatient;
-        private string doctorUsername;
+        private int _minutes;
+        private int _hours;
+        private User _loggedPatient;
+        private string _doctorUsername;
 
         public AddExaminationDialog(User loggedPatient)
         {
             InitializeComponent();
-            this.loggedPatient = loggedPatient;
+            this._loggedPatient = loggedPatient;
         }
 
-        private void HourComboBox_Loaded(object sender, RoutedEventArgs e)
+        private void hourComboBox_Loaded(object sender, RoutedEventArgs e)
         {
             var hourComboBox = sender as System.Windows.Controls.ComboBox;
             List<String> hours = new List<String>();
@@ -34,14 +34,14 @@ namespace HealthInstitution.GUI.PatientView
             hourComboBox.SelectedIndex = 0;
         }
 
-        private void HourComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void hourComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var hourComboBox = sender as System.Windows.Controls.ComboBox;
             int h = hourComboBox.SelectedIndex;
-            hours = h + 9;
+            _hours = h + 9;
         }
 
-        private void MinuteComboBox_Loaded(object sender, RoutedEventArgs e)
+        private void minuteComboBox_Loaded(object sender, RoutedEventArgs e)
         {
             var minuteComboBox = sender as System.Windows.Controls.ComboBox;
             List<String> minutes = new List<String>();
@@ -52,15 +52,15 @@ namespace HealthInstitution.GUI.PatientView
             minuteComboBox.ItemsSource = minutes;
         }
 
-        private void DoctorComboBox_Loaded(object sender, RoutedEventArgs e)
+        private void doctorComboBox_Loaded(object sender, RoutedEventArgs e)
         {
             var doctorComboBox = sender as System.Windows.Controls.ComboBox;
             List<string> doctors = new List<string>();
 
-            foreach (User user in UserRepository.GetInstance().GetUsers())
+            foreach (User user in UserRepository.GetInstance().GetAll())
             {
-                if (user.type == UserType.Doctor)
-                    doctors.Add(user.username);
+                if (user.Type == UserType.Doctor)
+                    doctors.Add(user.Username);
             }
 
             doctorComboBox.ItemsSource = doctors;
@@ -68,18 +68,18 @@ namespace HealthInstitution.GUI.PatientView
             doctorComboBox.Items.Refresh();
         }
 
-        private void Create_Click(object sender, RoutedEventArgs e)
+        private void create_Click(object sender, RoutedEventArgs e)
         {
             string formatDate = datePicker.SelectedDate.ToString();
             formatDate = formatDate;
 
             DateTime.TryParse(formatDate, out var dateTime);
-            dateTime = dateTime.AddHours(hours);
-            dateTime = dateTime.AddMinutes(minutes);
+            dateTime = dateTime.AddHours(_hours);
+            dateTime = dateTime.AddMinutes(_minutes);
             try
             {
-                ExaminationRepository.GetInstance().ReserveExamination(loggedPatient.username, doctorUsername, dateTime);
-                ExaminationDoctorRepository.GetInstance().SaveToFile();
+                ExaminationRepository.GetInstance().ReserveExamination(_loggedPatient.Username, _doctorUsername, dateTime);
+                ExaminationDoctorRepository.GetInstance().Save();
                 this.Close();
             }
             catch (Exception ex)
@@ -88,17 +88,17 @@ namespace HealthInstitution.GUI.PatientView
             }
         }
 
-        private void MinuteComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void minuteComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var minuteComboBox = sender as System.Windows.Controls.ComboBox;
             int m = minuteComboBox.SelectedIndex;
-            this.minutes = m * 15;
+            this._minutes = m * 15;
         }
 
-        private void DoctorComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void doctorComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var doctorComboBox = sender as System.Windows.Controls.ComboBox;
-            this.doctorUsername = doctorComboBox.SelectedValue as string;
+            this._doctorUsername = doctorComboBox.SelectedValue as string;
         }
     }
 }
