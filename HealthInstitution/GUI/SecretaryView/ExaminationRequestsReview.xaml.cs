@@ -24,12 +24,12 @@ namespace HealthInstitution.GUI.UserWindow
         public ExaminationRequestsReview()
         {
             InitializeComponent();
-            LoadGridRows();
+            loadRows();
         }
-        public void LoadGridRows()
+        private void loadRows()
         {
             dataGrid.Items.Clear();
-            List<ScheduleEditRequest> scheduleEditRequests = ScheduleEditRequestFileRepository.GetInstance().allRequests;
+            List<ScheduleEditRequest> scheduleEditRequests = ScheduleEditRequestFileRepository.GetInstance().Requests;
             foreach (ScheduleEditRequest scheduleEditRequest in scheduleEditRequests)
             {
                 dataGrid.Items.Add(scheduleEditRequest);
@@ -37,7 +37,7 @@ namespace HealthInstitution.GUI.UserWindow
             dataGrid.Items.Refresh();
         }
 
-        private void Accept_click(object sender, RoutedEventArgs e)
+        private void accept_Click(object sender, RoutedEventArgs e)
         {
             ScheduleEditRequest selectedRequest = (ScheduleEditRequest)dataGrid.SelectedItem;  
             if(selectedRequest!=null)
@@ -45,10 +45,10 @@ namespace HealthInstitution.GUI.UserWindow
                 ScheduleEditRequestFileRepository scheduleEditRequestRepository = ScheduleEditRequestFileRepository.GetInstance();
                 scheduleEditRequestRepository.AcceptScheduleEditRequests(selectedRequest.Id);
             }
-            LoadGridRows();
+            loadRows();
         }
 
-        private void Reject_click(object sender, RoutedEventArgs e)
+        private void reject_Click(object sender, RoutedEventArgs e)
         {
             ScheduleEditRequest selectedRequest = (ScheduleEditRequest)dataGrid.SelectedItem;
             if (selectedRequest != null)
@@ -56,7 +56,7 @@ namespace HealthInstitution.GUI.UserWindow
                 ScheduleEditRequestFileRepository scheduleEditRequestRepository = ScheduleEditRequestFileRepository.GetInstance();
                 scheduleEditRequestRepository.RejectScheduleEditRequests(selectedRequest.Id);
             }
-            LoadGridRows();
+            loadRows();
         }
     }
 }

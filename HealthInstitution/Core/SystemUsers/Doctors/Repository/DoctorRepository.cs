@@ -12,36 +12,36 @@ namespace HealthInstitution.Core.SystemUsers.Doctors.Repository
 {
     internal class DoctorRepository
     {
-        public String fileName { get; set; }
-        public List<Doctor> doctors { get; set; }
-        public Dictionary<String, Doctor> doctorsByUsername { get; set; }
+        private String _fileName;
+        public List<Doctor> Doctors { get; set; }
+        public Dictionary<String, Doctor> DoctorsByUsername { get; set; }
 
-        JsonSerializerOptions options = new JsonSerializerOptions
+        private JsonSerializerOptions _options = new JsonSerializerOptions
         {
             Converters = { new JsonStringEnumConverter() }
         };
 
         private DoctorRepository(String fileName)
         {
-            this.fileName = fileName;
-            this.doctors = new List<Doctor>();
-            this.doctorsByUsername = new Dictionary<string, Doctor>();
+            this._fileName = fileName;
+            this.Doctors = new List<Doctor>();
+            this.DoctorsByUsername = new Dictionary<string, Doctor>();
             this.LoadFromFile();
         }
 
-        private static DoctorRepository instance = null;
+        private static DoctorRepository s_instance = null;
         public static DoctorRepository GetInstance()
         {
-            if (instance == null)
+            if (s_instance == null)
             {
-                instance = new DoctorRepository(@"..\..\..\Data\JSON\doctors.json");
+                s_instance = new DoctorRepository(@"..\..\..\Data\JSON\doctors.json");
             }
-            return instance;
+            return s_instance;
         }
 
-        public List<Examination> ConvertJTokenToExamination(JToken tokens)
+        /*private List<Examination> convertJTokenToExamination(JToken tokens)
         {
-            var examinationsById = ExaminationRepository.GetInstance().examinationsById;
+            var examinationsById = ExaminationRepository.GetInstance().ExaminationsById;
             List<Examination> doctorExaminations = new List<Examination>();
             foreach (JToken token in tokens)
             {
@@ -51,20 +51,20 @@ namespace HealthInstitution.Core.SystemUsers.Doctors.Repository
         }
 
 
-        public List<Operation> ConvertJTokenToOperation(JToken tokens)
+        private List<Operation> convertJTokenToOperation(JToken tokens)
         {
-            var operationsById = OperationRepository.GetInstance().operationsById;
+            var operationsById = OperationRepository.GetInstance().OperationsById;
             List<Operation> doctorOperations = new List<Operation>();
             foreach (JToken token in tokens)
             {
                 doctorOperations.Add(operationsById[(int)token]);
             }
             return doctorOperations;
-        }
+        }*/
 
         public void LoadFromFile()
         {
-            var allDoctors = JArray.Parse(File.ReadAllText(this.fileName));
+            var allDoctors = JArray.Parse(File.ReadAllText(this._fileName));
             foreach (var doctor in allDoctors)
             {
                 String username = (String)doctor["username"];
@@ -74,16 +74,16 @@ namespace HealthInstitution.Core.SystemUsers.Doctors.Repository
                 SpecialtyType specialtyType;
                 Enum.TryParse(doctor["specialty"].ToString(), out specialtyType);
                 Doctor loadedDoctor = new Doctor(username, password, name, surname, specialtyType);
-                this.doctors.Add(loadedDoctor);
-                this.doctorsByUsername.Add(username, loadedDoctor);
+                this.Doctors.Add(loadedDoctor);
+                this.DoctorsByUsername.Add(username, loadedDoctor);
             }
         }
 
-        public List<int> FormListOfExaminationIds(List<Examination> examinations)
+        /*public List<int> FormListOfExaminationIds(List<Examination> examinations)
         {
             List<int> ids = new List<int>();
             foreach (Examination examination in examinations)
-                ids.Add(examination.id);
+                ids.Add(examination.Id);
             return ids;
         }
 
@@ -91,51 +91,51 @@ namespace HealthInstitution.Core.SystemUsers.Doctors.Repository
         {
             List<int> ids = new List<int>();
             foreach (Operation operation in operations)
-                ids.Add(operation.id);
+                ids.Add(operation.Id);
             return ids;
-        }
+        }*/
 
 
-        public void SaveToFile()
+        public void Save()
         {
             List<dynamic> reducedDoctors = new List<dynamic>();
-            foreach (Doctor doctor in this.doctors)
+            foreach (Doctor doctor in this.Doctors)
             {
                 reducedDoctors.Add(new
                 {
-                    username = doctor.username,
-                    password = doctor.password,
-                    name = doctor.name,
-                    surname = doctor.surname,
-                    specialty = doctor.specialty
+                    username = doctor.Username,
+                    password = doctor.Password,
+                    name = doctor.Name,
+                    surname = doctor.Surname,
+                    specialty = doctor.Specialty
                 });
             }
-            var allDoctors = JsonSerializer.Serialize(reducedDoctors, options);
-            File.WriteAllText(this.fileName, allDoctors);
+            var allDoctors = JsonSerializer.Serialize(reducedDoctors, _options);
+            File.WriteAllText(this._fileName, allDoctors);
         }
 
-        public List<Doctor> Get()
+        public List<Doctor> GetAll()
         {
-            return this.doctors;
+            return this.Doctors;
         }
 
-        public Doctor GetDoctorByUsername(String username)
+        public Doctor GetById(String username)
         {
-            if (this.doctorsByUsername.ContainsKey(username))
-                return this.doctorsByUsername[username];
+            if (this.DoctorsByUsername.ContainsKey(username))
+                return this.DoctorsByUsername[username];
             return null;
         }
 
         public void DeleteExamination(Doctor doctor, Examination examination)
         {
-            doctor.examinations.Remove(examination);
-            SaveToFile();
+            doctor.Examinations.Remove(examination);
+            Save();
         }
 
         public void DeleteOperation(Doctor doctor, Operation operation)
         {
-            doctor.operations.Remove(operation);
-            SaveToFile();
+            doctor.Operations.Remove(operation);
+            Save();
         }
     }
 }

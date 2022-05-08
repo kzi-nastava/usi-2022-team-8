@@ -10,124 +10,121 @@ namespace HealthInstitution.Core.Drugs.Repository;
 
 public class DrugRepository
 {
-    private int maxId;
-    public string fileName { get; set; }
-    public List<Drug> drugs { get; set; }
-    public Dictionary<int, Drug> drugById { get; set; }
+    private int _maxId;
+    private String _fileName;
+    public List<Drug> Drugs { get; set; }
+    public Dictionary<int, Drug> DrugById { get; set; }
 
-    JsonSerializerOptions options = new JsonSerializerOptions
+    private JsonSerializerOptions _options = new JsonSerializerOptions
     {
         Converters = { new JsonStringEnumConverter() }
     };
     private DrugRepository(string fileName) //singleton
     {
-        this.fileName = fileName;
-        this.drugs = new List<Drug>();
-        this.drugById = new Dictionary<int, Drug>();
-        this.maxId = 0;
-        this.LoadDrugs();
+        this._fileName = fileName;
+        this.Drugs = new List<Drug>();
+        this.DrugById = new Dictionary<int, Drug>();
+        this._maxId = 0;
+        this.LoadFromFile();
     }
-    private static DrugRepository instance = null;
+    private static DrugRepository s_instance = null;
     public static DrugRepository GetInstance()
     {
         {
-            if (instance == null)
+            if (s_instance == null)
             {
-                instance = new DrugRepository(@"..\..\..\Data\JSON\drugs.json");
+                s_instance = new DrugRepository(@"..\..\..\Data\JSON\drugs.json");
             }
-            return instance;
+            return s_instance;
         }
     }
-    public List<Ingredient> JToken2Ingredients(JToken tokens)
+    private List<Ingredient> jToken2Ingredients(JToken tokens)
     {
-        Dictionary<int, Ingredient> ingredientById = IngredientRepository.GetInstance().ingredientById;
+        Dictionary<int, Ingredient> ingredientById = IngredientRepository.GetInstance().IngredientById;
         List<Ingredient> items = new List<Ingredient>();
         foreach (int token in tokens)
             items.Add(ingredientById[token]);
         return items;
     }
-    public void LoadDrugs()
+    public void LoadFromFile()
     {
-        var drugs = JArray.Parse(File.ReadAllText(fileName));
-        //var medicalRecords = JsonSerializer.Deserialize<List<MedicalRecord>>(File.ReadAllText(@"..\..\..\Data\JSON\medicalRecords.json"), options);
-        foreach (var drug in drugs)
+        var drugs = JArray.Parse(File.ReadAllText(_fileName));foreach (var drug in drugs)
         {
             DrugState drugState;
             Enum.TryParse<DrugState>((string)drug["state"], out drugState);
             Drug drugTemp = new Drug((int)drug["id"],
                                       (string)drug["name"],
                                       drugState,
-                                      JToken2Ingredients(drug["ingredients"]));
-            if (drugTemp.id > maxId)
+                                      jToken2Ingredients(drug["ingredients"]));
+            if (drugTemp.Id > _maxId)
             {
-                maxId = drugTemp.id;
+                _maxId = drugTemp.Id;
             }
-            this.drugs.Add(drugTemp);
-            this.drugById[drugTemp.id] = drugTemp;
+            this.Drugs.Add(drugTemp);
+            this.DrugById[drugTemp.Id] = drugTemp;
         }
     }
-    public List<dynamic> ShortenDrug()
+    private List<dynamic> shortenDrug()
     {
         List<dynamic> reducedDrugs = new List<dynamic>();
-        foreach (var drug in this.drugs)
+        foreach (var drug in this.Drugs)
         {
             List<int> ingredientsId = new List<int>();
-            foreach (var i in drug.ingredients)
-                ingredientsId.Add(i.id);
+            foreach (var i in drug.Ingredients)
+                ingredientsId.Add(i.Id);
             reducedDrugs.Add(new
             {
-                id=drug.id,
-                name=drug.name,
-                state=drug.state,
+                id=drug.Id,
+                name=drug.Name,
+                state=drug.State,
                 ingredients=ingredientsId
             });
         }
         return reducedDrugs;
     }
-    public void SaveMedicalRecords()
+    public void Save()
     {
-
-        var allMedicalRecords = JsonSerializer.Serialize(ShortenDrug(), options);
-        File.WriteAllText(this.fileName, allMedicalRecords);
+        var allDrugs = JsonSerializer.Serialize(shortenDrug(), _options);
+        File.WriteAllText(this._fileName, allDrugs);
     }
 
-    public List<Drug> GetDrugs()
+    public List<Drug> GetAll()
     {
-        return this.drugs;
+        return this.Drugs;
     }
 
-    public Drug GetDrugById(int id)
+    public Drug GetById(int id)
     {
-        if (drugById.ContainsKey(id))
-            return drugById[id];
+        if (DrugById.ContainsKey(id))
+            return DrugById[id];
         return null;
     }
 
-    public void AddMedicalRecord(string name, DrugState drugState, List<Ingredient> ingredients)
+    public void Add(string name, DrugState drugState, List<Ingredient> ingredients)
     {
-        this.maxId++;
-        int id = this.maxId;
+        this._maxId++;
+        int id = this._maxId;
         Drug drug = new Drug(id, name, drugState, ingredients);
-        this.drugs.Add(drug);
-        this.drugById[id] = drug;
-        SaveMedicalRecords();
+        this.Drugs.Add(drug);
+        this.DrugById[id] = drug;
+        Save();
     }
 
-    public void UpdateMedicalRecord(int id, string name, DrugState drugState, List<Ingredient> ingredients)
+    public void Update(int id, string name, DrugState drugState, List<Ingredient> ingredients)
     {
-        Drug drug = GetDrugById(id);
-        drug.name = name;
-        drug.state = drugState;
-        drug.ingredients= ingredients;
-        drugById[id] = drug;
-        SaveMedicalRecords();
+        Drug drug = GetById(id);
+        drug.Name = name;
+        drug.State = drugState;
+        drug.Ingredients= ingredients;
+        DrugById[id] = drug;
+        Save();
     }
 
-    public void DeleteDrug(int id)
+    public void Delete(int id)
     {
-        Drug drug = GetDrugById(id);
-        this.drugs.Remove(drug);
-        this.drugById.Remove(id);
-        SaveMedicalRecords();
+        Drug drug = GetById(id);
+        this.Drugs.Remove(drug);
+        this.DrugById.Remove(id);
+        Save();
     }
 }

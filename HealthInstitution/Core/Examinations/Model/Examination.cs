@@ -6,25 +6,23 @@ namespace HealthInstitution.Core.Examinations.Model;
 
 public class Examination
 {
-
-    public int id { get; set; }
-    public ExaminationStatus status { get; set; }
-    public DateTime appointment { get; set; }
-    public Room room { get; set; }
-    public Doctor doctor { get; set; }
-    public MedicalRecord medicalRecord { get; set; }
-    public String anamnesis { get; set; }
+    public int Id { get; set; }
+    public ExaminationStatus Status { get; set; }
+    public DateTime Appointment { get; set; }
+    public Room Room { get; set; }
+    public Doctor Doctor { get; set; }
+    public MedicalRecord MedicalRecord { get; set; }
+    public String Anamnesis { get; set; }
 
     public Examination(int id, ExaminationStatus status, DateTime appointment, Room room, Doctor doctor, MedicalRecord medicalRecord, String anamnesis)
     {
-        this.id = id;
-        this.status = status;
-        this.appointment = appointment;
-        this.status = status;
-        this.room = room;
-        this.doctor = doctor;
-        this.medicalRecord = medicalRecord;
-        this.anamnesis = anamnesis;
+        this.Id = id;
+        this.Status = status;
+        this.Appointment = appointment;
+        this.Room = room;
+        this.Doctor = doctor;
+        this.MedicalRecord = medicalRecord;
+        this.Anamnesis = anamnesis;
     }
 }
 

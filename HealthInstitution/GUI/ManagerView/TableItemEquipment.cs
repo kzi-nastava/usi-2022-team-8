@@ -10,13 +10,13 @@ namespace HealthInstitution.GUI.ManagerView
 {
     public class TableItemEquipment
     {
-        public Room room { get; set; }
-        public Equipment equipment { get; set; }
+        public Room Room { get; set; }
+        public Equipment Equipment { get; set; }
 
         public TableItemEquipment(Room room, Equipment equipment)
         {
-            this.room = room;
-            this.equipment = equipment;
+            this.Room = room;
+            this.Equipment = equipment;
         }
     }
 }

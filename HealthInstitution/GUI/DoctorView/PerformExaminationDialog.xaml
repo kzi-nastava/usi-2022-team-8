@@ -24,8 +24,8 @@
         <TextBox Name="weightTextBox" HorizontalAlignment="Left" Height="26" Margin="206,150,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="105" FontSize="18"/>
         <TextBox Name="illnessesTextBox" HorizontalAlignment="Left" Height="26" Margin="560,217,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="161"/>
         <TextBox Name="allergensTextBox" HorizontalAlignment="Left" Height="26" Margin="560,325,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="161"/>
-        <Button Content="Add allergen" Click="AddAllergen_Click" HorizontalAlignment="Left" Margin="597,371,0,0" VerticalAlignment="Top" FontSize="16"/>
-        <Button Content="Add illness" Click="AddIllness_Click" HorizontalAlignment="Left" Margin="603,262,0,0" VerticalAlignment="Top" FontSize="16"/>
-        <Button Content="Finish" Click="Finish_Click" HorizontalAlignment="Center" Margin="0,399,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.327,-0.439" Width="100" FontSize="16"/>
+        <Button Content="Add allergen" Click="addAllergen_Click" HorizontalAlignment="Left" Margin="597,371,0,0" VerticalAlignment="Top" FontSize="16"/>
+        <Button Content="Add illness" Click="addIllness_Click" HorizontalAlignment="Left" Margin="603,262,0,0" VerticalAlignment="Top" FontSize="16"/>
+        <Button Content="Finish" Click="finish_Click" HorizontalAlignment="Center" Margin="0,399,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.327,-0.439" Width="100" FontSize="16"/>
     </Grid>
 </Window>

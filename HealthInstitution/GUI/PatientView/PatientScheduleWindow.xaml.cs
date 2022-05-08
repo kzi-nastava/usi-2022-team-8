@@ -13,25 +13,26 @@ namespace HealthInstitution.GUI.PatientWindows;
 /// </summary>
 public partial class PatientScheduleWindow : Window
 {
-    private ExaminationRepository examinationRepository = ExaminationRepository.GetInstance();
-    private User loggedPatient;
+    private ExaminationRepository _examinationRepository = ExaminationRepository.GetInstance();
+    private User _loggedPatient;
 
     public PatientScheduleWindow(User loggedPatient)
     {
         InitializeComponent();
-        this.loggedPatient = loggedPatient;
+        this._loggedPatient = loggedPatient;
+        loadRows();
     }
 
     private void addButton_click(object sender, RoutedEventArgs e)
     {
         try
         {
-            TrollCounterFileRepository.GetInstance().TrollCheck(loggedPatient.username);
-            AddExaminationDialog addExaminationDialog = new AddExaminationDialog(loggedPatient);
+            TrollCounterFileRepository.GetInstance().TrollCheck(_loggedPatient.Username);
+            AddExaminationDialog addExaminationDialog = new AddExaminationDialog(_loggedPatient);
             addExaminationDialog.ShowDialog();
             dataGrid.Items.Clear();
-            LoadGrid();
-            TrollCounterFileRepository.GetInstance().GetTrollCounterById(loggedPatient.username).AppendCreateDates(DateTime.Today);
+            loadRows();
+            TrollCounterFileRepository.GetInstance().GetById(_loggedPatient.Username).AppendCreateDates(DateTime.Today);
             TrollCounterFileRepository.GetInstance().Save();
         }
         catch (Exception ex)
@@ -45,13 +46,13 @@ public partial class PatientScheduleWindow : Window
     {
         try
         {
-            TrollCounterFileRepository.GetInstance().TrollCheck(loggedPatient.username);
+            TrollCounterFileRepository.GetInstance().TrollCheck(_loggedPatient.Username);
             Examination selectedExamination = (Examination)dataGrid.SelectedItem;
             EditExaminationDialog editExaminationDialog = new EditExaminationDialog(selectedExamination);
             editExaminationDialog.ShowDialog();
             dataGrid.Items.Clear();
-            LoadGrid();
-            TrollCounterFileRepository.GetInstance().GetTrollCounterById(loggedPatient.username).AppendEditDeleteDates(DateTime.Today);
+            loadRows();
+            TrollCounterFileRepository.GetInstance().GetById(_loggedPatient.Username).AppendEditDeleteDates(DateTime.Today);
             TrollCounterFileRepository.GetInstance().Save();
         }
         catch (Exception ex)
@@ -66,11 +67,11 @@ public partial class PatientScheduleWindow : Window
         Examination selectedExamination = (Examination)dataGrid.SelectedItem;
         try
         {
-            TrollCounterFileRepository.GetInstance().TrollCheck(loggedPatient.username);
-            ExaminationDoctorRepository.GetInstance().SaveToFile();
+            TrollCounterFileRepository.GetInstance().TrollCheck(_loggedPatient.Username);
+            ExaminationDoctorRepository.GetInstance().Save();
             dataGrid.Items.Clear();
-            LoadGrid();
-            TrollCounterFileRepository.GetInstance().GetTrollCounterById(loggedPatient.username).AppendEditDeleteDates(DateTime.Today);
+            loadRows();
+            TrollCounterFileRepository.GetInstance().GetById(_loggedPatient.Username).AppendEditDeleteDates(DateTime.Today);
             TrollCounterFileRepository.GetInstance().Save();
         }
         catch (Exception ex)
@@ -80,29 +81,29 @@ public partial class PatientScheduleWindow : Window
         }
         if (System.Windows.MessageBox.Show("Are you sure you want to delete selected examination", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
         {
-            if (selectedExamination.appointment.AddDays(-2) < DateTime.Now)
+            if (selectedExamination.Appointment.AddDays(-2) < DateTime.Now)
             {
                 ScheduleEditRequestFileRepository.GetInstance().AddDeleteRequest(selectedExamination);
             }
             else
             {
                 dataGrid.Items.Remove(selectedExamination);
-                examinationRepository.DeleteExamination(selectedExamination.id);
-                selectedExamination.doctor.examinations.Remove(selectedExamination);
+                _examinationRepository.DeleteExamination(selectedExamination.Id);
+                selectedExamination.Doctor.Examinations.Remove(selectedExamination);
             }
         }
     }
 
-    private void dataGrid_Loaded(object sender, RoutedEventArgs e)
+    /*private void dataGrid_Loaded(object sender, RoutedEventArgs e)
     {
         LoadGrid();
-    }
+    }*/
 
-    private void LoadGrid()
+    private void loadRows()
     {
-        foreach (Examination examination in ExaminationRepository.GetInstance().examinations)
+        foreach (Examination examination in ExaminationRepository.GetInstance().Examinations)
         {
-            if (examination.medicalRecord.patient.username.Equals(loggedPatient.username))
+            if (examination.MedicalRecord.Patient.Username.Equals(_loggedPatient.Username))
 
                 dataGrid.Items.Add(examination);
         }

@@ -26,26 +26,26 @@ namespace HealthInstitution.GUI.UserWindow
         public PatientsTable()
         {
             InitializeComponent();
-            LoadGridRows();
+            loadRows();
         }
-        public void LoadGridRows()
+        private void loadRows()
         {
             dataGrid.Items.Clear();
-            List<Patient> patients = PatientRepository.GetInstance().patients;
+            List<Patient> patients = PatientRepository.GetInstance().Patients;
             foreach (Patient patient in patients)
             {
                 dataGrid.Items.Add(patient);
             }
             dataGrid.Items.Refresh();
         }
-        private void CreatePatient_click(object sender, RoutedEventArgs e)
+        private void createPatient_Click(object sender, RoutedEventArgs e)
         {
             CreatePatientDialog createPatientDialog = new CreatePatientDialog();
             createPatientDialog.ShowDialog();
-            LoadGridRows();
+            loadRows();
         }
 
-        private void UpdatePatient_click(object sender, RoutedEventArgs e)
+        private void updatePatient_Click(object sender, RoutedEventArgs e)
         {
             Patient selectedPatient = (Patient)dataGrid.SelectedItem;
             if (selectedPatient != null) 
@@ -53,34 +53,34 @@ namespace HealthInstitution.GUI.UserWindow
                 UpdatePatientWindow updatePatientWindow = new UpdatePatientWindow(selectedPatient);
                 updatePatientWindow.ShowDialog();
                 dataGrid.SelectedItem = null;
-                LoadGridRows();
+                loadRows();
                 
             }
         }
 
-        private void DeletePatient_click(object sender, RoutedEventArgs e)
+        private void deletePatient_Click(object sender, RoutedEventArgs e)
         {
             Patient selectedPatient = (Patient)dataGrid.SelectedItem;
             if (selectedPatient != null)
             {
                 UserRepository userRepository = UserRepository.GetInstance();
                 PatientRepository patientRepository = PatientRepository.GetInstance();
-                patientRepository.DeletePatient(selectedPatient.username);
-                userRepository.DeleteUser(selectedPatient.username);
+                patientRepository.Delete(selectedPatient.Username);
+                userRepository.Delete(selectedPatient.Username);
                 dataGrid.SelectedItem = null;
-                LoadGridRows();
+                loadRows();
             }
         }
 
-        private void BlockPatient_click(object sender, RoutedEventArgs e)
+        private void blockPatient_Click(object sender, RoutedEventArgs e)
         {
             Patient selectedPatient = (Patient)dataGrid.SelectedItem;
             if (selectedPatient != null)
             {
                 PatientRepository patientRepository = PatientRepository.GetInstance();
-                patientRepository.ChangeBlockedStatus(selectedPatient.username);
+                patientRepository.ChangeBlockedStatus(selectedPatient.Username);
                 dataGrid.SelectedItem = null;
-                LoadGridRows();
+                loadRows();
             }
         }
     }

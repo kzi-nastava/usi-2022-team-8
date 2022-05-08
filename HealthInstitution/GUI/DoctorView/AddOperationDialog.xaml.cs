@@ -24,14 +24,14 @@ namespace HealthInstitution.GUI.DoctorView
     /// </summary>
     public partial class AddOperationDialog : Window
     {
-        Doctor loggedDoctor;
+        private Doctor _loggedDoctor;
         public AddOperationDialog(Doctor doctor)
         {
-            this.loggedDoctor = doctor;
+            this._loggedDoctor = doctor;
             InitializeComponent();
         }
 
-        private void HourComboBox_Loaded(object sender, RoutedEventArgs e)
+        private void hourComboBox_Loaded(object sender, RoutedEventArgs e)
         {
             var hourComboBox = sender as System.Windows.Controls.ComboBox;
             List<String> hours = new List<String>();
@@ -43,7 +43,7 @@ namespace HealthInstitution.GUI.DoctorView
             hourComboBox.SelectedIndex = 0;
         }
 
-        private void MinuteComboBox_Loaded(object sender, RoutedEventArgs e)
+        private void minuteComboBox_Loaded(object sender, RoutedEventArgs e)
         {
             var minuteComboBox = sender as System.Windows.Controls.ComboBox;
             List<String> minutes = new List<String>();
@@ -55,10 +55,10 @@ namespace HealthInstitution.GUI.DoctorView
             minuteComboBox.SelectedIndex = 0;
         }
 
-        private void PatientComboBox_Loaded(object sender, RoutedEventArgs e)
+        private void patientComboBox_Loaded(object sender, RoutedEventArgs e)
         {
             patientComboBox.Items.Clear();
-            List<Patient> patients = PatientRepository.GetInstance().patients;
+            List<Patient> patients = PatientRepository.GetInstance().Patients;
             foreach (Patient patient in patients)
             {
                 patientComboBox.Items.Add(patient);
@@ -66,7 +66,7 @@ namespace HealthInstitution.GUI.DoctorView
             patientComboBox.SelectedIndex = 0;
         }
 
-        private void Create_Click(object sender, RoutedEventArgs e)
+        private void create_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -85,8 +85,8 @@ namespace HealthInstitution.GUI.DoctorView
                 }
                 else
                 {
-                    OperationRepository.GetInstance().ReserveOperation(patient.username, loggedDoctor.username, appointment, duration);
-                    OperationDoctorRepository.GetInstance().SaveToFile();
+                    OperationRepository.GetInstance().ReserveOperation(patient.Username, _loggedDoctor.Username, appointment, duration);
+                    OperationDoctorRepository.GetInstance().Save();
                     this.Close();
                 }
             }

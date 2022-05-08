@@ -12,97 +12,94 @@ namespace HealthInstitution.Core.Equipments.Repository
 {
     public class EquipmentRepository
     {
-        public String fileName { get; set; }
+        private String _fileName;
 
-        private int maxId;
-        public List<Equipment> equipments { get; set; }
-        public Dictionary<int, Equipment> equipmentById { get; set; }
+        private int _maxId;
+        public List<Equipment> Equipments { get; set; }
+        public Dictionary<int, Equipment> EquipmentById { get; set; }
 
-        JsonSerializerOptions options = new JsonSerializerOptions
+        private JsonSerializerOptions _options = new JsonSerializerOptions
         {
             Converters = { new JsonStringEnumConverter() }
         };
         private EquipmentRepository(String fileName)
         {
-            this.fileName = fileName;
-            this.equipments = new List<Equipment>();
-            this.equipmentById = new Dictionary<int, Equipment>();
-            this.maxId = 0;
-            this.LoadEquipments();
+            this._fileName = fileName;
+            this.Equipments = new List<Equipment>();
+            this.EquipmentById = new Dictionary<int, Equipment>();
+            this._maxId = 0;
+            this.LoadFromFile();
         }
-        private static EquipmentRepository instance = null;
+        private static EquipmentRepository s_instance = null;
         public static EquipmentRepository GetInstance()
         {
             {
-                if (instance == null)
+                if (s_instance == null)
                 {
-                    instance = new EquipmentRepository(@"..\..\..\Data\JSON\equipments.json");
+                    s_instance = new EquipmentRepository(@"..\..\..\Data\JSON\equipments.json");
                 }
-                return instance;
+                return s_instance;
             }
         }
-        public void LoadEquipments()
+        public void LoadFromFile()
         {
-            var equipments = JsonSerializer.Deserialize<List<Equipment>>(File.ReadAllText(@"..\..\..\Data\JSON\equipments.json"), options);
+            var equipments = JsonSerializer.Deserialize<List<Equipment>>(File.ReadAllText(@"..\..\..\Data\JSON\equipments.json"), _options);
             foreach (Equipment equipment in equipments)
             {
-                if (equipment.id > maxId)
+                if (equipment.Id > _maxId)
                 {
-                    maxId = equipment.id;
+                    _maxId = equipment.Id;
                 }
-                this.equipments.Add(equipment);
-                this.equipmentById.Add(equipment.id, equipment);
+                this.Equipments.Add(equipment);
+                this.EquipmentById.Add(equipment.Id, equipment);
             }
         }
 
-        public void SaveEquipments()
+        public void Save()
         {
-            var allEquipments = JsonSerializer.Serialize(this.equipments, options);
-            File.WriteAllText(this.fileName, allEquipments);
+            var allEquipments = JsonSerializer.Serialize(this.Equipments, _options);
+            File.WriteAllText(this._fileName, allEquipments);
         }
 
-        public List<Equipment> GetEquipments()
+        public List<Equipment> GetAll()
         {
-            return this.equipments;
+            return this.Equipments;
         }
 
-        public Equipment GetEquipmentById(int id)
+        public Equipment GetById(int id)
         {
-            if (equipmentById.ContainsKey(id))
-                return equipmentById[id];
+            if (EquipmentById.ContainsKey(id))
+                return EquipmentById[id];
             return null;
         }
 
-        public Equipment AddEquipment(int quantity, string name, EquipmentType type, bool isDynamic)
+        public Equipment Add(int quantity, string name, EquipmentType type, bool isDynamic)
         {
 
-            this.maxId++;
-            int id = this.maxId;
-
+            this._maxId++;
+            int id = this._maxId;
             Equipment equipment = new Equipment(id, quantity, name, type, isDynamic);
-            this.equipments.Add(equipment);
-            this.equipmentById.Add(equipment.id, equipment);
-            SaveEquipments();
+            this.Equipments.Add(equipment);
+            this.EquipmentById.Add(equipment.Id, equipment);
+            Save();
             return equipment;
         }
 
-        public void UpdateEquipment(int id, int quantity, string name, EquipmentType type, bool isDynamic)
+        public void Update(int id, int quantity, string name, EquipmentType type, bool isDynamic)
         {
-            Equipment equipment = GetEquipmentById(id);
-            equipment.quantity = quantity;
-            equipment.name = name;
-            equipment.type = type;
-            equipment.isDynamic = isDynamic;
-            SaveEquipments();
+            Equipment equipment = GetById(id);
+            equipment.Quantity = quantity;
+            equipment.Name = name;
+            equipment.Type = type;
+            equipment.IsDynamic = isDynamic;
+            Save();
         }
-
-
-        public void DeleteEquipment(int id)
+        public void Delete(int id)
         {
-            Equipment equipment = GetEquipmentById(id);
-            this.equipments.Remove(equipment);
-            this.equipmentById.Remove(id);
-            SaveEquipments();
+            Equipment equipment = GetById(id);
+            this.Equipments.Remove(equipment);
+            this.EquipmentById.Remove(id);
+            Save();
         }
     }
 }

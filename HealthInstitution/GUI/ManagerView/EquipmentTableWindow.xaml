@@ -13,15 +13,15 @@
                 <DataGridTextColumn Header="Room" FontSize="18" Width ="160">
                     <DataGridTextColumn.Binding>
                         <MultiBinding StringFormat="{}{0} {1}">
-                            <Binding Path="room.type" />
-                            <Binding Path="room.number"/>
+                            <Binding Path="room.Type" />
+                            <Binding Path="room.Number"/>
                         </MultiBinding>
                     </DataGridTextColumn.Binding>
                 </DataGridTextColumn>
-                <DataGridTextColumn Header="Name" FontSize="18" Binding="{Binding equipment.name}" Width ="160"/>
-                <DataGridTextColumn Header="Equipment type" FontSize="18" Binding="{Binding equipment.type}" Width ="210"/>
+                <DataGridTextColumn Header="Name" FontSize="18" Binding="{Binding equipment.Name}" Width ="160"/>
+                <DataGridTextColumn Header="Equipment type" FontSize="18" Binding="{Binding equipment.Type}" Width ="210"/>
                 <DataGridTextColumn Header="Is dynamic" FontSize="18" Binding="{Binding equipment.isDynamic}" Width ="160"/>
-                <DataGridTextColumn Header="Quantity" FontSize="18" Binding="{Binding equipment.quantity}" Width ="auto"/>
+                <DataGridTextColumn Header="Quantity" FontSize="18" Binding="{Binding equipment.Quantity}" Width ="auto"/>
             </DataGrid.Columns>
         </DataGrid>
     </Grid>

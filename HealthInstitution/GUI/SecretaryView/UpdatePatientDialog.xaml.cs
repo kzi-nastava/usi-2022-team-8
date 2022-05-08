@@ -23,18 +23,18 @@ namespace HealthInstitution.GUI.SecretaryView
     /// </summary>
     public partial class UpdatePatientWindow : Window
     {
-        public Patient patient { get; set; }
+        public Patient Patient { get; set; }
         public UpdatePatientWindow(Patient patient)
         {
             InitializeComponent();
-            this.patient = patient;
-            usernameBox.Text = patient.username;
-            passwordBox.Password = patient.password;
-            nameBox.Text = patient.name;
-            surnameBox.Text = patient.surname;
+            this.Patient = patient;
+            usernameBox.Text = patient.Username;
+            passwordBox.Password = patient.Password;
+            nameBox.Text = patient.Name;
+            surnameBox.Text = patient.Surname;
         }
 
-        private void UpdatePatient_click(object sender, RoutedEventArgs e)
+        private void updatePatient_Click(object sender, RoutedEventArgs e)
         {
             string username = usernameBox.Text;
             string password = passwordBox.Password.ToString();
@@ -48,8 +48,8 @@ namespace HealthInstitution.GUI.SecretaryView
             {
                 UserRepository userRepository = UserRepository.GetInstance();
                 PatientRepository patientRepository = PatientRepository.GetInstance();
-                patientRepository.UpdatePatient(username, password, name, surname, patient.blocked);
-                userRepository.UpdateUser(username, password, name, surname);
+                patientRepository.Update(username, password, name, surname, Patient.Blocked);
+                userRepository.Update(username, password, name, surname);
                 this.Close();
             }
         }

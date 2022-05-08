@@ -10,16 +10,16 @@ using HealthInstitution.GUI.LoginView;
 
 
 /*
-JsonSerializerOptions options = new JsonSerializerOptions
+private JsonSerializerOptions _options = new JsonSerializerOptions
 {
     Converters ={
         new JsonStringEnumConverter()
     }
 };
-var users = JsonSerializer.Deserialize<List<User>>(File.ReadAllText(@"..\..\..\Data\JSON\users.json"), options);
+var users = JsonSerializer.Deserialize<List<User>>(File.ReadAllText(@"..\..\..\Data\JSON\users.json"), _options);
 
 foreach (User user in users)
 {
-    System.Console.WriteLine(user.username);
-    //System.Console.WriteLine(user.type);
+    System.Console.WriteLine(user.Username);
+    //System.Console.WriteLine(user.Type);
 }*/

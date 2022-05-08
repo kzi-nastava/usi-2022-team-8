@@ -15,39 +15,39 @@ namespace HealthInstitution.Core.Rooms.Repository
 {
     public class RoomRepository
     {
-        public String fileName { get; set; }
+        private String _fileName;
 
-        private int maxId;
-        public List<Room> rooms { get; set; }
-        public Dictionary<int, Room> roomById { get; set; }
+        private int _maxId;
+        public List<Room> Rooms { get; set; }
+        public Dictionary<int, Room> RoomById { get; set; }
 
-        JsonSerializerOptions options = new JsonSerializerOptions
+        private JsonSerializerOptions _options = new JsonSerializerOptions
         {
             Converters = { new JsonStringEnumConverter() }
         };
         private RoomRepository(String fileName)
         {
-            this.fileName = fileName;
-            this.rooms = new List<Room>();
-            this.roomById = new Dictionary<int, Room>();
-            this.maxId = 0;
-            this.LoadRooms();
+            this._fileName = fileName;
+            this.Rooms = new List<Room>();
+            this.RoomById = new Dictionary<int, Room>();
+            this._maxId = 0;
+            this.LoadFromFile();
         }
-        private static RoomRepository instance = null;
+        private static RoomRepository s_instance = null;
         public static RoomRepository GetInstance()
         {
             {
-                if (instance == null)
+                if (s_instance == null)
                 {
-                    instance = new RoomRepository(@"..\..\..\Data\JSON\rooms.json");
+                    s_instance = new RoomRepository(@"..\..\..\Data\JSON\rooms.json");
                 }
-                return instance;
+                return s_instance;
             }
         }
 
-        public List<Equipment> ConvertJTokenToEquipments(JToken tokens)
+        private List<Equipment> convertJTokenToEquipments(JToken tokens)
         {
-            var equipmentById = EquipmentRepository.GetInstance().equipmentById;
+            var equipmentById = EquipmentRepository.GetInstance().EquipmentById;
             List<Equipment> equipments = new List<Equipment>();
             foreach (JToken equipmentToken in tokens)
             {
@@ -56,11 +56,11 @@ namespace HealthInstitution.Core.Rooms.Repository
             }
             return equipments;
         }
-        public void LoadRooms()
+        public void LoadFromFile()
         {
            
-            var rooms = JArray.Parse(File.ReadAllText(fileName));
-            //var rooms = JsonSerializer.Deserialize<List<Room>>(File.ReadAllText(@"..\..\..\Data\JSON\rooms.json"), options);
+            var rooms = JArray.Parse(File.ReadAllText(_fileName));
+            //var rooms = JsonSerializer.Deserialize<List<Room>>(File.ReadAllText(@"..\..\..\Data\JSON\rooms.json"), _options);
             foreach (var room in rooms)
             {
                 
@@ -69,97 +69,97 @@ namespace HealthInstitution.Core.Rooms.Repository
                 Enum.TryParse(room["type"].ToString(), out type);
                 int number = (int)room["number"];
                 bool isRenovating = (bool)room["isRenovating"];
-                List<Equipment> availableEquipment = ConvertJTokenToEquipments(room["availableEquipment"]);
+                List<Equipment> availableEquipment = convertJTokenToEquipments(room["availableEquipment"]);
 
                 Room roomTemp = new Room(id,type,number,isRenovating,availableEquipment);
 
-                if (id > maxId)
+                if (id > _maxId)
                 {
-                    maxId = id;
+                    _maxId = id;
                 }
 
-                this.rooms.Add(roomTemp);
-                this.roomById.Add(roomTemp.id, roomTemp);
+                this.Rooms.Add(roomTemp);
+                this.RoomById.Add(roomTemp.Id, roomTemp);
             }
         }
 
-        public List<int> FormListOfIds(List<Equipment> equipments)
+        private List<int> formListOfIds(List<Equipment> equipments)
         {
             var ids = new List<int>();
             foreach(var equipment in equipments)
             {
-                ids.Add(equipment.id);
+                ids.Add(equipment.Id);
             }
             return ids;
         }
-        public List<dynamic> ShortenRoom()
+        private List<dynamic> shortenRoom()
         {
             List<dynamic> reducedRooms = new List<dynamic>();
-            foreach (var room in this.rooms)
+            foreach (var room in this.Rooms)
             {
                 reducedRooms.Add(new
                 {
-                    id = room.id,
-                    type = room.type,
-                    number = room.number,
-                    isRenovating = room.isRenovating,
-                    availableEquipment = FormListOfIds(room.availableEquipment)
+                    id = room.Id,
+                    type = room.Type,
+                    number = room.Number,
+                    isRenovating = room.IsRenovating,
+                    availableEquipment = formListOfIds(room.AvailableEquipment)
                 });
             }
             return reducedRooms;
         }
-        public void SaveRooms()
+        public void Save()
         {
-            var allRooms = JsonSerializer.Serialize(ShortenRoom(), options);
-            File.WriteAllText(this.fileName, allRooms);
+            var allRooms = JsonSerializer.Serialize(shortenRoom(), _options);
+            File.WriteAllText(this._fileName, allRooms);
         }
 
-        public List<Room> GetRooms()
+        public List<Room> GetAll()
         {
-            return this.rooms;
+            return this.Rooms;
         }
 
-        public Room GetRoomById(int id)
+        public Room GetById(int id)
         {
-            if (roomById.ContainsKey(id))
-                return roomById[id];
+            if (RoomById.ContainsKey(id))
+                return RoomById[id];
             return null;
         }
 
         public void AddRoom(RoomType type, int number, bool isRenovating=false)
         {
 
-            this.maxId++;
-            int id = this.maxId;
+            this._maxId++;
+            int id = this._maxId;
             List<Equipment> availableEquipment = new List<Equipment>();
             Room room = new Room(id, type, number, isRenovating, availableEquipment);
-            this.rooms.Add(room);
-            this.roomById.Add(room.id, room);
-            SaveRooms();
+            this.Rooms.Add(room);
+            this.RoomById.Add(room.Id, room);
+            Save();
         }
 
-        public void UpdateRoom(int id, RoomType type, int number, bool isRenovating)
+        public void Update(int id, RoomType type, int number, bool isRenovating)
         {
-            Room room = GetRoomById(id);
-            room.type = type;
-            room.number = number;
-            room.isRenovating = isRenovating;
-            SaveRooms();
+            Room room = GetById(id);
+            room.Type = type;
+            room.Number = number;
+            room.IsRenovating = isRenovating;
+            Save();
         }
 
 
-        public void DeleteRoom(int id)
+        public void Delete(int id)
         {
-            Room room = GetRoomById(id);
-            this.rooms.Remove(room);
-            this.roomById.Remove(id);
-            SaveRooms();
+            Room room = GetById(id);
+            this.Rooms.Remove(room);
+            this.RoomById.Remove(id);
+            Save();
         }
 
-        public void AddEquipmentToRoom(int id, Equipment equipment)
+        public void AddToRoom(int id, Equipment equipment)
         {
-            roomById[id].availableEquipment.Add(equipment);
-            SaveRooms();
+            RoomById[id].AvailableEquipment.Add(equipment);
+            Save();
         }
 
     }

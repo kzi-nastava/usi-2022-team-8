@@ -26,7 +26,7 @@ namespace HealthInstitution.GUI.UserWindow
             InitializeComponent();
         }
 
-        private void LogOut_Click(object sender, RoutedEventArgs e)
+        private void logOut_Click(object sender, RoutedEventArgs e)
         {
             if (System.Windows.MessageBox.Show("Are you sure you want to log out?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
             {
@@ -36,19 +36,19 @@ namespace HealthInstitution.GUI.UserWindow
             }
         }
 
-        private void EquipmentTransfer_Click(object sender, RoutedEventArgs e)
+        private void equipmentTransfer_Click(object sender, RoutedEventArgs e)
         {
             EquipmentTransferDialog equipmentTransferDialog = new EquipmentTransferDialog();
             equipmentTransferDialog.ShowDialog();
         }
 
-        private void EquipmentInspection_Click(object sender, RoutedEventArgs e)
+        private void equipmentInspection_Click(object sender, RoutedEventArgs e)
         {
             EquipmentInspectionDialog equipmentInspectionDialog = new EquipmentInspectionDialog();
             equipmentInspectionDialog.ShowDialog();
         }
 
-        private void Rooms_Click(object sender, RoutedEventArgs e)
+        private void rooms_Click(object sender, RoutedEventArgs e)
         {
             RoomsTableWindow roomsTableWindow = new RoomsTableWindow();
             roomsTableWindow.ShowDialog();

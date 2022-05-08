@@ -22,21 +22,21 @@ namespace HealthInstitution.GUI.ManagerView
     /// </summary>
     public partial class EditRoomDialog : Window
     {
-        private Room room;
-        RoomRepository roomRepository = RoomRepository.GetInstance();
+        private Room _room;
+        private RoomRepository _roomRepository = RoomRepository.GetInstance();
         public EditRoomDialog(Room room)
         {
             InitializeComponent();
-            this.room = room;
-            SetRoomData();
+            this._room = room;
+            setRoomData();
         }
 
-        private void SetRoomData()
+        private void setRoomData()
         {
-            numberBox.Text = room.number.ToString();
+            numberBox.Text = _room.Number.ToString();
         }
 
-        private void RoomTypeComboBox_Loaded(object sender, RoutedEventArgs e)
+        private void roomTypeComboBox_Loaded(object sender, RoutedEventArgs e)
         {
             var roomTypeComboBox = sender as System.Windows.Controls.ComboBox;
             List<RoomType> types = new List<RoomType>();
@@ -44,16 +44,16 @@ namespace HealthInstitution.GUI.ManagerView
             types.Add(RoomType.OperatingRoom);
             types.Add(RoomType.RestRoom);
             roomTypeComboBox.ItemsSource = types;
-            roomTypeComboBox.SelectedItem = room.type;
+            roomTypeComboBox.SelectedItem = _room.Type;
         }
 
-        private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
+        private void numberValidationTextBox(object sender, TextCompositionEventArgs e)
         {
             Regex regex = new Regex("[^0-9]+");
             e.Handled = regex.IsMatch(e.Text);
         }
 
-        private void Edit_Click(object sender, RoutedEventArgs e)
+        private void edit_Click(object sender, RoutedEventArgs e)
         {
             string numberInput = numberBox.Text;
 
@@ -64,10 +64,10 @@ namespace HealthInstitution.GUI.ManagerView
             }
             int number = Int32.Parse(numberInput);
 
-            int idx = roomRepository.rooms.FindIndex(room => room.number == number);
+            int idx = _roomRepository.Rooms.FindIndex(room => room.Number == number);
             if (idx >= 0)
             {
-                if (roomRepository.rooms[idx] != room)
+                if (_roomRepository.Rooms[idx] != _room)
                 {
                     System.Windows.MessageBox.Show("This room number already exist!", "Create error", MessageBoxButton.OK, MessageBoxImage.Error);
                     return;
@@ -82,7 +82,7 @@ namespace HealthInstitution.GUI.ManagerView
 
             RoomType type = (RoomType)typeComboBox.SelectedItem;
 
-            roomRepository.UpdateRoom(room.id, type, number, room.isRenovating);
+            _roomRepository.Update(_room.Id, type, number, _room.IsRenovating);
             System.Windows.MessageBox.Show("Room edited!", "Room edit", MessageBoxButton.OK, MessageBoxImage.Information);
 
             this.Close();

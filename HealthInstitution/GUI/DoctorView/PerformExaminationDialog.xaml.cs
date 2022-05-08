@@ -25,22 +25,22 @@ namespace HealthInstitution.GUI.DoctorView
     /// </summary>
     public partial class PerformExaminationDialog : Window
     {
-        public Examination selectedExamination { get; set; }
+        private Examination _selectedExamination;
         public PerformExaminationDialog(Examination examination)
         {
             InitializeComponent();
-            this.selectedExamination= examination;
-            MedicalRecord medicalRecord = this.selectedExamination.medicalRecord;
-            patientTextBox.Text = medicalRecord.patient.ToString();
-            heightTextBox.Text = medicalRecord.height.ToString();
-            weightTextBox.Text = medicalRecord.weight.ToString();
-            foreach (String illness in medicalRecord.previousIllnesses)
+            this._selectedExamination= examination;
+            MedicalRecord medicalRecord = this._selectedExamination.MedicalRecord;
+            patientTextBox.Text = medicalRecord.Patient.ToString();
+            heightTextBox.Text = medicalRecord.Height.ToString();
+            weightTextBox.Text = medicalRecord.Weight.ToString();
+            foreach (String illness in medicalRecord.PreviousIllnesses)
                 illnessListBox.Items.Add(illness);
-            foreach (String allergen in medicalRecord.allergens)
+            foreach (String allergen in medicalRecord.Allergens)
                 allergenListBox.Items.Add(allergen);
         }
 
-        private void AddIllness_Click(object sender, RoutedEventArgs e)
+        private void addIllness_Click(object sender, RoutedEventArgs e)
         {
             if (illnessesTextBox.Text.Trim() != "")
             {
@@ -49,7 +49,7 @@ namespace HealthInstitution.GUI.DoctorView
             }
         }
 
-        private void AddAllergen_Click(object sender, RoutedEventArgs e)
+        private void addAllergen_Click(object sender, RoutedEventArgs e)
         {
             if (illnessesTextBox.Text.Trim() != "")
             {
@@ -58,7 +58,7 @@ namespace HealthInstitution.GUI.DoctorView
             }
         }
 
-        private void Finish_Click(object sender, RoutedEventArgs e)
+        private void finish_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -74,13 +74,13 @@ namespace HealthInstitution.GUI.DoctorView
                 {
                     allergens.Add(allergen);
                 }
-                MedicalRecord medicalRecord = this.selectedExamination.medicalRecord;
-                List<Prescription> prescriptions = medicalRecord.prescriptions;
-                List<Referral> referrals = medicalRecord.referrals;
-                MedicalRecordRepository.GetInstance().UpdateMedicalRecord(medicalRecord.patient, height, weight, previousIllnesses, allergens, prescriptions, referrals);
-                this.selectedExamination.anamnesis = anamnesisTextBox.Text;
-                this.selectedExamination.status = ExaminationStatus.Completed;
-                ExaminationRepository.GetInstance().SaveToFile();
+                MedicalRecord medicalRecord = this._selectedExamination.MedicalRecord;
+                List<Prescription> prescriptions = medicalRecord.Prescriptions;
+                List<Referral> referrals = medicalRecord.Referrals;
+                MedicalRecordRepository.GetInstance().Update(medicalRecord.Patient, height, weight, previousIllnesses, allergens, prescriptions, referrals);
+                this._selectedExamination.Anamnesis = anamnesisTextBox.Text;
+                this._selectedExamination.Status = ExaminationStatus.Completed;
+                ExaminationRepository.GetInstance().Save();
                 System.Windows.MessageBox.Show("You have finished the examination!", "Congrats", MessageBoxButton.OK, MessageBoxImage.Information);
                 this.Close();
             }

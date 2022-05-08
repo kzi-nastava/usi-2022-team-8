@@ -22,13 +22,13 @@ namespace HealthInstitution.GUI.ManagerView
     /// </summary>
     public partial class AddRoomDialog : Window
     {
-        RoomRepository roomRepository = RoomRepository.GetInstance();
+        private RoomRepository _roomRepository = RoomRepository.GetInstance();
         public AddRoomDialog()
         {
             InitializeComponent();
         }
 
-        private void RoomTypeComboBox_Loaded(object sender, RoutedEventArgs e)
+        private void roomTypeComboBox_Loaded(object sender, RoutedEventArgs e)
         {
             var roomTypeComboBox = sender as System.Windows.Controls.ComboBox;
             List<RoomType> types = new List<RoomType>();
@@ -39,13 +39,13 @@ namespace HealthInstitution.GUI.ManagerView
             roomTypeComboBox.SelectedItem = null;
         }
 
-        private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
+        private void numberValidationTextBox(object sender, TextCompositionEventArgs e)
         {
             Regex regex = new Regex("[^0-9]+");
             e.Handled = regex.IsMatch(e.Text);
         }
 
-        private void Create_Click(object sender, RoutedEventArgs e)
+        private void create_Click(object sender, RoutedEventArgs e)
         {
             string numberInput = numberBox.Text;
 
@@ -56,7 +56,7 @@ namespace HealthInstitution.GUI.ManagerView
             }
             int number = Int32.Parse(numberInput);
 
-            if (roomRepository.rooms.Any(room => room.number == number))
+            if (_roomRepository.Rooms.Any(room => room.Number == number))
             {
                 System.Windows.MessageBox.Show("This room number already exist!", "Create error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
@@ -75,7 +75,7 @@ namespace HealthInstitution.GUI.ManagerView
             }
 
             RoomType type = (RoomType)typeComboBox.SelectedItem;
-            roomRepository.AddRoom(type, number);
+            _roomRepository.AddRoom(type, number);
             System.Windows.MessageBox.Show("Room added!", "Room creation", MessageBoxButton.OK, MessageBoxImage.Information);
             
             this.Close();

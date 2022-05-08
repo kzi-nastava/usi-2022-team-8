@@ -14,53 +14,53 @@ namespace HealthInstitution.Core.Examinations.Repository
 {
     internal class ExaminationDoctorRepository
     {
-        public String fileName { get; set; }
+        private String _fileName;
         private ExaminationDoctorRepository(String fileName)
         {
-            this.fileName = fileName;
+            this._fileName = fileName;
             this.LoadFromFile();
         }
 
-        private static ExaminationDoctorRepository instance = null;
+        private static ExaminationDoctorRepository s_instance = null;
 
         public static ExaminationDoctorRepository GetInstance()
         {
             {
-                if (instance == null)
+                if (s_instance == null)
                 {
-                    instance = new ExaminationDoctorRepository(@"..\..\..\Data\JSON\examinationDoctor.json");
+                    s_instance = new ExaminationDoctorRepository(@"..\..\..\Data\JSON\examinationDoctor.json");
                 }
-                return instance;
+                return s_instance;
             }
         }
 
         public void LoadFromFile()
         {
-            var doctorsByUsername = DoctorRepository.GetInstance().doctorsByUsername;
-            var examinationsById = ExaminationRepository.GetInstance().examinationsById;
-            var examinationIdsDoctorUsernames = JArray.Parse(File.ReadAllText(this.fileName));
+            var doctorsByUsername = DoctorRepository.GetInstance().DoctorsByUsername;
+            var examinationsById = ExaminationRepository.GetInstance().ExaminationsById;
+            var examinationIdsDoctorUsernames = JArray.Parse(File.ReadAllText(this._fileName));
             foreach (var pair in examinationIdsDoctorUsernames)
             {
                 int id = (int)pair["id"];
                 String username = (String)pair["username"];
                 Doctor doctor = doctorsByUsername[username];
                 Examination examination = examinationsById[id];
-                doctor.examinations.Add(examination);
-                examination.doctor = doctor;
+                doctor.Examinations.Add(examination);
+                examination.Doctor = doctor;
             }
         }
 
-        public void SaveToFile()
+        public void Save()
         {
             List<dynamic> examinationIdsDoctorUsernames = new List<dynamic>();
-            var examinations = ExaminationRepository.GetInstance().examinations;
+            var examinations = ExaminationRepository.GetInstance().Examinations;
             foreach (var examination in examinations)
             {
-                Doctor doctor = examination.doctor;
-                examinationIdsDoctorUsernames.Add(new { id = examination.id, username = doctor.username });
+                Doctor doctor = examination.Doctor;
+                examinationIdsDoctorUsernames.Add(new { id = examination.Id, username = doctor.Username });
             }
             var allPairs = JsonSerializer.Serialize(examinationIdsDoctorUsernames);
-            File.WriteAllText(this.fileName, allPairs);
+            File.WriteAllText(this._fileName, allPairs);
         }
     }
 }

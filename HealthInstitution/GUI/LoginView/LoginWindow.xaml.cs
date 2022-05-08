@@ -1,27 +1,9 @@
-﻿using HealthInstitution.Core.Equipments.Repository;
-using HealthInstitution.Core.EquipmentTransfers.Repository;
-using HealthInstitution.Core.Rooms.Repository;
-using HealthInstitution.Core.SystemUsers.Users.Model;
+﻿using HealthInstitution.Core.SystemUsers.Users.Model;
 using HealthInstitution.Core.SystemUsers.Users.Repository;
 using HealthInstitution.GUI.UserWindow;
 using HealthInstitution.GUI.DoctorView;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using HealthInstitution.Core.Examinations.Repository;
-using HealthInstitution.Core.Examinations.Model;
-using HealthInstitution.Core.ScheduleEditRequests.Repository;
-using HealthInstitution.Core.SystemUsers.Patients.Model;
 using HealthInstitution.Core.SystemUsers.Doctors.Repository;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using HealthInstitution.Core.Operations.Repository;
@@ -36,9 +18,9 @@ namespace HealthInstitution.GUI.LoginView
 
     public partial class LoginWindow : Window
     {
-        private String usernameInput;
-        private String passwordInput;
-        public UserRepository userRepository = UserRepository.GetInstance();
+        private String _usernameInput;
+        private String _passwordInput;
+        private UserRepository _userRepository = UserRepository.GetInstance();
 
         public LoginWindow()
         {
@@ -47,32 +29,29 @@ namespace HealthInstitution.GUI.LoginView
 
         private void loginButton_click(object sender, RoutedEventArgs e)
         {
-            usernameInput = usernameBox.Text;
-            passwordInput = passwordBox.Password.ToString();
-            User foundUser = userRepository.GetUserByUsername(usernameInput);
+            _usernameInput = usernameBox.Text;
+            _passwordInput = passwordBox.Password.ToString();
+            User foundUser = _userRepository.GetByUsername(_usernameInput);
             if (foundUser == null)
             {
                 System.Windows.MessageBox.Show("Username doesn't exist!", "Log in error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-            else if (foundUser.password != passwordInput)
+            else if (foundUser.Password != _passwordInput)
             {
                 System.Windows.MessageBox.Show("Username and password don't match!", "Log in error", MessageBoxButton.OK, MessageBoxImage.Error);
-            } else if (foundUser.blocked == BlockState.BlockedBySecretary || foundUser.blocked == BlockState.BlockedBySystem)
+            } else if (foundUser.Blocked == BlockState.BlockedBySecretary || foundUser.Blocked == BlockState.BlockedBySystem)
             {
                 System.Windows.MessageBox.Show("Account is blocked!", "Log in error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
             else
             {
-                switch (foundUser.type)
+                this.Close();
+                switch (foundUser.Type)
                 {
                     case UserType.Patient:
-                        
-                        /*PatientRepository patientRepository = PatientRepository.GetInstance();
-                        Patient patient = patientRepository.GetPatientById(usernameInput);*/
-                        this.Close();
                         try
                         {
-                            TrollCounterFileRepository.GetInstance().TrollCheck(foundUser.username);
+                            TrollCounterFileRepository.GetInstance().TrollCheck(foundUser.Username);
                             new PatientWindow(foundUser).ShowDialog();
                         }
                         catch (Exception ex)
@@ -82,24 +61,21 @@ namespace HealthInstitution.GUI.LoginView
                         break;
 
                     case UserType.Doctor:
-                        this.Close();
                         DoctorRepository doctorRepository = DoctorRepository.GetInstance();
                         ExaminationRepository.GetInstance();
                         ExaminationDoctorRepository.GetInstance();
                         OperationDoctorRepository.GetInstance();
-                        Doctor loggedDoctor = doctorRepository.GetDoctorByUsername(usernameInput);
+                        Doctor loggedDoctor = doctorRepository.GetById(_usernameInput);
                         new DoctorWindow(loggedDoctor).ShowDialog();
 
                         break;
 
                     case UserType.Secretary:
-                        this.Close();
                         SecretaryWindow secretaryWindow = new SecretaryWindow();
                         secretaryWindow.ShowDialog();
                         break;
 
                     case UserType.Manager:
-                        this.Close();
                         ManagerWindow managerWindow = new ManagerWindow();
                         managerWindow.ShowDialog();
                         break;
@@ -110,7 +86,7 @@ namespace HealthInstitution.GUI.LoginView
         [STAThread]
         private static void Main(string[] args)
         {
-            EquipmentTransferChecker.UpdateEquipmentByTransfer();
+            EquipmentTransferChecker.UpdateByTransfer();
             LoginWindow window = new LoginWindow();
             window.ShowDialog();
         }

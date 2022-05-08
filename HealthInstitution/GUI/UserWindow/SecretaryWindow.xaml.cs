@@ -25,20 +25,20 @@ namespace HealthInstitution.GUI.UserWindow
             InitializeComponent();
         }
 
-        private void Patients_click(object sender, RoutedEventArgs e)
+        private void patients_Click(object sender, RoutedEventArgs e)
         {
             PatientsTable patientsTableWindow = new PatientsTable();
             patientsTableWindow.ShowDialog();
         }
 
 
-        private void ExaminationRequests_click(object sender, RoutedEventArgs e)
+        private void examinationRequests_Click(object sender, RoutedEventArgs e)
         {
             ExaminationRequestsReview examinationRequestsReview = new ExaminationRequestsReview();
             examinationRequestsReview.ShowDialog();
         }
 
-        private void LogOut_Click(object sender, RoutedEventArgs e)
+        private void logOut_Click(object sender, RoutedEventArgs e)
         {
             if (System.Windows.MessageBox.Show("Are you sure you want to log out?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
             {

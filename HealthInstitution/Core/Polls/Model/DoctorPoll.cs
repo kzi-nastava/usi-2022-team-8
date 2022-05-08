@@ -10,14 +10,14 @@ namespace HealthInstitution.Core.Polls.Model
 {
     internal class DoctorPoll : Poll
     {
-        public String additionalComment { get; set; }
+        public String AdditionalComment { get; set; }
 
-        public Doctor doctor { get; set; }
+        public Doctor Doctor { get; set; }
 
         public DoctorPoll(List<PollItem> items, string additionalComment, Doctor doctor) : base(items)
         {
-            this.additionalComment = additionalComment;
-            this.doctor = doctor;
+            this.AdditionalComment = additionalComment;
+            this.Doctor = doctor;
         }
     }
 }
