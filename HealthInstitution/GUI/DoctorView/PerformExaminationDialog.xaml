@@ -27,7 +27,7 @@
         <Button Content="Add allergen" Click="AddAllergen_Click" HorizontalAlignment="Left" Margin="597,371,0,0" VerticalAlignment="Top" FontSize="16"/>
         <Button Content="Add illness" Click="AddIllness_Click" HorizontalAlignment="Left" Margin="603,268,0,0" VerticalAlignment="Top" FontSize="16"/>
         <Button Content="Finish" Click="Finish_Click" HorizontalAlignment="Center" Margin="0,425,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.327,-0.439" Width="100" FontSize="16"/>
-        <Button Content="Create referral" Click="Finish_Click" HorizontalAlignment="Left" Margin="487,425,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.327,-0.439" Width="121" FontSize="16"/>
+        <Button Content="Create prescription" Click="CreatePrescription_Click" HorizontalAlignment="Left" Margin="487,425,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.327,-0.439" Width="151" FontSize="16"/>
         <Button Content="Create referral" Click="CreateReferral_Click" HorizontalAlignment="Left" Margin="157,425,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.327,-0.439" Width="154" FontSize="16"/>
     </Grid>
 </Window>

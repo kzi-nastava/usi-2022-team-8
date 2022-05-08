@@ -96,7 +96,7 @@ namespace HealthInstitution.Core.Prescriptions.Repository
             return null;
         }
 
-        public void Add(int dailyDose, PrescriptionTime timeOfUse, Drug drug)
+        public Prescription Add(int dailyDose, PrescriptionTime timeOfUse, Drug drug)
         {
             this._maxId++;
             int id = this._maxId;
@@ -104,6 +104,7 @@ namespace HealthInstitution.Core.Prescriptions.Repository
             this.Prescriptions.Add(prescription);
             this.PrescriptionById[id] = prescription;
             Save();
+            return prescription;
         }
 
         public void Update(int id, int dailyDose, PrescriptionTime timeOfUse, Drug drug)
