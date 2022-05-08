@@ -27,7 +27,7 @@ namespace HealthInstitution.GUI.LoginView
             InitializeComponent();
         }
 
-        private void loginButton_click(object sender, RoutedEventArgs e)
+        private void LoginButton_click(object sender, RoutedEventArgs e)
         {
             _usernameInput = usernameBox.Text;
             _passwordInput = passwordBox.Password.ToString();

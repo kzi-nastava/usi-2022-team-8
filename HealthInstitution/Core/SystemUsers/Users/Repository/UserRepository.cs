@@ -14,7 +14,8 @@ public class UserRepository
 
     private JsonSerializerOptions _options = new JsonSerializerOptions
     {
-        Converters = { new JsonStringEnumConverter() }
+        Converters = { new JsonStringEnumConverter() },
+        PropertyNameCaseInsensitive = true
     };
     private UserRepository(String fileName)
     {

@@ -35,30 +35,30 @@ namespace HealthInstitution.GUI.ManagerView
             InitializeComponent();
         }
 
-        private void numberValidationTextBox(object sender, TextCompositionEventArgs e)
+        private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
         {
             Regex regex = new Regex("[^0-9]+");
             e.Handled = regex.IsMatch(e.Text);
         }
 
-        private void fromRoomComboBox_Loaded(object sender, RoutedEventArgs e)
+        private void FromRoomComboBox_Loaded(object sender, RoutedEventArgs e)
         {         
             fromRoomComboBox.ItemsSource = _roomRepository.Rooms;
             fromRoomComboBox.SelectedItem = null;
         }
 
-        private void toRoomComboBox_Loaded(object sender, RoutedEventArgs e)
+        private void ToRoomComboBox_Loaded(object sender, RoutedEventArgs e)
         {
             toRoomComboBox.ItemsSource = _roomRepository.Rooms;
             toRoomComboBox.SelectedItem = null;
         }
 
-        private void equipmentComboBox_Loaded(object sender, RoutedEventArgs e)
+        private void EquipmentComboBox_Loaded(object sender, RoutedEventArgs e)
         {
             equipmentComboBox.IsEnabled = false;
         }
 
-        private void fromRoomComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void FromRoomComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             equipmentComboBox.IsEnabled = true;
             Room selectedRoomFrom = (Room)fromRoomComboBox.SelectedItem;
@@ -66,9 +66,9 @@ namespace HealthInstitution.GUI.ManagerView
             toRoomComboBox.SelectedItem = null;
         }
 
-        private void transfer_Click(object sender, RoutedEventArgs e)
+        private void Transfer_Click(object sender, RoutedEventArgs e)
         {
-            if (!checkCompleteness())
+            if (!CheckCompleteness())
             {
                 System.Windows.MessageBox.Show("You need to select all data in form!", "Failed transfer", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
@@ -97,7 +97,7 @@ namespace HealthInstitution.GUI.ManagerView
                 return;
             }
 
-            int projectedQuantityLoss = calculateProjectedQuantityLoss(fromRoom, equipment);
+            int projectedQuantityLoss = CalculateProjectedQuantityLoss(fromRoom, equipment);
             if (quantity > equipment.Quantity - projectedQuantityLoss)
             {
                 System.Windows.MessageBox.Show("You cant transfer more equipment than room has because of projected transfers!", "Failed transfer", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -119,7 +119,7 @@ namespace HealthInstitution.GUI.ManagerView
 
         }
        
-        private int calculateProjectedQuantityLoss(Room fromRoom, Equipment equipment)
+        private int CalculateProjectedQuantityLoss(Room fromRoom, Equipment equipment)
         {
             int projectedQuantityLoss = 0;
             foreach (EquipmentTransfer equipmentTransfer in _equipmentTransferRepository.EquipmentTransfers)
@@ -135,7 +135,7 @@ namespace HealthInstitution.GUI.ManagerView
             return projectedQuantityLoss;
         }
 
-        private bool checkCompleteness()
+        private bool CheckCompleteness()
         {
             if (fromRoomComboBox.SelectedItem == null)
             {

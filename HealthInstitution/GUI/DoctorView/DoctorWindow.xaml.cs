@@ -29,7 +29,7 @@ namespace HealthInstitution.GUI.DoctorView
             InitializeComponent();
         }
 
-        private void logOut_Click(object sender, RoutedEventArgs e)
+        private void LogOut_Click(object sender, RoutedEventArgs e)
         {
             if (System.Windows.MessageBox.Show("Are you sure you want to log out?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
             {
@@ -39,17 +39,17 @@ namespace HealthInstitution.GUI.DoctorView
             }
         }
 
-        private void examinations_Click(object sender, RoutedEventArgs e)
+        private void Examinations_Click(object sender, RoutedEventArgs e)
         {
             new ExaminationTable(this._loggedDoctor).ShowDialog();
         }
 
-        private void operations_Click(object sender, RoutedEventArgs e)
+        private void Operations_Click(object sender, RoutedEventArgs e)
         {
             new OperationTable(this._loggedDoctor).ShowDialog();
         }
 
-        private void scheduleReview_Click(object sender, RoutedEventArgs e)
+        private void ScheduleReview_Click(object sender, RoutedEventArgs e)
         {
             new ScheduledExaminationTable(this._loggedDoctor).ShowDialog();
         }

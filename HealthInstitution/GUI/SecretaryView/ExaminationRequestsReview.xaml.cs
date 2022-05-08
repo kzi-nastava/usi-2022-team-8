@@ -24,9 +24,9 @@ namespace HealthInstitution.GUI.UserWindow
         public ExaminationRequestsReview()
         {
             InitializeComponent();
-            loadRows();
+            LoadRows();
         }
-        private void loadRows()
+        private void LoadRows()
         {
             dataGrid.Items.Clear();
             List<ScheduleEditRequest> scheduleEditRequests = ScheduleEditRequestFileRepository.GetInstance().Requests;
@@ -37,7 +37,7 @@ namespace HealthInstitution.GUI.UserWindow
             dataGrid.Items.Refresh();
         }
 
-        private void accept_Click(object sender, RoutedEventArgs e)
+        private void Accept_Click(object sender, RoutedEventArgs e)
         {
             ScheduleEditRequest selectedRequest = (ScheduleEditRequest)dataGrid.SelectedItem;  
             if(selectedRequest!=null)
@@ -45,10 +45,10 @@ namespace HealthInstitution.GUI.UserWindow
                 ScheduleEditRequestFileRepository scheduleEditRequestRepository = ScheduleEditRequestFileRepository.GetInstance();
                 scheduleEditRequestRepository.AcceptScheduleEditRequests(selectedRequest.Id);
             }
-            loadRows();
+            LoadRows();
         }
 
-        private void reject_Click(object sender, RoutedEventArgs e)
+        private void Reject_Click(object sender, RoutedEventArgs e)
         {
             ScheduleEditRequest selectedRequest = (ScheduleEditRequest)dataGrid.SelectedItem;
             if (selectedRequest != null)
@@ -56,7 +56,7 @@ namespace HealthInstitution.GUI.UserWindow
                 ScheduleEditRequestFileRepository scheduleEditRequestRepository = ScheduleEditRequestFileRepository.GetInstance();
                 scheduleEditRequestRepository.RejectScheduleEditRequests(selectedRequest.Id);
             }
-            loadRows();
+            LoadRows();
         }
     }
 }

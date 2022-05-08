@@ -19,6 +19,10 @@ public class Doctor : User
         this.Operations = new List<Operation>();
         this.RestRequests = new List<RestRequest>();
     }
+    public override string? ToString()
+    {
+        return this.Name + " " + this.Surname;
+    }
 }
 
 public enum SpecialtyType

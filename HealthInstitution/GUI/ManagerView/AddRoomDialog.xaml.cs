@@ -28,7 +28,7 @@ namespace HealthInstitution.GUI.ManagerView
             InitializeComponent();
         }
 
-        private void roomTypeComboBox_Loaded(object sender, RoutedEventArgs e)
+        private void RoomTypeComboBox_Loaded(object sender, RoutedEventArgs e)
         {
             var roomTypeComboBox = sender as System.Windows.Controls.ComboBox;
             List<RoomType> types = new List<RoomType>();
@@ -39,13 +39,13 @@ namespace HealthInstitution.GUI.ManagerView
             roomTypeComboBox.SelectedItem = null;
         }
 
-        private void numberValidationTextBox(object sender, TextCompositionEventArgs e)
+        private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
         {
             Regex regex = new Regex("[^0-9]+");
             e.Handled = regex.IsMatch(e.Text);
         }
 
-        private void create_Click(object sender, RoutedEventArgs e)
+        private void Create_Click(object sender, RoutedEventArgs e)
         {
             string numberInput = numberBox.Text;
 

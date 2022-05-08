@@ -37,7 +37,7 @@ namespace HealthInstitution.GUI.ManagerView
             InitializeComponent();
         }
 
-        private void quantityComboBox_Loaded(object sender, RoutedEventArgs e)
+        private void QuantityComboBox_Loaded(object sender, RoutedEventArgs e)
         {
             _quantityComboBox = sender as System.Windows.Controls.ComboBox;
             List<String> items = new List<String>();
@@ -50,7 +50,7 @@ namespace HealthInstitution.GUI.ManagerView
             _quantityComboBox.IsEnabled = false;
         }
 
-        private void roomTypeComboBox_Loaded(object sender, RoutedEventArgs e)
+        private void RoomTypeComboBox_Loaded(object sender, RoutedEventArgs e)
         {
             _roomTypeComboBox = sender as System.Windows.Controls.ComboBox;
             List<RoomType> items = new List<RoomType>();
@@ -64,7 +64,7 @@ namespace HealthInstitution.GUI.ManagerView
             _roomTypeComboBox.IsEnabled = false;
         }
 
-        private void equipmentTypeComboBox_Loaded(object sender, RoutedEventArgs e)
+        private void EquipmentTypeComboBox_Loaded(object sender, RoutedEventArgs e)
         {
             _equipmentTypeComboBox = sender as System.Windows.Controls.ComboBox;
             List<EquipmentType> items = new List<EquipmentType>();
@@ -78,55 +78,55 @@ namespace HealthInstitution.GUI.ManagerView
             _equipmentTypeComboBox.IsEnabled = false;
         }
 
-        private void roomType_Checked(object sender, RoutedEventArgs e)
+        private void RoomType_Checked(object sender, RoutedEventArgs e)
         {
             _roomTypeComboBox.IsEnabled=true;
         }
 
-        private void roomType_Unchecked(object sender, RoutedEventArgs e)
+        private void RoomType_Unchecked(object sender, RoutedEventArgs e)
         {
             _roomTypeComboBox.IsEnabled = false;
             _roomTypeComboBox.SelectedItem = null;
         }
 
-        private void roomTypeCheckBox_Loaded(object sender, RoutedEventArgs e)
+        private void RoomTypeCheckBox_Loaded(object sender, RoutedEventArgs e)
         {
             _roomTypeCheckBox = sender as System.Windows.Controls.CheckBox;
         }
-        private void quantity_Checked(object sender, RoutedEventArgs e)
+        private void Quantity_Checked(object sender, RoutedEventArgs e)
         {
             _quantityComboBox.IsEnabled = true;
         }
 
-        private void quantity_Unchecked(object sender, RoutedEventArgs e)
+        private void Quantity_Unchecked(object sender, RoutedEventArgs e)
         {
             _quantityComboBox.IsEnabled = false;
             _quantityComboBox.SelectedItem = null;
         }
 
-        private void quantityCheckBox_Loaded(object sender, RoutedEventArgs e)
+        private void QuantityCheckBox_Loaded(object sender, RoutedEventArgs e)
         {
             _quantityCheckBox = sender as System.Windows.Controls.CheckBox;
         }
-        private void equipmentType_Checked(object sender, RoutedEventArgs e)
+        private void EquipmentType_Checked(object sender, RoutedEventArgs e)
         {
             _equipmentTypeComboBox.IsEnabled = true;      
         }
 
-        private void equipmentType_Unchecked(object sender, RoutedEventArgs e)
+        private void EquipmentType_Unchecked(object sender, RoutedEventArgs e)
         {
             _equipmentTypeComboBox.IsEnabled = false;
             _equipmentTypeComboBox.SelectedItem = null;
         }
 
-        private void equipmentTypeCheckBox_Loaded(object sender, RoutedEventArgs e)
+        private void EquipmentTypeCheckBox_Loaded(object sender, RoutedEventArgs e)
         {
             _equipmentTypeCheckBox = sender as System.Windows.Controls.CheckBox;
         }
 
-        private void filter_Click(object sender, RoutedEventArgs e)
+        private void Filter_Click(object sender, RoutedEventArgs e)
         {
-            if (!checkCompleteness())
+            if (!CheckCompleteness())
             {
                 System.Windows.MessageBox.Show("You need to select item in menu!", "Failed filter", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
@@ -136,13 +136,13 @@ namespace HealthInstitution.GUI.ManagerView
             List<Room> rooms = _roomRepository.Rooms;
             foreach (Room room in rooms)
             {
-                if (!matchRoomType(room))
+                if (!MatchRoomType(room))
                     continue;
                 foreach (Equipment equipment in room.AvailableEquipment)
                 {
-                    if (!matchEquipmentType(equipment))
+                    if (!MatchEquipmentType(equipment))
                         continue;
-                    if (!matchQuantity(equipment))
+                    if (!MatchQuantity(equipment))
                         continue;
                     
                     TableItemEquipment equipmentByRoom = new TableItemEquipment(room, equipment);
@@ -160,7 +160,7 @@ namespace HealthInstitution.GUI.ManagerView
             equipmentTableWindow.ShowDialog();
         }
 
-        private bool matchQuantity(Equipment equipment)
+        private bool MatchQuantity(Equipment equipment)
         {
             if (!(bool)_quantityCheckBox.IsChecked)
             {
@@ -185,7 +185,7 @@ namespace HealthInstitution.GUI.ManagerView
             return true;
         }
 
-        private bool matchEquipmentType(Equipment equipment)
+        private bool MatchEquipmentType(Equipment equipment)
         {
             if (!(bool)_equipmentTypeCheckBox.IsChecked)
             {
@@ -199,7 +199,7 @@ namespace HealthInstitution.GUI.ManagerView
             return false;
         }
 
-        private bool matchRoomType(Room room)
+        private bool MatchRoomType(Room room)
         {
             if (!(bool)_roomTypeCheckBox.IsChecked)
             {
@@ -213,7 +213,7 @@ namespace HealthInstitution.GUI.ManagerView
             return false;
         }
 
-        private bool checkCompleteness()
+        private bool CheckCompleteness()
         {
             if((bool)_equipmentTypeCheckBox.IsChecked && _equipmentTypeComboBox.SelectedItem == null)
             {
@@ -230,7 +230,7 @@ namespace HealthInstitution.GUI.ManagerView
             return true;
         }
 
-        private void search_Click(object sender, RoutedEventArgs e)
+        private void Search_Click(object sender, RoutedEventArgs e)
         {
             string searchInput = SearchBox.Text;
             if (searchInput.Trim() == "")
@@ -245,7 +245,7 @@ namespace HealthInstitution.GUI.ManagerView
             {
                 foreach (Equipment equipment in room.AvailableEquipment)
                 {
-                    if (searchMatch(room, equipment, searchInput))
+                    if (SearchMatch(room, equipment, searchInput))
                     {
                         TableItemEquipment equipmentByRoom = new TableItemEquipment(room, equipment);
                         items.Add(equipmentByRoom);
@@ -263,7 +263,7 @@ namespace HealthInstitution.GUI.ManagerView
             equipmentTableWindow.ShowDialog();
         }
 
-        private bool searchMatch(Room room, Equipment equipment, string searchInput)
+        private bool SearchMatch(Room room, Equipment equipment, string searchInput)
         {
             if (room.Type.ToString().ToLower().Contains(searchInput.ToLower()))
                 return true;
@@ -276,9 +276,9 @@ namespace HealthInstitution.GUI.ManagerView
             return false;
         }
 
-        private void viewAll_Click(object sender, RoutedEventArgs e)
+        private void ViewAll_Click(object sender, RoutedEventArgs e)
         {
-            List<TableItemEquipment> items = loadRows();
+            List<TableItemEquipment> items = LoadRows();
             if (items == null || !items.Any())
             {
                 System.Windows.MessageBox.Show("There is no equipment!", "No equipment", MessageBoxButton.OK, MessageBoxImage.Information);
@@ -289,7 +289,7 @@ namespace HealthInstitution.GUI.ManagerView
             equipmentTableWindow.ShowDialog();
         }
 
-        private List<TableItemEquipment> loadRows()
+        private List<TableItemEquipment> LoadRows()
         {
             List<TableItemEquipment> items = new List<TableItemEquipment>();
             List<Room> rooms = _roomRepository.Rooms;

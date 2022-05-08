@@ -10,15 +10,15 @@
     <Grid>
         <DataGrid  ItemsSource="{Binding Patient}" AutoGenerateColumns="False" Name="dataGrid"  Height="250" VerticalAlignment="Top">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Username" FontSize="18" Binding="{Binding username}" Width ="150"/>
-                <DataGridTextColumn Header="Name" FontSize="18" Binding="{Binding name}" Width =" 150"/>
-                <DataGridTextColumn Header="Surname" FontSize="18" Binding="{Binding surname}" Width =" 150"/>
-                <DataGridTextColumn Header="Blocked status" FontSize="18" Binding="{Binding blocked}" Width =" 170"/>
+                <DataGridTextColumn Header="Username" FontSize="18" Binding="{Binding Username}" Width ="150"/>
+                <DataGridTextColumn Header="Name" FontSize="18" Binding="{Binding Name}" Width =" 150"/>
+                <DataGridTextColumn Header="Surname" FontSize="18" Binding="{Binding Surname}" Width =" 150"/>
+                <DataGridTextColumn Header="Blocked status" FontSize="18" Binding="{Binding Blocked}" Width =" 170"/>
             </DataGrid.Columns>
         </DataGrid>
-        <Button Content="Create" Name="createButton" Click="createPatient_Click" HorizontalAlignment="Center" Margin="-450,300,0,0" VerticalAlignment="Top" FontSize="15" Width="130"/>
-        <Button Content="Update" Name="updateButton" Click="updatePatient_Click" HorizontalAlignment="Center" Margin="-150,300,0,0" VerticalAlignment="Top" FontSize="15" Width="130"/>
-        <Button Content="Delete" Name="deleteButton" Click="deletePatient_Click" HorizontalAlignment="Center" Margin="150,300,0,0" VerticalAlignment="Top" FontSize="15" Width="130"/>
-        <Button Content="Block/Unblock" Name="blockButton" Click="blockPatient_Click" HorizontalAlignment="Center" Margin="450,300,0,0" VerticalAlignment="Top" FontSize="15" Width="130"/>
+        <Button Content="Create" Name="createButton" Click="CreatePatient_Click" HorizontalAlignment="Center" Margin="-450,300,0,0" VerticalAlignment="Top" FontSize="15" Width="130"/>
+        <Button Content="Update" Name="updateButton" Click="UpdatePatient_Click" HorizontalAlignment="Center" Margin="-150,300,0,0" VerticalAlignment="Top" FontSize="15" Width="130"/>
+        <Button Content="Delete" Name="deleteButton" Click="DeletePatient_Click" HorizontalAlignment="Center" Margin="150,300,0,0" VerticalAlignment="Top" FontSize="15" Width="130"/>
+        <Button Content="Block/Unblock" Name="blockButton" Click="BlockPatient_Click" HorizontalAlignment="Center" Margin="450,300,0,0" VerticalAlignment="Top" FontSize="15" Width="130"/>
     </Grid>
 </Window>

@@ -10,11 +10,11 @@ namespace HealthInstitution.Core.Polls.Model
 {
     internal class Poll
     {
-        public List<PollItem> items { get; set; }
+        public List<PollItem> Items { get; set; }
 
         public Poll(List<PollItem> items)
         {
-            this.items = items;
+            this.Items = items;
         }
     }
 }

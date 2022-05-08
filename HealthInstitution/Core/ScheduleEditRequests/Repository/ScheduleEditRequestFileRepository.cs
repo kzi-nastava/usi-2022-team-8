@@ -24,7 +24,8 @@ public class ScheduleEditRequestFileRepository
     private JsonSerializerOptions _options = new JsonSerializerOptions
     {
         ReferenceHandler = ReferenceHandler.IgnoreCycles,
-        Converters = { new JsonStringEnumConverter() }
+        Converters = { new JsonStringEnumConverter() },
+        PropertyNameCaseInsensitive = true
     };
 
     private ScheduleEditRequestFileRepository(String fileName)
@@ -90,11 +91,11 @@ public class ScheduleEditRequestFileRepository
 
     public void Save()
     {
-        var allExaminations = JsonSerializer.Serialize(shortenRequests(), _options);
+        var allExaminations = JsonSerializer.Serialize(ShortenRequests(), _options);
         File.WriteAllText(this._fileName, allExaminations);
     }
 
-    private List<dynamic> shortenRequests()
+    private List<dynamic> ShortenRequests()
     {
         List<dynamic> reducedRequests = new List<dynamic>();
         foreach (ScheduleEditRequest scheduleEditRequest in this.Requests)

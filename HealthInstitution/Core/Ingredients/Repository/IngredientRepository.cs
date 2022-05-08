@@ -11,6 +11,11 @@ public class IngredientRepository
     public List<Ingredient> Ingredients { get; set; }
     public Dictionary<int, Ingredient> IngredientById { get; set; }
 
+    private JsonSerializerOptions _options = new JsonSerializerOptions
+    {
+        PropertyNameCaseInsensitive = true
+    };
+
     private IngredientRepository(string fileName) 
     {
         this._fileName = fileName;
@@ -32,7 +37,7 @@ public class IngredientRepository
     }
     public void LoadFromFile()
     {
-        var ingredients = JsonSerializer.Deserialize<List<Ingredient>>(File.ReadAllText(@"..\..\..\Data\JSON\ingredients.json"));
+        var ingredients = JsonSerializer.Deserialize<List<Ingredient>>(File.ReadAllText(@"..\..\..\Data\JSON\ingredients.json"), _options);
         foreach (Ingredient ingredient in ingredients)
         {
             if (ingredient.Id > _maxId)
@@ -45,7 +50,7 @@ public class IngredientRepository
     }
     public void Save()
     {
-        var allIngredients = JsonSerializer.Serialize(this.Ingredients);
+        var allIngredients = JsonSerializer.Serialize(this.Ingredients, _options);
         File.WriteAllText(this._fileName, allIngredients);
     }
 

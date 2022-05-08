@@ -8,7 +8,7 @@
         WindowStartupLocation="CenterScreen"
         Title="CreatePatientDialog" Height="400" Width="650">
     <Grid>
-        <Button Content="Create patient" Click="createPatient_Click" HorizontalAlignment="Center" Margin="0,300,0,0" VerticalAlignment="Top" FontSize="18"/>
+        <Button Content="Create patient" Click="CreatePatient_Click" HorizontalAlignment="Center" Margin="0,300,0,0" VerticalAlignment="Top" FontSize="18"/>
         <Label Content="Username:" HorizontalAlignment="Center" Height="25" Margin="-350,50,0,0" VerticalAlignment="Top" Width="100"/>
         <Label Content="Password:" HorizontalAlignment="Center" Height="25" Margin="-350,100,0,0" VerticalAlignment="Top" Width="100"/>
         <Label Content="Name:" HorizontalAlignment="Center" Height="25" Margin="-350,150,0,0" VerticalAlignment="Top" Width="100"/>

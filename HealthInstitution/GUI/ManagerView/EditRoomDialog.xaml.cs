@@ -28,15 +28,15 @@ namespace HealthInstitution.GUI.ManagerView
         {
             InitializeComponent();
             this._room = room;
-            setRoomData();
+            SetRoomData();
         }
 
-        private void setRoomData()
+        private void SetRoomData()
         {
             numberBox.Text = _room.Number.ToString();
         }
 
-        private void roomTypeComboBox_Loaded(object sender, RoutedEventArgs e)
+        private void RoomTypeComboBox_Loaded(object sender, RoutedEventArgs e)
         {
             var roomTypeComboBox = sender as System.Windows.Controls.ComboBox;
             List<RoomType> types = new List<RoomType>();
@@ -47,13 +47,13 @@ namespace HealthInstitution.GUI.ManagerView
             roomTypeComboBox.SelectedItem = _room.Type;
         }
 
-        private void numberValidationTextBox(object sender, TextCompositionEventArgs e)
+        private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
         {
             Regex regex = new Regex("[^0-9]+");
             e.Handled = regex.IsMatch(e.Text);
         }
 
-        private void edit_Click(object sender, RoutedEventArgs e)
+        private void Edit_Click(object sender, RoutedEventArgs e)
         {
             string numberInput = numberBox.Text;
 

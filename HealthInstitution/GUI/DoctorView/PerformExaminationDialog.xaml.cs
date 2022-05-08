@@ -4,19 +4,9 @@ using HealthInstitution.Core.MedicalRecords.Model;
 using HealthInstitution.Core.MedicalRecords.Repository;
 using HealthInstitution.Core.Prescriptions.Model;
 using HealthInstitution.Core.Referrals.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using HealthInstitution.Core.SystemUsers.Doctors.Model;
+using HealthInstitution.Core.SystemUsers.Patients.Model;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace HealthInstitution.GUI.DoctorView
 {
@@ -26,21 +16,22 @@ namespace HealthInstitution.GUI.DoctorView
     public partial class PerformExaminationDialog : Window
     {
         private Examination _selectedExamination;
+        private MedicalRecord _medicalRecord;
         public PerformExaminationDialog(Examination examination)
         {
             InitializeComponent();
             this._selectedExamination= examination;
-            MedicalRecord medicalRecord = this._selectedExamination.MedicalRecord;
-            patientTextBox.Text = medicalRecord.Patient.ToString();
-            heightTextBox.Text = medicalRecord.Height.ToString();
-            weightTextBox.Text = medicalRecord.Weight.ToString();
-            foreach (String illness in medicalRecord.PreviousIllnesses)
+            _medicalRecord = this._selectedExamination.MedicalRecord;
+            patientTextBox.Text = _medicalRecord.Patient.ToString();
+            heightTextBox.Text = _medicalRecord.Height.ToString();
+            weightTextBox.Text = _medicalRecord.Weight.ToString();
+            foreach (String illness in _medicalRecord.PreviousIllnesses)
                 illnessListBox.Items.Add(illness);
-            foreach (String allergen in medicalRecord.Allergens)
+            foreach (String allergen in _medicalRecord.Allergens)
                 allergenListBox.Items.Add(allergen);
         }
 
-        private void addIllness_Click(object sender, RoutedEventArgs e)
+        private void AddIllness_Click(object sender, RoutedEventArgs e)
         {
             if (illnessesTextBox.Text.Trim() != "")
             {
@@ -49,7 +40,7 @@ namespace HealthInstitution.GUI.DoctorView
             }
         }
 
-        private void addAllergen_Click(object sender, RoutedEventArgs e)
+        private void AddAllergen_Click(object sender, RoutedEventArgs e)
         {
             if (illnessesTextBox.Text.Trim() != "")
             {
@@ -58,7 +49,7 @@ namespace HealthInstitution.GUI.DoctorView
             }
         }
 
-        private void finish_Click(object sender, RoutedEventArgs e)
+        private void Finish_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -74,10 +65,9 @@ namespace HealthInstitution.GUI.DoctorView
                 {
                     allergens.Add(allergen);
                 }
-                MedicalRecord medicalRecord = this._selectedExamination.MedicalRecord;
-                List<Prescription> prescriptions = medicalRecord.Prescriptions;
-                List<Referral> referrals = medicalRecord.Referrals;
-                MedicalRecordRepository.GetInstance().Update(medicalRecord.Patient, height, weight, previousIllnesses, allergens, prescriptions, referrals);
+                List<Prescription> prescriptions = _medicalRecord.Prescriptions;
+                List<Referral> referrals = _medicalRecord.Referrals;
+                MedicalRecordRepository.GetInstance().Update(_medicalRecord.Patient, height, weight, previousIllnesses, allergens, prescriptions, referrals);
                 this._selectedExamination.Anamnesis = anamnesisTextBox.Text;
                 this._selectedExamination.Status = ExaminationStatus.Completed;
                 ExaminationRepository.GetInstance().Save();
@@ -88,6 +78,14 @@ namespace HealthInstitution.GUI.DoctorView
             {
                 System.Windows.MessageBox.Show("You haven't fulfilled it the right way!", "Error", MessageBoxButton.OKCancel, MessageBoxImage.Error);
             }
+        }
+
+        private void CreateReferral_Click(object sender, RoutedEventArgs e)
+        {
+            Patient patient = _medicalRecord.Patient;
+            Doctor doctor = _selectedExamination.Doctor;
+            AddPrescriptionDialog dialog = new AddPrescriptionDialog(doctor, patient);
+            dialog.ShowDialog();
         }
     }
 }

@@ -31,9 +31,9 @@ namespace HealthInstitution.GUI.DoctorView
         {
             this._loggedDoctor = doctor;
             InitializeComponent();
-            loadRows();
+            LoadRows();
         }
-        private void loadRows()
+        private void LoadRows()
         {
             dataGrid.Items.Clear();
             List<Operation> doctorOperations = this._loggedDoctor.Operations;
@@ -43,18 +43,18 @@ namespace HealthInstitution.GUI.DoctorView
             }
         }
 
-        private void addButton_Click(object sender, RoutedEventArgs e)
+        private void AddButton_Click(object sender, RoutedEventArgs e)
         {
             new AddOperationDialog(this._loggedDoctor).ShowDialog();
-            loadRows();
+            LoadRows();
             dataGrid.Items.Refresh();
         }
 
-        private void editButton_Click(object sender, RoutedEventArgs e)
+        private void EditButton_Click(object sender, RoutedEventArgs e)
         {
             Operation selectedOperation = (Operation)dataGrid.SelectedItem;
             new EditOperationDialog(selectedOperation).ShowDialog();
-            loadRows();
+            LoadRows();
             dataGrid.Items.Refresh();
         }
 

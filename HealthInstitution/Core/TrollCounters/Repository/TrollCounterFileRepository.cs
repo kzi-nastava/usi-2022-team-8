@@ -13,7 +13,8 @@ public class TrollCounterFileRepository
 
     private JsonSerializerOptions _options = new JsonSerializerOptions
     {
-        Converters = { new JsonStringEnumConverter() }
+        Converters = { new JsonStringEnumConverter() },
+        PropertyNameCaseInsensitive = true
     };
 
     private TrollCounterFileRepository(String fileName)

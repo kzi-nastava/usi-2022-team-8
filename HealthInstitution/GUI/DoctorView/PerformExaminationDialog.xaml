@@ -6,26 +6,28 @@
         xmlns:local="clr-namespace:HealthInstitution.GUI.DoctorView"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="Perform examination" Height="470" Width="800">
+        Title="Perform examination" Height="500" Width="800">
     <Grid>
 
         <Label Content="Patient" HorizontalAlignment="Left" Margin="70,42,0,0" VerticalAlignment="Top" FontSize="18" Height="34" Width="65"/>
         <Label Content="Height (cm)" HorizontalAlignment="Left" Margin="51,97,0,0" VerticalAlignment="Top" FontSize="18" Height="34" Width="103"/>
         <Label Content="Weight (kg)" HorizontalAlignment="Left" Margin="51,146,0,0" VerticalAlignment="Top" FontSize="18" Height="34" Width="103"/>
-        <Label Content="Previous illnesses" HorizontalAlignment="Left" Margin="30,213,0,0" VerticalAlignment="Top" FontSize="18" Height="34" Width="147"/>
-        <Label Content="Allergens" HorizontalAlignment="Left" Margin="70,314,0,0" VerticalAlignment="Top" FontSize="18" RenderTransformOrigin="6.208,-1.409" Height="34" Width="84"/>
+        <Label Content="Previous illnesses" HorizontalAlignment="Left" Margin="29,227,0,0" VerticalAlignment="Top" FontSize="18" Height="34" Width="147"/>
+        <Label Content="Allergens" HorizontalAlignment="Left" Margin="70,327,0,0" VerticalAlignment="Top" FontSize="18" RenderTransformOrigin="6.208,-1.409" Height="34" Width="84"/>
         <Label Content="Anamnesis" HorizontalAlignment="Left" Margin="400,97,0,0" VerticalAlignment="Top" FontSize="18"/>
 
-        <ListBox Name="illnessListBox" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="206,200,316,169"/>
-        <ListBox Name="allergenListBox" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="206,307,316,60"/>
+        <ListBox Name="illnessListBox" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="206,206,316,191"/>
+        <ListBox Name="allergenListBox" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="206,307,316,88"/>
         <TextBox Name="anamnesisTextBox" HorizontalAlignment="Left" Margin="523,42,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="230" Height="138"/>
         <TextBox Name="patientTextBox" IsReadOnly = "True" HorizontalAlignment="Left" Height="26" Margin="206,46,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="139" FontSize="18"/>
         <TextBox Name="heightTextBox" HorizontalAlignment="Left" Height="26" Margin="206,101,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="105" FontSize="18"/>
         <TextBox Name="weightTextBox" HorizontalAlignment="Left" Height="26" Margin="206,150,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="105" FontSize="18"/>
-        <TextBox Name="illnessesTextBox" HorizontalAlignment="Left" Height="26" Margin="560,217,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="161"/>
-        <TextBox Name="allergensTextBox" HorizontalAlignment="Left" Height="26" Margin="560,325,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="161"/>
-        <Button Content="Add allergen" Click="addAllergen_Click" HorizontalAlignment="Left" Margin="597,371,0,0" VerticalAlignment="Top" FontSize="16"/>
-        <Button Content="Add illness" Click="addIllness_Click" HorizontalAlignment="Left" Margin="603,262,0,0" VerticalAlignment="Top" FontSize="16"/>
-        <Button Content="Finish" Click="finish_Click" HorizontalAlignment="Center" Margin="0,399,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.327,-0.439" Width="100" FontSize="16"/>
+        <TextBox Name="illnessesTextBox" HorizontalAlignment="Left" Height="26" Margin="564,231,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="160"/>
+        <TextBox Name="allergensTextBox" HorizontalAlignment="Left" Height="26" Margin="563,331,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="161"/>
+        <Button Content="Add allergen" Click="AddAllergen_Click" HorizontalAlignment="Left" Margin="597,371,0,0" VerticalAlignment="Top" FontSize="16"/>
+        <Button Content="Add illness" Click="AddIllness_Click" HorizontalAlignment="Left" Margin="603,268,0,0" VerticalAlignment="Top" FontSize="16"/>
+        <Button Content="Finish" Click="Finish_Click" HorizontalAlignment="Center" Margin="0,425,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.327,-0.439" Width="100" FontSize="16"/>
+        <Button Content="Create referral" Click="Finish_Click" HorizontalAlignment="Left" Margin="487,425,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.327,-0.439" Width="121" FontSize="16"/>
+        <Button Content="Create referral" Click="CreateReferral_Click" HorizontalAlignment="Left" Margin="157,425,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.327,-0.439" Width="154" FontSize="16"/>
     </Grid>
 </Window>

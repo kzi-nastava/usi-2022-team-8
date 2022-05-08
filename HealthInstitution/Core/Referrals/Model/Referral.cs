@@ -7,10 +7,10 @@ public class Referral
     public int Id { get; set; }
     public ReferralType Type { get; set; }
     public Doctor PrescribedBy { get; set; }
-    public Doctor ReferredDoctor { get; set; }
-    public SpecialtyType ReferredSpecialty { get; set; }
+    public Doctor? ReferredDoctor { get; set; }
+    public SpecialtyType? ReferredSpecialty { get; set; }
 
-    public Referral(int id, ReferralType type, Doctor prescribedBy, Doctor referredDoctor, SpecialtyType referredSpecialty)
+    public Referral(int id, ReferralType type, Doctor prescribedBy, Doctor? referredDoctor, SpecialtyType? referredSpecialty)
     {
         this.Id = id;
         this.Type = type;
