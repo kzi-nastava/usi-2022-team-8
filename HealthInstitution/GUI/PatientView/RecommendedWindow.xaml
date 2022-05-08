@@ -24,7 +24,7 @@
         <Label Content="Time interval start" HorizontalAlignment="Left" Margin="19,96,0,0" VerticalAlignment="Top" Width="109" Grid.Column="1" />
         <ComboBox HorizontalAlignment="Left" Margin="176,96,0,0" Loaded="HourComboBox_Loaded" VerticalAlignment="Top" Width="45" SelectionChanged="StartHourComboBox_SelectionChanged" Grid.Column="1" />
         <ComboBox HorizontalAlignment="Left" Margin="257,96,0,0" VerticalAlignment="Top" Width="45" Loaded="MinuteComboBox_Loaded" SelectionChanged="StartMinuteComboBox_SelectionChanged" Grid.Column="1" />
-        <Button IsEnabled="False" Content="Schedule" Click="Save_Click" HorizontalAlignment="Center" Height="22" Margin="0,344,0,0" VerticalAlignment="Top" Width="72" Grid.Column="1" />
+        <Button  Content="Schedule" Click="Save_Click" HorizontalAlignment="Center" Height="22" Margin="0,344,0,0" VerticalAlignment="Top" Width="72" Grid.Column="1" />
         <Label Content="Time interval end" HorizontalAlignment="Left" Margin="19,154,0,0" VerticalAlignment="Top" Width="109" Grid.Column="1" />
         <ComboBox HorizontalAlignment="Left" Margin="176,154,0,0" Loaded="HourComboBox_Loaded" VerticalAlignment="Top" Width="45" SelectionChanged="EndHourComboBox_SelectionChanged" Grid.Column="1" />
         <ComboBox HorizontalAlignment="Left" Margin="257,154,0,0" VerticalAlignment="Top" Width="45" Loaded="MinuteComboBox_Loaded" SelectionChanged="EndMinuteComboBox_SelectionChanged" Grid.Column="1" />

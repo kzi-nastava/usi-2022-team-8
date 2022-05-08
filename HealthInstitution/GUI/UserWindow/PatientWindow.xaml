@@ -7,7 +7,8 @@
         mc:Ignorable="d"
         Title="PatientWindow" Height="450" Width="800">
     <Grid>
-        <Button x:Name="logout_button" Content="Logout" HorizontalAlignment="Left" Height="29" Margin="657,372,0,0" VerticalAlignment="Top" Width="108" Click="logOut_Click"/>
-        <Button x:Name="schedule_button" Content="Schedule now" HorizontalAlignment="Left" Height="41" Margin="279,345,0,0" VerticalAlignment="Top" Width="206" Click="schedule_Click"/>
+        <Button x:Name="logout_button" Content="Logout" HorizontalAlignment="Left" Height="29" Margin="657,372,0,0" VerticalAlignment="Top" Width="108" Click="logOut_Click" />
+        <Button x:Name="manuallSchedule_button" Content="Manually Schedule" HorizontalAlignment="Left" Height="41" Margin="46,347,0,0" VerticalAlignment="Top" Width="206" Click="manuallSchedule_Click" />
+        <Button x:Name="recommendedSchedule_button" Content="Recommended Schedule" HorizontalAlignment="Left" Height="41" Margin="276,347,0,0" VerticalAlignment="Top" Width="206" Click="recommendedSchedule_Click" />
     </Grid>
 </Window>

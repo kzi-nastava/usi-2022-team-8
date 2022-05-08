@@ -9,12 +9,17 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+
 using HealthInstitution.GUI.PatientWindows;
 using HealthInstitution.Core.SystemUsers.Users.Model;
+
 using HealthInstitution.Core.TrollCounters.Repository;
 using HealthInstitution.Core.TrollCounters.Model;
+
 using HealthInstitution.Core.Examinations.Repository;
+
 using HealthInstitution.GUI.LoginView;
+using HealthInstitution.GUI.PatientView;
 
 namespace HealthInstitution.GUI.UserWindow
 {
@@ -42,12 +47,20 @@ namespace HealthInstitution.GUI.UserWindow
             }
         }
 
-        private void schedule_Click(object sender, RoutedEventArgs e)
+        private void manuallSchedule_Click(object sender, RoutedEventArgs e)
         {
             /* var check = TrollCounterRepository.GetInstance().GetTrollCounterById(loggedPatient.Username);
              Console.WriteLine(check.ToString());*/
 
             new PatientScheduleWindow(this._loggedPatient).ShowDialog();
+        }
+
+        private void recommendedSchedule_Click(object sender, RoutedEventArgs e)
+        {
+            /* var check = TrollCounterRepository.GetInstance().GetTrollCounterById(loggedPatient.Username);
+             Console.WriteLine(check.ToString());*/
+
+            new RecommendedWindow().ShowDialog();
         }
     }
 }
