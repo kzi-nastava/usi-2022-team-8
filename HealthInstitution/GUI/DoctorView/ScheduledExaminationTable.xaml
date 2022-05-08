@@ -22,15 +22,15 @@
                 <DataGridTextColumn Header="Patient" FontSize="15" Width =" 145">
                     <DataGridTextColumn.Binding>
                         <MultiBinding StringFormat="{}{0} {1}">
-                            <Binding Path="medicalRecord.Patient.Name" />
-                            <Binding Path="medicalRecord.Patient.Surname"/>
+                            <Binding Path="MedicalRecord.Patient.Name" />
+                            <Binding Path="MedicalRecord.Patient.Surname"/>
                         </MultiBinding>
                     </DataGridTextColumn.Binding>
                 </DataGridTextColumn>
-                <DataGridTextColumn Header="Time" FontSize="15" Binding="{Binding appointment}" Width ="155"/>
-                <DataGridTextColumn Header="Status" FontSize="15" Binding="{Binding status}" Width ="110"/>
-                <DataGridTextColumn Header="RoomNo" FontSize="15" Binding="{Binding room.Number}" Width ="60"/>
-                <DataGridTextColumn Header="Anamnesis/report" FontSize="15" Width ="Auto" Binding="{Binding anamnesis}"/>
+                <DataGridTextColumn Header="Time" FontSize="15" Binding="{Binding Appointment}" Width ="155"/>
+                <DataGridTextColumn Header="Status" FontSize="15" Binding="{Binding Status}" Width ="110"/>
+                <DataGridTextColumn Header="RoomNo" FontSize="15" Binding="{Binding Room.Number}" Width ="60"/>
+                <DataGridTextColumn Header="Anamnesis/report" FontSize="15" Width ="Auto" Binding="{Binding Anamnesis}"/>
             </DataGrid.Columns>
         </DataGrid>
         <RadioButton Name="examinationRadioButton" GroupName="Appointments" Content="Examinations" Checked = "appointmentChecked" HorizontalAlignment="Left" Margin="112,325,0,0" VerticalAlignment="Top" FontSize="18"/>

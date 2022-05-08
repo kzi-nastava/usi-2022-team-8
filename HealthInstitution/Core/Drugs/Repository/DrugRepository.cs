@@ -17,7 +17,8 @@ public class DrugRepository
 
     private JsonSerializerOptions _options = new JsonSerializerOptions
     {
-        Converters = { new JsonStringEnumConverter() }
+        Converters = { new JsonStringEnumConverter() },
+        PropertyNameCaseInsensitive = true
     };
     private DrugRepository(string fileName) //singleton
     {

@@ -1,16 +1,12 @@
 [
   {
     "id": 1,
-    "type": "Specialty",
     "prescribedBy": "jovan",
-    "referredDoctor": "ivan",
-    "referredSpecialty": "Surgeon"
+    "referredDoctor": "ivan"
   },
   {
     "id": 2,
-    "type": "SpecificDoctor",
     "prescribedBy": "ivan",
-    "referredDoctor": "jovan",
-    "referredSpecialty": "Radiologist"
+    "referredDoctor": "jovan"
   }
 ]

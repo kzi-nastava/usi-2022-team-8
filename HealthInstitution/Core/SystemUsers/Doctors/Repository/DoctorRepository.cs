@@ -18,7 +18,8 @@ namespace HealthInstitution.Core.SystemUsers.Doctors.Repository
 
         private JsonSerializerOptions _options = new JsonSerializerOptions
         {
-            Converters = { new JsonStringEnumConverter() }
+            Converters = { new JsonStringEnumConverter() },
+            PropertyNameCaseInsensitive = true
         };
 
         private DoctorRepository(String fileName)

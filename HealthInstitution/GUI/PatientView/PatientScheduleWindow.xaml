@@ -9,18 +9,18 @@
     <Grid>
         <DataGrid  ItemsSource="{Binding Examination}" AutoGenerateColumns="True" Name="dataGrid" Grid.ColumnSpan="3" Margin="0,0,0,0">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Time" FontSize="18" Binding="{Binding appointment}" Width ="150" />
-                <DataGridTextColumn Header="Status" FontSize="18" Binding="{Binding status}" Width =" 150" />
-                <DataGridTextColumn Header="RoomNo" FontSize="18" Binding="{Binding room.Number}" Width =" 150" />
+                <DataGridTextColumn Header="Time" FontSize="18" Binding="{Binding Appointment}" Width ="150" />
+                <DataGridTextColumn Header="Status" FontSize="18" Binding="{Binding Status}" Width =" 150" />
+                <DataGridTextColumn Header="RoomNo" FontSize="18" Binding="{Binding Room.Number}" Width =" 150" />
                 <DataGridTextColumn Header="Doctor" FontSize="18" Width =" 150">
                     <DataGridTextColumn.Binding>
                         <MultiBinding StringFormat="{}{0} {1}">
-                            <Binding Path="doctor.Name" />
-                            <Binding Path="doctor.Surname" />
+                            <Binding Path="Doctor.Name" />
+                            <Binding Path="Doctor.Surname" />
                         </MultiBinding>
                     </DataGridTextColumn.Binding>
                 </DataGridTextColumn>
-                <DataGridTextColumn Header="Anamnesis" FontSize="18" Width =" 150" Binding="{Binding anamnesis}" />
+                <DataGridTextColumn Header="Anamnesis" FontSize="18" Width =" 150" Binding="{Binding Anamnesis}" />
             </DataGrid.Columns>
         </DataGrid>
         <Button Name="addButton" Content="Add" Click="addButton_click" HorizontalAlignment="Center" Height="30" Margin="0,240,350,0" VerticalAlignment="Top" Width="111" RenderTransformOrigin="0.243,0.514" Cursor="Arrow" FontSize="18" Visibility="Visible" />

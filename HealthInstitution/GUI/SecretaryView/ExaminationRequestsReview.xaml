@@ -10,26 +10,26 @@
     <Grid>
         <DataGrid  ItemsSource="{Binding ScheduleEditRequest}" AutoGenerateColumns="False" Name="dataGrid"  Height="250" VerticalAlignment="Top">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Patient username" FontSize="18" Binding="{Binding currentExamination.MedicalRecord.Patient.Username}" Width ="110"/>
+                <DataGridTextColumn Header="Patient username" FontSize="18" Binding="{Binding CurrentExamination.MedicalRecord.Patient.Username}" Width ="110"/>
                 <DataGridTextColumn Header="Current doctor" FontSize="18" Width ="100">
                     <DataGridTextColumn.Binding>
                         <MultiBinding StringFormat="{}{0} {1}">
-                            <Binding Path="currentExamination.Doctor.Name" />
-                            <Binding Path="currentExamination.Doctor.Surname"/>
+                            <Binding Path="CurrentExamination.Doctor.Name" />
+                            <Binding Path="CurrentExamination.Doctor.Surname"/>
                         </MultiBinding>
                     </DataGridTextColumn.Binding>
                 </DataGridTextColumn>
                 <DataGridTextColumn Header="New doctor" FontSize="18" Width ="100">
                     <DataGridTextColumn.Binding>
                         <MultiBinding StringFormat="{}{0} {1}">
-                            <Binding Path="newExamination.Doctor.Name" />
-                            <Binding Path="newExamination.Doctor.Surname"/>
+                            <Binding Path="NewExamination.Doctor.Name" />
+                            <Binding Path="NewExamination.Doctor.Surname"/>
                         </MultiBinding>
                     </DataGridTextColumn.Binding>
                 </DataGridTextColumn>
-                <DataGridTextColumn Header="Current time" FontSize="18" Binding="{Binding currentExamination.Appointment}" Width =" 100"/>
-                <DataGridTextColumn Header="New time" FontSize="18" Binding="{Binding newExamination.Appointment}" Width =" 100"/>
-                <DataGridTextColumn Header="Request state" FontSize="18" Binding="{Binding state}" Width =" 110"/>
+                <DataGridTextColumn Header="Current time" FontSize="18" Binding="{Binding CurrentExamination.Appointment}" Width =" 100"/>
+                <DataGridTextColumn Header="New time" FontSize="18" Binding="{Binding NewExamination.Appointment}" Width =" 100"/>
+                <DataGridTextColumn Header="Request state" FontSize="18" Binding="{Binding State}" Width =" 110"/>
             </DataGrid.Columns>
         </DataGrid>
         <Button Name="acceptButton" Content="Accept" Click="accept_Click" HorizontalAlignment="Center" Margin="-100,300,0,0" VerticalAlignment="Top" FontSize="18"/>

@@ -21,16 +21,16 @@
                 <DataGridTextColumn Header="Patient" FontSize="18" Width ="180">
                     <DataGridTextColumn.Binding>
                         <MultiBinding StringFormat="{}{0} {1}">
-                            <Binding Path="medicalRecord.Patient.Name" />
-                            <Binding Path="medicalRecord.Patient.Surname"/>
+                            <Binding Path="MedicalRecord.Patient.Name" />
+                            <Binding Path="MedicalRecord.Patient.Surname"/>
                         </MultiBinding>
                     </DataGridTextColumn.Binding>
                 </DataGridTextColumn>
-                <DataGridTextColumn Header="Time" FontSize="15" Binding="{Binding appointment}" Width ="130"/>
-                <DataGridTextColumn Header="Duration (min)" FontSize="15" Binding="{Binding duration}" Width ="100"/>
-                <DataGridTextColumn Header="Status" FontSize="15" Binding="{Binding status}" Width =" 100"/>
+                <DataGridTextColumn Header="Time" FontSize="15" Binding="{Binding Appointment}" Width ="130"/>
+                <DataGridTextColumn Header="Duration (min)" FontSize="15" Binding="{Binding Duration}" Width ="100"/>
+                <DataGridTextColumn Header="Status" FontSize="15" Binding="{Binding Status}" Width =" 100"/>
                 <DataGridTextColumn Header="RoomNo" FontSize="15" Binding="{Binding room.Number}" Width =" 60"/>
-                <DataGridTextColumn Header="Report" FontSize="15" Width ="Auto" Binding="{Binding report}"/>
+                <DataGridTextColumn Header="Report" FontSize="15" Width ="Auto" Binding="{Binding Report}"/>
             </DataGrid.Columns>
         </DataGrid>
         <Button Name="addButton" Content="Add" Click="addButton_Click" HorizontalAlignment="Center" Height="30" Margin="0,240,350,0" VerticalAlignment="Top" Width="111" RenderTransformOrigin="0.243,0.514" Cursor="Arrow" FontSize="18" Visibility="Visible"/>

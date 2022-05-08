@@ -10,9 +10,9 @@
     <Grid Margin="0,115,0,0">
         <DataGrid  ItemsSource="{Binding Room}" AutoGenerateColumns="False" Name="dataGrid" Grid.ColumnSpan="3" Margin="0,-108,0,108">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Room type" FontSize="18" Binding="{Binding type}" Width ="260"/>
-                <DataGridTextColumn Header="Number" FontSize="18" Binding="{Binding number}" Width ="260"/>
-                <DataGridTextColumn Header="Is renovating" FontSize="18" Binding="{Binding isRenovating}" Width ="auto"/>
+                <DataGridTextColumn Header="Room type" FontSize="18" Binding="{Binding Type}" Width ="260"/>
+                <DataGridTextColumn Header="Number" FontSize="18" Binding="{Binding Number}" Width ="260"/>
+                <DataGridTextColumn Header="Is renovating" FontSize="18" Binding="{Binding IsRenovating}" Width ="auto"/>
             </DataGrid.Columns>
         </DataGrid>
         <Button Name="addButton" Content="Add" Click="addButton_Click" HorizontalAlignment="Center" Height="30" Margin="0,240,350,0" VerticalAlignment="Top" Width="111" RenderTransformOrigin="0.243,0.514" Cursor="Arrow" FontSize="18" Visibility="Visible"/>

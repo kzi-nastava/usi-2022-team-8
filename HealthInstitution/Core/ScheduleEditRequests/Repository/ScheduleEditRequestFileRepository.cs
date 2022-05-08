@@ -24,7 +24,8 @@ public class ScheduleEditRequestFileRepository
     private JsonSerializerOptions _options = new JsonSerializerOptions
     {
         ReferenceHandler = ReferenceHandler.IgnoreCycles,
-        Converters = { new JsonStringEnumConverter() }
+        Converters = { new JsonStringEnumConverter() },
+        PropertyNameCaseInsensitive = true
     };
 
     private ScheduleEditRequestFileRepository(String fileName)

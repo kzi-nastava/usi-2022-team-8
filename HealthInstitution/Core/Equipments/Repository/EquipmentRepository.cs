@@ -20,7 +20,8 @@ namespace HealthInstitution.Core.Equipments.Repository
 
         private JsonSerializerOptions _options = new JsonSerializerOptions
         {
-            Converters = { new JsonStringEnumConverter() }
+            Converters = { new JsonStringEnumConverter() },
+            PropertyNameCaseInsensitive = true
         };
         private EquipmentRepository(String fileName)
         {

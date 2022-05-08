@@ -30,7 +30,8 @@ internal class ExaminationRepository
 
     private JsonSerializerOptions _options = new JsonSerializerOptions
     {
-        Converters = { new JsonStringEnumConverter() }
+        Converters = { new JsonStringEnumConverter() },
+        PropertyNameCaseInsensitive = true
     };
 
     private ExaminationRepository(String fileName)

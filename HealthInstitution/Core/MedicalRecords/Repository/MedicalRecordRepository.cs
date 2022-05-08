@@ -20,7 +20,8 @@ namespace HealthInstitution.Core.MedicalRecords.Repository
 
         private JsonSerializerOptions _options = new JsonSerializerOptions
         {
-            Converters = { new JsonStringEnumConverter() }
+            Converters = { new JsonStringEnumConverter() },
+            PropertyNameCaseInsensitive = true
         };
         private MedicalRecordRepository(string fileName) //singleton
         {

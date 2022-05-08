@@ -22,7 +22,8 @@ namespace HealthInstitution.Core.Referrals.Repository
 
         private JsonSerializerOptions _options = new JsonSerializerOptions
         {
-            Converters = { new JsonStringEnumConverter() }
+            Converters = { new JsonStringEnumConverter() },
+            PropertyNameCaseInsensitive = true
         };
         private ReferralRepository(string fileName) 
         {
@@ -50,15 +51,18 @@ namespace HealthInstitution.Core.Referrals.Repository
             //var referrals = JsonSerializer.Deserialize<List<Referral>>(File.ReadAllText(@"..\..\..\Data\JSON\referrals.json"), _options);
             foreach (var referral in referrals)
             {
-                ReferralType referralType;
-                Enum.TryParse(referral["type"].ToString(), out referralType);
-                SpecialtyType specialtyType;
-                Enum.TryParse(referral["referredSpecialty"].ToString(), out specialtyType);
+                //ReferralType referralType;
+                //Enum.TryParse(referral["type"].ToString(), out referralType);
+                //SpecialtyType specialtyType;
+                //Enum.TryParse(referral["referredSpecialty"].ToString(), out specialtyType);
+                /* Referral referralTemp = new Referral((int)referral["id"],
+                                                        referralType,
+                                                        doctorByUsername[(string)referral["prescribedBy"]],
+                                                        doctorByUsername[(string)referral["referredDoctor"]],
+                                                        specialtyType);*/
                 Referral referralTemp = new Referral((int)referral["id"],
-                                                       referralType,
-                                                       doctorByUsername[(string)referral["prescribedBy"]],
-                                                       doctorByUsername[(string)referral["referredDoctor"]],
-                                                       specialtyType);
+                                                        doctorByUsername[(string)referral["prescribedBy"]],
+                                                        doctorByUsername[(string)referral["referredDoctor"]]);
                 if (referralTemp.Id > _maxId)
                 {
                     _maxId = referralTemp.Id;
@@ -76,10 +80,10 @@ namespace HealthInstitution.Core.Referrals.Repository
                 reducedReferrals.Add(new
                 {
                     id=referral.Id,
-                    type=referral.Type,
+                    //type=referral.Type,
                     prescribedBy=referral.PrescribedBy.Username,
                     referredDoctor=referral.ReferredDoctor.Username,
-                    referredSpecialty=referral.ReferredSpecialty
+                    //referredSpecialty=referral.ReferredSpecialty
                 });
             }
             return reducedReferrals;
@@ -102,22 +106,22 @@ namespace HealthInstitution.Core.Referrals.Repository
             return null;
         }
 
-        public void Add(ReferralType type, Doctor prescribedBy, Doctor referredDoctor, SpecialtyType referredSpecialty)
+        public void Add(Doctor prescribedBy, Doctor referredDoctor)
         {
             this._maxId++;
             int id = this._maxId;
-            Referral referral = new Referral(id, type, prescribedBy, referredDoctor, referredSpecialty);
+            Referral referral = new Referral(id, prescribedBy, referredDoctor);
             this.Referrals.Add(referral);
             this.ReferralById[id] = referral;
             Save();
         }
 
-        public void Update(int id, ReferralType type, Doctor prescribedBy, Doctor referredDoctor, SpecialtyType referredSpecialty)
+        public void Update(int id, Doctor prescribedBy, Doctor referredDoctor)
         {
             Referral referral = GetById(id);
             referral.PrescribedBy = prescribedBy;
             referral.ReferredDoctor = referredDoctor;
-            referral.ReferredSpecialty = referredSpecialty;
+            //referral.ReferredSpecialty = referredSpecialty;
             ReferralById[id] = referral;
             Save();
         }
