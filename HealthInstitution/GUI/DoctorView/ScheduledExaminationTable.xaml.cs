@@ -35,12 +35,17 @@ namespace HealthInstitution.GUI.DoctorView
         private void LoadOperationGridRows()
         {
             dataGrid.Items.Clear();
-            List<Operation> doctorOperations = this._loggedDoctor.Operations;
+            List<Operation> upcomingOperations = new List<Operation>();
+            foreach (var operation in _loggedDoctor.Operations)
+            {
+                if (operation.Status == ExaminationStatus.Scheduled) 
+                    upcomingOperations.Add(operation);
+            }
             if (upcomingDaysRadioButton.IsChecked == true)
             {
                 DateTime today = DateTime.Now;
                 DateTime dateForThreeDays = today.AddDays(3);
-                foreach (Operation operation in doctorOperations)
+                foreach (Operation operation in upcomingOperations)
                 {
                     if (operation.Appointment <= dateForThreeDays && operation.Appointment >= today)
                         dataGrid.Items.Add(operation);
@@ -48,7 +53,7 @@ namespace HealthInstitution.GUI.DoctorView
             }
             else
             {
-                foreach (Operation operation in doctorOperations)
+                foreach (Operation operation in upcomingOperations)
                 {
                     if (operation.Appointment.Date == datePicker.SelectedDate.Value.Date)
                         dataGrid.Items.Add(operation);
@@ -59,19 +64,24 @@ namespace HealthInstitution.GUI.DoctorView
         public void LoadExaminationGridRows()
         {
             dataGrid.Items.Clear();
-            List<Examination> doctorExaminations = this._loggedDoctor.Examinations;
+            List<Examination> upcomingExaminations = new List<Examination>();
+            foreach (var examination in _loggedDoctor.Examinations)
+            {
+                if (examination.Status == ExaminationStatus.Scheduled)
+                    upcomingExaminations.Add(examination);
+            }
             if ((bool)upcomingDaysRadioButton.IsChecked)
             {
                 DateTime today = DateTime.Now;
                 DateTime dateForThreeDays = today.AddDays(3);
-                foreach (Examination examination in doctorExaminations)
+                foreach (Examination examination in upcomingExaminations)
                 {
                     if (examination.Appointment <= dateForThreeDays && examination.Appointment >= today)
                         dataGrid.Items.Add(examination);
                 }
             } else
             {
-                foreach (Examination examination in doctorExaminations)
+                foreach (Examination examination in upcomingExaminations)
                 {
                     if (examination.Appointment.Date == datePicker.SelectedDate.Value.Date)
                         dataGrid.Items.Add(examination);

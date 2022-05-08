@@ -1,12 +1,9 @@
 [
   {
     "id": 1,
+    "type": "SpecificDoctor",
     "prescribedBy": "jovan",
-    "referredDoctor": "ivan"
-  },
-  {
-    "id": 2,
-    "prescribedBy": "ivan",
-    "referredDoctor": "jovan"
+    "referredDoctor": "ivan",
+    "referredSpecialty": null
   }
 ]

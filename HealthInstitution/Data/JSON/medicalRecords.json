@@ -1,5 +1,4 @@
 [
-  
   {
     "height": 189.6,
     "weight": 85,
@@ -7,7 +6,7 @@
     "previousIlnesses": [ "Headaches", "Diarrhea", "proba", "Test", "Diarea" ],
     "allergens": [ "Gluten", "Nuts", "princ belve" ],
     "prescriptionsId": [],
-    "referralsId": []
+    "referralsId": [ 1 ]
   },
   {
     "height": 174,

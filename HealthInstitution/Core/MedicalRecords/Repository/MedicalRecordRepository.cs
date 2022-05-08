@@ -109,7 +109,6 @@ namespace HealthInstitution.Core.MedicalRecords.Repository
         }
         public void Save()
         {
-            
             var allMedicalRecords = JsonSerializer.Serialize(ShortenMedicalRecord(), _options);
             File.WriteAllText(this._fileName, allMedicalRecords);
         }
@@ -147,11 +146,25 @@ namespace HealthInstitution.Core.MedicalRecords.Repository
             Save();
         }
 
+        public void AddReferral(Patient patient, Referral referral)
+        {
+            MedicalRecord medicalRecord = GetByPatientUsername(patient);
+            medicalRecord.Referrals.Add(referral);
+            Save();
+        }
+
         public void Delete(Patient patient)
         {
             MedicalRecord medicalRecord = GetByPatientUsername(patient);
             this.MedicalRecords.Remove(medicalRecord);
             this.MedicalRecordByUsername.Remove(patient.Username);
+            Save();
+        }
+
+        public void DeleteReferral(Patient patient, Referral referral)
+        {
+            MedicalRecord medicalRecord = GetByPatientUsername(patient);
+            medicalRecord.Referrals.Remove(referral);
             Save();
         }
     }
