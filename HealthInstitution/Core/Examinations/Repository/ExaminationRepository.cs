@@ -270,7 +270,7 @@ internal class ExaminationRepository
         Patient patient = PatientRepository.GetInstance().GetByUsername(patientUsername);
         CheckIfDoctorIsAvailable(doctor, dateTime);
         CheckIfPatientIsAvailable(patient, dateTime);
-        var room = FindAvailableRoom(dateTime);       
+        var room = FindAvailableRoom(dateTime);
         Examination e = new Examination(examination.Id, examination.Status, dateTime, room, doctor, examination.MedicalRecord, "");
         SwapExaminationValue(e);
     }
@@ -284,5 +284,102 @@ internal class ExaminationRepository
         var room = FindAvailableRoom(dateTime);
         var medicalRecord = MedicalRecordRepository.GetInstance().GetByPatientUsername(patient);
         AddExamination(dateTime, room, doctor, medicalRecord);
+    }
+
+    public bool FindFirstFit(int minHour, int minMinutes, DateTime end, int maxHour, int maxMinutes, int maxWorkingHour, string patientUsername, string doctorUsername)
+    {
+        bool found = false;
+        DateTime fit = DateTime.Today.AddDays(1);
+        Doctor doctor = DoctorRepository.GetInstance().GetById(doctorUsername);
+        Patient patient = PatientRepository.GetInstance().GetByUsername(doctorUsername);
+        var medicalRecord = MedicalRecordRepository.GetInstance().GetByPatientUsername(patient);
+
+        while (fit <= end)
+        {
+            try
+            {
+                Room room = FindAvailableRoom(fit);
+                CheckIfPatientIsAvailable(patient, fit);
+                CheckIfDoctorIsAvailable(doctor, fit);
+                this.AddExamination(fit, room, doctor, medicalRecord);
+                MessageBox.Show("Examination scheduled for: " + fit.ToString());
+                found = true;
+            }
+            catch
+            {
+                fit.AddMinutes(15);
+
+                if (fit.Hour > maxHour)
+                {
+                    fit.AddDays(1);
+                    fit.AddHours(minHour - fit.Hour);
+                    fit.AddMinutes(minMinutes - fit.Minute);
+                }
+                else if (fit.Hour == maxHour && fit.Minute > maxMinutes)
+                {
+                    fit.AddDays(1);
+                    fit.AddHours(minHour - fit.Hour);
+                    fit.AddMinutes(minMinutes - fit.Minute);
+                }
+            }
+        }
+        return found;
+    }
+
+    public List<Examination> FindClosestFit(int minHour, int minMinutes, DateTime end, int maxHour, int maxMinutes, int maxWorkingHour, string patientUsername, string doctorUsername, bool doctorPriority)
+    {
+        DateTime fit = DateTime.Today.AddDays(1);
+        Doctor pickedDoctor = DoctorRepository.GetInstance().GetById(doctorUsername);
+        Patient patient = PatientRepository.GetInstance().GetByUsername(doctorUsername);
+        var medicalRecord = MedicalRecordRepository.GetInstance().GetByPatientUsername(patient);
+        List<Examination> suggestions = new List<Examination>();
+        List<Doctor> viableDoctors = new List<Doctor>();
+        if (doctorPriority)
+        {
+            maxHour = 22;
+            maxMinutes = 45;
+            viableDoctors.Add(pickedDoctor);
+        }
+        else
+        {
+            viableDoctors = DoctorRepository.GetInstance().GetAll();
+            viableDoctors.Remove(pickedDoctor);
+        }
+
+        foreach (Doctor doctor in viableDoctors)
+        {
+            if (suggestions.Count == 3) break;
+            while (fit <= end)
+            {
+                if (suggestions.Count == 3) break;
+                try
+                {
+                    Room room = FindAvailableRoom(fit);
+                    CheckIfPatientIsAvailable(patient, fit);
+                    CheckIfDoctorIsAvailable(doctor, fit);
+                    this.AddExamination(fit, room, doctor, medicalRecord);
+                    int id = ++this._maxId;
+                    suggestions.Add(new Examination(id, ExaminationStatus.Scheduled, fit, room, doctor, medicalRecord, ""));
+                }
+                catch
+                {
+                    fit.AddMinutes(15);
+
+                    if (fit.Hour > maxHour)
+                    {
+                        fit.AddDays(1);
+                        fit.AddHours(minHour - fit.Hour);
+                        fit.AddMinutes(minMinutes - fit.Minute);
+                    }
+                    else if (fit.Hour == maxHour && fit.Minute > maxMinutes)
+                    {
+                        fit.AddDays(1);
+                        fit.AddHours(minHour - fit.Hour);
+                        fit.AddMinutes(minMinutes - fit.Minute);
+                    }
+                }
+            }
+        }
+        return suggestions;
     }
 }

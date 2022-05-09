@@ -31,7 +31,7 @@ public partial class EditExaminationDialog : Window
     private void save_Click(object sender, RoutedEventArgs e)
     {
         string formatDate = datePicker.SelectedDate.ToString();
-        formatDate = formatDate;
+        //formatDate = formatDate;
 
         DateTime.TryParse(formatDate, out var dateTime);
         dateTime = dateTime.AddHours(_hours);

@@ -14,6 +14,8 @@ using System.Windows.Shapes;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using HealthInstitution.Core.SystemUsers.Users.Model;
 using HealthInstitution.Core.SystemUsers.Doctors.Repository;
+using HealthInstitution.Core.Examinations.Model;
+using HealthInstitution.Core.Examinations.Repository;
 
 namespace HealthInstitution.GUI.PatientView
 {
@@ -23,8 +25,10 @@ namespace HealthInstitution.GUI.PatientView
     ///
     public partial class RecommendedWindow : Window
     {
-        private int _minutes;
-        private int _hours;
+        private int _startMinutes;
+        private int _startHours;
+        private int _endMinutes;
+        private int _endHours;
         private User _loggedPatient;
         private string _doctorUsername;
 
@@ -72,41 +76,56 @@ namespace HealthInstitution.GUI.PatientView
             minuteComboBox.Items.Refresh();
         }
 
-        private void HourComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            var hourComboBox = sender as System.Windows.Controls.ComboBox;
-            int h = hourComboBox.SelectedIndex;
-            this._hours = h + 9;
-        }
+        /* private void HourComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+         {
+             var hourComboBox = sender as System.Windows.Controls.ComboBox;
+             int h = hourComboBox.SelectedIndex;
+             this._hours = h + 9;
+         }*/
 
         private void EndMinuteComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var minuteComboBox = sender as System.Windows.Controls.ComboBox;
-            int m = minuteComboBox.SelectedIndex;
-            this._minutes = m * 15;
+            this._endMinutes = minuteComboBox.SelectedIndex * 15;
         }
 
         private void StartMinuteComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var minuteComboBox = sender as System.Windows.Controls.ComboBox;
-            int m = minuteComboBox.SelectedIndex;
-            this._minutes = m * 15;
+            this._startMinutes = minuteComboBox.SelectedIndex * 15;
         }
 
         private void DoctorComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            var doctorComboBox = sender as System.Windows.Controls.ComboBox;
+            _doctorUsername = doctorComboBox.SelectedValue as string;
         }
 
         private void EndHourComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            var hourComboBox = sender as System.Windows.Controls.ComboBox;
+            this._endHours = hourComboBox.SelectedIndex + 9;
         }
 
         private void StartHourComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
+            var hourComboBox = sender as System.Windows.Controls.ComboBox;
+            this._startHours = hourComboBox.SelectedIndex + 9;
         }
 
         private void Save_Click(object sender, RoutedEventArgs e)
         {
+            string formatDate = datePicker.SelectedDate.ToString();
+            DateTime.TryParse(formatDate, out var dateTime);
+            bool found = ExaminationRepository.GetInstance().
+                FindFirstFit(_startHours, _startMinutes, dateTime, _endHours, _endMinutes, 23, _loggedPatient.Username, _doctorUsername);
+            bool doctorPriority = doctorRadioButton.IsChecked == true;
+            if (!found)
+            {
+                List<Examination> suggestions =
+                    ExaminationRepository.GetInstance().FindClosestFit
+                    (_startHours, _startMinutes, dateTime, _endHours, _endMinutes, 23, _loggedPatient.Username, _doctorUsername, doctorPriority);
+            }
         }
     }
 }

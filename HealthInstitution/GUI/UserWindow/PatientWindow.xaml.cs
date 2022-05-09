@@ -49,17 +49,11 @@ namespace HealthInstitution.GUI.UserWindow
 
         private void manuallSchedule_Click(object sender, RoutedEventArgs e)
         {
-            /* var check = TrollCounterRepository.GetInstance().GetTrollCounterById(loggedPatient.Username);
-             Console.WriteLine(check.ToString());*/
-
             new PatientScheduleWindow(this._loggedPatient).ShowDialog();
         }
 
         private void recommendedSchedule_Click(object sender, RoutedEventArgs e)
         {
-            /* var check = TrollCounterRepository.GetInstance().GetTrollCounterById(loggedPatient.Username);
-             Console.WriteLine(check.ToString());*/
-
             new RecommendedWindow().ShowDialog();
         }
     }
