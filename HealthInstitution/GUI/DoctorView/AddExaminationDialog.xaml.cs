@@ -2,19 +2,7 @@
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using HealthInstitution.Core.SystemUsers.Patients.Model;
 using HealthInstitution.Core.SystemUsers.Patients.Repository;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace HealthInstitution.GUI.DoctorView
 {
@@ -66,7 +54,17 @@ namespace HealthInstitution.GUI.DoctorView
             patientComboBox.Items.Refresh();
         }
 
-        private void Create_Click(object sender, RoutedEventArgs e)
+        private void CollectForms()
+        {
+            DateTime appointment = (DateTime)datePicker.SelectedDate;
+            int minutes = Int32.Parse(minuteComboBox.Text);
+            int hours = Int32.Parse(hourComboBox.Text);
+            appointment = appointment.AddHours(hours);
+            appointment = appointment.AddMinutes(minutes);
+            Patient patient = (Patient)patientComboBox.SelectedItem;
+        }
+
+        private void Submit_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -75,8 +73,8 @@ namespace HealthInstitution.GUI.DoctorView
                 int hours = Int32.Parse(hourComboBox.Text);
                 appointment = appointment.AddHours(hours);
                 appointment = appointment.AddMinutes(minutes);
-
                 Patient patient = (Patient)patientComboBox.SelectedItem;
+
                 if (appointment <= DateTime.Now)
                 {
                     System.Windows.MessageBox.Show("You have to change dates for upcoming ones!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -91,21 +89,6 @@ namespace HealthInstitution.GUI.DoctorView
             {
                 System.Windows.MessageBox.Show(ex.Message, "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
-        }
-
-        private void HourComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
-
-        private void MinuteComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-
-        }
-
-        private void PatientComboBox_Loaded(object sender, SelectionChangedEventArgs e)
-        {
-
         }
     }
 }

@@ -55,7 +55,6 @@ namespace HealthInstitution.Core.Operations.Repository
         public void LoadFromFile()
         {
             var roomsById = RoomRepository.GetInstance().RoomById;
-            var doctorsByUsername = DoctorRepository.GetInstance().DoctorsByUsername;
             var medicalRecordsByUsername = MedicalRecordRepository.GetInstance().MedicalRecordByUsername;
             var allOperations = JArray.Parse(File.ReadAllText(this._fileName));
             foreach (var operation in allOperations)
@@ -67,12 +66,12 @@ namespace HealthInstitution.Core.Operations.Repository
                 int duration = (int)operation["duration"];
                 int roomId = (int)operation["room"];
                 Room room = roomsById[roomId];
-                String doctorUsername = (String)operation["doctor"];
+                /*String doctorUsername = (String)operation["doctor"];*/
                 String patientUsername = (String)operation["medicalRecord"];
                 MedicalRecord medicalRecord = medicalRecordsByUsername[patientUsername];
                 String report = (String)operation["report"];
 
-                Operation loadedOperation = new Operation(id, status, appointment, duration, room, null, medicalRecord);
+                Operation loadedOperation = new Operation(id, status, appointment, duration, room, null, medicalRecord, report);
 
                 if (id > _maxId) { _maxId = id; }
 
@@ -116,10 +115,10 @@ namespace HealthInstitution.Core.Operations.Repository
             return null;
         }
 
-        public void Add(DateTime startTime, int duration, Room room, Doctor doctor, MedicalRecord medicalRecord)
+        public void Add(DateTime startTime, int duration, Room room, Doctor doctor, MedicalRecord medicalRecord, String report)
         {
             int id = ++this._maxId;
-            Operation operation = new Operation(id, ExaminationStatus.Scheduled, startTime, duration, room, doctor, medicalRecord);
+            Operation operation = new Operation(id, ExaminationStatus.Scheduled, startTime, duration, room, doctor, medicalRecord, report);
             doctor.Operations.Add(operation);
             this.Operations.Add(operation);
             this.OperationsById.Add(id, operation);
@@ -143,7 +142,116 @@ namespace HealthInstitution.Core.Operations.Repository
             this.OperationsById.Remove(id);
             Save();
         }
-        private bool IsExaminationInOperationTime(Examination examination, DateTime appointment, int duration)
+
+        private void CheckIfDoctorHasExaminations(Doctor doctor, DateTime dateTime, int duration)
+        {
+            foreach (var examination in doctor.Examinations)
+            {
+                double difference = (dateTime - examination.Appointment).TotalMinutes;
+                if ((difference <= duration) && difference >= -15)
+                {
+                    throw new Exception("That doctor is not available");
+                }
+            }
+        }
+
+        private void CheckIfDoctorHasOperations(Doctor doctor, DateTime dateTime, int duration)
+        {
+            foreach (var operation in doctor.Operations)
+            {
+                double difference = (dateTime - operation.Appointment).TotalMinutes;
+                if ((difference <= (double)operation.Duration) && difference >= -duration)
+                {
+                    throw new Exception("That doctor is not available");
+                }
+            }
+        }
+        public void CheckIfDoctorIsAvailable(Doctor doctor, DateTime dateTime, int duration)
+        {
+            CheckIfDoctorHasExaminations(doctor, dateTime, duration);
+            CheckIfDoctorHasOperations(doctor, dateTime, duration);
+        }
+
+        private void CheckIfPatientHasExaminations(Patient patient, DateTime dateTime, int duration)
+        {
+            var allExaminations = ExaminationRepository.GetInstance().Examinations;
+            foreach (var examination in allExaminations)
+            {
+                if ((examination.MedicalRecord.Patient.Username == patient.Username))
+                {
+                    double difference = (dateTime - examination.Appointment).TotalMinutes;
+                    if ((difference <= duration) && difference >= -15)
+                    {
+                        throw new Exception("That patient is not available");
+                    }
+                }
+            }
+        }
+
+        private void CheckIfPatientHasOperations(Patient patient, DateTime dateTime, int duration)
+        {
+            var allOperations = OperationRepository.GetInstance().Operations;
+            foreach (var operation in allOperations)
+            {
+                if (operation.MedicalRecord.Patient.Username == patient.Username)
+                {
+                    double difference = (dateTime - operation.Appointment).TotalMinutes;
+                    if ((difference <= (double)operation.Duration) && difference >= -duration)
+                    {
+                        throw new Exception("That patient is not available");
+                    }
+                }
+            }
+        }
+
+        private void CheckIfPatientIsAvailable(Patient patient, DateTime dateTime, int duration)
+        {
+            CheckIfPatientHasExaminations(patient, dateTime, duration);
+            CheckIfPatientHasOperations(patient, dateTime, duration);
+        }
+
+        private Room FindAvailableRoom(DateTime dateTime, int duration)
+        {
+            bool isAvailable;
+            List<Room> availableRooms = new List<Room>();
+            foreach (var room in RoomRepository.GetInstance().GetAll())
+            {
+                if (room.Type != RoomType.OperatingRoom) continue;
+                isAvailable = true;
+                foreach (var operation in this.Operations)
+                {
+                    if (operation.Room.Id == room.Id)
+                    {
+                        double difference = (dateTime - operation.Appointment).TotalMinutes;
+                        if ((difference <= (double)operation.Duration) && difference >= -duration)
+                        {
+                            isAvailable = false;
+                            break;
+                        }
+                    }
+                }
+                if (isAvailable)
+                    availableRooms.Add(room);
+            }
+
+            if (availableRooms.Count == 0) throw new Exception("There are no available rooms!");
+            Random random = new Random();
+            int index = random.Next();
+            return availableRooms[index];
+        }
+
+        public void ReserveOperation(string patientUsername, string doctorUsername, DateTime dateTime, int duration)
+        {
+            Doctor doctor = DoctorRepository.GetInstance().GetById(doctorUsername);
+            Patient patient = PatientRepository.GetInstance().GetByUsername(patientUsername);
+            CheckIfDoctorIsAvailable(doctor, dateTime, duration);
+            CheckIfPatientIsAvailable(patient, dateTime, duration);
+            var room = FindAvailableRoom(dateTime, duration);
+            var medicalRecord = MedicalRecordRepository.GetInstance().GetByPatientUsername(patient);
+            Add(dateTime, duration, room, doctor, medicalRecord, "");
+        }
+
+        /*private bool IsExaminationInOperationTime(Examination examination, DateTime appointment, int duration)
         {
             if (examination.Appointment >= appointment && examination.Appointment.AddMinutes(15) <= appointment.AddMinutes(duration))
                 return true;
@@ -157,9 +265,9 @@ namespace HealthInstitution.Core.Operations.Repository
             if (oldOperation.Appointment >= appointment && oldOperation.Appointment.AddMinutes(oldOperation.Duration) <= appointment.AddMinutes(duration))
                 return true;
             return false;
-        }
+        }*/
 
-        private void CheckIfDoctorIsAvailable(Doctor doctor, DateTime dateTime, int duration)
+        /*private void CheckIfDoctorIsAvailable(Doctor doctor, DateTime dateTime, int duration)
         {
             foreach (var examination in doctor.Examinations)
             {
@@ -235,54 +343,6 @@ namespace HealthInstitution.Core.Operations.Repository
                     }
                 }
             }
-        }
-
-        private Room FindAvailableRoom(DateTime dateTime, int duration)
-        {
-            bool isAvailable;
-            List<Room> availableRooms = new List<Room>();
-            foreach (var room in RoomRepository.GetInstance().GetAll())
-            {
-                if (room.Type != RoomType.OperatingRoom) continue;
-                isAvailable = true;
-                foreach (var operation in OperationRepository.GetInstance().Operations)
-                {
-                    if (operation.Room.Id == room.Id)
-                    {
-                        if (operation.Appointment <= dateTime.AddMinutes(duration) && operation.Appointment.AddMinutes(operation.Duration) >= dateTime.AddMinutes(duration))
-                        {
-                            isAvailable = false;
-                            break;
-                        }
-                        if (operation.Appointment <= dateTime && operation.Appointment.AddMinutes(operation.Duration) >= dateTime)
-                        {
-                            isAvailable = false;
-                            break;
-                        }
-                        if (IsOperationInOperationTime(operation, dateTime, duration))
-                        {
-                            isAvailable = false;
-                            break;
-                        }
-                    }
-                }
-                if (isAvailable)
-                    availableRooms.Add(room);
-            }
-
-            if (availableRooms.Count == 0) throw new Exception("There are no available rooms!");
-            return availableRooms[0];
-        }
-
-        public void ReserveOperation(string patientUsername, string doctorUsername, DateTime dateTime, int duration)
-        {
-            Doctor doctor = DoctorRepository.GetInstance().GetById(doctorUsername);
-            Patient patient = PatientRepository.GetInstance().GetByUsername(patientUsername);
-            CheckIfDoctorIsAvailable(doctor, dateTime, duration);
-            CheckIfPatientIsAvailable(patient, dateTime, duration);   
-            var room = FindAvailableRoom(dateTime, duration);
-            var medicalRecord = MedicalRecordRepository.GetInstance().GetByPatientUsername(patient);
-            Add(dateTime, duration, room, doctor, medicalRecord);
-        }
+        }*/
     }
 }

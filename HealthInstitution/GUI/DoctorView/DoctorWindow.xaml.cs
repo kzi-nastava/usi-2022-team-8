@@ -31,7 +31,8 @@ namespace HealthInstitution.GUI.DoctorView
 
         private void LogOut_Click(object sender, RoutedEventArgs e)
         {
-            if (System.Windows.MessageBox.Show("Are you sure you want to log out?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+            var answer = System.Windows.MessageBox.Show("Are you sure you want to log out?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+            if (answer == MessageBoxResult.Yes)
             {
                 this.Close();
                 LoginWindow window = new LoginWindow();

@@ -83,7 +83,7 @@ internal class ExaminationRepository
         }
     }
 
-    public void Save()
+    private List<dynamic> ShortenExaminations()
     {
         List<dynamic> reducedExaminations = new List<dynamic>();
         foreach (Examination examination in this.Examinations)
@@ -98,7 +98,12 @@ internal class ExaminationRepository
                 anamnesis = examination.Anamnesis
             });
         }
-        var allExaminations = JsonSerializer.Serialize(reducedExaminations, _options);
+        return reducedExaminations;
+    }
+
+    public void Save()
+    {
+        var allExaminations = JsonSerializer.Serialize(ShortenExaminations(), _options);
         File.WriteAllText(this._fileName, allExaminations);
     }
 
@@ -150,14 +155,7 @@ internal class ExaminationRepository
         }
     }
 
-    private bool IsExaminationInOperationTime(Operation operation, DateTime appointment)
-    {
-        if (appointment >= operation.Appointment && appointment.AddMinutes(15) <= operation.Appointment.AddMinutes(operation.Duration))
-            return true;
-        return false;
-    }
-
-    private void CheckIfDoctorIsAvailable(Doctor doctor, DateTime dateTime)
+    private void CheckIfDoctorHasExaminations(Doctor doctor, DateTime dateTime)
     {
         foreach (var examination in doctor.Examinations)
         {
@@ -166,57 +164,56 @@ internal class ExaminationRepository
                 throw new Exception("That doctor is not available");
             }
         }
+    }
 
+    private void CheckIfDoctorHasOperations(Doctor doctor, DateTime dateTime) {
         foreach (var operation in doctor.Operations)
         {
-            if (operation.Appointment <= dateTime && operation.Appointment.AddMinutes(operation.Duration) >= dateTime)
+            double difference = (dateTime - operation.Appointment).TotalMinutes;
+            if ((difference <= (double)operation.Duration) && difference >= -15)
             {
                 throw new Exception("That doctor is not available");
             }
+        }
+    }
+    public void CheckIfDoctorIsAvailable(Doctor doctor, DateTime dateTime)
+    {
+        CheckIfDoctorHasExaminations(doctor, dateTime);
+        CheckIfDoctorHasOperations(doctor, dateTime);
+    }
 
-            if (operation.Appointment <= dateTime.AddMinutes(15) && operation.Appointment.AddMinutes(operation.Duration) >= dateTime.AddMinutes(15))
+    private void CheckIfPatientHasExaminations(Patient patient, DateTime dateTime)
+    {
+        var allExaminations = this.Examinations;
+        foreach (var examination in allExaminations)
+        {
+            if ((examination.MedicalRecord.Patient.Username == patient.Username) && examination.Appointment == dateTime)
             {
-                throw new Exception("That doctor is not available");
+                 throw new Exception("That patient is not available");
             }
-            if (IsExaminationInOperationTime(operation, dateTime))
+        }
+    }
+
+    private void CheckIfPatientHasOperations(Patient patient, DateTime dateTime)
+    {
+        var allOperations = OperationRepository.GetInstance().Operations;
+        foreach (var operation in allOperations)
+        {
+            if (operation.MedicalRecord.Patient.Username == patient.Username)
             {
-                throw new Exception("That doctor is not available");
+                double difference = (dateTime - operation.Appointment).TotalMinutes;
+                if ((difference <= (double)operation.Duration) && difference >= -15)
+                {
+                    throw new Exception("That patient is not available");
+                }
             }
         }
     }
 
     private void CheckIfPatientIsAvailable(Patient patient, DateTime dateTime)
     {
-        var allExaminations = this.Examinations;
-        var allOperations = OperationRepository.GetInstance().Operations;
-        foreach (var examination in allExaminations)
-        {
-            if (examination.MedicalRecord.Patient.Username == patient.Username)
-            {
-                if (examination.Appointment == dateTime)
-                {
-                    throw new Exception("That doctor is not available");
-                }
-            }
-        }
-        foreach (var operation in allOperations)
-        {
-            if (operation.MedicalRecord.Patient.Username == patient.Username)
-            {
-                if (operation.Appointment <= dateTime && operation.Appointment.AddMinutes(operation.Duration) >= dateTime)
-                {
-                    throw new Exception("That doctor is not available");
-                }
-                if (operation.Appointment <= dateTime.AddMinutes(15) && operation.Appointment.AddMinutes(operation.Duration) >= dateTime.AddMinutes(15))
-                {
-                    throw new Exception("That doctor is not available");
-                }
-                if (IsExaminationInOperationTime(operation, dateTime))
-                {
-                    throw new Exception("That doctor is not available");
-                }
-            }
-        }
+        CheckIfPatientHasExaminations(patient, dateTime);
+        CheckIfPatientHasOperations(patient, dateTime);    
     }
 
     private Room FindAvailableRoom(DateTime dateTime)
@@ -240,7 +237,10 @@ internal class ExaminationRepository
         }
 
         if (availableRooms.Count == 0) throw new Exception("There are no available rooms!");
-        return availableRooms[0];
+
+        Random random = new Random();
+        int index = random.Next();
+        return availableRooms[index];
     }
 
     public void SwapExaminationValue(Examination examination)

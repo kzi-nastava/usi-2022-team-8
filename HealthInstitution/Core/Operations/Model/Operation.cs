@@ -17,7 +17,7 @@ public class Operation
     public String Report { get; set; }
     public List<EquipmentCost> EquipmentCosts { get; set; }
 
-    public Operation(int id, ExaminationStatus status, DateTime appointment, int duration, Room room, Doctor doctor, MedicalRecord medicalRecord)
+    public Operation(int id, ExaminationStatus status, DateTime appointment, int duration, Room room, Doctor doctor, MedicalRecord medicalRecord, String report)
     {
         this.Id = id;
         this.Status = status;
@@ -27,5 +27,6 @@ public class Operation
         this.Doctor = doctor;
         this.MedicalRecord = medicalRecord;
         this.EquipmentCosts = new List<EquipmentCost>();
+        this.Report = report;
     }
 }

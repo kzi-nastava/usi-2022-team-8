@@ -1,7 +1,9 @@
 ﻿using HealthInstitution.Core.Examinations.Model;
 using HealthInstitution.Core.MedicalRecords.Model;
 using HealthInstitution.Core.Operations.Model;
+using HealthInstitution.Core.Operations.Repository;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
+using HealthInstitution.Core.SystemUsers.Doctors.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -24,6 +26,7 @@ namespace HealthInstitution.GUI.DoctorView
     public partial class ScheduledExaminationTable : Window
     {
         private Doctor _loggedDoctor;
+        private DoctorRepository _doctorRepository = DoctorRepository.GetInstance();
         public ScheduledExaminationTable(Doctor doctor)
         {
             this._loggedDoctor = doctor;   
@@ -32,60 +35,32 @@ namespace HealthInstitution.GUI.DoctorView
             datePicker.SelectedDate = DateTime.Now;
         }
 
-        private void LoadOperationGridRows()
+        private void LoadOperationRows()
         {
             dataGrid.Items.Clear();
-            List<Operation> upcomingOperations = new List<Operation>();
-            foreach (var operation in _loggedDoctor.Operations)
-            {
-                if (operation.Status == ExaminationStatus.Scheduled) 
-                    upcomingOperations.Add(operation);
-            }
+            List<Operation> scheduledOperations = _doctorRepository.GetScheduledOperations(_loggedDoctor);
             if (upcomingDaysRadioButton.IsChecked == true)
             {
-                DateTime today = DateTime.Now;
-                DateTime dateForThreeDays = today.AddDays(3);
-                foreach (Operation operation in upcomingOperations)
-                {
-                    if (operation.Appointment <= dateForThreeDays && operation.Appointment >= today)
-                        dataGrid.Items.Add(operation);
-                }
+                dataGrid.ItemsSource = _doctorRepository.GetOperationsInThreeDays(scheduledOperations);
             }
             else
             {
-                foreach (Operation operation in upcomingOperations)
-                {
-                    if (operation.Appointment.Date == datePicker.SelectedDate.Value.Date)
-                        dataGrid.Items.Add(operation);
-                }
+                DateTime date = datePicker.SelectedDate.Value.Date;
+                dataGrid.ItemsSource = _doctorRepository.GetOperationsByDate(scheduledOperations, date);
             }
         }
 
-        public void LoadExaminationGridRows()
+        public void LoadExaminationRows()
         {
             dataGrid.Items.Clear();
-            List<Examination> upcomingExaminations = new List<Examination>();
-            foreach (var examination in _loggedDoctor.Examinations)
-            {
-                if (examination.Status == ExaminationStatus.Scheduled)
-                    upcomingExaminations.Add(examination);
-            }
+            List<Examination> scheduledExaminations = _doctorRepository.GetScheduledExaminations(_loggedDoctor);
             if ((bool)upcomingDaysRadioButton.IsChecked)
             {
-                DateTime today = DateTime.Now;
-                DateTime dateForThreeDays = today.AddDays(3);
-                foreach (Examination examination in upcomingExaminations)
-                {
-                    if (examination.Appointment <= dateForThreeDays && examination.Appointment >= today)
-                        dataGrid.Items.Add(examination);
-                }
+                dataGrid.ItemsSource = _doctorRepository.GetExaminationsInThreeDays(scheduledExaminations);
             } else
             {
-                foreach (Examination examination in upcomingExaminations)
-                {
-                    if (examination.Appointment.Date == datePicker.SelectedDate.Value.Date)
-                        dataGrid.Items.Add(examination);
-                }
+                DateTime date = datePicker.SelectedDate.Value.Date;
+                dataGrid.ItemsSource = _doctorRepository.GetExaminationsByDate(scheduledExaminations, date);
             }
     
         }
@@ -93,10 +68,10 @@ namespace HealthInstitution.GUI.DoctorView
         {
             if (examinationRadioButton.IsChecked == true)
             {
-                LoadExaminationGridRows();
+                LoadExaminationRows();
             } else
             {
-                LoadOperationGridRows();
+                LoadOperationRows();
             }
         }
 
@@ -116,14 +91,24 @@ namespace HealthInstitution.GUI.DoctorView
             new MedicalRecordDialog(selectedMedicalRecord).ShowDialog();
         }
 
-        private void StartExamination_Click(object sender, RoutedEventArgs e)
+        private bool IsExaminationSelected()
         {
             if (!(bool)examinationRadioButton.IsChecked)
             {
                 System.Windows.MessageBox.Show("You have to check examination for it to start!", "Alert", MessageBoxButton.OKCancel, MessageBoxImage.Warning);
-            } else if (dataGrid.SelectedIndex == -1) {
-                    System.Windows.MessageBox.Show("You have to select row to start examination!", "Alert", MessageBoxButton.OKCancel, MessageBoxImage.Warning);
-            } else 
+                return false;
+            }
+            else if (dataGrid.SelectedIndex == -1)
+            {
+                System.Windows.MessageBox.Show("You have to select row to start examination!", "Alert", MessageBoxButton.OKCancel, MessageBoxImage.Warning);
+                return false;
+            }
+            return true;
+        }
+        private void StartExamination_Click(object sender, RoutedEventArgs e)
+        {
+            bool isSelected = IsExaminationSelected();
+            if (isSelected)
             { 
                 Examination selectedExamination = (Examination)dataGrid.SelectedItem;
                 if (selectedExamination.Status == ExaminationStatus.Scheduled)

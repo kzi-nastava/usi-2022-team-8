@@ -19,6 +19,11 @@ namespace HealthInstitution.GUI.DoctorView
         {
             this._selectedExamination = examination;
             InitializeComponent();
+            Load();
+        }
+
+        public void Load()
+        {
             datePicker.SelectedDate = this._selectedExamination.Appointment.Date;
             datePicker.Text = this._selectedExamination.Appointment.Date.ToString();
         }
@@ -55,18 +60,16 @@ namespace HealthInstitution.GUI.DoctorView
             minutes.Add("30");
             minutes.Add("45");
             minuteComboBox.ItemsSource = minutes;
-            String examinationMinutes = this._selectedExamination.Appointment.Minute.ToString();
+            /*String examinationMinutes = this._selectedExamination.Appointment.Minute.ToString();
             if (examinationMinutes.Length == 1)
             {
                 examinationMinutes = examinationMinutes + "0";
-            }
-            minuteComboBox.SelectedItem = examinationMinutes;
+            }*/
+            minuteComboBox.SelectedIndex = 0;
         }
 
-        private void Save_Click(object sender, RoutedEventArgs e)
+        private void CollectForms()
         {
-            //try
-            //{
             DateTime appointment = (DateTime)datePicker.SelectedDate;
             int minutes = Int32.Parse(minuteComboBox.Text);
             int hours = Int32.Parse(hourComboBox.Text);
@@ -74,21 +77,32 @@ namespace HealthInstitution.GUI.DoctorView
             appointment = appointment.AddMinutes(minutes);
             Patient patient = (Patient)patientComboBox.SelectedItem;
             MedicalRecord medicalRecord = MedicalRecordRepository.GetInstance().GetByPatientUsername(patient);
-            if (appointment <= DateTime.Now)
-            {
-                System.Windows.MessageBox.Show("You have to change dates for upcoming ones!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+        }
+        private void Submit_Click(object sender, RoutedEventArgs e)
+        {
+            try
+                {
+                DateTime appointment = (DateTime)datePicker.SelectedDate;
+                int minutes = Int32.Parse(minuteComboBox.Text);
+                int hours = Int32.Parse(hourComboBox.Text);
+                appointment = appointment.AddHours(hours);
+                appointment = appointment.AddMinutes(minutes);
+                Patient patient = (Patient)patientComboBox.SelectedItem;
+                MedicalRecord medicalRecord = MedicalRecordRepository.GetInstance().GetByPatientUsername(patient);
+                if (appointment <= DateTime.Now)
+                {
+                    System.Windows.MessageBox.Show("You have to change dates for upcoming ones!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                else
+                {
+                    ExaminationRepository.GetInstance().UpdateExamination(_selectedExamination.Id, appointment, medicalRecord);
+                    this.Close();
+                }
             }
-            else
+            catch (Exception ex)
             {
-                ExaminationRepository.GetInstance().UpdateExamination(_selectedExamination.Id, appointment, medicalRecord);
-                //ExaminationDoctorRepository.GetInstance().Save();
-                this.Close();
+              System.Windows.MessageBox.Show(ex.Message, "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
-           // }
-            //catch (Exception ex)
-            //{
-              //  System.Windows.MessageBox.Show(ex.Message, "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
-            //}
         }
     }
 }
