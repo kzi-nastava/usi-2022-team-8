@@ -128,6 +128,8 @@ namespace HealthInstitution.Core.Operations.Repository
         public void Update(int id, DateTime appointment, MedicalRecord medicalRecord, int duration)
         {
             Operation operation = OperationsById[id];
+            CheckIfDoctorIsAvailable(operation.Doctor, appointment, duration);
+            CheckIfPatientIsAvailable(medicalRecord.Patient, appointment, duration);
             operation.Appointment = appointment;
             operation.MedicalRecord = medicalRecord;
             operation.Duration = duration;
@@ -147,8 +149,7 @@ namespace HealthInstitution.Core.Operations.Repository
         {
             foreach (var examination in doctor.Examinations)
             {
-                double difference = (dateTime - examination.Appointment).TotalMinutes;
-                if ((difference <= duration) && difference >= -15)
+                if ((dateTime < examination.Appointment.AddMinutes(15)) && (dateTime.AddMinutes(duration) > examination.Appointment))
                 {
                     throw new Exception("That doctor is not available");
                 }
@@ -159,8 +160,7 @@ namespace HealthInstitution.Core.Operations.Repository
         {
             foreach (var operation in doctor.Operations)
             {
-                double difference = (dateTime - operation.Appointment).TotalMinutes;
-                if ((difference <= (double)operation.Duration) && difference >= -duration)
+                if ((dateTime < operation.Appointment.AddMinutes(operation.Duration)) && (dateTime.AddMinutes(duration) > operation.Appointment))
                 {
                     throw new Exception("That doctor is not available");
                 }
@@ -179,8 +179,7 @@ namespace HealthInstitution.Core.Operations.Repository
             {
                 if ((examination.MedicalRecord.Patient.Username == patient.Username))
                 {
-                    double difference = (dateTime - examination.Appointment).TotalMinutes;
-                    if ((difference <= duration) && difference >= -15)
+                    if ((dateTime < examination.Appointment.AddMinutes(15)) && (dateTime.AddMinutes(duration) > examination.Appointment))
                     {
                         throw new Exception("That patient is not available");
                     }
@@ -195,8 +194,7 @@ namespace HealthInstitution.Core.Operations.Repository
             {
                 if (operation.MedicalRecord.Patient.Username == patient.Username)
                 {
-                    double difference = (dateTime - operation.Appointment).TotalMinutes;
-                    if ((difference <= (double)operation.Duration) && difference >= -duration)
+                    if ((dateTime < operation.Appointment.AddMinutes(operation.Duration)) && (dateTime.AddMinutes(duration) > operation.Appointment))
                     {
                         throw new Exception("That patient is not available");
                     }
@@ -236,7 +234,7 @@ namespace HealthInstitution.Core.Operations.Repository
 
             if (availableRooms.Count == 0) throw new Exception("There are no available rooms!");
             Random random = new Random();
-            int index = random.Next();
+            int index = random.Next(0, availableRooms.Count);
             return availableRooms[index];
         }
 

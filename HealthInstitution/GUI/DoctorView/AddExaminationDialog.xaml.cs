@@ -51,7 +51,6 @@ namespace HealthInstitution.GUI.DoctorView
                 patientComboBox.Items.Add(patient);
             }
             patientComboBox.SelectedIndex = 0;
-            patientComboBox.Items.Refresh();
         }
 
         private void CollectForms()

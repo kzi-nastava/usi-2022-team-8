@@ -169,8 +169,7 @@ internal class ExaminationRepository
     private void CheckIfDoctorHasOperations(Doctor doctor, DateTime dateTime) {
         foreach (var operation in doctor.Operations)
         {
-            double difference = (dateTime - operation.Appointment).TotalMinutes;
-            if ((difference <= (double)operation.Duration) && difference >= -15)
+            if ((dateTime < operation.Appointment.AddMinutes(operation.Duration)) && (dateTime.AddMinutes(15) > operation.Appointment))
             {
                 throw new Exception("That doctor is not available");
             }
@@ -201,8 +200,7 @@ internal class ExaminationRepository
         {
             if (operation.MedicalRecord.Patient.Username == patient.Username)
             {
-                double difference = (dateTime - operation.Appointment).TotalMinutes;
-                if ((difference <= (double)operation.Duration) && difference >= -15)
+                if ((dateTime < operation.Appointment.AddMinutes(operation.Duration)) && (dateTime.AddMinutes(15) > operation.Appointment))
                 {
                     throw new Exception("That patient is not available");
                 }
@@ -239,7 +237,7 @@ internal class ExaminationRepository
         if (availableRooms.Count == 0) throw new Exception("There are no available rooms!");
 
         Random random = new Random();
-        int index = random.Next();
+        int index = random.Next(0, availableRooms.Count);
         return availableRooms[index];
     }
 

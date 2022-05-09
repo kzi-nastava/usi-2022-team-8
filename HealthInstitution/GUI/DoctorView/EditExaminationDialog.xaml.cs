@@ -60,12 +60,12 @@ namespace HealthInstitution.GUI.DoctorView
             minutes.Add("30");
             minutes.Add("45");
             minuteComboBox.ItemsSource = minutes;
-            /*String examinationMinutes = this._selectedExamination.Appointment.Minute.ToString();
+            String examinationMinutes = this._selectedExamination.Appointment.Minute.ToString();
             if (examinationMinutes.Length == 1)
             {
                 examinationMinutes = examinationMinutes + "0";
-            }*/
-            minuteComboBox.SelectedIndex = 0;
+            }
+            minuteComboBox.SelectedItem = examinationMinutes;
         }
 
         private void CollectForms()
