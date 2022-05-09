@@ -22,16 +22,16 @@ using HealthInstitution.Core.MedicalRecords.Repository;
 namespace HealthInstitution.GUI.DoctorView
 {
     /// <summary>
-    /// Interaction logic for AddPrescriptionDialog.xaml
+    /// Interaction logic for AddReferralDialog.xaml
     /// </summary>
-    public partial class AddPrescriptionDialog : Window
+    public partial class AddReferralDialog : Window
     {
         private Patient _patient;
         private Doctor _doctor;
         private DoctorRepository _doctorRepository = DoctorRepository.GetInstance();
         private MedicalRecordRepository _medicalRecordRepository = MedicalRecordRepository.GetInstance();
         private ReferralRepository _referralRepository = ReferralRepository.GetInstance();  
-        public AddPrescriptionDialog(Doctor doctor, Patient patient)
+        public AddReferralDialog(Doctor doctor, Patient patient)
         {
             _patient = patient;
             _doctor = doctor;

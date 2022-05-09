@@ -35,7 +35,8 @@ namespace HealthInstitution.GUI.DoctorView
         {
             if (illnessesTextBox.Text.Trim() != "")
             {
-                illnessListBox.Items.Add(illnessesTextBox.Text);
+                String illness = allergensTextBox.Text.Trim();
+                illnessListBox.Items.Add(illness.ToUpper());
                 illnessListBox.Items.Refresh();
             }
         }
@@ -44,7 +45,8 @@ namespace HealthInstitution.GUI.DoctorView
         {
             if (illnessesTextBox.Text.Trim() != "")
             {
-                allergenListBox.Items.Add(allergensTextBox.Text);
+                String allergen = allergensTextBox.Text.Trim();
+                allergenListBox.Items.Add(allergen.ToUpper());
                 allergenListBox.Items.Refresh();
             }
         }
@@ -84,7 +86,13 @@ namespace HealthInstitution.GUI.DoctorView
         {
             Patient patient = _medicalRecord.Patient;
             Doctor doctor = _selectedExamination.Doctor;
-            AddPrescriptionDialog dialog = new AddPrescriptionDialog(doctor, patient);
+            AddReferralDialog dialog = new AddReferralDialog(doctor, patient);
+            dialog.ShowDialog();
+        }
+
+        private void CreatePrescription_Click(object sender, RoutedEventArgs e)
+        {
+            AddPrescriptionDialog dialog = new AddPrescriptionDialog(_medicalRecord);
             dialog.ShowDialog();
         }
     }

@@ -5,6 +5,9 @@
     <Compile Update="GUI\DoctorView\AddExaminationDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="GUI\DoctorView\AddPrescriptionDialog.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="GUI\DoctorView\AddReferralDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -94,6 +97,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="GUI\DoctorView\AddOperationDialog.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="GUI\DoctorView\AddPrescriptionDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="GUI\DoctorView\AddReferralDialog.xaml">
