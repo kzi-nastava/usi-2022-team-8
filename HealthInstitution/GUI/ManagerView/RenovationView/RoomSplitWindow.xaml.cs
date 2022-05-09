@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HealthInstitution.Core.Rooms.Repository;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -19,6 +20,7 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
     /// </summary>
     public partial class RoomSplitWindow : Window
     {
+        private RoomRepository _roomRepository = RoomRepository.GetInstance();
         public RoomSplitWindow()
         {
             InitializeComponent();

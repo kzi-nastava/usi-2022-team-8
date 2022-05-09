@@ -17,9 +17,9 @@
         <Label Content="Room" HorizontalAlignment="Left" Margin="179,151,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.47,0.576"/>
         <Label Content="Start date" HorizontalAlignment="Left" Margin="179,215,0,0" VerticalAlignment="Top"/>
         <Label Content="End date" HorizontalAlignment="Left" Margin="179,280,0,0" VerticalAlignment="Top"/>
-        <ComboBox HorizontalAlignment="Left" Loaded="RoomComboBox_Loaded" Margin="380,146,0,0" VerticalAlignment="Top" Width="217" Height="34"/>
-        <DatePicker HorizontalAlignment="Left" Margin="380,217,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.502,0.526" Width="217"/>
-        <DatePicker HorizontalAlignment="Left" Margin="380,282,0,0" VerticalAlignment="Top" Width="217"/>
+        <ComboBox Name="roomComboBox" HorizontalAlignment="Left" Loaded="RoomComboBox_Loaded" Margin="380,146,0,0" VerticalAlignment="Top" Width="217" Height="34"/>
+        <DatePicker Name="startDatePicker" HorizontalAlignment="Left" Margin="380,217,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.502,0.526" Width="217"/>
+        <DatePicker Name="endDatePicker" HorizontalAlignment="Left" Margin="380,282,0,0" VerticalAlignment="Top" Width="217"/>
         <Button Content="Start renovation" Click="StartRenovation_Click" HorizontalAlignment="Center" Margin="0,348,0,0" VerticalAlignment="Top" Width="216" Height="34"/>
 
     </Grid>

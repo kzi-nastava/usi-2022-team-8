@@ -9,6 +9,7 @@ using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using HealthInstitution.Core.Operations.Repository;
 using HealthInstitution.Core.TrollCounters.Repository;
 using HealthInstitution.Core.EquipmentTransfers.Functionality;
+using HealthInstitution.Core.Renovations.Functionality;
 
 namespace HealthInstitution.GUI.LoginView
 {
@@ -87,6 +88,7 @@ namespace HealthInstitution.GUI.LoginView
         private static void Main(string[] args)
         {
             EquipmentTransferChecker.UpdateByTransfer();
+            RenovationChecker.UpdateByRenovation(); 
             LoginWindow window = new LoginWindow();
             window.ShowDialog();
         }

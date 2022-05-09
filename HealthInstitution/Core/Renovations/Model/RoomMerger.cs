@@ -6,7 +6,7 @@ public class RoomMerger : Renovation
 {
     public Room RoomForMerge { get; set; }
     public Room MergedRoom { get; set; }
-    public RoomMerger(DateTime startDate, DateTime endDate, Room initialRoom, Room roomForMerge, Room mergedRoom): base(startDate, endDate, initialRoom)
+    public RoomMerger(int id, Room initialRoom, Room roomForMerge, Room mergedRoom, DateTime startDate, DateTime endDate): base(id, initialRoom,startDate, endDate)
     {
         this.RoomForMerge = roomForMerge;
         this.MergedRoom = mergedRoom;
