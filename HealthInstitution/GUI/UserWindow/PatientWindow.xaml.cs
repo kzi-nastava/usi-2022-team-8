@@ -54,7 +54,7 @@ namespace HealthInstitution.GUI.UserWindow
 
         private void recommendedSchedule_Click(object sender, RoutedEventArgs e)
         {
-            new RecommendedWindow().ShowDialog();
+            new RecommendedWindow(this._loggedPatient).ShowDialog();
         }
     }
 }

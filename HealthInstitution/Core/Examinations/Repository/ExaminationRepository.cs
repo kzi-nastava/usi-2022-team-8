@@ -291,8 +291,10 @@ internal class ExaminationRepository
         bool found = false;
         DateTime fit = DateTime.Today.AddDays(1);
         Doctor doctor = DoctorRepository.GetInstance().GetById(doctorUsername);
-        Patient patient = PatientRepository.GetInstance().GetByUsername(doctorUsername);
+        Patient patient = PatientRepository.GetInstance().GetByUsername(patientUsername);
         var medicalRecord = MedicalRecordRepository.GetInstance().GetByPatientUsername(patient);
+        fit = fit.AddHours(minHour);
+        fit = fit.AddMinutes(minMinutes);
 
         while (fit <= end)
         {
@@ -304,22 +306,23 @@ internal class ExaminationRepository
                 this.AddExamination(fit, room, doctor, medicalRecord);
                 MessageBox.Show("Examination scheduled for: " + fit.ToString());
                 found = true;
+                break;
             }
             catch
             {
-                fit.AddMinutes(15);
+                fit = fit.AddMinutes(15);
 
                 if (fit.Hour > maxHour)
                 {
-                    fit.AddDays(1);
-                    fit.AddHours(minHour - fit.Hour);
-                    fit.AddMinutes(minMinutes - fit.Minute);
+                    fit = fit.AddDays(1);
+                    fit = fit.AddHours(minHour - fit.Hour);
+                    fit = fit.AddMinutes(minMinutes - fit.Minute);
                 }
                 else if (fit.Hour == maxHour && fit.Minute > maxMinutes)
                 {
-                    fit.AddDays(1);
-                    fit.AddHours(minHour - fit.Hour);
-                    fit.AddMinutes(minMinutes - fit.Minute);
+                    fit = fit.AddDays(1);
+                    fit = fit.AddHours(minHour - fit.Hour);
+                    fit = fit.AddMinutes(minMinutes - fit.Minute);
                 }
             }
         }
@@ -330,7 +333,7 @@ internal class ExaminationRepository
     {
         DateTime fit = DateTime.Today.AddDays(1);
         Doctor pickedDoctor = DoctorRepository.GetInstance().GetById(doctorUsername);
-        Patient patient = PatientRepository.GetInstance().GetByUsername(doctorUsername);
+        Patient patient = PatientRepository.GetInstance().GetByUsername(patientUsername);
         var medicalRecord = MedicalRecordRepository.GetInstance().GetByPatientUsername(patient);
         List<Examination> suggestions = new List<Examination>();
         List<Doctor> viableDoctors = new List<Doctor>();
@@ -363,19 +366,19 @@ internal class ExaminationRepository
                 }
                 catch
                 {
-                    fit.AddMinutes(15);
+                    fit = fit.AddMinutes(15);
 
                     if (fit.Hour > maxHour)
                     {
-                        fit.AddDays(1);
-                        fit.AddHours(minHour - fit.Hour);
-                        fit.AddMinutes(minMinutes - fit.Minute);
+                        fit = fit.AddDays(1);
+                        fit = fit.AddHours(minHour - fit.Hour);
+                        fit = fit.AddMinutes(minMinutes - fit.Minute);
                     }
                     else if (fit.Hour == maxHour && fit.Minute > maxMinutes)
                     {
-                        fit.AddDays(1);
-                        fit.AddHours(minHour - fit.Hour);
-                        fit.AddMinutes(minMinutes - fit.Minute);
+                        fit = fit.AddDays(1);
+                        fit = fit.AddHours(minHour - fit.Hour);
+                        fit = fit.AddMinutes(minMinutes - fit.Minute);
                     }
                 }
             }

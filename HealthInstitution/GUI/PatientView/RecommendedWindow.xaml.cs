@@ -32,9 +32,10 @@ namespace HealthInstitution.GUI.PatientView
         private User _loggedPatient;
         private string _doctorUsername;
 
-        public RecommendedWindow()
+        public RecommendedWindow(User loggedPatient)
         {
             InitializeComponent();
+            _loggedPatient = loggedPatient;
         }
 
         private void DoctorComboBox_Loaded(object sender, RoutedEventArgs e)
@@ -125,7 +126,9 @@ namespace HealthInstitution.GUI.PatientView
                 List<Examination> suggestions =
                     ExaminationRepository.GetInstance().FindClosestFit
                     (_startHours, _startMinutes, dateTime, _endHours, _endMinutes, 23, _loggedPatient.Username, _doctorUsername, doctorPriority);
+                new ClosestFit(suggestions).ShowDialog();
             }
+            this.Close();
         }
     }
 }

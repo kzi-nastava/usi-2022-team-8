@@ -7,6 +7,25 @@
         mc:Ignorable="d"
         Title="ClosestFit" Height="450" Width="800">
     <Grid>
-        
+        <DataGrid  ItemsSource="{Binding Examination}" AutoGenerateColumns="True" Name="dataGrid" Grid.ColumnSpan="3" Margin="0,0,0,0">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Time" FontSize="18" Binding="{Binding Appointment}" Width ="150" />
+                <DataGridTextColumn Header="Status" FontSize="18" Binding="{Binding Status}" Width =" 150" />
+                <DataGridTextColumn Header="RoomNo" FontSize="18" Binding="{Binding Room.Number}" Width =" 150" />
+                <DataGridTextColumn Header="Doctor" FontSize="18" Width =" 150">
+                    <DataGridTextColumn.Binding>
+                        <MultiBinding StringFormat="{}{0} {1}">
+                            <Binding Path="Doctor.Name" />
+                            <Binding Path="Doctor.Surname" />
+                        </MultiBinding>
+                    </DataGridTextColumn.Binding>
+                </DataGridTextColumn>
+                <DataGridTextColumn Header="Anamnesis" FontSize="18" Width =" 150" Binding="{Binding Anamnesis}" />
+            </DataGrid.Columns>
+        </DataGrid>
+        <RadioButton Name="firstRadioButton" IsChecked="True" GroupName="Select" Content="First suggestion" HorizontalAlignment="Left" Margin="100,304,0,0" VerticalAlignment="Top" Grid.Column="1" />
+        <RadioButton Name="secondRadioButton" IsChecked="False" GroupName="Select" Content="Second suggestion" HorizontalAlignment="Left" Margin="314,303,0,0" VerticalAlignment="Top" />
+        <RadioButton Name="thirdRadioButton" IsChecked="False" GroupName="Select" Content="Third suggestionl" HorizontalAlignment="Left" Margin="518,307,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.496,0.705" />
+        <Button Name="addButton" Content="Add" Click="addButton_click" HorizontalAlignment="Left" Height="30" Margin="653,379,0,0" VerticalAlignment="Top" Width="111" RenderTransformOrigin="0.243,0.514" Cursor="Arrow" FontSize="18" Visibility="Visible" />
     </Grid>
 </Window>

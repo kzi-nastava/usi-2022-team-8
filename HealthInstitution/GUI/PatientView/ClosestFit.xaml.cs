@@ -11,6 +11,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using HealthInstitution.Core.Examinations.Model;
+using HealthInstitution.Core.Examinations.Repository;
 
 namespace HealthInstitution.GUI.PatientView
 {
@@ -19,9 +21,31 @@ namespace HealthInstitution.GUI.PatientView
     /// </summary>
     public partial class ClosestFit : Window
     {
-        public ClosestFit()
+        private List<Examination> _suggestions;
+
+        public ClosestFit(List<Examination> suggestions)
         {
             InitializeComponent();
+            _suggestions = suggestions;
+            loadRows();
+        }
+
+        private void addButton_click(object sender, RoutedEventArgs e)
+        {
+            var examinationRepository = ExaminationRepository.GetInstance();
+            Examination selectedExamination = _suggestions[0];
+            if (secondRadioButton.IsChecked == true) selectedExamination = _suggestions[1];
+            if (thirdRadioButton.IsChecked == true) selectedExamination = _suggestions[2];
+            examinationRepository.AddExamination(selectedExamination.Appointment, selectedExamination.Room, selectedExamination.Doctor, selectedExamination.MedicalRecord);
+        }
+
+        private void loadRows()
+        {
+            foreach (Examination examination in _suggestions)
+            {
+                dataGrid.Items.Add(examination);
+            }
+            dataGrid.Items.Refresh();
         }
     }
 }
