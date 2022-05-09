@@ -34,7 +34,7 @@ namespace HealthInstitution.GUI.ManagerView
         private void LoadRows()
         {
             dataGrid.Items.Clear();
-            List<Room> rooms = _roomRepository.Rooms;
+            List<Room> rooms = _roomRepository.GetActiveRooms();
             foreach (Room room in rooms)
             {
                 dataGrid.Items.Add(room);

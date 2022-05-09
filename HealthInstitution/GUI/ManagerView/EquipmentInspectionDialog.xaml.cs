@@ -133,7 +133,7 @@ namespace HealthInstitution.GUI.ManagerView
             }
 
             List<TableItemEquipment> items = new List<TableItemEquipment>();
-            List<Room> rooms = _roomRepository.Rooms;
+            List<Room> rooms = _roomRepository.GetActiveRooms();
             foreach (Room room in rooms)
             {
                 if (!MatchRoomType(room))
@@ -240,7 +240,7 @@ namespace HealthInstitution.GUI.ManagerView
             }
 
             List <TableItemEquipment> items = new List<TableItemEquipment>();
-            List<Room> rooms = _roomRepository.Rooms;
+            List<Room> rooms = _roomRepository.GetActiveRooms();
             foreach (Room room in rooms)
             {
                 foreach (Equipment equipment in room.AvailableEquipment)
@@ -292,7 +292,7 @@ namespace HealthInstitution.GUI.ManagerView
         private List<TableItemEquipment> LoadRows()
         {
             List<TableItemEquipment> items = new List<TableItemEquipment>();
-            List<Room> rooms = _roomRepository.Rooms;
+            List<Room> rooms = _roomRepository.GetActiveRooms();
             foreach (Room room in rooms)
             {
                 foreach (Equipment equipment in room.AvailableEquipment)
