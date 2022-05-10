@@ -278,6 +278,10 @@ internal class ExaminationRepository
             while (true)
             {
                 firstAvailableAppointment = examination.Appointment + appointmentCounter * ts;
+                if (firstAvailableAppointment.Hour > 22)
+                {
+                    firstAvailableAppointment += new TimeSpan(9, 0, 0);
+                }
                 appointmentCounter++;
                 try
                 {
@@ -312,6 +316,10 @@ internal class ExaminationRepository
             while (true)
             {
                 firstAvailableAppointment = operation.Appointment + appointmentCounter * ts;
+                if (firstAvailableAppointment.Hour>22)
+                {
+                    firstAvailableAppointment += new TimeSpan(9, 0, 0);
+                }
                 appointmentCounter++;
                 try
                 {
@@ -372,8 +380,11 @@ internal class ExaminationRepository
         for (int i=0;i<=7;i++)
         {
             TimeSpan ts = new TimeSpan(0,15,0);
-            if((firstAppointment+i*ts).Hour<23)
+            possibleAppointments.Add(firstAppointment + i * ts);
+            /*if ((firstAppointment + i * ts).Hour < 23)
                 possibleAppointments.Add(firstAppointment + i * ts);
+            else
+                break;*/
         }
         return possibleAppointments;
     }
@@ -439,6 +450,7 @@ internal class ExaminationRepository
                         var medicalRecord = MedicalRecordRepository.GetInstance().GetByPatientUsername(patient);
                         AddExamination(appointment, room, doctor, medicalRecord);
                         priorityExaminationsAndOperations.Add(new Tuple<int, int, DateTime>(this._maxId, 2, appointment));
+                        return priorityExaminationsAndOperations;
                     }
                     catch
                     {

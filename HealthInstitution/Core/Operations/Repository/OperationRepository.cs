@@ -163,7 +163,7 @@ namespace HealthInstitution.Core.Operations.Repository
         {
             foreach (var examination in doctor.Examinations)
             {
-                if (examination.Appointment <= dateTime && examination.Appointment.AddMinutes(15) >= dateTime)
+                if (examination.Appointment <= dateTime && examination.Appointment.AddMinutes(15) > dateTime)
                 {
                     throw new Exception("That doctor is not available");
                 }
@@ -315,6 +315,7 @@ namespace HealthInstitution.Core.Operations.Repository
                             var medicalRecord = MedicalRecordRepository.GetInstance().GetByPatientUsername(patient);
                             Add(appointment, duration, room, doctor, medicalRecord);
                             priorityExaminationsAndOperations.Add(new Tuple<int, int, DateTime>(this._maxId, 2, appointment));
+                            return priorityExaminationsAndOperations;
                         }
                         catch
                         {
@@ -324,6 +325,7 @@ namespace HealthInstitution.Core.Operations.Repository
                 }
 
             }
+            priorityExaminationsAndOperations.Add(new Tuple<int, int, DateTime>(this._maxId, 2, new DateTime(1, 1, 1)));
             List<Tuple<int, int, DateTime>> temporaryPriority = ExaminationRepository.FindClosest(nextTwoHoursAppointments);
             foreach (Tuple<int, int, DateTime> tuple in temporaryPriority)
             {

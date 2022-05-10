@@ -33,12 +33,11 @@ namespace HealthInstitution.GUI.SecretaryView
         }
         private void SpecialtyTypeComboBox_Loaded(object sender, RoutedEventArgs e)
         {
-            specialityTypeComboBox.Items.Clear();
-            List<SpecialtyType> specialtyTypes = new List<SpecialtyType>();
+            specialtyTypeComboBox.Items.Clear();
             foreach (SpecialtyType specialtyType in Enum.GetValues(typeof(SpecialtyType)))
-                specialtyTypes.Add(specialtyType);
-            specialityTypeComboBox.ItemsSource = specialtyTypes;
-            specialityTypeComboBox.SelectedIndex = 0;
+                specialtyTypeComboBox.Items.Add(specialtyType); 
+            specialtyTypeComboBox.SelectedIndex = 0;
+            specialtyTypeComboBox.Items.Refresh();
         }
         private void PatientComboBox_Loaded(object sender, RoutedEventArgs e)
         {
@@ -56,7 +55,7 @@ namespace HealthInstitution.GUI.SecretaryView
         {
             try
             {
-                SpecialtyType specialtyType = (SpecialtyType)specialityTypeComboBox.SelectedItem;
+                SpecialtyType specialtyType = (SpecialtyType)specialtyTypeComboBox.SelectedItem;
                 Patient patient = (Patient)patientComboBox.SelectedItem;
                 List<Tuple<int, int, DateTime>> examinationsAndOperationsForDelaying = OperationRepository.GetInstance().ReserveUrgentOperation(patient.Username, specialtyType,15);
                 Operation urgentOperation = OperationRepository.GetInstance().GetById(examinationsAndOperationsForDelaying[0].Item1);
@@ -84,7 +83,7 @@ namespace HealthInstitution.GUI.SecretaryView
                         {
                             Operation currentOperation = OperationRepository.GetInstance().GetById(tuple.Item1);
                             Operation newOperation = new Operation(currentOperation.Id, ExaminationStatus.Scheduled, tuple.Item3,currentOperation.Duration, currentOperation.Room, currentOperation.Doctor, currentOperation.MedicalRecord);
-                            //EDIT OPERATION??
+                            delayedAppointments.Add(new ScheduleEditRequest(0, currentOperation, newOperation, Core.RestRequests.Model.RestRequestState.OnHold));
                         }
                         
                     }

@@ -32,6 +32,7 @@ namespace HealthInstitution.GUI.SecretaryView
             InitializeComponent();
             DelayedAppointments=delayedAppointments;
             Examination = examination;
+            Operation = operation;
             LoadRows();
         }
         private void LoadRows()
@@ -52,13 +53,19 @@ namespace HealthInstitution.GUI.SecretaryView
                 if (Operation == null)
                 {
                     ExaminationRepository.GetInstance().SwapExaminationValue(selectedAppointment.NewExamination);
-                    Examination.Appointment = selectedAppointment.CurrentExamination.Appointment;
+                    if (selectedAppointment.CurrentExamination == null)
+                        Examination.Appointment = selectedAppointment.CurrentOperation.Appointment;
+                    else
+                        Examination.Appointment = selectedAppointment.CurrentExamination.Appointment;
                     ExaminationRepository.GetInstance().AddExamination(Examination.Appointment, Examination.Room, Examination.Doctor, Examination.MedicalRecord);
                 }
                 if (Examination == null)
                 {
                     OperationRepository.GetInstance().SwapOperationValue(selectedAppointment.NewOperation);
-                    Operation.Appointment = selectedAppointment.CurrentOperation.Appointment;
+                    if (selectedAppointment.CurrentExamination == null)
+                        Operation.Appointment = selectedAppointment.CurrentOperation.Appointment;
+                    else
+                        Operation.Appointment = selectedAppointment.CurrentExamination.Appointment;
                     OperationRepository.GetInstance().Add(Operation.Appointment, Operation.Duration, Operation.Room, Operation.Doctor, Operation.MedicalRecord);
                 }
             }

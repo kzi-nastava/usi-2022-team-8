@@ -6,12 +6,12 @@
         xmlns:local="clr-namespace:HealthInstitution.GUI.SecretaryView"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="DelayExamination" Height="400" Width="500">
+        Title="DelayExamination" Height="400" Width="650">
     <Grid>
         <DataGrid  ItemsSource="{Binding ScheduleEditRequest}" AutoGenerateColumns="False" Name="dataGrid"  Height="250" VerticalAlignment="Top">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Patient username" FontSize="18" Binding="{Binding CurrentExamination.MedicalRecord.Patient.Username}" Width ="110"/>
-                <DataGridTextColumn Header="Doctor" FontSize="18" Width ="100">
+                <DataGridTextColumn Header="Doctor" FontSize="18" Width ="150">
                     <DataGridTextColumn.Binding>
                         <MultiBinding StringFormat="{}{0} {1}">
                             <Binding Path="CurrentExamination.Doctor.Name" />
@@ -19,8 +19,8 @@
                         </MultiBinding>
                     </DataGridTextColumn.Binding>
                 </DataGridTextColumn>
-                <DataGridTextColumn Header="Current time" FontSize="18" Binding="{Binding CurrentExamination.Appointment}" Width =" 150"/>
-                <DataGridTextColumn Header="New time" FontSize="18" Binding="{Binding NewExamination.Appointment}" Width =" 150"/>
+                <DataGridTextColumn Header="Current time" FontSize="18" Binding="{Binding CurrentExamination.Appointment}" Width =" 200"/>
+                <DataGridTextColumn Header="New time" FontSize="18" Binding="{Binding NewExamination.Appointment}" Width =" 200"/>
             </DataGrid.Columns>
         </DataGrid>
         <Button Name="acceptButton" Content="Accept" Click="Accept_Click" HorizontalAlignment="Center" Margin="0,300,0,0" VerticalAlignment="Top" FontSize="18"/>

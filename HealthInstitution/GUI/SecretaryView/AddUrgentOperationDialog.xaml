@@ -9,11 +9,11 @@
         Title="AddUrgentOperationDialog" Height="300" Width="350">
     <Grid>
         <Label Content="Doctor specialty" HorizontalAlignment="Left" Margin="44,80,0,0" VerticalAlignment="Top" Height="30"/>
-        <ComboBox Name="specialityTypeComboBox" HorizontalAlignment="Left"   
+        <ComboBox Name="specialtyTypeComboBox" HorizontalAlignment="Left"   
                   Margin="150,80,0,0"   
                   VerticalAlignment="Top"   
                   Width="150"
-                  Loaded="SpecialtyTypeComboBox_Loaded" SelectionChanged="SpecialtyTypeComboBox_Loaded"
+                  Loaded="SpecialtyTypeComboBox_Loaded"
                   Height="30"
                   />
 
@@ -22,7 +22,7 @@
                   Margin="150,150,0,0"   
                   VerticalAlignment="Top"   
                   Width="150"
-                  Loaded="PatientComboBox_Loaded" SelectionChanged="PatientComboBox_Loaded"
+                  Loaded="PatientComboBox_Loaded"
                   Height="30"
                   />
         

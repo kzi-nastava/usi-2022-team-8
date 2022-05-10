@@ -71,6 +71,10 @@ namespace HealthInstitution.GUI.LoginView
                         break;
 
                     case UserType.Secretary:
+                        DoctorRepository.GetInstance();
+                        ExaminationRepository.GetInstance();
+                        ExaminationDoctorRepository.GetInstance();
+                        OperationDoctorRepository.GetInstance();
                         SecretaryWindow secretaryWindow = new SecretaryWindow();
                         secretaryWindow.ShowDialog();
                         break;

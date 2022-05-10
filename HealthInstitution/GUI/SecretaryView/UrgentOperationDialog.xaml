@@ -11,7 +11,7 @@
         <DataGrid  ItemsSource="{Binding Operation}" AutoGenerateColumns="False" Name="dataGrid"  Height="250" VerticalAlignment="Top">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Patient username" FontSize="18" Binding="{Binding MedicalRecord.Patient.Username}" Width ="110"/>
-                <DataGridTextColumn Header="Doctor" FontSize="18" Width ="100">
+                <DataGridTextColumn Header="Doctor" FontSize="18" Width ="130">
                     <DataGridTextColumn.Binding>
                         <MultiBinding StringFormat="{}{0} {1}">
                             <Binding Path="Doctor.Name" />
@@ -21,7 +21,7 @@
                 </DataGridTextColumn>
                 <DataGridTextColumn Header="Time" FontSize="18" Binding="{Binding Appointment}" Width =" 150"/>
                 <DataGridTextColumn Header="Duration" FontSize="18" Binding="{Binding Duration}" Width =" 100"/>
-                <DataGridTextColumn Header="Room" FontSize="18" Binding="{Binding Room.Number}" Width =" 100"/>
+                <DataGridTextColumn Header="Room" FontSize="18" Binding="{Binding Room.Number}" Width =" 60"/>
             </DataGrid.Columns>
         </DataGrid>
     </Grid>

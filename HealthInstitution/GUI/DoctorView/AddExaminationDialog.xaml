@@ -14,7 +14,7 @@
                   Margin="120,152,0,0"   
                   VerticalAlignment="Top"   
                   Width="150"
-                  Loaded="PatientComboBox_Loaded" SelectionChanged="PatientComboBox_Loaded"
+                  Loaded="PatientComboBox_Loaded" 
                   Height="30"
                   />
         <Label Content="Patient" HorizontalAlignment="Left" Margin="44,152,0,0" VerticalAlignment="Top" Height="30"/>

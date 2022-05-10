@@ -1,1 +1,21 @@
-[]
+[
+  
+  {
+    "id": 1,
+    "status": "Scheduled",
+    "room": 2,
+    "duration": 15,
+    "appointment": "2022-05-10T16:15:00",
+    "medicalRecord": "pera",
+    "report": null
+  },
+  {
+    "id": 2,
+    "status": "Scheduled",
+    "room": 2,
+    "duration": 15,
+    "appointment": "2022-05-10T22:15:00",
+    "medicalRecord": "marko",
+    "report": null
+  }
+]

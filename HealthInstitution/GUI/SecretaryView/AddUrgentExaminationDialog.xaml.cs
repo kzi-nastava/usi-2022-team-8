@@ -31,33 +31,27 @@ namespace HealthInstitution.GUI.SecretaryView
         {
             InitializeComponent();
         }
-
         private void SpecialtyTypeComboBox_Loaded(object sender, RoutedEventArgs e)
         {
-            specialityTypeComboBox.Items.Clear();
-            List<SpecialtyType> specialtyTypes = new List<SpecialtyType>();
-            foreach(SpecialtyType specialtyType in Enum.GetValues(typeof(SpecialtyType)))
-                specialtyTypes.Add(specialtyType);
-            specialityTypeComboBox.ItemsSource=specialtyTypes;
-            specialityTypeComboBox.SelectedIndex = 0;
+            specialtyTypeComboBox.Items.Clear();
+            foreach (SpecialtyType specialtyType in Enum.GetValues(typeof(SpecialtyType)))
+                specialtyTypeComboBox.Items.Add(specialtyType);
+            specialtyTypeComboBox.SelectedIndex = 0;
         }
         private void PatientComboBox_Loaded(object sender, RoutedEventArgs e)
         {
             patientComboBox.Items.Clear();
             List<Patient> patients = PatientRepository.GetInstance().Patients;
             foreach (Patient patient in patients)
-            {
                 patientComboBox.Items.Add(patient);
-            }
             patientComboBox.SelectedIndex = 0;
-            patientComboBox.Items.Refresh();
         }
 
         private void Create_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                SpecialtyType specialtyType = (SpecialtyType)specialityTypeComboBox.SelectedItem;
+                SpecialtyType specialtyType = (SpecialtyType)specialtyTypeComboBox.SelectedItem;
                 Patient patient = (Patient)patientComboBox.SelectedItem;
                 List<Tuple<int,int,DateTime>> examinationsAndOperationsForDelaying = ExaminationRepository.GetInstance().ReserveUrgentExamination(patient.Username, specialtyType);
                 Examination urgentExamination = ExaminationRepository.GetInstance().GetById(examinationsAndOperationsForDelaying[0].Item1);
@@ -85,7 +79,7 @@ namespace HealthInstitution.GUI.SecretaryView
                         {
                             Operation currentOperation = OperationRepository.GetInstance().GetById(tuple.Item1);
                             Operation newOperation = new Operation(currentOperation.Id, ExaminationStatus.Scheduled, tuple.Item3,currentOperation.Duration, currentOperation.Room, currentOperation.Doctor, currentOperation.MedicalRecord);
-                            //EDIT OPERATION??
+                            delayedAppointments.Add(new ScheduleEditRequest(0,currentOperation,newOperation, Core.RestRequests.Model.RestRequestState.OnHold));
                         }
                         
                     }
@@ -100,5 +94,7 @@ namespace HealthInstitution.GUI.SecretaryView
                 System.Windows.MessageBox.Show(ex.Message, "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
+
+        
     }
 }
