@@ -150,6 +150,33 @@ internal class ExaminationRepository
         }
     }
 
+    public List<Examination> GetCompletedByPatient(Patient patient)
+    {
+        List<Examination> completed = new List<Examination>();
+
+        foreach (Examination examination in this.Examinations)
+        {
+            if (examination.MedicalRecord.Patient.Username != patient.Username) continue;
+            if (examination.Status == ExaminationStatus.Completed)
+                completed.Add(examination);
+        }
+        return completed;
+    }
+
+    public List<Examination> GetSeachAnamnesis(string keyword, Patient patient)
+    {
+        keyword = keyword.Trim();
+        List<Examination> resault = new List<Examination>();
+        var completed = GetCompletedByPatient(patient);
+
+        foreach (Examination examination in completed)
+        {
+            if (examination.Anamnesis.Contains(keyword)) resault.Add(examination);
+        }
+
+        return resault;
+    }
+
     private bool IsExaminationInOperationTime(Operation operation, DateTime appointment)
     {
         if (appointment >= operation.Appointment && appointment.AddMinutes(15) <= operation.Appointment.AddMinutes(operation.Duration))
