@@ -190,7 +190,7 @@ namespace HealthInstitution.Core.Operations.Repository
 
         private void CheckIfPatientHasOperations(Patient patient, DateTime dateTime, int duration)
         {
-            var allOperations = OperationRepository.GetInstance().Operations;
+            var allOperations = GetInstance().Operations;
             foreach (var operation in allOperations)
             {
                 if (operation.MedicalRecord.Patient.Username == patient.Username)

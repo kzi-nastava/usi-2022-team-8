@@ -39,14 +39,19 @@ namespace HealthInstitution.GUI.DoctorView
         {
             dataGrid.Items.Clear();
             List<Operation> scheduledOperations = _doctorRepository.GetScheduledOperations(_loggedDoctor);
+            List<Operation> selectedOperations = new List<Operation>();
             if (upcomingDaysRadioButton.IsChecked == true)
             {
-                dataGrid.ItemsSource = _doctorRepository.GetOperationsInThreeDays(scheduledOperations);
+                selectedOperations = _doctorRepository.GetOperationsInThreeDays(scheduledOperations);
             }
             else
             {
                 DateTime date = datePicker.SelectedDate.Value.Date;
-                dataGrid.ItemsSource = _doctorRepository.GetOperationsByDate(scheduledOperations, date);
+                selectedOperations = _doctorRepository.GetOperationsByDate(scheduledOperations, date);
+            }
+            foreach (Operation operation in selectedOperations)
+            {
+                dataGrid.Items.Add(operation);
             }
         }
 
@@ -54,13 +59,18 @@ namespace HealthInstitution.GUI.DoctorView
         {
             dataGrid.Items.Clear();
             List<Examination> scheduledExaminations = _doctorRepository.GetScheduledExaminations(_loggedDoctor);
+            List<Examination> selectedExaminations = new List<Examination>();
             if ((bool)upcomingDaysRadioButton.IsChecked)
             {
-                dataGrid.ItemsSource = _doctorRepository.GetExaminationsInThreeDays(scheduledExaminations);
+                selectedExaminations = _doctorRepository.GetExaminationsInThreeDays(scheduledExaminations);
             } else
             {
                 DateTime date = datePicker.SelectedDate.Value.Date;
-                dataGrid.ItemsSource = _doctorRepository.GetExaminationsByDate(scheduledExaminations, date);
+                selectedExaminations = _doctorRepository.GetExaminationsByDate(scheduledExaminations, date);
+            }
+            foreach (var examination in selectedExaminations)
+            {
+                dataGrid.Items.Add(examination);
             }
     
         }

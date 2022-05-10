@@ -38,21 +38,23 @@ namespace HealthInstitution.GUI.DoctorView
 
         private void AddIllness_Click(object sender, RoutedEventArgs e)
         {
-            String illness = allergensTextBox.Text.Trim();
+            String illness = illnessTextBox.Text.Trim();
             if (illness != "")
             {
-                illnessListBox.Items.Add(illness.ToUpper());
+                illnessListBox.Items.Add(illness);
                 illnessListBox.Items.Refresh();
+                illnessTextBox.Clear();
             }
         }
 
         private void AddAllergen_Click(object sender, RoutedEventArgs e)
         {
-            String allergen = allergensTextBox.Text.Trim();
+            string allergen = allergenTextBox.Text.Trim();
             if (allergen != "")
             {
-                allergenListBox.Items.Add(allergen.ToUpper());
+                allergenListBox.Items.Add(allergen);
                 allergenListBox.Items.Refresh();
+                allergenTextBox.Clear();
             }
         }
         private void CreateReferral_Click(object sender, RoutedEventArgs e)

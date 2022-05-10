@@ -98,6 +98,7 @@ namespace HealthInstitution.GUI.DoctorView
                 {
                     Prescription prescription = _prescriptionRepository.Add(prescriptionDTO);
                     _medicalRecordRepository.AddPrescription(_medicalRecord.Patient, prescription);
+                    System.Windows.MessageBox.Show("You have created the prescription!", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
                     this.Close();
                 }
             }

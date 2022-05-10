@@ -1,12 +1,13 @@
 [
+  
   {
     "height": 189.6,
     "weight": 85,
     "patientUsername": "pera",
-    "previousIlnesses": [ "Headaches", "Diarrhea", "Diarea" ],
-    "allergens": [ "Gluten", "Nuts", "princ belve" ],
-    "prescriptionsId": [],
-    "referralsId": [ 1 ]
+    "previousIlnesses": [ "Headaches", "Diarrhea", "Diarea", "NovaBolest" ],
+    "allergens": [ "Gluten", "Nuts", "princ belve", "NOVI ALERGEN", "NovAlergen" ],
+    "prescriptionsId": [ 1 ],
+    "referralsId": [ 1, 2 ]
   },
   {
     "height": 174,
