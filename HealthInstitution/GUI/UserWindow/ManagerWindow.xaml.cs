@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using HealthInstitution.GUI.LoginView;
+using HealthInstitution.GUI.ManagerView.RenovationView;
 
 namespace HealthInstitution.GUI.UserWindow
 {
@@ -53,6 +54,12 @@ namespace HealthInstitution.GUI.UserWindow
             RoomsTableWindow roomsTableWindow = new RoomsTableWindow();
             roomsTableWindow.ShowDialog();
             
+        }
+
+        private void Renovate_Click(object sender, RoutedEventArgs e)
+        {
+            SimpleRenovationWindow simpleRenovationWindow = new SimpleRenovationWindow();
+            simpleRenovationWindow.ShowDialog();
         }
     }
 }

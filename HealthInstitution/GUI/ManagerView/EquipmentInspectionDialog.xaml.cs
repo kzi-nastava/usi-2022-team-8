@@ -132,8 +132,23 @@ namespace HealthInstitution.GUI.ManagerView
                 return;
             }
 
+            List<TableItemEquipment> items = FilterEquipment();
+            
+            if (items == null || !items.Any())
+            {
+                System.Windows.MessageBox.Show("No search results!", "Failed search", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            this.Close();
+            EquipmentTableWindow equipmentTableWindow = new EquipmentTableWindow(items);
+            equipmentTableWindow.ShowDialog();
+        }
+
+        private List<TableItemEquipment> FilterEquipment()
+        {
             List<TableItemEquipment> items = new List<TableItemEquipment>();
-            List<Room> rooms = _roomRepository.Rooms;
+            List<Room> rooms = _roomRepository.GetActiveRooms();
             foreach (Room room in rooms)
             {
                 if (!MatchRoomType(room))
@@ -144,20 +159,12 @@ namespace HealthInstitution.GUI.ManagerView
                         continue;
                     if (!MatchQuantity(equipment))
                         continue;
-                    
+
                     TableItemEquipment equipmentByRoom = new TableItemEquipment(room, equipment);
                     items.Add(equipmentByRoom);
                 }
             }
-            if (items == null || !items.Any())
-            {
-                System.Windows.MessageBox.Show("No search results!", "Failed search", MessageBoxButton.OK, MessageBoxImage.Information);
-                return;
-            }
-
-            this.Close();
-            EquipmentTableWindow equipmentTableWindow = new EquipmentTableWindow(items);
-            equipmentTableWindow.ShowDialog();
+            return items;
         }
 
         private bool MatchQuantity(Equipment equipment)
@@ -239,8 +246,23 @@ namespace HealthInstitution.GUI.ManagerView
                 return;
             }
 
-            List <TableItemEquipment> items = new List<TableItemEquipment>();
-            List<Room> rooms = _roomRepository.Rooms;
+            List<TableItemEquipment> items = SearchEquipment(searchInput);
+            
+            if (items == null || !items.Any())
+            {
+                System.Windows.MessageBox.Show("No search results!", "Failed search", MessageBoxButton.OK, MessageBoxImage.Information);
+                return;
+            }
+
+            this.Close();
+            EquipmentTableWindow equipmentTableWindow = new EquipmentTableWindow(items);
+            equipmentTableWindow.ShowDialog();
+        }
+
+        private List<TableItemEquipment> SearchEquipment(string searchInput)
+        {
+            List<TableItemEquipment> items = new List<TableItemEquipment>();
+            List<Room> rooms = _roomRepository.GetActiveRooms();
             foreach (Room room in rooms)
             {
                 foreach (Equipment equipment in room.AvailableEquipment)
@@ -252,15 +274,7 @@ namespace HealthInstitution.GUI.ManagerView
                     }
                 }
             }
-            if (items == null || !items.Any())
-            {
-                System.Windows.MessageBox.Show("No search results!", "Failed search", MessageBoxButton.OK, MessageBoxImage.Information);
-                return;
-            }
-
-            this.Close();
-            EquipmentTableWindow equipmentTableWindow = new EquipmentTableWindow(items);
-            equipmentTableWindow.ShowDialog();
+            return items;
         }
 
         private bool SearchMatch(Room room, Equipment equipment, string searchInput)
@@ -292,7 +306,7 @@ namespace HealthInstitution.GUI.ManagerView
         private List<TableItemEquipment> LoadRows()
         {
             List<TableItemEquipment> items = new List<TableItemEquipment>();
-            List<Room> rooms = _roomRepository.Rooms;
+            List<Room> rooms = _roomRepository.GetActiveRooms();
             foreach (Room room in rooms)
             {
                 foreach (Equipment equipment in room.AvailableEquipment)

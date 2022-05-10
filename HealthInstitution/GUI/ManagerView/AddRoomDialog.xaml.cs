@@ -47,38 +47,65 @@ namespace HealthInstitution.GUI.ManagerView
 
         private void Create_Click(object sender, RoutedEventArgs e)
         {
+            if (!ValidateRoomNumber())
+            {
+                return;
+            }
+            string numberInput = numberBox.Text;  
+            int number = Int32.Parse(numberInput);
+
+
+            if (!ValidateRoomType())
+            {
+                return;
+            }
+            RoomType type = (RoomType)typeComboBox.SelectedItem;
+
+            _roomRepository.AddRoom(type, number);
+            System.Windows.MessageBox.Show("Room added!", "Room creation", MessageBoxButton.OK, MessageBoxImage.Information);
+            
+            this.Close();
+        }
+
+        private bool ValidateRoomType()
+        {
+            if (typeComboBox.SelectedItem == null)
+            {
+                System.Windows.MessageBox.Show("Must select room type!", "Create error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+            return true;
+        }
+
+        private bool ValidateRoomNumber()
+        {
             string numberInput = numberBox.Text;
 
             if (numberInput.Trim() == "")
             {
                 System.Windows.MessageBox.Show("Must input room number!", "Create error", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
+                return false;
             }
             int number = Int32.Parse(numberInput);
 
             if (_roomRepository.Rooms.Any(room => room.Number == number))
             {
                 System.Windows.MessageBox.Show("This room number already exist!", "Create error", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
+                return false;
             }
 
-            if (number>9999)
+            if (number > 9999)
             {
                 System.Windows.MessageBox.Show("This room number is too high!", "Create error", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
+                return false;
             }
 
             if (typeComboBox.SelectedItem == null)
             {
                 System.Windows.MessageBox.Show("Must select room type!", "Create error", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
+                return false;
             }
-
-            RoomType type = (RoomType)typeComboBox.SelectedItem;
-            _roomRepository.AddRoom(type, number);
-            System.Windows.MessageBox.Show("Room added!", "Room creation", MessageBoxButton.OK, MessageBoxImage.Information);
-            
-            this.Close();
+            return true;
         }
     }
 }
