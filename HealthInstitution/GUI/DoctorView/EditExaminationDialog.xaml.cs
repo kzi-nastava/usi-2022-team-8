@@ -68,7 +68,7 @@ namespace HealthInstitution.GUI.DoctorView
             minuteComboBox.SelectedItem = examinationMinutes;
         }
 
-        private void CollectForms()
+        private ExaminationDTO CreateExaminationByForms()
         {
             DateTime appointment = (DateTime)datePicker.SelectedDate;
             int minutes = Int32.Parse(minuteComboBox.Text);
@@ -77,25 +77,21 @@ namespace HealthInstitution.GUI.DoctorView
             appointment = appointment.AddMinutes(minutes);
             Patient patient = (Patient)patientComboBox.SelectedItem;
             MedicalRecord medicalRecord = MedicalRecordRepository.GetInstance().GetByPatientUsername(patient);
+            ExaminationDTO examination = new ExaminationDTO(appointment, null, null, medicalRecord);
+            return examination;
         }
         private void Submit_Click(object sender, RoutedEventArgs e)
         {
             try
                 {
-                DateTime appointment = (DateTime)datePicker.SelectedDate;
-                int minutes = Int32.Parse(minuteComboBox.Text);
-                int hours = Int32.Parse(hourComboBox.Text);
-                appointment = appointment.AddHours(hours);
-                appointment = appointment.AddMinutes(minutes);
-                Patient patient = (Patient)patientComboBox.SelectedItem;
-                MedicalRecord medicalRecord = MedicalRecordRepository.GetInstance().GetByPatientUsername(patient);
-                if (appointment <= DateTime.Now)
+                ExaminationDTO examination = CreateExaminationByForms();
+                if (examination.Appointment <= DateTime.Now)
                 {
                     System.Windows.MessageBox.Show("You have to change dates for upcoming ones!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
                 else
                 {
-                    ExaminationRepository.GetInstance().Update(_selectedExamination.Id, appointment, medicalRecord);
+                    ExaminationRepository.GetInstance().Update(_selectedExamination.Id, examination);
                     this.Close();
                 }
             }

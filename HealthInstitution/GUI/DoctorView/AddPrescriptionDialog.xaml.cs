@@ -80,21 +80,26 @@ namespace HealthInstitution.GUI.DoctorView
             return false;
         }
 
+        private PrescriptionDTO CreatePrescriptionByForms()
+        {
+            Drug drug = (Drug)drugComboBox.SelectedItem;
+            PrescriptionTime timeOfUse = (PrescriptionTime)timeComboBox.SelectedIndex;
+            int dailyDose = Int32.Parse(doseTextBox.Text);
+            PrescriptionDTO prescription = new PrescriptionDTO(dailyDose, timeOfUse, drug);
+            return prescription;
+        }
+
         private void Submit_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                Drug drug = (Drug)drugComboBox.SelectedItem;
-                PrescriptionTime timeOfUse = (PrescriptionTime)timeComboBox.SelectedIndex;
-                int dailyDose = Int32.Parse(doseTextBox.Text);
-                foreach (var ingredient in drug.Ingredients)
+                PrescriptionDTO prescriptionDTO = CreatePrescriptionByForms();
+                if (!IsPatientAlergic(prescriptionDTO.Drug.Ingredients))
                 {
-                    if (_medicalRecord.Allergens.Contains(ingredient.Name))
-                        System.Windows.MessageBox.Show("Patient is alergic to the ingredients of this drug!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    Prescription prescription = _prescriptionRepository.Add(prescriptionDTO);
+                    _medicalRecordRepository.AddPrescription(_medicalRecord.Patient, prescription);
+                    this.Close();
                 }
-                Prescription prescription = _prescriptionRepository.Add(dailyDose, timeOfUse, drug);
-                _medicalRecordRepository.AddPrescription(_medicalRecord.Patient, prescription);
-                this.Close();
             }
             catch (Exception ex)
             {

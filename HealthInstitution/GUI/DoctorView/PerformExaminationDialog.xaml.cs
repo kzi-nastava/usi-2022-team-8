@@ -69,6 +69,28 @@ namespace HealthInstitution.GUI.DoctorView
             dialog.ShowDialog();
         }
 
+        public void CreateExaminationByForms()
+        {
+            double height = Double.Parse(heightTextBox.Text);
+            double weight = Double.Parse(weightTextBox.Text);
+            List<String> previousIllnesses = new List<String>();
+            foreach (String illness in illnessListBox.Items)
+            {
+                previousIllnesses.Add(illness);
+            };
+            List<String> allergens = new List<String>();
+            foreach (String allergen in allergenListBox.Items)
+            {
+                allergens.Add(allergen);
+            }
+            List<Prescription> prescriptions = _medicalRecord.Prescriptions;
+            List<Referral> referrals = _medicalRecord.Referrals;
+            //ExaminationDTO medicalRecord = new MedicalRecordDTO(_medicalRecord.Patient, height, weight, previousIllnesses, allergens, prescriptions, referrals);
+            //MedicalRecordRepository.GetInstance().Update(medicalRecord);
+            this._selectedExamination.Anamnesis = anamnesisTextBox.Text;
+            this._selectedExamination.Status = ExaminationStatus.Completed;
+        }
+
         private void Submit_Click(object sender, RoutedEventArgs e)
         {
             try

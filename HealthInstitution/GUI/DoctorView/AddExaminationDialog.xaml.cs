@@ -1,4 +1,7 @@
-﻿using HealthInstitution.Core.Examinations.Repository;
+﻿using HealthInstitution.Core.Examinations.Model;
+using HealthInstitution.Core.Examinations.Repository;
+using HealthInstitution.Core.MedicalRecords.Model;
+using HealthInstitution.Core.MedicalRecords.Repository;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using HealthInstitution.Core.SystemUsers.Patients.Model;
 using HealthInstitution.Core.SystemUsers.Patients.Repository;
@@ -53,7 +56,7 @@ namespace HealthInstitution.GUI.DoctorView
             patientComboBox.SelectedIndex = 0;
         }
 
-        private void CollectForms()
+        private ExaminationDTO CreateExaminationByForms()
         {
             DateTime appointment = (DateTime)datePicker.SelectedDate;
             int minutes = Int32.Parse(minuteComboBox.Text);
@@ -61,25 +64,23 @@ namespace HealthInstitution.GUI.DoctorView
             appointment = appointment.AddHours(hours);
             appointment = appointment.AddMinutes(minutes);
             Patient patient = (Patient)patientComboBox.SelectedItem;
+
+            MedicalRecord medicalRecord = MedicalRecordRepository.GetInstance().GetByPatientUsername(patient);
+            ExaminationDTO examination = new ExaminationDTO(appointment, null, _loggedDoctor, medicalRecord);
+            return examination;
         }
 
         private void Submit_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                DateTime appointment = (DateTime)datePicker.SelectedDate;
-                int minutes = Int32.Parse(minuteComboBox.Text);
-                int hours = Int32.Parse(hourComboBox.Text);
-                appointment = appointment.AddHours(hours);
-                appointment = appointment.AddMinutes(minutes);
-                Patient patient = (Patient)patientComboBox.SelectedItem;
-
-                if (appointment <= DateTime.Now)
+                ExaminationDTO examination = CreateExaminationByForms();
+                if (examination.Appointment <= DateTime.Now)
                 {
                     System.Windows.MessageBox.Show("You have to change dates for upcoming ones!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 } else
                 {
-                    ExaminationRepository.GetInstance().ReserveExamination(patient.Username, _loggedDoctor.Username, appointment);
+                    ExaminationRepository.GetInstance().ReserveExamination(examination);
                     ExaminationDoctorRepository.GetInstance().Save();
                     this.Close();
                 }
