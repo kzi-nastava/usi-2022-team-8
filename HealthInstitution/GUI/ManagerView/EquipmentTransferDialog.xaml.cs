@@ -3,6 +3,8 @@ using HealthInstitution.Core.Equipments.Repository;
 using HealthInstitution.Core.EquipmentTransfers.Functionality;
 using HealthInstitution.Core.EquipmentTransfers.Model;
 using HealthInstitution.Core.EquipmentTransfers.Repository;
+using HealthInstitution.Core.Renovations.Model;
+using HealthInstitution.Core.Renovations.Repository;
 using HealthInstitution.Core.Rooms.Model;
 using HealthInstitution.Core.Rooms.Repository;
 using System;
@@ -30,6 +32,7 @@ namespace HealthInstitution.GUI.ManagerView
         private RoomRepository _roomRepository = RoomRepository.GetInstance();
         private EquipmentRepository _equipmentRepository = EquipmentRepository.GetInstance(); 
         private EquipmentTransferRepository _equipmentTransferRepository = EquipmentTransferRepository.GetInstance();
+        private RenovationRepository _renovationRepository = RenovationRepository.GetInstance();
         public EquipmentTransferDialog()
         {
             InitializeComponent();
@@ -43,13 +46,13 @@ namespace HealthInstitution.GUI.ManagerView
 
         private void FromRoomComboBox_Loaded(object sender, RoutedEventArgs e)
         {         
-            fromRoomComboBox.ItemsSource = _roomRepository.GetActiveRooms();
+            fromRoomComboBox.ItemsSource = _roomRepository.GetAvailableAndActiveRooms();
             fromRoomComboBox.SelectedItem = null;
         }
 
         private void ToRoomComboBox_Loaded(object sender, RoutedEventArgs e)
         {
-            toRoomComboBox.ItemsSource = _roomRepository.GetActiveRooms();
+            toRoomComboBox.ItemsSource = _roomRepository.GetAvailableAndActiveRooms();
             toRoomComboBox.SelectedItem = null;
         }
 
@@ -89,6 +92,12 @@ namespace HealthInstitution.GUI.ManagerView
                 return;
             }
 
+            if (!CheckRenovationStatus(fromRoom, date) || !CheckRenovationStatus(toRoom, date))
+            {
+                System.Windows.MessageBox.Show("You cant transfer equipment between rooms with renovation on that date span!", "Failed transfer", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
             int quantity = Int32.Parse(quantityBox.Text);
             Equipment equipment = (Equipment)equipmentComboBox.SelectedItem;
             if (quantity > equipment.Quantity)
@@ -118,7 +127,32 @@ namespace HealthInstitution.GUI.ManagerView
             this.Close();
 
         }
-       
+
+        private bool CheckRenovationStatus(Room room, DateTime date)
+        {
+            foreach(Renovation renovation in _renovationRepository.Renovations)
+            {
+                if (renovation.StartDate > date)
+                {
+                    continue;
+                }
+                if(renovation.Room == room)
+                {
+                    return false;
+                }
+               
+                if (renovation.GetType() == typeof(RoomMerger))
+                {
+                    RoomMerger merger = (RoomMerger)renovation;
+                    if (merger.RoomForMerge == room)
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+
         private int CalculateProjectedQuantityLoss(Room fromRoom, Equipment equipment)
         {
             int projectedQuantityLoss = 0;

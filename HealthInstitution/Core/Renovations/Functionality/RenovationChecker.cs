@@ -35,7 +35,7 @@ namespace HealthInstitution.Core.Renovations.Functionality
                         StartRenovation(renovation.Room);
                     }
 
-                    if (renovation.EndDate == DateTime.Today.AddDays(-1))
+                    if (renovation.EndDate <= DateTime.Today.AddDays(-1))
                     {
                         EndRenovation(renovation.Room);
                     }
@@ -54,7 +54,7 @@ namespace HealthInstitution.Core.Renovations.Functionality
                         StartMerge(roomMerger.Room, roomMerger.RoomForMerge, roomMerger.MergedRoom);
                     }
 
-                    if (roomMerger.EndDate == DateTime.Today.AddDays(-1))
+                    if (roomMerger.EndDate <= DateTime.Today.AddDays(-1))
                     {
                         EndMerge(roomMerger.Room, roomMerger.RoomForMerge, roomMerger.MergedRoom);
                     }
@@ -72,7 +72,7 @@ namespace HealthInstitution.Core.Renovations.Functionality
                         StartSeparation(roomSeparation.Room, roomSeparation.FirstRoom, roomSeparation.SecondRoom);
                     }
 
-                    if (roomSeparation.EndDate == DateTime.Today.AddDays(-1))
+                    if (roomSeparation.EndDate <= DateTime.Today.AddDays(-1))
                     {
                         EndSeparation(roomSeparation.Room, roomSeparation.FirstRoom, roomSeparation.SecondRoom);
                     }
@@ -111,8 +111,11 @@ namespace HealthInstitution.Core.Renovations.Functionality
                 {
                     mergedRoom.AvailableEquipment[index].Quantity += equipment.Quantity;
                     s_equipmentRepository.Delete(equipment.Id);
+                } else
+                {
+                    mergedRoom.AvailableEquipment.Add(equipment);
                 }
-                mergedRoom.AvailableEquipment.Add(equipment);
+                
             }
             secondRoom.AvailableEquipment.Clear();
 
@@ -128,11 +131,20 @@ namespace HealthInstitution.Core.Renovations.Functionality
 
         public static void EndSeparation(Room separationRoom, Room firstRoom, Room secondRoom)
         {
-            separationRoom.AvailableEquipment.Clear();
+            ClearFromList(separationRoom.AvailableEquipment);
 
             s_roomRepository.Update(separationRoom.Id, separationRoom.Type, separationRoom.Number, false, false);
             s_roomRepository.Update(firstRoom.Id, firstRoom.Type, firstRoom.Number, false, true);
             s_roomRepository.Update(secondRoom.Id, secondRoom.Type, secondRoom.Number, false, true);
+        }
+
+        private static void ClearFromList(List<Equipment> equipments)
+        {
+            foreach (Equipment equipment in equipments)
+            {
+                s_equipmentRepository.Delete(equipment.Id);
+            }
+            equipments.Clear();
         }
     }
 }

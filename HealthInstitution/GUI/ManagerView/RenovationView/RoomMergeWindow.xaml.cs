@@ -1,4 +1,6 @@
-﻿using HealthInstitution.Core.Examinations.Model;
+﻿using HealthInstitution.Core.EquipmentTransfers.Model;
+using HealthInstitution.Core.EquipmentTransfers.Repository;
+using HealthInstitution.Core.Examinations.Model;
 using HealthInstitution.Core.Examinations.Repository;
 using HealthInstitution.Core.Operations.Model;
 using HealthInstitution.Core.Operations.Repository;
@@ -33,6 +35,7 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
         private ExaminationRepository _examinationRepository = ExaminationRepository.GetInstance();
         private OperationRepository _operationRepository = OperationRepository.GetInstance();
         private RenovationRepository _renovationRepository = RenovationRepository.GetInstance();
+        private EquipmentTransferRepository _equipmentTransferRepository = EquipmentTransferRepository.GetInstance();
         public RoomMergeWindow()
         {
             InitializeComponent();
@@ -161,6 +164,12 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
                 return;
             }
 
+            if (CheckIfRoomsHaveScheduledEquipmentTransfer())
+            {
+                System.Windows.MessageBox.Show("Room has equipment transfer in that date span!", "Failed renovation", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
             RoomType type = (RoomType)roomTypeComboBox.SelectedItem;
             Room mergedRoom = _roomRepository.AddRoom(type, number, true, false);
             _renovationRepository.AddRoomMerger(firstSelectedRoom,secondSelectedRoom, mergedRoom, startDate, endDate);
@@ -176,6 +185,30 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
             this.Close();
         }
 
+        private bool CheckIfRoomsHaveScheduledEquipmentTransfer()
+        {
+            Room firstSelectedRoom = (Room)firstRoomComboBox.SelectedItem;
+            Room secondSelectedRoom = (Room)secondRoomComboBox.SelectedItem;
+            DateTime startDate = (DateTime)startDatePicker.SelectedDate;
+
+            foreach (EquipmentTransfer equipmentTransfer in _equipmentTransferRepository.GetAll())
+            {
+                if (equipmentTransfer.TransferTime < startDate)
+                {
+                    continue;
+                }
+                if (equipmentTransfer.FromRoom == firstSelectedRoom || equipmentTransfer.ToRoom == firstSelectedRoom)
+                {
+                    return true;
+                }
+                if (equipmentTransfer.FromRoom == secondSelectedRoom || equipmentTransfer.ToRoom == secondSelectedRoom)
+                {
+                    return true;
+                }
+
+            }
+            return false;
+        }
         private bool CheckIfRoomsHaveScheduledRenovation()
         {
             Room firstSelectedRoom = (Room)firstRoomComboBox.SelectedItem;

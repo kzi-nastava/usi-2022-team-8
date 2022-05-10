@@ -20,6 +20,7 @@ namespace HealthInstitution.Core.EquipmentTransfers.Functionality
         public static void UpdateByTransfer()
         {
             List<int> equipmentTransfersToRemove = new List<int>();
+            s_equipmentTransferRepository = EquipmentTransferRepository.GetInstance();
             foreach (EquipmentTransfer equipmentTransfer in s_equipmentTransferRepository.EquipmentTransfers)
             {
                 if (equipmentTransfer.TransferTime == DateTime.Today)

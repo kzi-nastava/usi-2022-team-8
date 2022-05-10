@@ -178,5 +178,15 @@ namespace HealthInstitution.Core.Rooms.Repository
             return activeRooms;
         }
 
+        public List<Room> GetAvailableAndActiveRooms()
+        {
+            List<Room> availableRooms = new List<Room>();
+            foreach (Room room in this.Rooms)
+            {
+                if (room.IsActive && !room.IsRenovating)
+                    availableRooms.Add(room);
+            }
+            return availableRooms;
+        }
     }
 }

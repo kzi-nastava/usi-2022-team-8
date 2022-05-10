@@ -1,4 +1,7 @@
 ﻿using HealthInstitution.Core.Equipments.Model;
+using HealthInstitution.Core.Equipments.Repository;
+using HealthInstitution.Core.EquipmentTransfers.Model;
+using HealthInstitution.Core.EquipmentTransfers.Repository;
 using HealthInstitution.Core.Examinations.Model;
 using HealthInstitution.Core.Examinations.Repository;
 using HealthInstitution.Core.Operations.Model;
@@ -34,6 +37,8 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
         private ExaminationRepository _examinationRepository = ExaminationRepository.GetInstance();
         private OperationRepository _operationRepository = OperationRepository.GetInstance();
         private RenovationRepository _renovationRepository = RenovationRepository.GetInstance();
+        private EquipmentRepository _equipmentRepository = EquipmentRepository.GetInstance();
+        private EquipmentTransferRepository _equipmentTransferRepository = EquipmentTransferRepository.GetInstance();
 
         private List<Equipment> _firstRoomEquipmentFromArranging;
         private List<Equipment> _secondRoomEquipmentFromArranging;
@@ -93,10 +98,10 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
             secondRoomTypeComboBox.SelectedItem = null;
         }
 
-        private void splitRoomComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void SplitRoomComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            _firstRoomEquipmentFromArranging.Clear();
-            _secondRoomEquipmentFromArranging.Clear();
+            ClearFromList(_firstRoomEquipmentFromArranging);
+            ClearFromList(_secondRoomEquipmentFromArranging);
 
             Room selectedRoom = (Room)splitRoomComboBox.SelectedItem;
             if (IsEmpty(selectedRoom.AvailableEquipment))
@@ -107,6 +112,15 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
             {
                 arrangeEquipmentButton.IsEnabled = true;
             }
+        }
+
+        private void ClearFromList(List<Equipment> equipments)
+        {
+            foreach(Equipment equipment in equipments)
+            {
+                _equipmentRepository.Delete(equipment.Id);
+            }
+            equipments.Clear();
         }
 
         private void StartSplit_Click(object sender, RoutedEventArgs e)
@@ -142,6 +156,12 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
             }
             int firstRoomNumber = Int32.Parse(firstNumberInput);
             int secondRoomNumber = Int32.Parse(secondNumberInput);
+
+            if (firstRoomNumber == secondRoomNumber)
+            {
+                System.Windows.MessageBox.Show("Room numbers must be different!", "Failed renovation", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
 
             if (_roomRepository.Rooms.Any(room => room.Number == firstRoomNumber || room.Number == secondRoomNumber))
             {
@@ -215,6 +235,12 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
                 System.Windows.MessageBox.Show("Room is already scheduled for renovation!", "Failed renovation", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
             }
+
+            if (CheckIfRoomHasScheduledEquipmentTransfer())
+            {
+                System.Windows.MessageBox.Show("Room has equipment transfer for that room!", "Failed renovation", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
             return true;
         }
 
@@ -223,11 +249,27 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
             List<Equipment> equipments = new List<Equipment>();
             foreach (Equipment equipment in availableEquipment)
             {
-                equipments.Add(equipment);
+                Equipment newEquipment = _equipmentRepository.Add(equipment.Quantity, equipment.Name, equipment.Type, equipment.IsDynamic);
+                equipments.Add(newEquipment);
             }
             return equipments;
         }
 
+        private bool CheckIfRoomHasScheduledEquipmentTransfer()
+        {
+            Room selectedRoom = (Room)splitRoomComboBox.SelectedItem;
+
+            foreach (EquipmentTransfer equipmentTransfer in _equipmentTransferRepository.GetAll())
+            {
+                
+                if (equipmentTransfer.FromRoom == selectedRoom || equipmentTransfer.ToRoom == selectedRoom)
+                {
+                    return true;
+                }
+
+            }
+            return false;
+        }
         private bool CheckIfRoomHasScheduledRenovation()
         {
             Room selectedRoom = (Room)splitRoomComboBox.SelectedItem;

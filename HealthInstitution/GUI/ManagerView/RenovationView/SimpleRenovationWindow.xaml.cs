@@ -1,4 +1,6 @@
-﻿using HealthInstitution.Core.Examinations.Model;
+﻿using HealthInstitution.Core.EquipmentTransfers.Model;
+using HealthInstitution.Core.EquipmentTransfers.Repository;
+using HealthInstitution.Core.Examinations.Model;
 using HealthInstitution.Core.Examinations.Repository;
 using HealthInstitution.Core.Operations.Model;
 using HealthInstitution.Core.Operations.Repository;
@@ -32,6 +34,7 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
         private ExaminationRepository _examinationRepository = ExaminationRepository.GetInstance();
         private OperationRepository _operationRepository = OperationRepository.GetInstance();
         private RenovationRepository _renovationRepository = RenovationRepository.GetInstance();
+        private EquipmentTransferRepository _equipmentTransferRepository = EquipmentTransferRepository.GetInstance();
         public SimpleRenovationWindow()
         {
             InitializeComponent();
@@ -107,6 +110,12 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
                 return;
             }
 
+            if (CheckIfRoomHasScheduledEquipmentTransfer())
+            {
+                System.Windows.MessageBox.Show("Room has equipment transfer in that date span!", "Failed renovation", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            }
+
             _renovationRepository.AddRenovation(selectedRoom, startDate, endDate);
             if (startDate == DateTime.Today)
             {
@@ -118,6 +127,26 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
                 System.Windows.MessageBox.Show("Renovation scheduled!", "Room renovation", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             this.Close();
+        }
+
+        private bool CheckIfRoomHasScheduledEquipmentTransfer()
+        {
+            Room selectedRoom = (Room)roomComboBox.SelectedItem;
+            DateTime startDate = (DateTime)startDatePicker.SelectedDate;
+
+            foreach (EquipmentTransfer equipmentTransfer in _equipmentTransferRepository.GetAll())
+            {
+                if (equipmentTransfer.TransferTime < startDate)
+                {
+                    continue;
+                }
+                if (equipmentTransfer.FromRoom == selectedRoom || equipmentTransfer.ToRoom == selectedRoom)
+                {
+                    return true;
+                }
+                
+            }
+            return false;
         }
 
         private bool CheckIfRoomHasScheduledRenovation()
