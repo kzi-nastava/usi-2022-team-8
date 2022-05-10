@@ -9,7 +9,7 @@
         FontSize="16"
         Title="Room merge" Height="740" Width="700">
     <Grid>
-        <Menu Margin="0,0,0,680">
+        <Menu Margin="0,0,0,670">
             <MenuItem Header="Simple renovation" Click="SimpleRenovation_Click" FontSize="14" Height="30" Width="131" />
             <MenuItem Header="Room Split" Click="RoomSplit_Click" FontSize="14" Height="30" Width="111" />
 
@@ -18,17 +18,17 @@
         <Label Content="First room" HorizontalAlignment="Left" Margin="179,124,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.47,0.576"/>
         <Label Content="Start date" HorizontalAlignment="Left" Margin="179,479,0,0" VerticalAlignment="Top"/>
         <Label Content="End date" HorizontalAlignment="Left" Margin="179,548,0,0" VerticalAlignment="Top"/>
-        <ComboBox HorizontalAlignment="Left" Loaded="FirstRoomComboBox_Loaded" Margin="380,126,0,0" VerticalAlignment="Top" Width="217" Height="34"/>
-        <ComboBox HorizontalAlignment="Left" Loaded="SecondRoomComboBox_Loaded" Margin="380,198,0,0" VerticalAlignment="Top" Width="217" Height="34"/>
-        <ComboBox HorizontalAlignment="Left" Loaded="RoomTypeComboBox_Loaded" Margin="380,332,0,0" VerticalAlignment="Top" Width="217" Height="34"/>
-        <DatePicker HorizontalAlignment="Left" Margin="380,481,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.502,0.526" Width="217"/>
-        <DatePicker HorizontalAlignment="Left" Margin="380,550,0,0" VerticalAlignment="Top" Width="217"/>
+        <ComboBox Name="firstRoomComboBox" HorizontalAlignment="Left" Loaded="FirstRoomComboBox_Loaded" Margin="380,126,0,0" VerticalAlignment="Top" Width="217" Height="34"/>
+        <ComboBox Name="secondRoomComboBox" HorizontalAlignment="Left" Loaded="SecondRoomComboBox_Loaded" Margin="380,198,0,0" VerticalAlignment="Top" Width="217" Height="34"/>
+        <ComboBox Name="roomTypeComboBox" HorizontalAlignment="Left" Loaded="RoomTypeComboBox_Loaded" Margin="380,332,0,0" VerticalAlignment="Top" Width="217" Height="34"/>
+        <DatePicker Name="startDatePicker" HorizontalAlignment="Left" Margin="380,481,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.502,0.526" Width="217"/>
+        <DatePicker Name="endDatePicker"  HorizontalAlignment="Left" Margin="380,550,0,0" VerticalAlignment="Top" Width="217"/>
         <Button Content="Start merge" Click="StartMerge_Click" HorizontalAlignment="Center" Margin="0,616,0,0" VerticalAlignment="Top" Width="216" Height="34"/>
         <Label Content="Second room" HorizontalAlignment="Left" Margin="179,199,0,0" VerticalAlignment="Top"/>
         <Label Content="New Room" HorizontalAlignment="Left" Margin="179,273,0,0" VerticalAlignment="Top"/>
         <Label Content="room type" HorizontalAlignment="Left" Margin="203,330,0,0" VerticalAlignment="Top"/>
         <Label Content="room number" HorizontalAlignment="Left" Margin="203,390,0,0" VerticalAlignment="Top"/>
-        <TextBox HorizontalAlignment="Left" Margin="380,389,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="217" Height="34"/>
+        <TextBox x:Name="numberBox" PreviewTextInput="NumberValidationTextBox" HorizontalAlignment="Left" Margin="380,389,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="217" Height="34"/>
         <Rectangle HorizontalAlignment="Left" Height="194" Margin="128,262,0,0" Stroke="#66000000" VerticalAlignment="Top" Width="508"/>
 
     </Grid>

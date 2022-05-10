@@ -129,7 +129,7 @@ namespace HealthInstitution.Core.Rooms.Repository
             return null;
         }
 
-        public void AddRoom(RoomType type, int number, bool isRenovating=false, bool isActive = true)
+        public Room AddRoom(RoomType type, int number, bool isRenovating=false, bool isActive = true)
         {
 
             this._maxId++;
@@ -139,6 +139,7 @@ namespace HealthInstitution.Core.Rooms.Repository
             this.Rooms.Add(room);
             this.RoomById.Add(room.Id, room);
             Save();
+            return room;
         }
 
         public void Update(int id, RoomType type, int number, bool isRenovating, bool isActive = true)

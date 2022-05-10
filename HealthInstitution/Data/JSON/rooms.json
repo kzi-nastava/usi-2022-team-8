@@ -46,5 +46,13 @@
     "isRenovating": false,
     "isActive": true,
     "availableEquipment": []
+  },
+  {
+    "id": 7,
+    "type": "ExaminationRoom",
+    "number": 77,
+    "isRenovating": true,
+    "isActive": false,
+    "availableEquipment": []
   }
 ]

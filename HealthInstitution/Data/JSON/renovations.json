@@ -1,1 +1,18 @@
-[]
+[ 
+  {
+    "id": 1,
+    "room": 6,
+    "startDate": "2022-08-18T00:00:00",
+    "endDate": "2022-09-08T00:00:00",
+    "roomForMerge": 5,
+    "mergedRoom": 7,
+    "type": "merger"
+  },
+  {
+    "id": 2,
+    "room": 4,
+    "startDate": "2022-08-18T00:00:00",
+    "endDate": "2022-09-08T00:00:00",
+    "type": "simple"
+  }
+]

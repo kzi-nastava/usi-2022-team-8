@@ -1,4 +1,6 @@
-﻿using HealthInstitution.Core.Renovations.Model;
+﻿using HealthInstitution.Core.Equipments.Model;
+using HealthInstitution.Core.Equipments.Repository;
+using HealthInstitution.Core.Renovations.Model;
 using HealthInstitution.Core.Renovations.Repository;
 using HealthInstitution.Core.Rooms.Model;
 using HealthInstitution.Core.Rooms.Repository;
@@ -14,6 +16,7 @@ namespace HealthInstitution.Core.Renovations.Functionality
     {
         private static RenovationRepository s_renovationRepository = RenovationRepository.GetInstance();
         private static RoomRepository s_roomRepository = RoomRepository.GetInstance();
+        private static EquipmentRepository s_equipmentRepository = EquipmentRepository.GetInstance();
 
         public static void UpdateByRenovation()
         {
@@ -35,7 +38,16 @@ namespace HealthInstitution.Core.Renovations.Functionality
                 else if (renovation.GetType() == typeof(RoomMerger))
                 {
                     RoomMerger roomMerger = (RoomMerger)renovation;
-                    //todo
+
+                    if (roomMerger.StartDate == DateTime.Today)
+                    {
+                        StartMerge(roomMerger.Room, roomMerger.RoomForMerge, roomMerger.MergedRoom);
+                    }
+
+                    if (roomMerger.EndDate == DateTime.Today.AddDays(-1))
+                    {
+                        EndMerge(roomMerger.Room, roomMerger.RoomForMerge, roomMerger.MergedRoom);
+                    }
                 }
                 else
                 {
@@ -54,5 +66,38 @@ namespace HealthInstitution.Core.Renovations.Functionality
         {
             s_roomRepository.Update(room.Id, room.Type, room.Number, false);
         }
+
+        public static void StartMerge(Room firstRoom, Room secondRoom, Room mergedRoom)
+        {           
+            s_roomRepository.Update(firstRoom.Id, firstRoom.Type, firstRoom.Number, true);
+            s_roomRepository.Update(secondRoom.Id, secondRoom.Type, secondRoom.Number, true);
+        }
+
+        public static void EndMerge(Room firstRoom, Room secondRoom, Room mergedRoom)
+        {
+            foreach (Equipment equipment in firstRoom.AvailableEquipment)
+            {
+                mergedRoom.AvailableEquipment.Add(equipment);
+            }
+            firstRoom.AvailableEquipment.Clear();
+
+            foreach (Equipment equipment in secondRoom.AvailableEquipment)
+            {
+                int index = mergedRoom.AvailableEquipment.FindIndex(eq => eq.Name == equipment.Name && eq.Type == equipment.Type);
+                if (index >= 0)
+                {
+                    mergedRoom.AvailableEquipment[index].Quantity += equipment.Quantity;
+                    s_equipmentRepository.Delete(equipment.Id);
+                }
+                mergedRoom.AvailableEquipment.Add(equipment);
+            }
+            secondRoom.AvailableEquipment.Clear();
+
+            s_roomRepository.Update(mergedRoom.Id, mergedRoom.Type, mergedRoom.Number, false, true);
+            s_roomRepository.Update(firstRoom.Id, firstRoom.Type, firstRoom.Number, false, false);
+            s_roomRepository.Update(secondRoom.Id, secondRoom.Type, secondRoom.Number, false, false);
+        }
+
+
     }
 }
