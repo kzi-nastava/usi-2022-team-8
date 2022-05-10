@@ -1,6 +1,8 @@
 ﻿using HealthInstitution.Core.EquipmentTransfers.Repository;
 using HealthInstitution.Core.Examinations.Repository;
 using HealthInstitution.Core.Operations.Repository;
+using HealthInstitution.Core.Renovations.Model;
+using HealthInstitution.Core.Renovations.Repository;
 using HealthInstitution.Core.Rooms.Model;
 using HealthInstitution.Core.Rooms.Repository;
 using System;
@@ -85,8 +87,35 @@ namespace HealthInstitution.GUI.ManagerView
             if (System.Windows.MessageBox.Show("Are you sure you want to delete selected room", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
             {
                 dataGrid.Items.Remove(selectedRoom);
-                _roomRepository.Delete(selectedRoom.Id);
+                if (CheckRenovationStatus(selectedRoom))
+                {
+                    _roomRepository.Delete(selectedRoom.Id);
+                }
+
             }
+        }
+
+        private bool CheckRenovationStatus(Room selectedRoom)
+        {
+            RenovationRepository renovationRepository = RenovationRepository.GetInstance();
+            foreach (Renovation renovation in renovationRepository.Renovations)
+            {
+                if (renovation.Room == selectedRoom)
+                {
+                    selectedRoom.IsActive = false;
+                    return false;
+                }
+                if (renovation.GetType() == typeof(RoomMerger))
+                {
+                    RoomMerger roomMerger = (RoomMerger)renovation;
+                    if (roomMerger.RoomForMerge == selectedRoom)
+                    {
+                        selectedRoom.IsActive = false;
+                        return false;
+                    }
+                }
+            }
+            return true;
         }
 
         private bool CheckOccurrenceOfRoom(Room selectedRoom)

@@ -25,6 +25,11 @@ namespace HealthInstitution.Core.Renovations.Functionality
 
                 if (renovation.GetType() == typeof(Renovation))
                 {
+                    if (!renovation.Room.IsActive)
+                    {
+                        continue;
+                    }
+
                     if (renovation.StartDate == DateTime.Today)
                     {
                         StartRenovation(renovation.Room);
@@ -39,6 +44,11 @@ namespace HealthInstitution.Core.Renovations.Functionality
                 {
                     RoomMerger roomMerger = (RoomMerger)renovation;
 
+                    if (!roomMerger.Room.IsActive || !roomMerger.RoomForMerge.IsActive)
+                    {
+                        continue;
+                    }
+
                     if (roomMerger.StartDate == DateTime.Today)
                     {
                         StartMerge(roomMerger.Room, roomMerger.RoomForMerge, roomMerger.MergedRoom);
@@ -52,7 +62,20 @@ namespace HealthInstitution.Core.Renovations.Functionality
                 else
                 {
                     RoomSeparation roomSeparation = (RoomSeparation)renovation;
-                    //todo
+                    if (!roomSeparation.Room.IsActive)
+                    {
+                        continue;
+                    }
+
+                    if (roomSeparation.StartDate == DateTime.Today)
+                    {
+                        StartSeparation(roomSeparation.Room, roomSeparation.FirstRoom, roomSeparation.SecondRoom);
+                    }
+
+                    if (roomSeparation.EndDate == DateTime.Today.AddDays(-1))
+                    {
+                        EndSeparation(roomSeparation.Room, roomSeparation.FirstRoom, roomSeparation.SecondRoom);
+                    }
                 }
             }
         }
@@ -98,6 +121,18 @@ namespace HealthInstitution.Core.Renovations.Functionality
             s_roomRepository.Update(secondRoom.Id, secondRoom.Type, secondRoom.Number, false, false);
         }
 
+        public static void StartSeparation(Room separationRoom , Room firstRoom, Room secondRoom)
+        {
+            s_roomRepository.Update(separationRoom.Id, separationRoom.Type, separationRoom.Number, true);
+        }
 
+        public static void EndSeparation(Room separationRoom, Room firstRoom, Room secondRoom)
+        {
+            separationRoom.AvailableEquipment.Clear();
+
+            s_roomRepository.Update(separationRoom.Id, separationRoom.Type, separationRoom.Number, false, false);
+            s_roomRepository.Update(firstRoom.Id, firstRoom.Type, firstRoom.Number, false, true);
+            s_roomRepository.Update(secondRoom.Id, secondRoom.Type, secondRoom.Number, false, true);
+        }
     }
 }

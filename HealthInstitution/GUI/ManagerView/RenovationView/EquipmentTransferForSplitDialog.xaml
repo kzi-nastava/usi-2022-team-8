@@ -12,10 +12,10 @@
         <Label Content="Equipment transfer" HorizontalAlignment="Center" Margin="0,68,0,0" VerticalAlignment="Top" FontSize="18"/>
         <Label Content="Equipment" HorizontalAlignment="Left" Margin="179,151,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.47,0.576"/>
         <Label Content="Quantity" HorizontalAlignment="Left" Margin="179,215,0,0" VerticalAlignment="Top"/>
-        <ComboBox HorizontalAlignment="Left" Loaded="EquipmentComboBox_Loaded" Margin="380,146,0,0" VerticalAlignment="Top" Width="217" Height="34"/>
+        <ComboBox Name="equipmentComboBox" HorizontalAlignment="Left" Loaded="EquipmentComboBox_Loaded" Margin="380,146,0,0" VerticalAlignment="Top" Width="217" Height="34"/>
 
         <Button Content="Transfer" Click="Transfer_Click" HorizontalAlignment="Center" Margin="0,309,0,0" VerticalAlignment="Top" Width="216" Height="34"/>
-        <TextBox HorizontalAlignment="Left" Margin="380,215,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="217" Height="34"/>
+        <TextBox Name="quantityBox" PreviewTextInput="NumberValidationTextBox" HorizontalAlignment="Left" Margin="380,215,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="217" Height="34"/>
 
     </Grid>
 </Window>

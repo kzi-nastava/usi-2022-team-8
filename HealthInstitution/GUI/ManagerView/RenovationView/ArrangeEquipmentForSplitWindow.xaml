@@ -25,8 +25,8 @@
             </DataGrid.Columns>
         </DataGrid>
         <Label Content="Second room" HorizontalAlignment="Left" Margin="10,259,0,0" VerticalAlignment="Top"/>
-        <Button Content="Transfer equipment to first" Click="TransferToFirst_Click" Width="165" Height="34" HorizontalAlignment="Left" Margin="108,522,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="transferToFirstButton" Content="Transfer equipment to first" Click="TransferToFirst_Click" Width="165" Height="34" HorizontalAlignment="Left" Margin="108,522,0,0" VerticalAlignment="Top"/>
         <Button Content="Accept changes" Click="Accept_Click" Width="165" Height="34" HorizontalAlignment="Left" Margin="549,522,0,0" VerticalAlignment="Top"/>
-        <Button Content="Transfer equipment to second" Click="TransferToSecond_Click" Width="165" Height="34" HorizontalAlignment="Center" Margin="0,522,0,0" VerticalAlignment="Top"/>
+        <Button x:Name="transferToSecondButton" Content="Transfer equipment to second" Click="TransferToSecond_Click" Width="165" Height="34" HorizontalAlignment="Center" Margin="0,522,0,0" VerticalAlignment="Top"/>
     </Grid>
 </Window>

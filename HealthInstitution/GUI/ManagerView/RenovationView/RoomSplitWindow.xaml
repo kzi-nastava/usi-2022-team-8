@@ -18,24 +18,24 @@
         <Label Content="Spliting room" HorizontalAlignment="Left" Margin="166,80,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.47,0.576"/>
         <Label Content="Start date" HorizontalAlignment="Left" Margin="179,570,0,0" VerticalAlignment="Top"/>
         <Label Content="End date" HorizontalAlignment="Left" Margin="179,621,0,0" VerticalAlignment="Top"/>
-        <ComboBox HorizontalAlignment="Left" Loaded="SplittingRoomComboBox_Loaded" Margin="367,82,0,0" VerticalAlignment="Top" Width="217" Height="34"/>
-        <ComboBox HorizontalAlignment="Left" Loaded="FirstRoomTypeComboBox_Loaded" Margin="367,205,0,0" VerticalAlignment="Top" Width="217" Height="34"/>
-        <DatePicker HorizontalAlignment="Left" Margin="367,572,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.502,0.526" Width="217"/>
-        <DatePicker HorizontalAlignment="Left" Margin="367,637,0,0" VerticalAlignment="Top" Width="217"/>
+        <ComboBox Name="splitRoomComboBox" SelectionChanged="splitRoomComboBox_SelectionChanged" HorizontalAlignment="Left" Loaded="SplittingRoomComboBox_Loaded" Margin="367,82,0,0" VerticalAlignment="Top" Width="217" Height="34"/>
+        <ComboBox Name="firstRoomTypeComboBox" HorizontalAlignment="Left" Loaded="FirstRoomTypeComboBox_Loaded" Margin="367,205,0,0" VerticalAlignment="Top" Width="217" Height="34"/>
+        <DatePicker Name="startDatePicker" HorizontalAlignment="Left" Margin="367,572,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.502,0.526" Width="217"/>
+        <DatePicker Name="endDatePicker" HorizontalAlignment="Left" Margin="367,637,0,0" VerticalAlignment="Top" Width="217"/>
 
-        <Button Content="Arrange equipment" Click="ArrangeEquipment_Click" HorizontalAlignment="Center" Margin="0,682,0,0" VerticalAlignment="Top" Width="216" Height="34"/>
+        <Button x:Name="arrangeEquipmentButton" Content="Arrange equipment" Click="ArrangeEquipment_Click" HorizontalAlignment="Center" Margin="0,682,0,0" VerticalAlignment="Top" Width="216" Height="34"/>
         <Button Content="Start split" Click="StartSplit_Click" HorizontalAlignment="Center" Margin="0,732,0,0" VerticalAlignment="Top" Width="216" Height="34"/>
 
         <Label Content="First new Room" HorizontalAlignment="Left" Margin="166,146,0,0" VerticalAlignment="Top"/>
         <Label Content="room type" HorizontalAlignment="Left" Margin="190,203,0,0" VerticalAlignment="Top"/>
         <Label Content="room number" HorizontalAlignment="Left" Margin="190,263,0,0" VerticalAlignment="Top"/>
-        <TextBox HorizontalAlignment="Left" Margin="367,262,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="217" Height="34"/>
+        <TextBox Name="firstRoomNumberBox" PreviewTextInput="NumberValidationTextBox" HorizontalAlignment="Left" Margin="367,262,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="217" Height="34"/>
         <Rectangle HorizontalAlignment="Left" Height="194" Margin="115,135,0,0" Stroke="#66000000" VerticalAlignment="Top" Width="508"/>
-        <ComboBox HorizontalAlignment="Left" Loaded="SecondRoomTypeComboBox_Loaded" Margin="367,419,0,0" VerticalAlignment="Top" Width="217" Height="34"/>
+        <ComboBox Name="secondRoomTypeComboBox" HorizontalAlignment="Left" Loaded="SecondRoomTypeComboBox_Loaded" Margin="367,419,0,0" VerticalAlignment="Top" Width="217" Height="34"/>
         <Label Content="Second new Room" HorizontalAlignment="Left" Margin="166,360,0,0" VerticalAlignment="Top"/>
         <Label Content="room type" HorizontalAlignment="Left" Margin="190,417,0,0" VerticalAlignment="Top"/>
         <Label Content="room number" HorizontalAlignment="Left" Margin="190,477,0,0" VerticalAlignment="Top"/>
-        <TextBox HorizontalAlignment="Left" Margin="367,476,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="217" Height="34"/>
+        <TextBox Name="secondRoomNumberBox" PreviewTextInput="NumberValidationTextBox" HorizontalAlignment="Left" Margin="367,476,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="217" Height="34"/>
         <Rectangle HorizontalAlignment="Left" Height="194" Margin="115,349,0,0" Stroke="#66000000" VerticalAlignment="Top" Width="508"/>
 
     </Grid>

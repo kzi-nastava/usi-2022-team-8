@@ -51,5 +51,21 @@ namespace HealthInstitution.Core.EquipmentTransfers.Functionality
                 s_roomRepository.AddToRoom(toRoom.Id, newEquipment);
             }
         }
+
+        public static void Transfer(List<Equipment> toRoomEquipments, Equipment equipment, int quantity)
+        {
+            equipment.Quantity -= quantity;
+            int index = toRoomEquipments.FindIndex(eq => (eq.Name == equipment.Name && eq.Type == equipment.Type));
+            if (index >= 0)
+            {
+                toRoomEquipments[index].Quantity += quantity;
+                s_equipmentRepository.Save();
+            }
+            else
+            {
+                Equipment newEquipment = s_equipmentRepository.Add(quantity, equipment.Name, equipment.Type, equipment.IsDynamic);
+                toRoomEquipments.Add(newEquipment);
+            }
+        }
     }
 }

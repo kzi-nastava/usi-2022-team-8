@@ -1,7 +1,9 @@
-﻿using System;
+﻿using HealthInstitution.Core.Equipments.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -19,27 +21,78 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
     /// </summary>
     public partial class ArrangeEquipmentForSplitWindow : Window
     {
-        public ArrangeEquipmentForSplitWindow()
+        private List<Equipment> _firstRoomEquipments;
+        private List<Equipment> _secondRoomEquipments;
+        public ArrangeEquipmentForSplitWindow(List<Equipment> firstRoomEquipment, List<Equipment> secondRoomEquipments)
         {
             InitializeComponent();
+            _firstRoomEquipments = firstRoomEquipment;
+            _secondRoomEquipments = secondRoomEquipments;
+            Load();
         }
+
+        private void Load()
+        {
+            firstRoomDataGrid.Items.Clear();
+            foreach (var item in _firstRoomEquipments)
+            {
+                firstRoomDataGrid.Items.Add(item);
+            }
+
+            secondRoomDataGrid.Items.Clear();
+            foreach (var item in _secondRoomEquipments)
+            {
+                secondRoomDataGrid.Items.Add(item);
+            }
+            CheckTransferOptions();
+        }
+
+        private void CheckTransferOptions()
+        {
+            if (_firstRoomEquipments == null || !_firstRoomEquipments.Any())
+            {
+                transferToSecondButton.IsEnabled = false;
+            } else
+            {
+                transferToSecondButton.IsEnabled = true;
+            }
+
+            if (_secondRoomEquipments == null || !_secondRoomEquipments.Any())
+            {
+                transferToFirstButton.IsEnabled = false;
+            }
+            else
+            {
+                transferToFirstButton.IsEnabled = true;
+            }
+        }
+
 
         private void TransferToFirst_Click(object sender, RoutedEventArgs e)
         {
-            EquipmentTransferForSplitDialog equipmentTransferForSplitDialog = new EquipmentTransferForSplitDialog();
+            EquipmentTransferForSplitDialog equipmentTransferForSplitDialog = new EquipmentTransferForSplitDialog(_secondRoomEquipments,_firstRoomEquipments);
             equipmentTransferForSplitDialog.ShowDialog();
+
+            Load();
+            firstRoomDataGrid.Items.Refresh();
+            secondRoomDataGrid.Items.Refresh();
+
         }
 
 
         private void TransferToSecond_Click(object sender, RoutedEventArgs e)
         {
-            EquipmentTransferForSplitDialog equipmentTransferForSplitDialog = new EquipmentTransferForSplitDialog();
+            EquipmentTransferForSplitDialog equipmentTransferForSplitDialog = new EquipmentTransferForSplitDialog(_firstRoomEquipments,_secondRoomEquipments);
             equipmentTransferForSplitDialog.ShowDialog();
+
+            Load();
+            firstRoomDataGrid.Items.Refresh();
+            secondRoomDataGrid.Items.Refresh();
         }
 
         private void Accept_Click(object sender, RoutedEventArgs e)
         {
-
+            this.Close();
         }
     }
 }
