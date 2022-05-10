@@ -1,1 +1,1 @@
-[{"id":1,"status":"Scheduled","appointment":"2022-05-11T09:00:00","room":3,"medicalRecord":"pera","anamnesis":""},{"id":2,"status":"Completed","appointment":"2022-05-20T15:30:00","room":3,"medicalRecord":"marko","anamnesis":"Everything is allright"}]
+[{"id":1,"status":"Completed","appointment":"2022-05-20T13:00:00","room":3,"medicalRecord":"pera","anamnesis":"blabla"}]

@@ -12,7 +12,7 @@
         <ComboBox Name ="timeComboBox" Loaded="TimeComboBox_Loaded" HorizontalAlignment="Left" Height="23" Margin="202,102,0,0" VerticalAlignment="Top" Width="108"/>
         <Label Content="Select drug for prescription" HorizontalAlignment="Left" Height="25" Margin="17,66,0,0" VerticalAlignment="Top" Width="158"/>
         <Label Content="Select time of drug use" HorizontalAlignment="Left" Height="25" Margin="192,66,0,0" VerticalAlignment="Top" Width="158"/>
-        <Button Content="Create" Click="Create_Click" HorizontalAlignment="Center" Height="22" Margin="0,235,0,0" VerticalAlignment="Top" Width="76"/>
+        <Button Content="Submit" Click="Submit_Click" HorizontalAlignment="Center" Height="22" Margin="0,235,0,0" VerticalAlignment="Top" Width="76"/>
         <Label Content="Daily dose" HorizontalAlignment="Left" Height="25" Margin="43,162,0,0" VerticalAlignment="Top" Width="106"/>
         <TextBox Name="doseTextBox" HorizontalAlignment="Left" Margin="196,162,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Height="25"/>
     </Grid>

@@ -36,6 +36,11 @@ namespace HealthInstitution.GUI.DoctorView
             _patient = patient;
             _doctor = doctor;
             InitializeComponent();
+            Load();
+        }
+
+        public void Load()
+        {
             doctorComboBox.IsEnabled = false;
             specialtyComboBox.IsEnabled = false;
         }
@@ -68,31 +73,43 @@ namespace HealthInstitution.GUI.DoctorView
         private void SpecialtyComboBox_Loaded(object sender, RoutedEventArgs e)
         {
             var specialtyComboBox = sender as System.Windows.Controls.ComboBox;
-            specialtyComboBox.Items.Add(SpecialtyType.GeneralPractitioner);
-            specialtyComboBox.Items.Add(SpecialtyType.Surgeon);
-            specialtyComboBox.Items.Add(SpecialtyType.Radiologist);
-            specialtyComboBox.Items.Add(SpecialtyType.Pediatrician);
+            specialtyComboBox.Items.Add("GeneralPractitioner");
+            specialtyComboBox.Items.Add("Surgeon");
+            specialtyComboBox.Items.Add("Radiologist");
+            specialtyComboBox.Items.Add("Pediatrician");
             specialtyComboBox.SelectedIndex = 0;
             specialtyComboBox.Items.Refresh();
         }
 
-        private void Create_Click(object sender, RoutedEventArgs e)
+        private void CreateWithDoctor()
+        {
+            this.Close();
+            Doctor refferedDoctor = (Doctor)doctorComboBox.SelectedItem;
+            ReferralDTO referralDTO = new ReferralDTO(ReferralType.SpecificDoctor, _doctor, refferedDoctor, null);
+            Referral referral = _referralRepository.Add(referralDTO);
+            _medicalRecordRepository.AddReferral(_patient, referral);
+            System.Windows.MessageBox.Show("You have created the referral!", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        private void CreateWithSpecialty()
+        {
+            this.Close();
+            SpecialtyType specialtyType = (SpecialtyType)specialtyComboBox.SelectedIndex;
+            ReferralDTO referralDTO = new ReferralDTO(ReferralType.Specialty, _doctor, null, specialtyType);
+            Referral referral = _referralRepository.Add(referralDTO);
+            _medicalRecordRepository.AddReferral(_patient, referral);
+            System.Windows.MessageBox.Show("You have created the referral!", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        private void Submit_Click(object sender, RoutedEventArgs e)
         {
             if ((bool)doctorRadioButton.IsChecked)
             {
-                this.Close();
-                Doctor refferedDoctor = (Doctor)doctorComboBox.SelectedItem;
-                Referral referral = _referralRepository.Add(ReferralType.SpecificDoctor, _doctor, refferedDoctor, null);
-                _medicalRecordRepository.AddReferral(_patient, referral);
-                System.Windows.MessageBox.Show("You have created the referral!", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
+                CreateWithDoctor();
             }
             else if ((bool)specialtyRadioButton.IsChecked)
             {
-                this.Close();
-                SpecialtyType specialtyType = (SpecialtyType)specialtyComboBox.SelectedItem;
-                Referral referral = _referralRepository.Add(ReferralType.Specialty, _doctor, null, specialtyType);
-                _medicalRecordRepository.AddReferral(_patient, referral);
-                System.Windows.MessageBox.Show("You have created the referral!", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
+                CreateWithSpecialty();
             }
             else
             {

@@ -1,7 +1,5 @@
 ﻿using HealthInstitution.Core.Examinations.Model;
-using HealthInstitution.Core.Examinations.Repository;
 using HealthInstitution.Core.Operations.Model;
-using HealthInstitution.Core.Operations.Repository;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using Newtonsoft.Json.Linq;
 using System.IO;
@@ -40,29 +38,6 @@ namespace HealthInstitution.Core.SystemUsers.Doctors.Repository
             return s_instance;
         }
 
-        /*private List<Examination> convertJTokenToExamination(JToken tokens)
-        {
-            var examinationsById = ExaminationRepository.GetInstance().ExaminationsById;
-            List<Examination> doctorExaminations = new List<Examination>();
-            foreach (JToken token in tokens)
-            {
-                doctorExaminations.Add(examinationsById[(int)token]);
-            }
-            return doctorExaminations;
-        }
-
-
-        private List<Operation> convertJTokenToOperation(JToken tokens)
-        {
-            var operationsById = OperationRepository.GetInstance().OperationsById;
-            List<Operation> doctorOperations = new List<Operation>();
-            foreach (JToken token in tokens)
-            {
-                doctorOperations.Add(operationsById[(int)token]);
-            }
-            return doctorOperations;
-        }*/
-
         public void LoadFromFile()
         {
             var allDoctors = JArray.Parse(File.ReadAllText(this._fileName));
@@ -79,23 +54,6 @@ namespace HealthInstitution.Core.SystemUsers.Doctors.Repository
                 this.DoctorsByUsername.Add(username, loadedDoctor);
             }
         }
-
-        /*public List<int> FormListOfExaminationIds(List<Examination> examinations)
-        {
-            List<int> ids = new List<int>();
-            foreach (Examination examination in examinations)
-                ids.Add(examination.Id);
-            return ids;
-        }
-
-        public List<int> FormListOfOperationIds(List<Operation> operations)
-        {
-            List<int> ids = new List<int>();
-            foreach (Operation operation in operations)
-                ids.Add(operation.Id);
-            return ids;
-        }*/
-
 
         public void Save()
         {
@@ -138,5 +96,74 @@ namespace HealthInstitution.Core.SystemUsers.Doctors.Repository
             doctor.Operations.Remove(operation);
             Save();
         }
+
+        public List<Examination> GetScheduledExaminations(Doctor doctor)
+        {
+            var scheduledExaminations = new List<Examination>();
+            foreach (var examination in doctor.Examinations)
+            {
+                if (examination.Status == ExaminationStatus.Scheduled)
+                    scheduledExaminations.Add(examination);
+            }
+            return scheduledExaminations;
+        }
+
+        public List<Operation> GetScheduledOperations(Doctor doctor)
+        {
+            var scheduledOperations = new List<Operation>();
+            foreach (var operation in doctor.Operations)
+            {
+                if (operation.Status == ExaminationStatus.Scheduled)
+                    scheduledOperations.Add(operation);
+            }
+            return scheduledOperations;
+        }
+
+        public List<Examination> GetExaminationsInThreeDays(List<Examination> examinations)
+        {
+            var upcomingExaminations = new List<Examination>();
+            DateTime today = DateTime.Now;
+            DateTime dateForThreeDays = today.AddDays(3);
+            foreach (Examination examination in examinations)
+            {
+                if (examination.Appointment <= dateForThreeDays && examination.Appointment >= today)
+                    upcomingExaminations.Add(examination);
+            }
+            return upcomingExaminations;
+        }
+        public List<Operation> GetOperationsInThreeDays(List<Operation> operations)
+        {
+            var upcomingOperations = new List<Operation>();
+            DateTime today = DateTime.Now;
+            DateTime dateForThreeDays = today.AddDays(3);
+            foreach (Operation operation in upcomingOperations)
+            {
+                if (operation.Appointment <= dateForThreeDays && operation.Appointment >= today)
+                    upcomingOperations.Add(operation);
+            }
+            return upcomingOperations;
+        }
+
+        public List<Examination> GetExaminationsByDate(List<Examination> examinations, DateTime date)
+        {
+            var examinationsForDate = new List<Examination>();
+            foreach (Examination examination in examinations)
+            {
+                if (examination.Appointment.Date == date)
+                    examinationsForDate.Add(examination);
+            }
+            return examinationsForDate;
+        }
+        public List<Operation> GetOperationsByDate(List<Operation> operations, DateTime date)
+        {
+            var operationsForDate = new List<Operation>();
+            foreach (Operation operation in operations)
+            {
+                if (operation.Appointment.Date == date)
+                    operationsForDate.Add(operation);
+            }
+            return operationsForDate;
+        }
+
     }
 }

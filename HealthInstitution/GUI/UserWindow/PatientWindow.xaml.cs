@@ -9,12 +9,10 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using HealthInstitution.GUI.PatientWindows;
-using HealthInstitution.Core.SystemUsers.Users.Model;
 using HealthInstitution.Core.TrollCounters.Repository;
 using HealthInstitution.Core.TrollCounters.Model;
-using HealthInstitution.Core.Examinations.Repository;
 using HealthInstitution.GUI.LoginView;
+using HealthInstitution.Core.SystemUsers.Patients.Model;
 
 namespace HealthInstitution.GUI.UserWindow
 {
@@ -23,9 +21,9 @@ namespace HealthInstitution.GUI.UserWindow
     /// </summary>
     public partial class PatientWindow : Window
     {
-        private User _loggedPatient;
+        private Patient _loggedPatient;
 
-        public PatientWindow(User loggedPatient)
+        public PatientWindow(Patient loggedPatient)
         {
             InitializeComponent();
             ExaminationDoctorRepository.GetInstance();
