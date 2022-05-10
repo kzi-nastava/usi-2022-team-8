@@ -1,0 +1,31 @@
+﻿<Window x:Class="HealthInstitution.GUI.SecretaryView.AddUrgentExaminationDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:HealthInstitution.GUI.SecretaryView"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+        Title="AddUrgentExaminationDialog" Height="300" Width="350">
+    <Grid>
+        <Label Content="Doctor specialty" HorizontalAlignment="Left" Margin="44,80,0,0" VerticalAlignment="Top" Height="30"/>
+        <ComboBox Name="specialityTypeComboBox" HorizontalAlignment="Left"   
+                  Margin="150,80,0,0"   
+                  VerticalAlignment="Top"   
+                  Width="150"
+                  Loaded="SpecialtyTypeComboBox_Loaded" SelectionChanged="SpecialtyTypeComboBox_Loaded"
+                  Height="30"
+                  />
+
+        <Label Content="Patient" HorizontalAlignment="Left" Margin="44,150,0,0" VerticalAlignment="Top" Height="30"/>
+        <ComboBox Name="patientComboBox" HorizontalAlignment="Left"   
+                  Margin="150,150,0,0"   
+                  VerticalAlignment="Top"   
+                  Width="150"
+                  Loaded="PatientComboBox_Loaded" SelectionChanged="PatientComboBox_Loaded"
+                  Height="30"
+                  />
+
+        <Button Content="Create" Click="Create_Click" HorizontalAlignment="Center" Height="22" Margin="0,219,0,0" VerticalAlignment="Top" Width="74"/>
+    </Grid>
+</Window>

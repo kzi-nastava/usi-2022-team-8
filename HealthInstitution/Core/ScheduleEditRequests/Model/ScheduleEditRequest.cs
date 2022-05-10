@@ -18,4 +18,12 @@ public class ScheduleEditRequest
         this.State = state;
         this.CurrentExamination = ExaminationRepository.GetInstance().ExaminationsById[examinationId];
     }
+
+    public ScheduleEditRequest(int id, Examination currentExamination, Examination newExamination, RestRequestState state)
+    {
+        this.Id = id;
+        this.CurrentExamination = currentExamination;
+        this.NewExamination = newExamination;
+        this.State = state;
+    }
 }
