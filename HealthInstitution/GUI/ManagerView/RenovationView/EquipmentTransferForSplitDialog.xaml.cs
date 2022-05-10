@@ -53,16 +53,25 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
             int quantity = Int32.Parse(quantityBox.Text);
             Equipment equipment = (Equipment)equipmentComboBox.SelectedItem;
 
-            if (quantity > equipment.Quantity)
+            if (!ValidateQuantity(equipment, quantity))
             {
-                System.Windows.MessageBox.Show("You cant transfer more equipment than room has!", "Failed transfer", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
-
+ 
             EquipmentTransferChecker.Transfer(_secondRoomEquipments, equipment, quantity);
             System.Windows.MessageBox.Show("Equipment transfer completed!", "Equipment transfer", MessageBoxButton.OK, MessageBoxImage.Information);
             
             this.Close();
+        }
+
+        private bool ValidateQuantity(Equipment equipment, int quantity)
+        {
+            if (quantity > equipment.Quantity)
+            {
+                System.Windows.MessageBox.Show("You cant transfer more equipment than room has!", "Failed transfer", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+            return true;
         }
 
         private bool CheckCompleteness()

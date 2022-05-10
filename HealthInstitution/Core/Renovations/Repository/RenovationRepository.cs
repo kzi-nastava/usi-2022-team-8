@@ -50,7 +50,7 @@ namespace HealthInstitution.Core.Renovations.Repository
         {
             var roomById = RoomRepository.GetInstance().RoomById;
             var renovations = JArray.Parse(File.ReadAllText(_fileName));
-            //var equipmentTransfers = JsonSerializer.Deserialize<List<Room>>(File.ReadAllText(@"..\..\..\Data\JSON\renovations.json"), _options);
+            
             foreach (var renovation in renovations)
             {
                 Renovation renovationTemp;
@@ -96,47 +96,54 @@ namespace HealthInstitution.Core.Renovations.Repository
             List<dynamic> reducedRenovation = new List<dynamic>();
             foreach (Renovation renovation in this.Renovations)
             {
-                if (renovation.GetType() == typeof(Renovation))
-                {
-                    reducedRenovation.Add(new
-                    {
-                        id = renovation.Id,
-                        room = renovation.Room.Id,
-                        startDate = renovation.StartDate,
-                        endDate = renovation.EndDate,
-                        type = "simple"
-                    });
-                } else if (renovation.GetType() == typeof(RoomMerger))
-                {
-                    RoomMerger roomMerger = (RoomMerger)renovation;
-                    reducedRenovation.Add(new
-                    {
-                        id = roomMerger.Id,
-                        room = roomMerger.Room.Id,
-                        startDate = roomMerger.StartDate,
-                        endDate = roomMerger.EndDate,
-                        roomForMerge = roomMerger.RoomForMerge.Id,
-                        mergedRoom = roomMerger.MergedRoom.Id,
-                        type = "merger"
-                    });
-                } else
-                {
-                    RoomSeparation roomSeparation = (RoomSeparation)renovation;
-                    reducedRenovation.Add(new
-                    {
-                        id = roomSeparation.Id,
-                        room = roomSeparation.Room.Id,
-                        startDate = roomSeparation.StartDate,
-                        endDate = roomSeparation.EndDate,
-                        firstRoom = roomSeparation.FirstRoom.Id,
-                        secondRoom = roomSeparation.SecondRoom.Id,
-                        type = "separation"
-                    });
-                }
-                
+                AttachReducedRenovation(reducedRenovation, renovation);
             }
             return reducedRenovation;
         }
+
+        private void AttachReducedRenovation(List<dynamic> reducedRenovation, Renovation renovation)
+        {
+            if (renovation.GetType() == typeof(Renovation))
+            {
+                reducedRenovation.Add(new
+                {
+                    id = renovation.Id,
+                    room = renovation.Room.Id,
+                    startDate = renovation.StartDate,
+                    endDate = renovation.EndDate,
+                    type = "simple"
+                });
+            }
+            else if (renovation.GetType() == typeof(RoomMerger))
+            {
+                RoomMerger roomMerger = (RoomMerger)renovation;
+                reducedRenovation.Add(new
+                {
+                    id = roomMerger.Id,
+                    room = roomMerger.Room.Id,
+                    startDate = roomMerger.StartDate,
+                    endDate = roomMerger.EndDate,
+                    roomForMerge = roomMerger.RoomForMerge.Id,
+                    mergedRoom = roomMerger.MergedRoom.Id,
+                    type = "merger"
+                });
+            }
+            else
+            {
+                RoomSeparation roomSeparation = (RoomSeparation)renovation;
+                reducedRenovation.Add(new
+                {
+                    id = roomSeparation.Id,
+                    room = roomSeparation.Room.Id,
+                    startDate = roomSeparation.StartDate,
+                    endDate = roomSeparation.EndDate,
+                    firstRoom = roomSeparation.FirstRoom.Id,
+                    secondRoom = roomSeparation.SecondRoom.Id,
+                    type = "separation"
+                });
+            }
+        }
+
         public void Save()
         {
             var allRenovations = JsonSerializer.Serialize(ShortenRenovation(), _options);

@@ -1,4 +1,4 @@
-[  
+[ 
   {
     "Id": 1,
     "Quantity": 30,
@@ -15,7 +15,7 @@
   },
   {
     "Id": 3,
-    "Quantity": 128,
+    "Quantity": 80,
     "Name": "injection",
     "Type": "AppointmentEquipment",
     "IsDynamic": true

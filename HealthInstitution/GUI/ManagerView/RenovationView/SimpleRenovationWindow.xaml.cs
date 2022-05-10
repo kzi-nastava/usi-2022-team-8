@@ -70,51 +70,26 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
                 return;
             }
 
+            if (!ValidateDate())
+            {
+                return;
+            }
+            
+            if (!ValidateSelectedRoom())
+            {
+                return;
+            }
+
+            ScheduleRenovation();
+            
+            this.Close();
+        }
+
+        private void ScheduleRenovation()
+        {
             DateTime startDate = (DateTime)startDatePicker.SelectedDate;
             DateTime endDate = (DateTime)endDatePicker.SelectedDate;
-
-            if (startDate < DateTime.Today)
-            {
-                System.Windows.MessageBox.Show("You need to select future date!", "Failed renovation", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-
-            if (endDate < startDate)
-            {
-                System.Windows.MessageBox.Show("You need to select start date so that it is before end date!", "Failed renovation", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-
             Room selectedRoom = (Room)roomComboBox.SelectedItem;
-            if (selectedRoom.Type == RoomType.Warehouse)
-            {
-                System.Windows.MessageBox.Show("Warehouse cant be renovated!", "Failed renovation", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-
-            if (CheckIfRoomHasScheduledExamination())
-            {
-                System.Windows.MessageBox.Show("Room has scheduled examination!", "Failed renovation", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-
-            if (CheckIfRoomHasScheduledOperation())
-            {
-                System.Windows.MessageBox.Show("Room has scheduled operation!", "Failed renovation", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-
-            if (CheckIfRoomHasScheduledRenovation())
-            {
-                System.Windows.MessageBox.Show("Room is already scheduled for renovation!", "Failed renovation", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-
-            if (CheckIfRoomHasScheduledEquipmentTransfer())
-            {
-                System.Windows.MessageBox.Show("Room has equipment transfer in that date span!", "Failed renovation", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
 
             _renovationRepository.AddRenovation(selectedRoom, startDate, endDate);
             if (startDate == DateTime.Today)
@@ -126,7 +101,60 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
             {
                 System.Windows.MessageBox.Show("Renovation scheduled!", "Room renovation", MessageBoxButton.OK, MessageBoxImage.Information);
             }
-            this.Close();
+        }
+
+        private bool ValidateSelectedRoom()
+        {
+            Room selectedRoom = (Room)roomComboBox.SelectedItem;
+            if (selectedRoom.Type == RoomType.Warehouse)
+            {
+                System.Windows.MessageBox.Show("Warehouse cant be renovated!", "Failed renovation", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+
+            if (CheckIfRoomHasScheduledExamination())
+            {
+                System.Windows.MessageBox.Show("Room has scheduled examination!", "Failed renovation", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+
+            if (CheckIfRoomHasScheduledOperation())
+            {
+                System.Windows.MessageBox.Show("Room has scheduled operation!", "Failed renovation", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+
+            if (CheckIfRoomHasScheduledRenovation())
+            {
+                System.Windows.MessageBox.Show("Room is already scheduled for renovation!", "Failed renovation", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+
+            if (CheckIfRoomHasScheduledEquipmentTransfer())
+            {
+                System.Windows.MessageBox.Show("Room has equipment transfer in that date span!", "Failed renovation", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+            return true;
+        }
+
+        private bool ValidateDate()
+        {
+            DateTime startDate = (DateTime)startDatePicker.SelectedDate;
+            DateTime endDate = (DateTime)endDatePicker.SelectedDate;
+
+            if (startDate < DateTime.Today)
+            {
+                System.Windows.MessageBox.Show("You need to select future date!", "Failed renovation", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+
+            if (endDate < startDate)
+            {
+                System.Windows.MessageBox.Show("You need to select start date so that it is before end date!", "Failed renovation", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+            return true;
         }
 
         private bool CheckIfRoomHasScheduledEquipmentTransfer()

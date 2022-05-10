@@ -61,7 +61,7 @@ namespace HealthInstitution.Core.Rooms.Repository
         {
            
             var rooms = JArray.Parse(File.ReadAllText(_fileName));
-            //var rooms = JsonSerializer.Deserialize<List<Room>>(File.ReadAllText(@"..\..\..\Data\JSON\rooms.json"), _options);
+            
             foreach (var room in rooms)
             {
                 

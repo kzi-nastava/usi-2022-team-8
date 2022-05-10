@@ -20,7 +20,7 @@ namespace HealthInstitution.Core.EquipmentTransfers.Functionality
         public static void UpdateByTransfer()
         {
             List<int> equipmentTransfersToRemove = new List<int>();
-            s_equipmentTransferRepository = EquipmentTransferRepository.GetInstance();
+            
             foreach (EquipmentTransfer equipmentTransfer in s_equipmentTransferRepository.EquipmentTransfers)
             {
                 if (equipmentTransfer.TransferTime == DateTime.Today)
@@ -30,7 +30,12 @@ namespace HealthInstitution.Core.EquipmentTransfers.Functionality
                     equipmentTransfersToRemove.Add(equipmentTransfer.Id);
                 }
             }
+            RemoveOldTransfers(equipmentTransfersToRemove);
+            
+        }
 
+        private static void RemoveOldTransfers(List<int> equipmentTransfersToRemove)
+        {
             foreach (int id in equipmentTransfersToRemove)
             {
                 s_equipmentTransferRepository.Delete(id);

@@ -30,15 +30,7 @@ namespace HealthInstitution.Core.Renovations.Functionality
                         continue;
                     }
 
-                    if (renovation.StartDate == DateTime.Today)
-                    {
-                        StartRenovation(renovation.Room);
-                    }
-
-                    if (renovation.EndDate <= DateTime.Today.AddDays(-1))
-                    {
-                        EndRenovation(renovation.Room);
-                    }
+                    UpdateSimpleRenovation(renovation);
                 }
                 else if (renovation.GetType() == typeof(RoomMerger))
                 {
@@ -49,34 +41,60 @@ namespace HealthInstitution.Core.Renovations.Functionality
                         continue;
                     }
 
-                    if (roomMerger.StartDate == DateTime.Today)
-                    {
-                        StartMerge(roomMerger.Room, roomMerger.RoomForMerge, roomMerger.MergedRoom);
-                    }
-
-                    if (roomMerger.EndDate <= DateTime.Today.AddDays(-1))
-                    {
-                        EndMerge(roomMerger.Room, roomMerger.RoomForMerge, roomMerger.MergedRoom);
-                    }
+                    UpdateMergeRenovation(roomMerger);
+                    
                 }
                 else
                 {
                     RoomSeparation roomSeparation = (RoomSeparation)renovation;
+
                     if (!roomSeparation.Room.IsActive)
                     {
                         continue;
                     }
 
-                    if (roomSeparation.StartDate == DateTime.Today)
-                    {
-                        StartSeparation(roomSeparation.Room, roomSeparation.FirstRoom, roomSeparation.SecondRoom);
-                    }
-
-                    if (roomSeparation.EndDate <= DateTime.Today.AddDays(-1))
-                    {
-                        EndSeparation(roomSeparation.Room, roomSeparation.FirstRoom, roomSeparation.SecondRoom);
-                    }
+                    UpdateSeparationRenovation(roomSeparation);
+                    
                 }
+            }
+        }
+
+        private static void UpdateSeparationRenovation(RoomSeparation roomSeparation)
+        {
+            if (roomSeparation.StartDate == DateTime.Today)
+            {
+                StartSeparation(roomSeparation.Room, roomSeparation.FirstRoom, roomSeparation.SecondRoom);
+            }
+
+            if (roomSeparation.EndDate <= DateTime.Today.AddDays(-1))
+            {
+                EndSeparation(roomSeparation.Room, roomSeparation.FirstRoom, roomSeparation.SecondRoom);
+            }
+        }
+
+        private static void UpdateMergeRenovation(RoomMerger roomMerger)
+        {
+            if (roomMerger.StartDate == DateTime.Today)
+            {
+                StartMerge(roomMerger.Room, roomMerger.RoomForMerge, roomMerger.MergedRoom);
+            }
+
+            if (roomMerger.EndDate <= DateTime.Today.AddDays(-1))
+            {
+                EndMerge(roomMerger.Room, roomMerger.RoomForMerge, roomMerger.MergedRoom);
+            }
+        }
+
+        private static void UpdateSimpleRenovation(Renovation renovation)
+        {
+            if (renovation.StartDate == DateTime.Today)
+            {
+                StartRenovation(renovation.Room);
+            }
+
+            if (renovation.EndDate <= DateTime.Today.AddDays(-1))
+            {
+                EndRenovation(renovation.Room);
             }
         }
 
@@ -106,22 +124,27 @@ namespace HealthInstitution.Core.Renovations.Functionality
 
             foreach (Equipment equipment in secondRoom.AvailableEquipment)
             {
-                int index = mergedRoom.AvailableEquipment.FindIndex(eq => eq.Name == equipment.Name && eq.Type == equipment.Type);
-                if (index >= 0)
-                {
-                    mergedRoom.AvailableEquipment[index].Quantity += equipment.Quantity;
-                    s_equipmentRepository.Delete(equipment.Id);
-                } else
-                {
-                    mergedRoom.AvailableEquipment.Add(equipment);
-                }
-                
+                UpdateQuantity(mergedRoom, equipment);
             }
             secondRoom.AvailableEquipment.Clear();
 
             s_roomRepository.Update(mergedRoom.Id, mergedRoom.Type, mergedRoom.Number, false, true);
             s_roomRepository.Update(firstRoom.Id, firstRoom.Type, firstRoom.Number, false, false);
             s_roomRepository.Update(secondRoom.Id, secondRoom.Type, secondRoom.Number, false, false);
+        }
+
+        private static void UpdateQuantity(Room mergedRoom, Equipment equipment)
+        {
+            int index = mergedRoom.AvailableEquipment.FindIndex(eq => eq.Name == equipment.Name && eq.Type == equipment.Type);
+            if (index >= 0)
+            {
+                mergedRoom.AvailableEquipment[index].Quantity += equipment.Quantity;
+                s_equipmentRepository.Delete(equipment.Id);
+            }
+            else
+            {
+                mergedRoom.AvailableEquipment.Add(equipment);
+            }
         }
 
         public static void StartSeparation(Room separationRoom , Room firstRoom, Room secondRoom)

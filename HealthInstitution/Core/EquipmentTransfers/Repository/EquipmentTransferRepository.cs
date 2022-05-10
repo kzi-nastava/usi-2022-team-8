@@ -60,10 +60,13 @@ namespace HealthInstitution.Core.EquipmentTransfers.Repository
                 int id = (int)equipmentTransfer["id"];
                 int equipmentId = (int)equipmentTransfer["equipment"];
                 Equipment equipment = equipmentById[equipmentId];
+
                 int fromRoomId = (int)equipmentTransfer["fromRoom"];
                 Room fromRoom = roomById[fromRoomId];
+
                 int toRoomId = (int)equipmentTransfer["toRoom"];
                 Room toRoom = roomById[toRoomId];
+
                 DateTime transferTime = (DateTime)equipmentTransfer["transferTime"];
 
                 EquipmentTransfer eqTransferTemp = new EquipmentTransfer(id, equipment, fromRoom, toRoom, transferTime);

@@ -77,41 +77,32 @@ namespace HealthInstitution.GUI.ManagerView
                 return;
             }
 
-            DateTime date = (DateTime)transferDate.SelectedDate;
-            if (date < DateTime.Today)
+            if (!ValidateDate())
             {
-                System.Windows.MessageBox.Show("You need to select future date!", "Failed transfer", MessageBoxButton.OK, MessageBoxImage.Error);
+                return;
+            } 
+
+            if (!ValidateRooms())
+            {
                 return;
             }
 
+            if (!ValidateQuantity())
+            {
+                return;
+            }
+
+            ScheduleTransfer();  
+            this.Close();
+        }
+
+        private void ScheduleTransfer()
+        {
+            DateTime date = (DateTime)transferDate.SelectedDate;
             Room fromRoom = (Room)fromRoomComboBox.SelectedItem;
             Room toRoom = (Room)toRoomComboBox.SelectedItem;
-            if (fromRoom == toRoom)
-            {
-                System.Windows.MessageBox.Show("You cant transfer equipment to same room!", "Failed transfer", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-
-            if (!CheckRenovationStatus(fromRoom, date) || !CheckRenovationStatus(toRoom, date))
-            {
-                System.Windows.MessageBox.Show("You cant transfer equipment between rooms with renovation on that date span!", "Failed transfer", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-
             int quantity = Int32.Parse(quantityBox.Text);
             Equipment equipment = (Equipment)equipmentComboBox.SelectedItem;
-            if (quantity > equipment.Quantity)
-            {
-                System.Windows.MessageBox.Show("You cant transfer more equipment than room has!", "Failed transfer", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-
-            int projectedQuantityLoss = CalculateProjectedQuantityLoss(fromRoom, equipment);
-            if (quantity > equipment.Quantity - projectedQuantityLoss)
-            {
-                System.Windows.MessageBox.Show("You cant transfer more equipment than room has because of projected transfers!", "Failed transfer", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
 
             if (date == DateTime.Today)
             {
@@ -124,8 +115,58 @@ namespace HealthInstitution.GUI.ManagerView
                 _equipmentTransferRepository.Add(newEquipment, fromRoom, toRoom, date);
                 System.Windows.MessageBox.Show("Equipment transfer scheduled!", "Equipment transfer", MessageBoxButton.OK, MessageBoxImage.Information);
             }
-            this.Close();
+        }
 
+        private bool ValidateQuantity()
+        {
+            int quantity = Int32.Parse(quantityBox.Text);
+            Equipment equipment = (Equipment)equipmentComboBox.SelectedItem;
+            Room fromRoom = (Room)fromRoomComboBox.SelectedItem;
+
+            if (quantity > equipment.Quantity)
+            {
+                System.Windows.MessageBox.Show("You cant transfer more equipment than room has!", "Failed transfer", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+
+            int projectedQuantityLoss = CalculateProjectedQuantityLoss(fromRoom, equipment);
+            if (quantity > equipment.Quantity - projectedQuantityLoss)
+            {
+                System.Windows.MessageBox.Show("You cant transfer more equipment than room has because of projected transfers!", "Failed transfer", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+            return true;
+        }
+
+        private bool ValidateRooms()
+        {
+            Room fromRoom = (Room)fromRoomComboBox.SelectedItem;
+            Room toRoom = (Room)toRoomComboBox.SelectedItem;
+            DateTime date = (DateTime)transferDate.SelectedDate;
+
+            if (fromRoom == toRoom)
+            {
+                System.Windows.MessageBox.Show("You cant transfer equipment to same room!", "Failed transfer", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+
+            if (!CheckRenovationStatus(fromRoom, date) || !CheckRenovationStatus(toRoom, date))
+            {
+                System.Windows.MessageBox.Show("You cant transfer equipment between rooms with renovation on that date span!", "Failed transfer", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+            return true;
+        }
+
+        private bool ValidateDate()
+        {
+            DateTime date = (DateTime)transferDate.SelectedDate;
+            if (date < DateTime.Today)
+            {
+                System.Windows.MessageBox.Show("You need to select future date!", "Failed transfer", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+            return true;
         }
 
         private bool CheckRenovationStatus(Room room, DateTime date)

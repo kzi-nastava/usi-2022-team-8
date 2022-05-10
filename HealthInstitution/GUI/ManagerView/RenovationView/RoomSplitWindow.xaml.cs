@@ -131,70 +131,52 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
                 return;
             }
 
-            DateTime startDate = (DateTime)startDatePicker.SelectedDate;
-            DateTime endDate = (DateTime)endDatePicker.SelectedDate;
-
-            if (startDate < DateTime.Today)
+            if (!ValidateDate())
             {
-                System.Windows.MessageBox.Show("You need to select future date!", "Failed renovation", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
-            if (endDate < startDate)
+            if (!ValidateRoomNumbers())
             {
-                System.Windows.MessageBox.Show("You need to select start date so that it is before end date!", "Failed renovation", MessageBoxButton.OK, MessageBoxImage.Error);
                 return;
             }
 
-            string firstNumberInput = firstRoomNumberBox.Text;
-            string secondNumberInput = secondRoomNumberBox.Text;
-
-            if (firstNumberInput.Trim() == "" || secondNumberInput.Trim() == "")
-            {
-                System.Windows.MessageBox.Show("Must input room number!", "Failed renovation", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-            int firstRoomNumber = Int32.Parse(firstNumberInput);
-            int secondRoomNumber = Int32.Parse(secondNumberInput);
-
-            if (firstRoomNumber == secondRoomNumber)
-            {
-                System.Windows.MessageBox.Show("Room numbers must be different!", "Failed renovation", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-
-            if (_roomRepository.Rooms.Any(room => room.Number == firstRoomNumber || room.Number == secondRoomNumber))
-            {
-                System.Windows.MessageBox.Show("This room number already exist!", "Failed renovation", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-
-            if (firstRoomNumber > 9999 || secondRoomNumber > 9999)
-            {
-                System.Windows.MessageBox.Show("This room number is too high!", "Failed renovation", MessageBoxButton.OK, MessageBoxImage.Error);
-                return;
-            }
-
-            Room selectedRoom = (Room)splitRoomComboBox.SelectedItem;
-            
+            Room selectedRoom = (Room)splitRoomComboBox.SelectedItem;           
             if (!SplitRoomValidation(selectedRoom))
             {
                 return;
             }
 
-            RoomType firstRoomType = (RoomType)firstRoomTypeComboBox.SelectedItem;
-            Room firstRoom = _roomRepository.AddRoom(firstRoomType, firstRoomNumber, true, false);
+            ScheduleSeparation();
+            
+            this.Close();
+        }
 
+        private void ScheduleSeparation()
+        {
+            string firstNumberInput = firstRoomNumberBox.Text;
+            string secondNumberInput = secondRoomNumberBox.Text;
+            int firstRoomNumber = Int32.Parse(firstNumberInput);
+            int secondRoomNumber = Int32.Parse(secondNumberInput);
+            DateTime startDate = (DateTime)startDatePicker.SelectedDate;
+            DateTime endDate = (DateTime)endDatePicker.SelectedDate;
+            Room selectedRoom = (Room)splitRoomComboBox.SelectedItem;
+            RoomType firstRoomType = (RoomType)firstRoomTypeComboBox.SelectedItem;
             RoomType secondRoomType = (RoomType)secondRoomTypeComboBox.SelectedItem;
+
+            Room firstRoom = _roomRepository.AddRoom(firstRoomType, firstRoomNumber, true, false);       
             Room secondRoom = _roomRepository.AddRoom(secondRoomType, secondRoomNumber, true, false);
 
             if (IsEmpty(_firstRoomEquipmentFromArranging) && IsEmpty(_secondRoomEquipmentFromArranging))
             {
                 firstRoom.AvailableEquipment = CopyList(selectedRoom.AvailableEquipment);
-            } else
+                _roomRepository.Save();
+            }
+            else
             {
                 firstRoom.AvailableEquipment = _firstRoomEquipmentFromArranging;
                 secondRoom.AvailableEquipment = _secondRoomEquipmentFromArranging;
+                _roomRepository.Save();
             }
 
             _renovationRepository.AddRoomSeparation(selectedRoom, firstRoom, secondRoom, startDate, endDate);
@@ -207,7 +189,58 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
             {
                 System.Windows.MessageBox.Show("Renovation scheduled!", "Room renovation", MessageBoxButton.OK, MessageBoxImage.Information);
             }
-            this.Close();
+        }
+
+        private bool ValidateRoomNumbers()
+        {
+            string firstNumberInput = firstRoomNumberBox.Text;
+            string secondNumberInput = secondRoomNumberBox.Text;
+
+            if (firstNumberInput.Trim() == "" || secondNumberInput.Trim() == "")
+            {
+                System.Windows.MessageBox.Show("Must input room number!", "Failed renovation", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+            int firstRoomNumber = Int32.Parse(firstNumberInput);
+            int secondRoomNumber = Int32.Parse(secondNumberInput);
+
+            if (firstRoomNumber == secondRoomNumber)
+            {
+                System.Windows.MessageBox.Show("Room numbers must be different!", "Failed renovation", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+
+            if (_roomRepository.Rooms.Any(room => room.Number == firstRoomNumber || room.Number == secondRoomNumber))
+            {
+                System.Windows.MessageBox.Show("This room number already exist!", "Failed renovation", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+
+            if (firstRoomNumber > 9999 || secondRoomNumber > 9999)
+            {
+                System.Windows.MessageBox.Show("This room number is too high!", "Failed renovation", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+            return true;
+        }
+
+        private bool ValidateDate()
+        {
+            DateTime startDate = (DateTime)startDatePicker.SelectedDate;
+            DateTime endDate = (DateTime)endDatePicker.SelectedDate;
+
+            if (startDate < DateTime.Today)
+            {
+                System.Windows.MessageBox.Show("You need to select future date!", "Failed renovation", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+
+            if (endDate < startDate)
+            {
+                System.Windows.MessageBox.Show("You need to select start date so that it is before end date!", "Failed renovation", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
+            }
+            return true;
         }
 
         private bool SplitRoomValidation(Room selectedRoom)
