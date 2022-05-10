@@ -173,7 +173,7 @@ namespace HealthInstitution.GUI.ManagerView
         {
             foreach(Renovation renovation in _renovationRepository.Renovations)
             {
-                if (renovation.StartDate > date)
+                if (renovation.StartDate > date && renovation.GetType() != typeof(RoomSeparation))
                 {
                     continue;
                 }
