@@ -96,22 +96,27 @@ namespace HealthInstitution.Core.Prescriptions.Repository
             return null;
         }
 
-        public void Add(int dailyDose, PrescriptionTime timeOfUse, Drug drug)
+        public Prescription Add(PrescriptionDTO newPrescription)
         {
             this._maxId++;
             int id = this._maxId;
+            int dailyDose = newPrescription.DailyDose;
+            PrescriptionTime timeOfUse = newPrescription.TimeOfUse;
+            Drug drug = newPrescription.Drug;
+
             Prescription prescription = new Prescription(id, dailyDose, timeOfUse, drug);
             this.Prescriptions.Add(prescription);
             this.PrescriptionById[id] = prescription;
             Save();
+            return prescription;
         }
 
-        public void Update(int id, int dailyDose, PrescriptionTime timeOfUse, Drug drug)
+        public void Update(int id,  PrescriptionDTO updatedPrescription)
         {
             Prescription prescription = GetById(id);
-            prescription.DailyDose = dailyDose;
-            prescription.TimeOfUse = timeOfUse;
-            prescription.Drug = drug;
+            prescription.DailyDose = updatedPrescription.DailyDose;
+            prescription.TimeOfUse = updatedPrescription.TimeOfUse;
+            prescription.Drug = updatedPrescription.Drug;
             PrescriptionById[id] = prescription;
             Save();
         }

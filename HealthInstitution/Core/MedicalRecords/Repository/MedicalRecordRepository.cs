@@ -153,6 +153,12 @@ namespace HealthInstitution.Core.MedicalRecords.Repository
             Save();
         }
 
+        public void AddPrescription(Patient patient, Prescription prescription)
+        {
+            MedicalRecord medicalRecord = GetByPatientUsername(patient);
+            medicalRecord.Prescriptions.Add(prescription);
+            Save();
+        }
         public void Delete(Patient patient)
         {
             MedicalRecord medicalRecord = GetByPatientUsername(patient);
@@ -165,6 +171,13 @@ namespace HealthInstitution.Core.MedicalRecords.Repository
         {
             MedicalRecord medicalRecord = GetByPatientUsername(patient);
             medicalRecord.Referrals.Remove(referral);
+            Save();
+        }
+
+        public void DeletePrescription(Patient patient, Prescription prescription)
+        {
+            MedicalRecord medicalRecord = GetByPatientUsername(patient);
+            medicalRecord.Prescriptions.Remove(prescription);
             Save();
         }
     }

@@ -20,7 +20,12 @@ namespace HealthInstitution.GUI.DoctorView
         public PerformExaminationDialog(Examination examination)
         {
             InitializeComponent();
-            this._selectedExamination= examination;
+            this._selectedExamination = examination;
+            Load();
+        }
+
+        private void Load()
+        {
             _medicalRecord = this._selectedExamination.MedicalRecord;
             patientTextBox.Text = _medicalRecord.Patient.ToString();
             heightTextBox.Text = _medicalRecord.Height.ToString();
@@ -33,23 +38,62 @@ namespace HealthInstitution.GUI.DoctorView
 
         private void AddIllness_Click(object sender, RoutedEventArgs e)
         {
-            if (illnessesTextBox.Text.Trim() != "")
+            String illness = illnessTextBox.Text.Trim();
+            if (illness != "")
             {
-                illnessListBox.Items.Add(illnessesTextBox.Text);
+                illnessListBox.Items.Add(illness);
                 illnessListBox.Items.Refresh();
+                illnessTextBox.Clear();
             }
         }
 
         private void AddAllergen_Click(object sender, RoutedEventArgs e)
         {
-            if (illnessesTextBox.Text.Trim() != "")
+            string allergen = allergenTextBox.Text.Trim();
+            if (allergen != "")
             {
-                allergenListBox.Items.Add(allergensTextBox.Text);
+                allergenListBox.Items.Add(allergen);
                 allergenListBox.Items.Refresh();
+                allergenTextBox.Clear();
             }
         }
+        private void CreateReferral_Click(object sender, RoutedEventArgs e)
+        {
+            Patient patient = _medicalRecord.Patient;
+            Doctor doctor = _selectedExamination.Doctor;
+            AddReferralDialog dialog = new AddReferralDialog(doctor, patient);
+            dialog.ShowDialog();
+        }
 
-        private void Finish_Click(object sender, RoutedEventArgs e)
+        private void CreatePrescription_Click(object sender, RoutedEventArgs e)
+        {
+            AddPrescriptionDialog dialog = new AddPrescriptionDialog(_medicalRecord);
+            dialog.ShowDialog();
+        }
+
+        public void CreateExaminationByForms()
+        {
+            double height = Double.Parse(heightTextBox.Text);
+            double weight = Double.Parse(weightTextBox.Text);
+            List<String> previousIllnesses = new List<String>();
+            foreach (String illness in illnessListBox.Items)
+            {
+                previousIllnesses.Add(illness);
+            };
+            List<String> allergens = new List<String>();
+            foreach (String allergen in allergenListBox.Items)
+            {
+                allergens.Add(allergen);
+            }
+            List<Prescription> prescriptions = _medicalRecord.Prescriptions;
+            List<Referral> referrals = _medicalRecord.Referrals;
+            //ExaminationDTO medicalRecord = new MedicalRecordDTO(_medicalRecord.Patient, height, weight, previousIllnesses, allergens, prescriptions, referrals);
+            //MedicalRecordRepository.GetInstance().Update(medicalRecord);
+            this._selectedExamination.Anamnesis = anamnesisTextBox.Text;
+            this._selectedExamination.Status = ExaminationStatus.Completed;
+        }
+
+        private void Submit_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -78,14 +122,6 @@ namespace HealthInstitution.GUI.DoctorView
             {
                 System.Windows.MessageBox.Show("You haven't fulfilled it the right way!", "Error", MessageBoxButton.OKCancel, MessageBoxImage.Error);
             }
-        }
-
-        private void CreateReferral_Click(object sender, RoutedEventArgs e)
-        {
-            Patient patient = _medicalRecord.Patient;
-            Doctor doctor = _selectedExamination.Doctor;
-            AddPrescriptionDialog dialog = new AddPrescriptionDialog(doctor, patient);
-            dialog.ShowDialog();
         }
     }
 }

@@ -9,6 +9,8 @@ using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using HealthInstitution.Core.Operations.Repository;
 using HealthInstitution.Core.TrollCounters.Repository;
 using HealthInstitution.Core.EquipmentTransfers.Functionality;
+using HealthInstitution.Core.SystemUsers.Patients.Repository;
+using HealthInstitution.Core.SystemUsers.Patients.Model;
 using HealthInstitution.Core.Renovations.Functionality;
 
 namespace HealthInstitution.GUI.LoginView
@@ -52,8 +54,10 @@ namespace HealthInstitution.GUI.LoginView
                     case UserType.Patient:
                         try
                         {
+                            PatientRepository patientRepository = PatientRepository.GetInstance();
+                            Patient loggedPatient = patientRepository.GetByUsername(_usernameInput);
                             TrollCounterFileRepository.GetInstance().TrollCheck(foundUser.Username);
-                            new PatientWindow(foundUser).ShowDialog();
+                            new PatientWindow(loggedPatient).ShowDialog();
                         }
                         catch (Exception ex)
                         {

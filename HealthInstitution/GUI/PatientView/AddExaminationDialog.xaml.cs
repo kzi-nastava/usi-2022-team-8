@@ -1,4 +1,10 @@
-﻿using HealthInstitution.Core.Examinations.Repository;
+﻿using HealthInstitution.Core.Examinations.Model;
+using HealthInstitution.Core.Examinations.Repository;
+using HealthInstitution.Core.MedicalRecords.Model;
+using HealthInstitution.Core.MedicalRecords.Repository;
+using HealthInstitution.Core.SystemUsers.Doctors.Model;
+using HealthInstitution.Core.SystemUsers.Doctors.Repository;
+using HealthInstitution.Core.SystemUsers.Patients.Model;
 using HealthInstitution.Core.SystemUsers.Users.Model;
 using HealthInstitution.Core.SystemUsers.Users.Repository;
 using System.Windows;
@@ -13,10 +19,10 @@ namespace HealthInstitution.GUI.PatientView
     {
         private int _minutes;
         private int _hours;
-        private User _loggedPatient;
+        private Patient _loggedPatient;
         private string _doctorUsername;
 
-        public AddExaminationDialog(User loggedPatient)
+        public AddExaminationDialog(Patient loggedPatient)
         {
             InitializeComponent();
             this._loggedPatient = loggedPatient;
@@ -78,7 +84,9 @@ namespace HealthInstitution.GUI.PatientView
             dateTime = dateTime.AddMinutes(_minutes);
             try
             {
-                ExaminationRepository.GetInstance().ReserveExamination(_loggedPatient.Username, _doctorUsername, dateTime);
+                MedicalRecord medicalRecord = MedicalRecordRepository.GetInstance().GetByPatientUsername(_loggedPatient);
+                Doctor doctor = DoctorRepository.GetInstance().GetById(_doctorUsername);
+                ExaminationDTO examination = new ExaminationDTO(dateTime, null, doctor, medicalRecord);
                 ExaminationDoctorRepository.GetInstance().Save();
                 this.Close();
             }

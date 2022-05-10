@@ -101,22 +101,22 @@ public class DrugRepository
         return null;
     }
 
-    public void Add(string name, DrugState drugState, List<Ingredient> ingredients)
+    public void Add(DrugDTO newDrug)
     {
         this._maxId++;
         int id = this._maxId;
-        Drug drug = new Drug(id, name, drugState, ingredients);
+        Drug drug = new Drug(id, newDrug.Name, newDrug.State, newDrug.Ingredients);
         this.Drugs.Add(drug);
         this.DrugById[id] = drug;
         Save();
     }
 
-    public void Update(int id, string name, DrugState drugState, List<Ingredient> ingredients)
+    public void Update(int id, DrugDTO updatedDrug)
     {
         Drug drug = GetById(id);
-        drug.Name = name;
-        drug.State = drugState;
-        drug.Ingredients= ingredients;
+        drug.Name = updatedDrug.Name;
+        drug.State = updatedDrug.State;
+        drug.Ingredients= updatedDrug.Ingredients;
         DrugById[id] = drug;
         Save();
     }

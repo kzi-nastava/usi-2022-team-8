@@ -1,18 +1,19 @@
 [
+  
   {
     "height": 189.6,
     "weight": 85,
     "patientUsername": "pera",
-    "previousIlnesses": [ "Headaches", "Diarrhea", "proba", "Test", "Diarea" ],
-    "allergens": [ "Gluten", "Nuts", "princ belve" ],
-    "prescriptionsId": [],
-    "referralsId": [ 1 ]
+    "previousIlnesses": [ "Headaches", "Diarrhea", "Diarea", "NovaBolest" ],
+    "allergens": [ "Gluten", "Nuts", "princ belve", "NOVI ALERGEN", "NovAlergen" ],
+    "prescriptionsId": [ 1 ],
+    "referralsId": [ 1, 2 ]
   },
   {
     "height": 174,
     "weight": 75.1,
     "patientUsername": "marko",
-    "previousIlnesses": [ "Headaches", "Mononucleosis", "Arthritis", "", "prolivcina" ],
+    "previousIlnesses": [ "Headaches", "Mononucleosis", "Arthritis" ],
     "allergens": [ "Milk", "Soya", "Nuts" ],
     "prescriptionsId": [],
     "referralsId": []
