@@ -88,7 +88,7 @@ public partial class PatientScheduleWindow : Window
             else
             {
                 dataGrid.Items.Remove(selectedExamination);
-                _examinationRepository.DeleteExamination(selectedExamination.Id);
+                _examinationRepository.Delete(selectedExamination.Id);
                 selectedExamination.Doctor.Examinations.Remove(selectedExamination);
             }
         }

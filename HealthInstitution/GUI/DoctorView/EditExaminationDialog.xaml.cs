@@ -95,7 +95,7 @@ namespace HealthInstitution.GUI.DoctorView
                 }
                 else
                 {
-                    ExaminationRepository.GetInstance().UpdateExamination(_selectedExamination.Id, appointment, medicalRecord);
+                    ExaminationRepository.GetInstance().Update(_selectedExamination.Id, appointment, medicalRecord);
                     this.Close();
                 }
             }

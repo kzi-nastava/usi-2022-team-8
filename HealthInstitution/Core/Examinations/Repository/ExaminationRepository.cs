@@ -83,7 +83,7 @@ internal class ExaminationRepository
         }
     }
 
-    private List<dynamic> ShortenExaminations()
+    private List<dynamic> GetForSerialization()
     {
         List<dynamic> reducedExaminations = new List<dynamic>();
         foreach (Examination examination in this.Examinations)
@@ -103,7 +103,8 @@ internal class ExaminationRepository
 
     public void Save()
     {
-        var allExaminations = JsonSerializer.Serialize(ShortenExaminations(), _options);
+        List<dynamic> reducedExaminations = GetForSerialization();
+        var allExaminations = JsonSerializer.Serialize(reducedExaminations, _options);
         File.WriteAllText(this._fileName, allExaminations);
     }
 
@@ -121,7 +122,7 @@ internal class ExaminationRepository
         return null;
     }
 
-    public void AddExamination(DateTime appointment, Room room, Doctor doctor, MedicalRecord medicalRecord)
+    public void Add(DateTime appointment, Room room, Doctor doctor, MedicalRecord medicalRecord)
     {
         int id = ++this._maxId;
         Examination examination = new Examination(id, ExaminationStatus.Scheduled, appointment, room, doctor, medicalRecord, "");
@@ -131,7 +132,7 @@ internal class ExaminationRepository
         Save();
     }
 
-    public void UpdateExamination(int id, DateTime appointment, MedicalRecord medicalRecord)
+    public void Update(int id, DateTime appointment, MedicalRecord medicalRecord)
     {
         Examination examination = this.ExaminationsById[id];
         Doctor doctor = examination.Doctor;
@@ -143,7 +144,7 @@ internal class ExaminationRepository
         Save();
     }
 
-    public void DeleteExamination(int id)
+    public void Delete(int id)
     {
         Examination examination = this.ExaminationsById[id];
         if (examination != null)
@@ -218,11 +219,12 @@ internal class ExaminationRepository
     {
         bool isAvailable;
         List<Room> availableRooms = new List<Room>();
-        foreach (var room in RoomRepository.GetInstance().GetAll())
+        var rooms = RoomRepository.GetInstance().GetAll();
+        foreach (var room in rooms)
         {
             if (room.Type != RoomType.ExaminationRoom) continue;
             isAvailable = true;
-            foreach (var examination in ExaminationRepository.GetInstance().Examinations)
+            foreach (var examination in this.Examinations)
             {
                 if (examination.Appointment == dateTime && examination.Room.Id == room.Id)
                 {
@@ -255,9 +257,10 @@ internal class ExaminationRepository
     public Examination GenerateRequestExamination(Examination examination, string patientUsername, string doctorUsername, DateTime dateTime)
     {
         Doctor doctor = DoctorRepository.GetInstance().GetById(doctorUsername);
-        CheckIfDoctorIsAvailable(doctor, dateTime);
-        var room = FindAvailableRoom(dateTime);
         Patient patient = PatientRepository.GetInstance().GetByUsername(patientUsername);
+        CheckIfDoctorIsAvailable(doctor, dateTime);
+        CheckIfPatientIsAvailable(patient, dateTime);
+        var room = FindAvailableRoom(dateTime);
         Examination e = new Examination(examination.Id, examination.Status, dateTime, room, doctor, examination.MedicalRecord, "");
         return e;
     }
@@ -281,6 +284,6 @@ internal class ExaminationRepository
         CheckIfPatientIsAvailable(patient, dateTime);
         var room = FindAvailableRoom(dateTime);
         var medicalRecord = MedicalRecordRepository.GetInstance().GetByPatientUsername(patient);
-        AddExamination(dateTime, room, doctor, medicalRecord);
+        Add(dateTime, room, doctor, medicalRecord);
     }
 }

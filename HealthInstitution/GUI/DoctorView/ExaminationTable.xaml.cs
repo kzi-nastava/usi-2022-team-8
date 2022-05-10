@@ -66,7 +66,7 @@ namespace HealthInstitution.GUI.DoctorView
             {
                 Examination selectedExamination = (Examination)dataGrid.SelectedItem;
                 dataGrid.Items.Remove(selectedExamination);
-                _examinationRepository.DeleteExamination(selectedExamination.Id);
+                _examinationRepository.Delete(selectedExamination.Id);
                 _doctorRepository.DeleteExamination(_loggedDoctor, selectedExamination);
                 _examinationDoctorRepository.Save();
             }

@@ -1,7 +1,5 @@
 ﻿using HealthInstitution.Core.Examinations.Model;
-using HealthInstitution.Core.Examinations.Repository;
 using HealthInstitution.Core.Operations.Model;
-using HealthInstitution.Core.Operations.Repository;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using Newtonsoft.Json.Linq;
 using System.IO;
