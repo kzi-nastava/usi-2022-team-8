@@ -171,7 +171,7 @@ internal class ExaminationRepository
 
         foreach (Examination examination in completed)
         {
-            if (examination.Anamnesis.Contains(keyword)) resault.Add(examination);
+            if (examination.Anamnesis.ToLower().Contains(keyword)) resault.Add(examination);
         }
 
         return resault;

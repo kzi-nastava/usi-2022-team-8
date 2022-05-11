@@ -56,6 +56,8 @@ namespace HealthInstitution.GUI.PatientView
 
         private void SearchButton_Click(object sender, RoutedEventArgs e)
         {
+            var result = ExaminationRepository.GetInstance().GetSeachAnamnesis(seachParameter.Text, _loggedPatient.Username);
+            loadRows(result);
         }
 
         private void loadAllRows()
@@ -74,6 +76,11 @@ namespace HealthInstitution.GUI.PatientView
                     dataGrid.Items.Add(examination);
             }
             dataGrid.Items.Refresh();
+        }
+
+        private void seachParameter_GotFocus(object sender, RoutedEventArgs e)
+        {
+            seachParameter.Clear();
         }
     }
 }
