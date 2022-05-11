@@ -1,5 +1,6 @@
 ﻿using HealthInstitution.Core.Examinations.Model;
 using HealthInstitution.Core.Examinations.Repository;
+using HealthInstitution.Core.Notifications.Model;
 using HealthInstitution.Core.Operations.Model;
 using HealthInstitution.Core.Operations.Repository;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
@@ -136,6 +137,11 @@ namespace HealthInstitution.Core.SystemUsers.Doctors.Repository
         public void DeleteOperation(Doctor doctor, Operation operation)
         {
             doctor.Operations.Remove(operation);
+            Save();
+        }
+        public void DeleteNotification(Doctor doctor, Notification notification)
+        {
+            doctor.Notifications.Remove(notification);
             Save();
         }
     }

@@ -5,10 +5,16 @@
     <Compile Update="GUI\DoctorView\AddExaminationDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="GUI\DoctorView\DoctorNotificationsDialog.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="GUI\PatientView\AddExaminationDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="GUI\PatientView\EditExaminationDialog.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="GUI\PatientView\PatientNotificationsDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="GUI\PatientView\PatientScheduleWindow.xaml.cs">
@@ -108,6 +114,9 @@
     <Page Update="GUI\DoctorView\AddOperationDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="GUI\DoctorView\DoctorNotificationsDialog.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="GUI\DoctorView\DoctorWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -136,6 +145,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="GUI\PatientView\EditExaminationDialog.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="GUI\PatientView\PatientNotificationsDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="GUI\PatientView\PatientScheduleWindow.xaml">

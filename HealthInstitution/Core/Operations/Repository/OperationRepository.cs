@@ -2,6 +2,7 @@
 using HealthInstitution.Core.Examinations.Repository;
 using HealthInstitution.Core.MedicalRecords.Model;
 using HealthInstitution.Core.MedicalRecords.Repository;
+using HealthInstitution.Core.Notifications.Repository;
 using HealthInstitution.Core.Operations.Model;
 using HealthInstitution.Core.Rooms.Model;
 using HealthInstitution.Core.Rooms.Repository;
@@ -314,6 +315,7 @@ namespace HealthInstitution.Core.Operations.Repository
                             var room = FindAvailableRoom(appointment, duration);
                             var medicalRecord = MedicalRecordRepository.GetInstance().GetByPatientUsername(patient);
                             Add(appointment, duration, room, doctor, medicalRecord);
+                            NotificationRepository.GetInstance().Add(new DateTime(1, 1, 1), appointment, doctor, patient);
                             priorityExaminationsAndOperations.Add(new Tuple<int, int, DateTime>(this._maxId, 2, appointment));
                             return priorityExaminationsAndOperations;
                         }
@@ -325,8 +327,8 @@ namespace HealthInstitution.Core.Operations.Repository
                 }
 
             }
-            priorityExaminationsAndOperations.Add(new Tuple<int, int, DateTime>(this._maxId, 2, new DateTime(1, 1, 1)));
-            List<Tuple<int, int, DateTime>> temporaryPriority = ExaminationRepository.FindClosest(nextTwoHoursAppointments);
+            priorityExaminationsAndOperations.Add(new Tuple<int, int, DateTime>(this._maxId+1, 2, new DateTime(1, 1, 1)));
+            List<Tuple<int, int, DateTime>> temporaryPriority = ExaminationRepository.FindClosest(nextTwoHoursAppointments, specialtyType);
             foreach (Tuple<int, int, DateTime> tuple in temporaryPriority)
             {
                 priorityExaminationsAndOperations.Add(tuple);

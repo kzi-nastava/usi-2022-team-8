@@ -1,5 +1,7 @@
 ﻿using HealthInstitution.Core.Examinations.Model;
 using HealthInstitution.Core.Examinations.Repository;
+using HealthInstitution.Core.MedicalRecords.Model;
+using HealthInstitution.Core.MedicalRecords.Repository;
 using HealthInstitution.Core.Operations.Model;
 using HealthInstitution.Core.Operations.Repository;
 using HealthInstitution.Core.ScheduleEditRequests.Model;
@@ -53,11 +55,13 @@ namespace HealthInstitution.GUI.SecretaryView
             {
                 SpecialtyType specialtyType = (SpecialtyType)specialtyTypeComboBox.SelectedItem;
                 Patient patient = (Patient)patientComboBox.SelectedItem;
+                MedicalRecord medicalRecord = MedicalRecordRepository.GetInstance().GetByPatientUsername(patient);
                 List<Tuple<int,int,DateTime>> examinationsAndOperationsForDelaying = ExaminationRepository.GetInstance().ReserveUrgentExamination(patient.Username, specialtyType);
-                Examination urgentExamination = ExaminationRepository.GetInstance().GetById(examinationsAndOperationsForDelaying[0].Item1);
+                Examination urgentExamination;
                 
                 if (examinationsAndOperationsForDelaying.Count()==1)
                 {
+                    urgentExamination = ExaminationRepository.GetInstance().GetById(examinationsAndOperationsForDelaying[0].Item1);
                     ExaminationDoctorRepository.GetInstance().Save();
                     System.Windows.MessageBox.Show("Urgent examination has ordered successfully.");
                     UrgentExaminationDialog urgentExaminationDialog = new UrgentExaminationDialog(urgentExamination);
@@ -83,6 +87,7 @@ namespace HealthInstitution.GUI.SecretaryView
                         }
                         
                     }
+                    urgentExamination = new Examination(examinationsAndOperationsForDelaying[0].Item1, ExaminationStatus.Scheduled, new DateTime(1, 1, 1), null, null, medicalRecord,"");
                     DelayExaminationOperationDialog delayExaminationOperationDialog = new DelayExaminationOperationDialog(delayedAppointments, urgentExamination,null );
                     delayExaminationOperationDialog.ShowDialog();
                 }

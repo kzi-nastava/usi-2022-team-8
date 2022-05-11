@@ -18,6 +18,7 @@ using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using HealthInstitution.Core.Operations.Repository;
 using HealthInstitution.Core.Operations.Model;
+using HealthInstitution.Core.Notifications.Repository;
 
 namespace HealthInstitution.Core.Examinations.Repository;
 
@@ -350,18 +351,18 @@ internal class ExaminationRepository
         return priorityExaminationsAndOperations;
     }
 
-    public static List<Tuple<int, int, DateTime>> FindClosest(List<DateTime> nextTwoHoursAppointments)
+    public static List<Tuple<int, int, DateTime>> FindClosest(List<DateTime> nextTwoHoursAppointments, SpecialtyType specialtyType)
     {
         List<Examination> nextTwoHoursExaminations = new List<Examination>();
         List<Operation> nextTwoHoursOperations = new List<Operation>();
         foreach (Examination examination in ExaminationRepository.GetInstance().Examinations)
         {
-            if (nextTwoHoursAppointments.Contains(examination.Appointment))
+            if (nextTwoHoursAppointments.Contains(examination.Appointment) && examination.Doctor.Specialty==specialtyType)
                 nextTwoHoursExaminations.Add(examination);
         }
         foreach (Operation operation in OperationRepository.GetInstance().GetAll())
         {
-            if (nextTwoHoursAppointments.Contains(operation.Appointment))
+            if (nextTwoHoursAppointments.Contains(operation.Appointment) && operation.Doctor.Specialty == specialtyType)
                 nextTwoHoursOperations.Add(operation);
         }
         return GetPriorityExaminationsAndOperations(nextTwoHoursExaminations,nextTwoHoursOperations);
@@ -449,6 +450,7 @@ internal class ExaminationRepository
                         var room = FindAvailableRoom(appointment);
                         var medicalRecord = MedicalRecordRepository.GetInstance().GetByPatientUsername(patient);
                         AddExamination(appointment, room, doctor, medicalRecord);
+                        NotificationRepository.GetInstance().Add(new DateTime(1, 1, 1), appointment, doctor, patient);
                         priorityExaminationsAndOperations.Add(new Tuple<int, int, DateTime>(this._maxId, 2, appointment));
                         return priorityExaminationsAndOperations;
                     }
@@ -460,15 +462,12 @@ internal class ExaminationRepository
                 }
             }
         }
-        priorityExaminationsAndOperations.Add(new Tuple<int, int, DateTime>(this._maxId, 2, new DateTime(1, 1, 1)));
-        List < Tuple<int, int, DateTime> > temporaryPriority = FindClosest(nextTwoHoursAppointments);
+        priorityExaminationsAndOperations.Add(new Tuple<int, int, DateTime>(this._maxId+1, 2, new DateTime(1, 1, 1)));
+        List < Tuple<int, int, DateTime> > temporaryPriority = FindClosest(nextTwoHoursAppointments, specialtyType);
         foreach(Tuple<int, int, DateTime> tuple in temporaryPriority)
         {
             priorityExaminationsAndOperations.Add(tuple);
         }
         return priorityExaminationsAndOperations;
-        
-        
-        
     }
 }

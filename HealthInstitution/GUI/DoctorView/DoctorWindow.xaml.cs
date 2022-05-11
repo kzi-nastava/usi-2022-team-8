@@ -27,6 +27,11 @@ namespace HealthInstitution.GUI.DoctorView
         {
             this._loggedDoctor = doctor;
             InitializeComponent();
+            if (this._loggedDoctor.Notifications.Count > 0) 
+            {
+                DoctorNotificationsDialog doctorNotificationsDialog = new DoctorNotificationsDialog(this._loggedDoctor);
+                doctorNotificationsDialog.ShowDialog();
+            }
         }
 
         private void LogOut_Click(object sender, RoutedEventArgs e)

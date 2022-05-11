@@ -1,5 +1,7 @@
 ﻿using HealthInstitution.Core.Examinations.Model;
 using HealthInstitution.Core.Examinations.Repository;
+using HealthInstitution.Core.MedicalRecords.Model;
+using HealthInstitution.Core.MedicalRecords.Repository;
 using HealthInstitution.Core.Operations.Model;
 using HealthInstitution.Core.Operations.Repository;
 using HealthInstitution.Core.ScheduleEditRequests.Model;
@@ -57,11 +59,13 @@ namespace HealthInstitution.GUI.SecretaryView
             {
                 SpecialtyType specialtyType = (SpecialtyType)specialtyTypeComboBox.SelectedItem;
                 Patient patient = (Patient)patientComboBox.SelectedItem;
+                MedicalRecord medicalRecord = MedicalRecordRepository.GetInstance().GetByPatientUsername(patient);
                 List<Tuple<int, int, DateTime>> examinationsAndOperationsForDelaying = OperationRepository.GetInstance().ReserveUrgentOperation(patient.Username, specialtyType,15);
-                Operation urgentOperation = OperationRepository.GetInstance().GetById(examinationsAndOperationsForDelaying[0].Item1);
+                Operation urgentOperation;
 
                 if (examinationsAndOperationsForDelaying.Count()==1)
                 {
+                    urgentOperation = OperationRepository.GetInstance().GetById(examinationsAndOperationsForDelaying[0].Item1);
                     OperationDoctorRepository.GetInstance().Save();
                     System.Windows.MessageBox.Show("Urgent operation has ordered successfully.");
                     UrgentOperationDialog urgentOperationDialog = new UrgentOperationDialog(urgentOperation);
@@ -78,6 +82,7 @@ namespace HealthInstitution.GUI.SecretaryView
                             Examination currentExamination = ExaminationRepository.GetInstance().GetById(tuple.Item1);
                             Examination newExamination = new Examination(currentExamination.Id, ExaminationStatus.Scheduled, tuple.Item3, currentExamination.Room, currentExamination.Doctor, currentExamination.MedicalRecord, "");
                             delayedAppointments.Add(new ScheduleEditRequest(0, currentExamination, newExamination, Core.RestRequests.Model.RestRequestState.OnHold));
+                            
                         }
                         if (tuple.Item2 == 0)
                         {
@@ -87,6 +92,7 @@ namespace HealthInstitution.GUI.SecretaryView
                         }
                         
                     }
+                    urgentOperation = new Operation(examinationsAndOperationsForDelaying[0].Item1, ExaminationStatus.Scheduled, new DateTime(1, 1, 1), 15, null, null, medicalRecord);
                     DelayExaminationOperationDialog delayExaminationOperationDialog = new DelayExaminationOperationDialog(delayedAppointments,null,urgentOperation);
                     delayExaminationOperationDialog.ShowDialog();
                 }

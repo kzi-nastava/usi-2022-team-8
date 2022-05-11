@@ -9,6 +9,9 @@ using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using HealthInstitution.Core.Operations.Repository;
 using HealthInstitution.Core.TrollCounters.Repository;
 using HealthInstitution.Core.EquipmentTransfers.Functionality;
+using HealthInstitution.Core.Notifications.Repository;
+using HealthInstitution.Core.SystemUsers.Patients.Repository;
+using HealthInstitution.Core.SystemUsers.Patients.Model;
 
 namespace HealthInstitution.GUI.LoginView
 {
@@ -51,19 +54,24 @@ namespace HealthInstitution.GUI.LoginView
                     case UserType.Patient:
                         try
                         {
+                            NotificationPatientRepository.GetInstance();
                             TrollCounterFileRepository.GetInstance().TrollCheck(foundUser.Username);
-                            new PatientWindow(foundUser).ShowDialog();
+                            PatientRepository patientRepository = PatientRepository.GetInstance();
+                            Patient loggedPatient = patientRepository.GetByUsername(_usernameInput);
+                            new PatientWindow(loggedPatient).ShowDialog();
                         }
                         catch (Exception ex)
                         {
                             System.Windows.MessageBox.Show(ex.Message, "Troll Alert", MessageBoxButton.OK, MessageBoxImage.Error);
                         }
+                        
                         break;
 
                     case UserType.Doctor:
                         DoctorRepository doctorRepository = DoctorRepository.GetInstance();
                         ExaminationRepository.GetInstance();
                         ExaminationDoctorRepository.GetInstance();
+                        NotificationDoctorRepository.GetInstance();
                         OperationDoctorRepository.GetInstance();
                         Doctor loggedDoctor = doctorRepository.GetById(_usernameInput);
                         new DoctorWindow(loggedDoctor).ShowDialog();
