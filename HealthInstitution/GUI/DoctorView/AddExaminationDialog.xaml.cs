@@ -81,7 +81,6 @@ namespace HealthInstitution.GUI.DoctorView
                 } else
                 {
                     ExaminationRepository.GetInstance().ReserveExamination(examination);
-                    ExaminationDoctorRepository.GetInstance().Save();
                     this.Close();
                 }
             }

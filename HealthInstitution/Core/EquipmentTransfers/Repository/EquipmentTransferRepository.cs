@@ -48,37 +48,43 @@ namespace HealthInstitution.Core.EquipmentTransfers.Repository
             }
         }
 
-        public void LoadFromFile()
+        private EquipmentTransfer Parse(JToken? equipmentTransfer)
         {
             var equipmentById = EquipmentRepository.GetInstance().EquipmentById;
             var roomById = RoomRepository.GetInstance().RoomById;
+
+            int id = (int)equipmentTransfer["id"];
+            int equipmentId = (int)equipmentTransfer["equipment"];
+            Equipment equipment = equipmentById[equipmentId];
+            int fromRoomId = (int)equipmentTransfer["fromRoom"];
+            Room fromRoom = roomById[fromRoomId];
+            int toRoomId = (int)equipmentTransfer["toRoom"];
+            Room toRoom = roomById[toRoomId];
+            DateTime transferTime = (DateTime)equipmentTransfer["transferTime"];
+
+            return new EquipmentTransfer(id, equipment, fromRoom, toRoom, transferTime);
+        }
+
+        public void LoadFromFile()
+        {
             var equipmentTransfers = JArray.Parse(File.ReadAllText(_fileName));
             //var equipmentTransfers = JsonSerializer.Deserialize<List<Room>>(File.ReadAllText(@"..\..\..\Data\JSON\equipmentTransfers.json"), _options);
             foreach (var equipmentTransfer in equipmentTransfers)
             {
-
-                int id = (int)equipmentTransfer["id"];
-                int equipmentId = (int)equipmentTransfer["equipment"];
-                Equipment equipment = equipmentById[equipmentId];
-                int fromRoomId = (int)equipmentTransfer["fromRoom"];
-                Room fromRoom = roomById[fromRoomId];
-                int toRoomId = (int)equipmentTransfer["toRoom"];
-                Room toRoom = roomById[toRoomId];
-                DateTime transferTime = (DateTime)equipmentTransfer["transferTime"];
-
-                EquipmentTransfer eqTransferTemp = new EquipmentTransfer(id, equipment, fromRoom, toRoom, transferTime);
+                EquipmentTransfer loadedEquipmentTransfer = Parse(equipmentTransfer);
+                int id = loadedEquipmentTransfer.Id;
 
                 if (id > _maxId)
                 {
                     _maxId = id;
                 }
 
-                this.EquipmentTransfers.Add(eqTransferTemp);
-                this.EquipmentTransferById.Add(eqTransferTemp.Id, eqTransferTemp);
+                this.EquipmentTransfers.Add(loadedEquipmentTransfer);
+                this.EquipmentTransferById[id] = loadedEquipmentTransfer;
             }
         }
 
-        private List<dynamic> ShortenEquipmentTransfer()
+        private List<dynamic> PrepareForSerialization()
         {
             List<dynamic> reducedEquipmentTransfers = new List<dynamic>();
             foreach (var equipmentTransfer in this.EquipmentTransfers)
@@ -96,7 +102,7 @@ namespace HealthInstitution.Core.EquipmentTransfers.Repository
         }
         public void Save()
         {
-            var allEquipmentTransfers = JsonSerializer.Serialize(ShortenEquipmentTransfer(), _options);
+            var allEquipmentTransfers = JsonSerializer.Serialize(PrepareForSerialization(), _options);
             File.WriteAllText(this._fileName, allEquipmentTransfers);
         }
 
