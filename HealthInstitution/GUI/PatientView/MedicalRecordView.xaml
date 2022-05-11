@@ -23,12 +23,12 @@
                 <DataGridTextColumn Header="Anamnesis" FontSize="18" Width =" 150" Binding="{Binding Anamnesis}" />
             </DataGrid.Columns>
         </DataGrid>
-        <Button Name="Search" Content="Search anamnesis by keyword" HorizontalAlignment="Left" Height="18" Margin="600,406,0,0" VerticalAlignment="Top" Width="172" Click="SearchButton_Click" />
-        <TextBox HorizontalAlignment="Left" Margin="600,383,0,0" TextWrapping="Wrap" Text="Anamensis keyword" VerticalAlignment="Top" Width="172" />
-        <Button Content="Doctor" HorizontalAlignment="Left" Height="23" Margin="45,392,0,0" VerticalAlignment="Top" Width="101" Click="DoctorButton_Click" />
-        <Button Content="Date" HorizontalAlignment="Left" Height="23" Margin="195,392,0,0" VerticalAlignment="Top" Width="101" Click="DateButton_Click" />
-        <Button Content="Doctor specialization" HorizontalAlignment="Center" Height="23" Margin="0,392,0,0" VerticalAlignment="Top" Width="143" Click="SpecializationButton_Click" />
-        <Label Content="Sorts:" HorizontalAlignment="Left" Height="25" Margin="45,346,0,0" VerticalAlignment="Top" Width="101" />
-        <Label Content="Search:" HorizontalAlignment="Left" Height="25" Margin="600,346,0,0" VerticalAlignment="Top" Width="101" />
+        <Button Name="Search" Content="Search anamnesis by keyword" HorizontalAlignment="Left" Height="18" Margin="600,356,0,0" VerticalAlignment="Top" Width="172" Click="SearchButton_Click" />
+        <TextBox HorizontalAlignment="Left" Margin="600,333,0,0" TextWrapping="Wrap" Text="Anamensis keyword" VerticalAlignment="Top" Width="172" />
+        <Button Content="Doctor" HorizontalAlignment="Left" Height="23" Margin="45,342,0,0" VerticalAlignment="Top" Width="101" Click="DoctorButton_Click" />
+        <Button Content="Date" HorizontalAlignment="Left" Height="23" Margin="195,342,0,0" VerticalAlignment="Top" Width="101" Click="DateButton_Click" />
+        <Button Content="Doctor specialization" HorizontalAlignment="Center" Height="23" Margin="0,342,0,0" VerticalAlignment="Top" Width="143" Click="SpecializationButton_Click" />
+        <Label Content="Sorts:" HorizontalAlignment="Left" Height="25" Margin="45,296,0,0" VerticalAlignment="Top" Width="101" />
+        <Label Content="Search:" HorizontalAlignment="Left" Height="25" Margin="600,296,0,0" VerticalAlignment="Top" Width="101" />
     </Grid>
 </Window>

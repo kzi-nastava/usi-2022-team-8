@@ -56,5 +56,10 @@ namespace HealthInstitution.GUI.UserWindow
         {
             new RecommendedWindow(this._loggedPatient).ShowDialog();
         }
+
+        private void medicalRecordView_button_Click(object sender, RoutedEventArgs e)
+        {
+            new MedicalRecordView(_loggedPatient).ShowDialog();
+        }
     }
 }

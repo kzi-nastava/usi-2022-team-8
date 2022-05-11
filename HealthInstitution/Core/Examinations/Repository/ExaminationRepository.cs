@@ -150,24 +150,24 @@ internal class ExaminationRepository
         }
     }
 
-    public List<Examination> GetCompletedByPatient(Patient patient)
+    public List<Examination> GetCompletedByPatient(string patientUsername)
     {
         List<Examination> completed = new List<Examination>();
 
         foreach (Examination examination in this.Examinations)
         {
-            if (examination.MedicalRecord.Patient.Username != patient.Username) continue;
+            if (examination.MedicalRecord.Patient.Username != patientUsername) continue;
             if (examination.Status == ExaminationStatus.Completed)
                 completed.Add(examination);
         }
         return completed;
     }
 
-    public List<Examination> GetSeachAnamnesis(string keyword, Patient patient)
+    public List<Examination> GetSeachAnamnesis(string keyword, string patientUsername)
     {
         keyword = keyword.Trim();
         List<Examination> resault = new List<Examination>();
-        var completed = GetCompletedByPatient(patient);
+        var completed = GetCompletedByPatient(patientUsername);
 
         foreach (Examination examination in completed)
         {
