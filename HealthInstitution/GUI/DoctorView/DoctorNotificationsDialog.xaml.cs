@@ -38,12 +38,14 @@ namespace HealthInstitution.GUI.DoctorView
         {
             dataGrid.Items.Clear();
             List<Notification> doctorsNotifications = _loggedDoctor.Notifications;
+            //List<Notification> doctorsNotificationsCopy = doctorsNotifications.ConvertAll(notification => new Notification(notification.Id,notification.OldAppointment,notification.NewAppointment,notification.Doctor,notification.Patient,notification.ActiveForDoctor,notification.ActiveForPatient));
             foreach (Notification notification in doctorsNotifications)
             {
                 dataGrid.Items.Add(notification);
-
-                _notificationRepository.Delete(notification.Id);
-                _doctorRepository.DeleteNotification(_loggedDoctor, notification);
+                notification.ActiveForDoctor = false;
+                NotificationRepository.GetInstance().Save();
+                //_notificationRepository.Delete(notification.Id);
+                //_doctorRepository.DeleteNotification(_loggedDoctor, notification);
             }
             dataGrid.Items.Refresh();
         }

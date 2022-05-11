@@ -13,17 +13,22 @@ namespace HealthInstitution.Core.Notifications.Model;
 public class Notification
 {
     public int Id { get; set; }
-    public DateTime OldAppointment { get; set; }
+    public DateTime? OldAppointment { get; set; }
     public DateTime NewAppointment { get; set; }
     public Doctor Doctor { get; set; }
     public Patient Patient { get; set; }
 
-    public Notification(int id, DateTime oldAppointment, DateTime newAppointment, Doctor doctor, Patient patient)
+    public bool ActiveForDoctor { get; set; }   
+    public bool ActiveForPatient { get; set; }
+
+    public Notification(int id, DateTime? oldAppointment, DateTime newAppointment, Doctor doctor, Patient patient, bool activeForDoctor, bool activeForPatient)
     {
         Id = id;
         OldAppointment = oldAppointment;
         NewAppointment = newAppointment;
         Doctor = doctor;
         Patient = patient;
+        ActiveForDoctor = activeForDoctor;
+        ActiveForPatient = activeForPatient;
     }
 }

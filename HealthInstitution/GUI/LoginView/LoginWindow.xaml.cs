@@ -54,6 +54,7 @@ namespace HealthInstitution.GUI.LoginView
                     case UserType.Patient:
                         try
                         {
+                            NotificationDoctorRepository.GetInstance();
                             NotificationPatientRepository.GetInstance();
                             TrollCounterFileRepository.GetInstance().TrollCheck(foundUser.Username);
                             PatientRepository patientRepository = PatientRepository.GetInstance();
@@ -72,6 +73,7 @@ namespace HealthInstitution.GUI.LoginView
                         ExaminationRepository.GetInstance();
                         ExaminationDoctorRepository.GetInstance();
                         NotificationDoctorRepository.GetInstance();
+                        NotificationPatientRepository.GetInstance();
                         OperationDoctorRepository.GetInstance();
                         Doctor loggedDoctor = doctorRepository.GetById(_usernameInput);
                         new DoctorWindow(loggedDoctor).ShowDialog();

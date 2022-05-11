@@ -12,14 +12,14 @@
                 <DataGridTextColumn Header="Doctor" FontSize="18" Width ="140">
                     <DataGridTextColumn.Binding>
                         <MultiBinding StringFormat="{}{0} {1}">
-                            <Binding Path="Notification.Doctor.Name" />
-                            <Binding Path="Notification.Doctor.Surname"/>
+                            <Binding Path="Doctor.Name" />
+                            <Binding Path="Doctor.Surname"/>
                         </MultiBinding>
                     </DataGridTextColumn.Binding>
                 </DataGridTextColumn>
 
-                <DataGridTextColumn Header="Old appointment" FontSize="18" Binding="{Binding CurrentExamination.Appointment}" Width =" 180"/>
-                <DataGridTextColumn Header="New appointment" FontSize="18" Binding="{Binding NewExamination.Appointment}" Width =" 180"/>
+                <DataGridTextColumn Header="Old appointment" FontSize="18" Binding="{Binding OldAppointment}" Width =" 180"/>
+                <DataGridTextColumn Header="New appointment" FontSize="18" Binding="{Binding NewAppointment}" Width =" 180"/>
             </DataGrid.Columns>
         </DataGrid>
         </Grid>

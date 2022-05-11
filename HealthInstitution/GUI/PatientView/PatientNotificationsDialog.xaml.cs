@@ -42,9 +42,10 @@ namespace HealthInstitution.GUI.PatientView
             foreach (Notification notification in patientsNotifications)
             {
                 dataGrid.Items.Add(notification);
-
-                _notificationRepository.Delete(notification.Id);
-                _patientRepository.DeleteNotification(_loggedPatient, notification);
+                notification.ActiveForPatient = false;
+                NotificationRepository.GetInstance().Save();
+                /*_notificationRepository.Delete(notification.Id);
+                _patientRepository.DeleteNotification(_loggedPatient, notification);*/
             }
             dataGrid.Items.Refresh();
         }

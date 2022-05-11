@@ -57,14 +57,16 @@ namespace HealthInstitution.Core.Notifications.Repository
             foreach (var notification in allNotifications)
             {
                 int id = (int)notification["id"];
-                DateTime oldAppointment = (DateTime)notification["oldAppointment"];
+                DateTime? oldAppointment = (DateTime?)notification["oldAppointment"];
                 DateTime newAppointment = (DateTime)notification["newAppointment"];
+                bool activeForDoctor = (bool)notification["activeForDoctor"];
+                bool activeForPatient = (bool)notification["activeForPatient"];
                 /*String doctorUsername = (String)notification["doctor"];
                 String patientUsername = (String)notification["patient"];
                 Doctor doctor = doctorsByUsername[doctorUsername];
                 Patient patient = patientsByUsername[patientUsername];*/
 
-                Notification loadedNotification = new Notification(id,oldAppointment,newAppointment,null,null);
+                Notification loadedNotification = new Notification(id,oldAppointment,newAppointment,null,null,activeForDoctor, activeForPatient);
 
                 if (id > _maxId) { _maxId = id; }
 
@@ -84,6 +86,8 @@ namespace HealthInstitution.Core.Notifications.Repository
                     id = notification.Id,
                     oldAppointment = notification.OldAppointment,
                     newAppointment = notification.NewAppointment,
+                    activeForDoctor = notification.ActiveForDoctor,
+                    activeForPatient=notification.ActiveForPatient
                     //doctor=notification.Doctor.Username,
                     //patient=notification.Patient.Username
                 }) ;
@@ -109,12 +113,19 @@ namespace HealthInstitution.Core.Notifications.Repository
         public void Add(DateTime oldAppointment, DateTime newAppointment, Doctor doctor, Patient patient)
         {
             int id = ++this._maxId;
-            Notification notification = new Notification(id, oldAppointment, newAppointment, doctor, patient);
+            Notification notification;
+            if (oldAppointment.Year==1)
+                notification = new Notification(id, null, newAppointment, doctor, patient,true,true);
+            else
+                notification = new Notification(id, oldAppointment, newAppointment, doctor, patient, true, true);
             doctor.Notifications.Add(notification);
             patient.Notifications.Add(notification);
             this.Notifications.Add(notification);
             this.NotificationsById.Add(id, notification);
             Save();
+            NotificationPatientRepository.GetInstance().Save();
+            NotificationDoctorRepository.GetInstance().Save();
+
         }
 
         public void Delete(int id)

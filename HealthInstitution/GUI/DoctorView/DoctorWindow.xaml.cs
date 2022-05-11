@@ -14,6 +14,8 @@ using System.Windows.Shapes;
 using System.Windows.Forms;
 using HealthInstitution.GUI.LoginView;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
+using HealthInstitution.Core.Examinations.Repository;
+using HealthInstitution.Core.Notifications.Model;
 
 namespace HealthInstitution.GUI.DoctorView
 {
@@ -25,15 +27,25 @@ namespace HealthInstitution.GUI.DoctorView
         private Doctor _loggedDoctor;
         public DoctorWindow(Doctor doctor)
         {
-            this._loggedDoctor = doctor;
             InitializeComponent();
-            if (this._loggedDoctor.Notifications.Count > 0) 
+            this._loggedDoctor = doctor;
+            ShowNotificationsDialog();
+        }
+        private void ShowNotificationsDialog()
+        {
+            ExaminationDoctorRepository.GetInstance();
+            int activeNotifications = 0;
+            foreach (Notification notification in this._loggedDoctor.Notifications)
+            {
+                if (notification.ActiveForDoctor)
+                    activeNotifications++;
+            }
+            if (activeNotifications > 0)
             {
                 DoctorNotificationsDialog doctorNotificationsDialog = new DoctorNotificationsDialog(this._loggedDoctor);
                 doctorNotificationsDialog.ShowDialog();
             }
         }
-
         private void LogOut_Click(object sender, RoutedEventArgs e)
         {
             if (System.Windows.MessageBox.Show("Are you sure you want to log out?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)

@@ -17,6 +17,7 @@ using HealthInstitution.Core.Examinations.Repository;
 using HealthInstitution.GUI.LoginView;
 using HealthInstitution.GUI.PatientView;
 using HealthInstitution.Core.SystemUsers.Patients.Model;
+using HealthInstitution.Core.Notifications.Model;
 
 namespace HealthInstitution.GUI.UserWindow
 {
@@ -30,16 +31,26 @@ namespace HealthInstitution.GUI.UserWindow
         public PatientWindow(Patient loggedPatient)
         {
             InitializeComponent();
-            ExaminationDoctorRepository.GetInstance();
             this._loggedPatient = loggedPatient;
-            if (this._loggedPatient.Notifications.Count() > 0)
+            ShowNotificationsDialog();
+        }
+        private void ShowNotificationsDialog()
+        {
+            ExaminationDoctorRepository.GetInstance();
+            int activeNotifications = 0;
+            foreach (Notification notification in this._loggedPatient.Notifications)
+            {
+                if (notification.ActiveForPatient)
+                    activeNotifications++;
+            }
+            if (activeNotifications > 0)
             {
                 PatientNotificationsDialog patientNotificationsDialog = new PatientNotificationsDialog(this._loggedPatient);
                 patientNotificationsDialog.ShowDialog();
             }
         }
 
-        private void LogOut_Click(object sender, RoutedEventArgs e)
+            private void LogOut_Click(object sender, RoutedEventArgs e)
         {
             if (System.Windows.MessageBox.Show("Are you sure you want to log out?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
             {

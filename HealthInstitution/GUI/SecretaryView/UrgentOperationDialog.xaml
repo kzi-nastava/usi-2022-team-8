@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:HealthInstitution.GUI.SecretaryView"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="UrgentOperation" Height="80" Width="550">
+        Title="UrgentOperation" Height="120" Width="600">
     <Grid>
         <DataGrid  ItemsSource="{Binding Operation}" AutoGenerateColumns="False" Name="dataGrid"  Height="250" VerticalAlignment="Top">
             <DataGrid.Columns>
@@ -19,7 +19,7 @@
                         </MultiBinding>
                     </DataGridTextColumn.Binding>
                 </DataGridTextColumn>
-                <DataGridTextColumn Header="Time" FontSize="18" Binding="{Binding Appointment}" Width =" 150"/>
+                <DataGridTextColumn Header="Time" FontSize="18" Binding="{Binding Appointment}" Width =" 200"/>
                 <DataGridTextColumn Header="Duration" FontSize="18" Binding="{Binding Duration}" Width =" 100"/>
                 <DataGridTextColumn Header="Room" FontSize="18" Binding="{Binding Room.Number}" Width =" 60"/>
             </DataGrid.Columns>

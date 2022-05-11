@@ -10,9 +10,9 @@
     <Grid>
         <DataGrid  ItemsSource="{Binding Notification}" AutoGenerateColumns="False" Name="dataGrid"  Height="250" VerticalAlignment="Top">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Patient username" FontSize="18" Binding="{Binding Notification.Patient.Username}" Width ="140"/>
-                <DataGridTextColumn Header="Old appointment" FontSize="18" Binding="{Binding CurrentExamination.Appointment}" Width =" 180"/>
-                <DataGridTextColumn Header="New appointment" FontSize="18" Binding="{Binding NewExamination.Appointment}" Width =" 180"/>
+                <DataGridTextColumn Header="Patient username" FontSize="18" Binding="{Binding Patient.Username}" Width ="140"/>
+                <DataGridTextColumn Header="Old appointment" FontSize="18" Binding="{Binding OldAppointment}" Width =" 180"/>
+                <DataGridTextColumn Header="New appointment" FontSize="18" Binding="{Binding NewAppointment}" Width =" 180"/>
             </DataGrid.Columns>
         </DataGrid>
     </Grid>

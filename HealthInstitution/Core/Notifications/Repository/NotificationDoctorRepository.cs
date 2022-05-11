@@ -57,7 +57,8 @@ namespace HealthInstitution.Core.Notifications.Repository
             foreach (var notification in notifications)
             {
                 Doctor doctor = notification.Doctor;
-                doctorUseranamesNotificationIds.Add(new { id = notification.Id, username = doctor.Username });
+                if(notification.ActiveForDoctor)
+                    doctorUseranamesNotificationIds.Add(new { id = notification.Id, username = doctor.Username });
             }
             var allPairs = JsonSerializer.Serialize(doctorUseranamesNotificationIds);
             File.WriteAllText(this._fileName, allPairs);
