@@ -51,10 +51,10 @@ public class ScheduleEditRequestFileRepository
 
     public void LoadFromFile()
     {
-        var roomsById = RoomRepository.GetInstance().RoomById;
-        var doctorsByUsername = DoctorRepository.GetInstance().DoctorsByUsername;
+        Dictionary<int, Room> roomsById = RoomRepository.GetInstance().RoomById;
+        Dictionary<String, Doctor> doctorsByUsername = DoctorRepository.GetInstance().DoctorsByUsername;
         ExaminationDoctorRepository.GetInstance();
-        var medicalRecordsByUsername = MedicalRecordRepository.GetInstance().MedicalRecordByUsername;
+        Dictionary<String, MedicalRecord> medicalRecordsByUsername = MedicalRecordRepository.GetInstance().MedicalRecordByUsername;
 
         var requests = JArray.Parse(File.ReadAllText(this._fileName));
         Examination loadedExamination;

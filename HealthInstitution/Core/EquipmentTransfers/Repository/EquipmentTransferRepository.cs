@@ -50,8 +50,8 @@ namespace HealthInstitution.Core.EquipmentTransfers.Repository
 
         private EquipmentTransfer Parse(JToken? equipmentTransfer)
         {
-            var equipmentById = EquipmentRepository.GetInstance().EquipmentById;
-            var roomById = RoomRepository.GetInstance().RoomById;
+            Dictionary<int, Equipment> equipmentById = EquipmentRepository.GetInstance().EquipmentById;
+            Dictionary<int, Room> roomById = RoomRepository.GetInstance().RoomById;
 
             int id = (int)equipmentTransfer["id"];
             int equipmentId = (int)equipmentTransfer["equipment"];

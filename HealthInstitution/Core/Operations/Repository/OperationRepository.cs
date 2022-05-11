@@ -47,27 +47,32 @@ namespace HealthInstitution.Core.Operations.Repository
                 return s_instance;
             }
         }
-        public void LoadFromFile()
+
+        private Operation Parse(JToken? operation)
         {
-            var roomsById = RoomRepository.GetInstance().RoomById;
-            var medicalRecordsByUsername = MedicalRecordRepository.GetInstance().MedicalRecordByUsername;
+            Dictionary<int, Room> roomsById = RoomRepository.GetInstance().RoomById;
+            Dictionary<String, MedicalRecord> medicalRecordsByUsername = MedicalRecordRepository.GetInstance().MedicalRecordByUsername;
+
+            int id = (int)operation["id"];
+            ExaminationStatus status;
+            Enum.TryParse(operation["status"].ToString(), out status);
+            DateTime appointment = (DateTime)operation["appointment"];
+            int duration = (int)operation["duration"];
+            int roomId = (int)operation["room"];
+            Room room = roomsById[roomId];
+            String patientUsername = (String)operation["medicalRecord"];
+            MedicalRecord medicalRecord = medicalRecordsByUsername[patientUsername];
+            String report = (String)operation["report"];
+
+            return new Operation(id, status, appointment, duration, room, null, medicalRecord, report);
+        }
+        public void LoadFromFile()
+        { 
             var allOperations = JArray.Parse(File.ReadAllText(this._fileName));
             foreach (var operation in allOperations)
             {
-                int id = (int)operation["id"];
-                ExaminationStatus status;
-                Enum.TryParse(operation["status"].ToString(), out status);
-                DateTime appointment = (DateTime)operation["appointment"];
-                int duration = (int)operation["duration"];
-                int roomId = (int)operation["room"];
-                Room room = roomsById[roomId];
-                /*String doctorUsername = (String)operation["doctor"];*/
-                String patientUsername = (String)operation["medicalRecord"];
-                MedicalRecord medicalRecord = medicalRecordsByUsername[patientUsername];
-                String report = (String)operation["report"];
-
-                Operation loadedOperation = new Operation(id, status, appointment, duration, room, null, medicalRecord, report);
-
+                Operation loadedOperation = Parse(operation);
+                int id = loadedOperation.Id;
                 if (id > _maxId) { _maxId = id; }
 
                 this.Operations.Add(loadedOperation);
@@ -213,7 +218,7 @@ namespace HealthInstitution.Core.Operations.Repository
         {
             bool isAvailable;
             List<Room> availableRooms = new List<Room>();
-            var rooms = RoomRepository.GetInstance().GetAll();
+            var rooms = RoomRepository.GetInstance().GetNotRenovating();
             foreach (var room in rooms)
             {
                 if (room.Type != RoomType.OperatingRoom) continue;

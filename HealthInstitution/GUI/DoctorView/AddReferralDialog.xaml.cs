@@ -81,7 +81,7 @@ namespace HealthInstitution.GUI.DoctorView
             specialtyComboBox.Items.Refresh();
         }
 
-        private void CreateWithDoctor()
+        private void CreateReferralWithDoctor()
         {
             this.Close();
             Doctor refferedDoctor = (Doctor)doctorComboBox.SelectedItem;
@@ -91,7 +91,7 @@ namespace HealthInstitution.GUI.DoctorView
             System.Windows.MessageBox.Show("You have created the referral!", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
-        private void CreateWithSpecialty()
+        private void CreateReferralWithSpecialty()
         {
             this.Close();
             SpecialtyType specialtyType = (SpecialtyType)specialtyComboBox.SelectedIndex;
@@ -105,11 +105,11 @@ namespace HealthInstitution.GUI.DoctorView
         {
             if ((bool)doctorRadioButton.IsChecked)
             {
-                CreateWithDoctor();
+                CreateReferralWithDoctor();
             }
             else if ((bool)specialtyRadioButton.IsChecked)
             {
-                CreateWithSpecialty();
+                CreateReferralWithSpecialty();
             }
             else
             {

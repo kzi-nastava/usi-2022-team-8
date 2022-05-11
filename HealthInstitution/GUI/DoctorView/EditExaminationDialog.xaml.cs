@@ -68,7 +68,7 @@ namespace HealthInstitution.GUI.DoctorView
             minuteComboBox.SelectedItem = examinationMinutes;
         }
 
-        private ExaminationDTO CreateExaminationByForms()
+        private ExaminationDTO CreateExaminationDTOFromInputData()
         {
             DateTime appointment = (DateTime)datePicker.SelectedDate;
             int minutes = Int32.Parse(minuteComboBox.Text);
@@ -84,7 +84,7 @@ namespace HealthInstitution.GUI.DoctorView
         {
             try
                 {
-                ExaminationDTO examination = CreateExaminationByForms();
+                ExaminationDTO examination = CreateExaminationDTOFromInputData();
                 if (examination.Appointment <= DateTime.Now)
                 {
                     System.Windows.MessageBox.Show("You have to change dates for upcoming ones!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);

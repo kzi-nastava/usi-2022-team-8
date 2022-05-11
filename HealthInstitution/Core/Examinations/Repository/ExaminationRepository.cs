@@ -56,10 +56,10 @@ internal class ExaminationRepository
         }
     }
 
-    public Examination Parse(JToken? examination)
+    private Examination Parse(JToken? examination)
     {
-        var roomsById = RoomRepository.GetInstance().RoomById;
-        var medicalRecordsByUsername = MedicalRecordRepository.GetInstance().MedicalRecordByUsername;
+        Dictionary<int, Room> roomsById = RoomRepository.GetInstance().RoomById;
+        Dictionary<String, MedicalRecord> medicalRecordsByUsername = MedicalRecordRepository.GetInstance().MedicalRecordByUsername;
 
         int id = (int)examination["id"];
         ExaminationStatus status;
@@ -233,7 +233,7 @@ internal class ExaminationRepository
     {
         bool isAvailable;
         List<Room> availableRooms = new List<Room>();
-        var rooms = RoomRepository.GetInstance().GetAll();
+        var rooms = RoomRepository.GetInstance().GetNotRenovating();
         foreach (var room in rooms)
         {
             if (room.Type != RoomType.ExaminationRoom) continue;
@@ -297,8 +297,8 @@ internal class ExaminationRepository
         Patient patient = medicalRecord.Patient;
         DateTime appointment = examinationDTO.Appointment;
 
-        CheckIfDoctorIsAvailable(doctor, examinationDTO.Appointment);
-        CheckIfPatientIsAvailable(patient, appointment);
+       /* CheckIfDoctorIsAvailable(doctor, examinationDTO.Appointment);
+        CheckIfPatientIsAvailable(patient, appointment);*/
         var room = FindAvailableRoom(appointment);
 
         //ExaminationDTO newExamination = new ExaminationDTO(appointment, room, doctor, medicalRecord);

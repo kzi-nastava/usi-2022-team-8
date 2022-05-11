@@ -11,6 +11,7 @@ using HealthInstitution.Core.TrollCounters.Repository;
 using HealthInstitution.Core.EquipmentTransfers.Functionality;
 using HealthInstitution.Core.SystemUsers.Patients.Repository;
 using HealthInstitution.Core.SystemUsers.Patients.Model;
+using HealthInstitution.Core.Renovations.Functionality;
 
 namespace HealthInstitution.GUI.LoginView
 {
@@ -91,6 +92,7 @@ namespace HealthInstitution.GUI.LoginView
         private static void Main(string[] args)
         {
             EquipmentTransferChecker.UpdateByTransfer();
+            RenovationChecker.UpdateByRenovation(); 
             LoginWindow window = new LoginWindow();
             window.ShowDialog();
         }
