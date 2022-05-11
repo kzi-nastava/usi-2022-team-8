@@ -82,7 +82,7 @@ namespace HealthInstitution.GUI.SecretaryView
                         if (tuple.Item2 == 0)
                         {
                             Operation currentOperation = OperationRepository.GetInstance().GetById(tuple.Item1);
-                            Operation newOperation = new Operation(currentOperation.Id, ExaminationStatus.Scheduled, tuple.Item3,currentOperation.Duration, currentOperation.Room, currentOperation.Doctor, currentOperation.MedicalRecord);
+                            Operation newOperation = new Operation(currentOperation.Id, tuple.Item3,currentOperation.Duration, currentOperation.Room, currentOperation.Doctor, currentOperation.MedicalRecord);
                             delayedAppointments.Add(new ScheduleEditRequest(0,currentOperation,newOperation, Core.RestRequests.Model.RestRequestState.OnHold));
                         }
                         

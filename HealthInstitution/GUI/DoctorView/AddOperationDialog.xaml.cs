@@ -1,4 +1,6 @@
 ﻿using System.Windows;
+using HealthInstitution.Core.MedicalRecords.Repository;
+using HealthInstitution.Core.Operations.Model;
 using HealthInstitution.Core.Operations.Repository;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using HealthInstitution.Core.SystemUsers.Patients.Model;
@@ -53,38 +55,34 @@ namespace HealthInstitution.GUI.DoctorView
             patientComboBox.SelectedIndex = 0;
         }
 
-        private void CollectForms()
+        private OperationDTO CreateOperationDTOFromInputData()
         {
-            DateTime appointment = (DateTime)datePicker.SelectedDate;
+            var appointment = (DateTime)datePicker.SelectedDate;
             int minutes = Int32.Parse(minuteComboBox.Text);
             int hours = Int32.Parse(hourComboBox.Text);
             appointment = appointment.AddHours(hours);
             appointment = appointment.AddMinutes(minutes);
             int duration = Int32.Parse(durationTextBox.Text);
-            Patient patient = (Patient)patientComboBox.SelectedItem;
+            var patient = (Patient)patientComboBox.SelectedItem;
+            var medicalRecord = MedicalRecordRepository.GetInstance().GetByPatientUsername(patient);
+
+            return new OperationDTO(appointment, duration, null, _loggedDoctor, medicalRecord);
         }
 
         private void Submit_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                DateTime appointment = (DateTime)datePicker.SelectedDate;
-                int minutes = Int32.Parse(minuteComboBox.Text);
-                int hours = Int32.Parse(hourComboBox.Text);
-                appointment = appointment.AddHours(hours);
-                appointment = appointment.AddMinutes(minutes);
-                int duration = Int32.Parse(durationTextBox.Text);
-                Patient patient = (Patient)patientComboBox.SelectedItem;
-                if (appointment <= DateTime.Now)
+                OperationDTO operationDTO = CreateOperationDTOFromInputData();
+                if (operationDTO.Appointment <= DateTime.Now)
                 {
                     System.Windows.MessageBox.Show("You have to change dates for upcoming ones!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                } else if (duration <= 15) {
+                } else if (operationDTO.Duration <= 15) {
                     System.Windows.MessageBox.Show("Operation can't last less than 15 minutes!", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
                 else
                 {
-                    OperationRepository.GetInstance().ReserveOperation(patient.Username, _loggedDoctor.Username, appointment, duration);
-                    OperationDoctorRepository.GetInstance().Save();
+                    OperationRepository.GetInstance().ReserveOperation(operationDTO);
                     this.Close();
                 }
             }
