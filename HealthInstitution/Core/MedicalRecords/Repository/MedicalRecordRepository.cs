@@ -64,14 +64,11 @@ namespace HealthInstitution.Core.MedicalRecords.Repository
                 items.Add(referralById[token]);
             return items;
         }
-        public void LoadFromFile()
+
+        private MedicalRecord Parse(JToken? medicalRecord)
         {
             Dictionary<string, Patient> patientByUsername = PatientRepository.GetInstance().PatientByUsername;
-            var medicalRecords = JArray.Parse(File.ReadAllText(_fileName));
-            //var medicalRecords = JsonSerializer.Deserialize<List<MedicalRecord>>(File.ReadAllText(@"..\..\..\Data\JSON\medicalRecords.json"), _options);
-            foreach (var medicalRecord in medicalRecords)
-            {
-                MedicalRecord medicalRecordTemp = new MedicalRecord((double)medicalRecord["height"],
+            return new MedicalRecord((double)medicalRecord["height"],
                                                                     (double)medicalRecord["weight"],
                                                                     JToken2Strings(medicalRecord["previousIlnesses"]),
                                                                     JToken2Strings(medicalRecord["allergens"]),
@@ -79,11 +76,19 @@ namespace HealthInstitution.Core.MedicalRecords.Repository
                                                                     JToken2Prescriptions(medicalRecord["prescriptionsId"]),
                                                                     JToken2Referrals(medicalRecord["referralsId"])
                                                                     );
-                this.MedicalRecords.Add(medicalRecordTemp);
-                this.MedicalRecordByUsername[medicalRecordTemp.Patient.Username] = medicalRecordTemp;
+        }
+        public void LoadFromFile()
+        {
+            var medicalRecords = JArray.Parse(File.ReadAllText(_fileName));
+            //var medicalRecords = JsonSerializer.Deserialize<List<MedicalRecord>>(File.ReadAllText(@"..\..\..\Data\JSON\medicalRecords.json"), _options);
+            foreach (var medicalRecord in medicalRecords)
+            {
+                MedicalRecord loadedMedicalRecord = Parse(medicalRecord);
+                this.MedicalRecords.Add(loadedMedicalRecord);
+                this.MedicalRecordByUsername[loadedMedicalRecord.Patient.Username] = loadedMedicalRecord;
             }
         }
-        private List<dynamic> ShortenMedicalRecord()
+        private List<dynamic> PrepareForSerialization()
         {
             List <dynamic> reducedMedicalRecords = new List<dynamic>();
             foreach (var medicalRecord in this.MedicalRecords)
@@ -109,7 +114,7 @@ namespace HealthInstitution.Core.MedicalRecords.Repository
         }
         public void Save()
         {
-            var allMedicalRecords = JsonSerializer.Serialize(ShortenMedicalRecord(), _options);
+            var allMedicalRecords = JsonSerializer.Serialize(PrepareForSerialization(), _options);
             File.WriteAllText(this._fileName, allMedicalRecords);
         }
         

@@ -46,13 +46,13 @@ namespace HealthInstitution.GUI.ManagerView
 
         private void FromRoomComboBox_Loaded(object sender, RoutedEventArgs e)
         {         
-            fromRoomComboBox.ItemsSource = _roomRepository.GetAvailableAndActiveRooms();
+            fromRoomComboBox.ItemsSource = _roomRepository.GetNotRenovating();
             fromRoomComboBox.SelectedItem = null;
         }
 
         private void ToRoomComboBox_Loaded(object sender, RoutedEventArgs e)
         {
-            toRoomComboBox.ItemsSource = _roomRepository.GetAvailableAndActiveRooms();
+            toRoomComboBox.ItemsSource = _roomRepository.GetNotRenovating();
             toRoomComboBox.SelectedItem = null;
         }
 

@@ -56,7 +56,7 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
 
         private void RoomComboBox_Loaded(object sender, RoutedEventArgs e)
         {     
-            List<Room> rooms = _roomRepository.GetActiveRooms();
+            List<Room> rooms = _roomRepository.GetActive();
             
             roomComboBox.ItemsSource = rooms;
             roomComboBox.SelectedItem = null;

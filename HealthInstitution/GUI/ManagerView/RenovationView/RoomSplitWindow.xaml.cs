@@ -72,7 +72,7 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
 
         private void SplittingRoomComboBox_Loaded(object sender, RoutedEventArgs e)
         {
-            List<Room> rooms = _roomRepository.GetActiveRooms();
+            List<Room> rooms = _roomRepository.GetActive();
 
             splitRoomComboBox.ItemsSource = rooms;
             splitRoomComboBox.SelectedItem = null;

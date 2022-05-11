@@ -71,7 +71,7 @@ namespace HealthInstitution.GUI.DoctorView
             dialog.ShowDialog();
         }
 
-        public void CreateExaminationByForms()
+        public void CreateExaminationDTOFromInputData()
         {
             double height = Double.Parse(heightTextBox.Text);
             double weight = Double.Parse(weightTextBox.Text);

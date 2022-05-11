@@ -46,52 +46,58 @@ namespace HealthInstitution.Core.Renovations.Repository
             }
         }
 
+        private Renovation Parse(JToken? renovation)
+        {
+            Dictionary<int, Room> roomById = RoomRepository.GetInstance().RoomById;
+
+            int id = (int)renovation["id"];
+            int roomId = (int)renovation["room"];
+            Room room = roomById[roomId];
+            DateTime startDate = (DateTime)renovation["startDate"];
+            DateTime endDate = (DateTime)renovation["endDate"];
+            String type = (String)renovation["type"];
+
+            if (type.Equals("simple"))
+            {
+                return new Renovation(id, room, startDate, endDate);
+            }
+            else if (type.Equals("merger"))
+            {
+                int roomForMergeId = (int)renovation["roomForMerge"];
+                Room roomForMerge = roomById[roomForMergeId];
+                int mergedRoomId = (int)renovation["mergedRoom"];
+                Room mergedRoom = roomById[mergedRoomId];
+                return new RoomMerger(id, room, roomForMerge, mergedRoom, startDate, endDate);
+            }
+            else
+            {
+                int firstRoomId = (int)renovation["firstRoom"];
+                Room firstRoom = roomById[firstRoomId];
+                int secondRoomId = (int)renovation["secondRoom"];
+                Room secondRoom = roomById[secondRoomId];
+                return new RoomSeparation(id, room, firstRoom, secondRoom, startDate, endDate);
+            }
+
+        }
         public void LoadFromFile()
         {
-            var roomById = RoomRepository.GetInstance().RoomById;
             var renovations = JArray.Parse(File.ReadAllText(_fileName));
             
             foreach (var renovation in renovations)
             {
-                Renovation renovationTemp;
-
-                int id = (int)renovation["id"];
-                int roomId = (int)renovation["room"];
-                Room room = roomById[roomId];
-                DateTime startDate = (DateTime)renovation["startDate"];
-                DateTime endDate = (DateTime)renovation["endDate"];
-                String type = (String)renovation["type"];
-
-                if (type.Equals("simple"))
-                {
-                    renovationTemp = new Renovation(id, room, startDate, endDate);
-                } else if (type.Equals("merger"))
-                {
-                    int roomForMergeId = (int)renovation["roomForMerge"];
-                    Room roomForMerge = roomById[roomForMergeId];
-                    int mergedRoomId = (int)renovation["mergedRoom"];
-                    Room mergedRoom = roomById[mergedRoomId];
-                    renovationTemp = new RoomMerger(id, room, roomForMerge, mergedRoom, startDate, endDate);
-                } else
-                {
-                    int firstRoomId = (int)renovation["firstRoom"];
-                    Room firstRoom = roomById[firstRoomId];
-                    int secondRoomId = (int)renovation["secondRoom"];
-                    Room secondRoom = roomById[secondRoomId];
-                    renovationTemp = new RoomSeparation(id, room, firstRoom, secondRoom, startDate, endDate);
-                }
-                
+                Renovation loadedRenovation = Parse(renovation);
+                int id = loadedRenovation.Id;
                 if (id > _maxId)
                 {
                     _maxId = id;
                 }
 
-                this.Renovations.Add(renovationTemp);
-                this.RenovationById.Add(renovationTemp.Id, renovationTemp);
+                this.Renovations.Add(loadedRenovation);
+                this.RenovationById.Add(id, loadedRenovation);
             }
         }
 
-        private List<dynamic> ShortenRenovation()
+        private List<dynamic> PrepareForSerialization()
         {
             List<dynamic> reducedRenovation = new List<dynamic>();
             foreach (Renovation renovation in this.Renovations)
@@ -146,7 +152,7 @@ namespace HealthInstitution.Core.Renovations.Repository
 
         public void Save()
         {
-            var allRenovations = JsonSerializer.Serialize(ShortenRenovation(), _options);
+            var allRenovations = JsonSerializer.Serialize(PrepareForSerialization(), _options);
             File.WriteAllText(this._fileName, allRenovations);
         }
 

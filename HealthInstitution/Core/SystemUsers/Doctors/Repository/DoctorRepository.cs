@@ -37,25 +37,28 @@ namespace HealthInstitution.Core.SystemUsers.Doctors.Repository
             }
             return s_instance;
         }
-
+        private Doctor Parse(JToken? doctor)
+        {
+            String username = (String)doctor["username"];
+            String password = (String)doctor["password"];
+            String name = (String)doctor["name"];
+            String surname = (String)doctor["surname"];
+            SpecialtyType specialtyType;
+            Enum.TryParse(doctor["specialty"].ToString(), out specialtyType);
+            return new Doctor(username, password, name, surname, specialtyType);
+        }
         public void LoadFromFile()
         {
             var allDoctors = JArray.Parse(File.ReadAllText(this._fileName));
             foreach (var doctor in allDoctors)
             {
-                String username = (String)doctor["username"];
-                String password = (String)doctor["password"];
-                String name = (String)doctor["name"];
-                String surname = (String)doctor["surname"];
-                SpecialtyType specialtyType;
-                Enum.TryParse(doctor["specialty"].ToString(), out specialtyType);
-                Doctor loadedDoctor = new Doctor(username, password, name, surname, specialtyType);
+                Doctor loadedDoctor = Parse(doctor);
                 this.Doctors.Add(loadedDoctor);
-                this.DoctorsByUsername.Add(username, loadedDoctor);
+                this.DoctorsByUsername.Add(loadedDoctor.Username, loadedDoctor);
             }
         }
 
-        public void Save()
+        private List<dynamic> PrepareForSerialization()
         {
             List<dynamic> reducedDoctors = new List<dynamic>();
             foreach (Doctor doctor in this.Doctors)
@@ -69,7 +72,12 @@ namespace HealthInstitution.Core.SystemUsers.Doctors.Repository
                     specialty = doctor.Specialty
                 });
             }
-            var allDoctors = JsonSerializer.Serialize(reducedDoctors, _options);
+            return reducedDoctors;
+        }
+
+        public void Save()
+        {
+            var allDoctors = JsonSerializer.Serialize(PrepareForSerialization(), _options);
             File.WriteAllText(this._fileName, allDoctors);
         }
 

@@ -80,7 +80,7 @@ namespace HealthInstitution.GUI.DoctorView
             return false;
         }
 
-        private PrescriptionDTO CreatePrescriptionByForms()
+        private PrescriptionDTO CreatePrescriptionDTOFromInputData()
         {
             Drug drug = (Drug)drugComboBox.SelectedItem;
             PrescriptionTime timeOfUse = (PrescriptionTime)timeComboBox.SelectedIndex;
@@ -93,7 +93,7 @@ namespace HealthInstitution.GUI.DoctorView
         {
             try
             {
-                PrescriptionDTO prescriptionDTO = CreatePrescriptionByForms();
+                PrescriptionDTO prescriptionDTO = CreatePrescriptionDTOFromInputData();
                 if (!IsPatientAlergic(prescriptionDTO.Drug.Ingredients))
                 {
                     Prescription prescription = _prescriptionRepository.Add(prescriptionDTO);

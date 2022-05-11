@@ -2,14 +2,9 @@
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using HealthInstitution.Core.SystemUsers.Doctors.Repository;
 using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.Referrals.Repository
 {
@@ -44,32 +39,37 @@ namespace HealthInstitution.Core.Referrals.Repository
                 return s_instance;
             }
         }
-        public void LoadFromFile()
+
+        private Referral Parse(JToken? referral)
         {
             Dictionary<string, Doctor> doctorByUsername = DoctorRepository.GetInstance().DoctorsByUsername;
+            ReferralType referralType;
+            Enum.TryParse(referral["type"].ToString(), out referralType);
+            SpecialtyType specialtyType;
+            Enum.TryParse(referral["referredSpecialty"].ToString(), out specialtyType);
+            return new Referral((int)referral["id"],
+                                      referralType,
+                                        doctorByUsername[(string)referral["prescribedBy"]],
+                                          doctorByUsername[(string)referral["referredDoctor"]],
+                                            specialtyType);
+        }
+        public void LoadFromFile()
+        {
             var referrals = JArray.Parse(File.ReadAllText(_fileName));
             //var referrals = JsonSerializer.Deserialize<List<Referral>>(File.ReadAllText(@"..\..\..\Data\JSON\referrals.json"), _options);
             foreach (var referral in referrals)
             {
-                ReferralType referralType;
-                Enum.TryParse(referral["type"].ToString(), out referralType);
-                SpecialtyType specialtyType;
-                Enum.TryParse(referral["referredSpecialty"].ToString(), out specialtyType);
-                Referral referralTemp = new Referral((int)referral["id"],
-                                                        referralType,
-                                                        doctorByUsername[(string)referral["prescribedBy"]],
-                                                        doctorByUsername[(string)referral["referredDoctor"]],
-                                                        specialtyType);
-                if (referralTemp.Id > _maxId)
+                Referral loadedReferral = Parse(referral);   
+                if (loadedReferral.Id > _maxId)
                 {
-                    _maxId = referralTemp.Id;
+                    _maxId = loadedReferral.Id;
                 }
 
-                this.Referrals.Add(referralTemp);
-                this.ReferralById[referralTemp.Id] = referralTemp;
+                this.Referrals.Add(loadedReferral);
+                this.ReferralById[loadedReferral.Id] = loadedReferral;
             }
         }
-        private List<dynamic> ShortenReferral()
+        private List<dynamic> PrepareForSerialization()
         {
             List<dynamic> reducedReferrals = new List<dynamic>();
             foreach (var referral in this.Referrals)
@@ -87,7 +87,7 @@ namespace HealthInstitution.Core.Referrals.Repository
         }
         public void Save()
         {
-            var allReferrals = JsonSerializer.Serialize(ShortenReferral(), _options);
+            var allReferrals = JsonSerializer.Serialize(PrepareForSerialization(), _options);
             File.WriteAllText(this._fileName, allReferrals);
         }
 
@@ -103,14 +103,14 @@ namespace HealthInstitution.Core.Referrals.Repository
             return null;
         }
 
-        public Referral Add(ReferralDTO newReferral)
+        public Referral Add(ReferralDTO referralDTO)
         {
             this._maxId++;
             int id = this._maxId;
-            ReferralType type = newReferral.Type;
-            Doctor prescribedBy = newReferral.PrescribedBy;
-            Doctor? referredDoctor = newReferral.ReferredDoctor;
-            SpecialtyType? referredSpecialty = newReferral.ReferredSpecialty;
+            ReferralType type = referralDTO.Type;
+            Doctor prescribedBy = referralDTO.PrescribedBy;
+            Doctor? referredDoctor = referralDTO.ReferredDoctor;
+            SpecialtyType? referredSpecialty = referralDTO.ReferredSpecialty;
 
             Referral referral = new Referral(id, type, prescribedBy, referredDoctor, referredSpecialty);
             this.Referrals.Add(referral);
@@ -120,12 +120,12 @@ namespace HealthInstitution.Core.Referrals.Repository
             return referral;
         }
 
-        public void Update(int id, ReferralDTO updatedReferral)
+        public void Update(int id, ReferralDTO referralDTO)
         {
             Referral referral = GetById(id);
-            referral.PrescribedBy = updatedReferral.PrescribedBy;
-            referral.ReferredDoctor = updatedReferral.ReferredDoctor;
-            referral.ReferredSpecialty = updatedReferral.ReferredSpecialty;
+            referral.PrescribedBy = referralDTO.PrescribedBy;
+            referral.ReferredDoctor = referralDTO.ReferredDoctor;
+            referral.ReferredSpecialty = referralDTO.ReferredSpecialty;
             ReferralById[id] = referral;
             Save();
         }

@@ -148,7 +148,7 @@ namespace HealthInstitution.GUI.ManagerView
         private List<TableItemEquipment> FilterEquipment()
         {
             List<TableItemEquipment> items = new List<TableItemEquipment>();
-            List<Room> rooms = _roomRepository.GetActiveRooms();
+            List<Room> rooms = _roomRepository.GetActive();
             foreach (Room room in rooms)
             {
                 if (!MatchRoomType(room))
@@ -262,7 +262,7 @@ namespace HealthInstitution.GUI.ManagerView
         private List<TableItemEquipment> SearchEquipment(string searchInput)
         {
             List<TableItemEquipment> items = new List<TableItemEquipment>();
-            List<Room> rooms = _roomRepository.GetActiveRooms();
+            List<Room> rooms = _roomRepository.GetActive();
             foreach (Room room in rooms)
             {
                 foreach (Equipment equipment in room.AvailableEquipment)
@@ -306,7 +306,7 @@ namespace HealthInstitution.GUI.ManagerView
         private List<TableItemEquipment> LoadRows()
         {
             List<TableItemEquipment> items = new List<TableItemEquipment>();
-            List<Room> rooms = _roomRepository.GetActiveRooms();
+            List<Room> rooms = _roomRepository.GetActive();
             foreach (Room room in rooms)
             {
                 foreach (Equipment equipment in room.AvailableEquipment)

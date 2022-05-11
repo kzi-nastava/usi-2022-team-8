@@ -63,7 +63,7 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
 
         private void FirstRoomComboBox_Loaded(object sender, RoutedEventArgs e)
         {
-            List<Room> rooms = _roomRepository.GetActiveRooms();
+            List<Room> rooms = _roomRepository.GetActive();
 
             firstRoomComboBox.ItemsSource = rooms;
             firstRoomComboBox.SelectedItem = null;
@@ -71,7 +71,7 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
 
         private void SecondRoomComboBox_Loaded(object sender, RoutedEventArgs e)
         {
-            List<Room> rooms = _roomRepository.GetActiveRooms();
+            List<Room> rooms = _roomRepository.GetActive();
 
             secondRoomComboBox.ItemsSource = rooms;
             secondRoomComboBox.SelectedItem = null;
