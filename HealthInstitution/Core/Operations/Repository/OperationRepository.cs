@@ -2,6 +2,7 @@
 using HealthInstitution.Core.Examinations.Repository;
 using HealthInstitution.Core.MedicalRecords.Model;
 using HealthInstitution.Core.MedicalRecords.Repository;
+using HealthInstitution.Core.Notifications.Repository;
 using HealthInstitution.Core.Operations.Model;
 using HealthInstitution.Core.Rooms.Model;
 using HealthInstitution.Core.Rooms.Repository;
@@ -244,6 +245,17 @@ namespace HealthInstitution.Core.Operations.Repository
             return availableRooms[index];
         }
 
+        public void SwapOperationValue(Operation operation)
+        {
+            var oldOperation = this.OperationsById[operation.Id];
+            this.Operations.Remove(oldOperation);
+            this.Operations.Add(operation);
+            operation.Doctor.Operations.Add(operation);
+            oldOperation.Doctor.Operations.Remove(oldOperation);
+            this.OperationsById[operation.Id] = operation;
+            Save();
+        }
+
         public void ReserveOperation(string patientUsername, string doctorUsername, DateTime dateTime, int duration)
         {
             Doctor doctor = DoctorRepository.GetInstance().GetById(doctorUsername);
@@ -253,6 +265,45 @@ namespace HealthInstitution.Core.Operations.Repository
             var room = FindAvailableRoom(dateTime, duration);
             var medicalRecord = MedicalRecordRepository.GetInstance().GetByPatientUsername(patient);
             Add(dateTime, duration, room, doctor, medicalRecord, "");
+        }
+
+        public List<Tuple<int, int, DateTime>> ReserveUrgentOperation(string patientUsername, SpecialtyType specialtyType, int duration)
+        {
+            List<Tuple<int, int, DateTime>> priorityExaminationsAndOperations = new List<Tuple<int, int, DateTime>>();
+            Patient patient = PatientRepository.GetInstance().GetByUsername(patientUsername);
+            List<DateTime> nextTwoHoursAppointments = ExaminationRepository.FindNextTwoHoursAppointments();
+            foreach (DateTime appointment in nextTwoHoursAppointments)
+            {
+                foreach (Doctor doctor in DoctorRepository.GetInstance().Doctors)
+                {
+                    if (doctor.Specialty == specialtyType)
+                    {
+                        try
+                        {
+                            CheckIfDoctorIsAvailable(doctor, appointment, duration);
+                            CheckIfPatientIsAvailable(patient, appointment, duration);
+                            var room = FindAvailableRoom(appointment, duration);
+                            var medicalRecord = MedicalRecordRepository.GetInstance().GetByPatientUsername(patient);
+                            Add(appointment, duration, room, doctor, medicalRecord);
+                            NotificationRepository.GetInstance().Add(new DateTime(1, 1, 1), appointment, doctor, patient);
+                            priorityExaminationsAndOperations.Add(new Tuple<int, int, DateTime>(this._maxId, 2, appointment));
+                            return priorityExaminationsAndOperations;
+                        }
+                        catch
+                        {
+                            continue;
+                        }
+                    }
+                }
+
+            }
+            priorityExaminationsAndOperations.Add(new Tuple<int, int, DateTime>(this._maxId+1, 2, new DateTime(1, 1, 1)));
+            List<Tuple<int, int, DateTime>> temporaryPriority = ExaminationRepository.FindClosest(nextTwoHoursAppointments, specialtyType);
+            foreach (Tuple<int, int, DateTime> tuple in temporaryPriority)
+            {
+                priorityExaminationsAndOperations.Add(tuple);
+            }
+            return priorityExaminationsAndOperations;
         }
     }
 }
