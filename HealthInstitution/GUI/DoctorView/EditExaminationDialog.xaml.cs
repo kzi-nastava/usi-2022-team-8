@@ -68,7 +68,7 @@ namespace HealthInstitution.GUI.DoctorView
             minuteComboBox.SelectedItem = examinationMinutes;
         }
 
-        private ExaminationDTO CreateExaminationDTOFromInputData()
+        private ExaminationDTO CreateExaminationByForms()
         {
             DateTime appointment = (DateTime)datePicker.SelectedDate;
             int minutes = Int32.Parse(minuteComboBox.Text);
@@ -77,14 +77,15 @@ namespace HealthInstitution.GUI.DoctorView
             appointment = appointment.AddMinutes(minutes);
             Patient patient = (Patient)patientComboBox.SelectedItem;
             MedicalRecord medicalRecord = MedicalRecordRepository.GetInstance().GetByPatientUsername(patient);
-            ExaminationDTO examination = new ExaminationDTO(appointment, null, null, medicalRecord);
+            var doctor = _selectedExamination.Doctor;
+            ExaminationDTO examination = new ExaminationDTO(appointment, null, doctor, medicalRecord);
             return examination;
         }
         private void Submit_Click(object sender, RoutedEventArgs e)
         {
             try
                 {
-                ExaminationDTO examination = CreateExaminationDTOFromInputData();
+                ExaminationDTO examination = CreateExaminationByForms();
                 if (examination.Appointment <= DateTime.Now)
                 {
                     System.Windows.MessageBox.Show("You have to change dates for upcoming ones!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);

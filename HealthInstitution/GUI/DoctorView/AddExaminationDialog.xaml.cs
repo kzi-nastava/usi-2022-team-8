@@ -44,7 +44,6 @@ namespace HealthInstitution.GUI.DoctorView
             hourComboBox.ItemsSource = hours;
             hourComboBox.SelectedIndex = 0;
         }
-
         private void PatientComboBox_Loaded(object sender, RoutedEventArgs e)
         {
             patientComboBox.Items.Clear();

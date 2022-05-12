@@ -1,4 +1,5 @@
 ﻿using HealthInstitution.Core.MedicalRecords.Repository;
+using HealthInstitution.Core.Notifications.Model;
 using HealthInstitution.Core.SystemUsers.Patients.Model;
 using HealthInstitution.Core.SystemUsers.Users.Model;
 using HealthInstitution.Core.SystemUsers.Users.Repository;
@@ -113,6 +114,11 @@ namespace HealthInstitution.Core.SystemUsers.Patients.Repository
             }
             Save();
             userRepository.Save();
+        }
+        public void DeleteNotification(Patient patient, Notification notification)
+        {
+            patient.Notifications.Remove(notification);
+            Save();
         }
     }
 }

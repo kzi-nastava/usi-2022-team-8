@@ -1,4 +1,5 @@
 ﻿using HealthInstitution.GUI.LoginView;
+using HealthInstitution.GUI.SecretaryView;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -36,6 +37,24 @@ namespace HealthInstitution.GUI.UserWindow
         {
             ExaminationRequestsReview examinationRequestsReview = new ExaminationRequestsReview();
             examinationRequestsReview.ShowDialog();
+        }
+
+
+        private void UrgentExaminations_Click(object sender, RoutedEventArgs e)
+        {
+            AddUrgentExaminationDialog addUrgentExaminationDialog=new AddUrgentExaminationDialog();
+            addUrgentExaminationDialog.ShowDialog();
+        }
+
+        private void UrgentOperations_Click(object sender, RoutedEventArgs e)
+        {
+            AddUrgentOperationDialog addUrgentOperationDialog = new AddUrgentOperationDialog();
+            addUrgentOperationDialog.ShowDialog();
+        }
+
+        private void Scheduling_Click(object sender, RoutedEventArgs e)
+        {
+
         }
 
         private void LogOut_Click(object sender, RoutedEventArgs e)

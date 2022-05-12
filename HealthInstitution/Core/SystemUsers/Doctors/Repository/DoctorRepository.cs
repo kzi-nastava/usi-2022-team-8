@@ -1,4 +1,6 @@
 ﻿using HealthInstitution.Core.Examinations.Model;
+using HealthInstitution.Core.Examinations.Repository;
+using HealthInstitution.Core.Notifications.Model;
 using HealthInstitution.Core.Operations.Model;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using Newtonsoft.Json.Linq;
@@ -173,5 +175,10 @@ namespace HealthInstitution.Core.SystemUsers.Doctors.Repository
             return operationsForDate;
         }
 
+        public void DeleteNotification(Doctor doctor, Notification notification)
+        {
+            doctor.Notifications.Remove(notification);
+            Save();
+        }
     }
 }
