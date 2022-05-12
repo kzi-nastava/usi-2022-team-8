@@ -10,7 +10,7 @@ public class User
     public String Surname { get; set; }
     public BlockState Blocked { get; set; }
 
-    public User(UserType type, string username, string password, string name, string surname)
+    public User(UserType type, String username, String password, String name, String surname)
     {
         this.Type = type;
         this.Username = username;

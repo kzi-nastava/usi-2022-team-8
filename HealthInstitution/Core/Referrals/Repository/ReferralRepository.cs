@@ -69,17 +69,27 @@ namespace HealthInstitution.Core.Referrals.Repository
                 this.ReferralById[loadedReferral.Id] = loadedReferral;
             }
         }
+
+        private String GetReferredDoctorUsername(Referral referral)
+        {
+            if (referral.ReferredDoctor != null)
+            {
+                return referral.ReferredDoctor.Username;
+            }
+            return null;
+        }
         private List<dynamic> PrepareForSerialization()
         {
             List<dynamic> reducedReferrals = new List<dynamic>();
             foreach (var referral in this.Referrals)
             {
+                
                 reducedReferrals.Add(new
                 {
                     id=referral.Id,
                     type=referral.Type,
                     prescribedBy=referral.PrescribedBy.Username,
-                    referredDoctor=referral.ReferredDoctor.Username,
+                    referredDoctor=GetReferredDoctorUsername(referral),
                     referredSpecialty=referral.ReferredSpecialty
                 });
             }

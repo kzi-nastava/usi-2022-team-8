@@ -68,27 +68,27 @@ namespace HealthInstitution.Core.SystemUsers.Patients.Repository
             return null;
         }
 
-        public void Add(string username, string password, string name, string surname, double height, double weight, List<string> allergens, List<string> previousIlnesses)
+        public void Add(UserDTO userDTO, double height, double weight, List<string> allergens, List<string> previousIlnesses)
         {
-            Patient patient = new Patient(Users.Model.UserType.Patient, username, password, name, surname, Users.Model.BlockState.NotBlocked);
-            
+            Patient patient = new Patient(userDTO.Type, userDTO.Username, userDTO.Password, userDTO.Name, userDTO.Surname);
             MedicalRecordRepository medicalRecordRepository = MedicalRecordRepository.GetInstance();
             medicalRecordRepository.Add(height, weight, previousIlnesses, allergens, patient);
+
             this.Patients.Add(patient);
-            this.PatientByUsername[username] = patient;
+            this.PatientByUsername[userDTO.Username] = patient;
             Save();
         }
 
-        public void Update(string username, string password, string name, string surname, Users.Model.BlockState blockState)
+        public void Update(UserDTO userDTO)
         {
-            Patient patient = this.GetByUsername(username);
-            patient.Password = password;
-            patient.Name = name;
-            patient.Surname = surname;
-            patient.Blocked = blockState;
-            this.PatientByUsername[username] = patient;
+            Patient patient = this.GetByUsername(userDTO.Username);
+            patient.Password = userDTO.Password;
+            patient.Name = userDTO.Name;
+            patient.Surname = userDTO.Surname;
+
+            this.PatientByUsername[userDTO.Username] = patient;
             Save();
-            userRepository.Update(username, password, name, surname);
+            userRepository.Update(userDTO);
         }
 
         public void Delete(string username)
