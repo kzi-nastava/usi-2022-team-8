@@ -4,19 +4,7 @@ using HealthInstitution.Core.Operations.Model;
 using HealthInstitution.Core.Operations.Repository;
 using HealthInstitution.Core.SystemUsers.Patients.Model;
 using HealthInstitution.Core.SystemUsers.Patients.Repository;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace HealthInstitution.GUI.DoctorView
 {
@@ -31,8 +19,13 @@ namespace HealthInstitution.GUI.DoctorView
         {
             this._selectedOperation = operation;
             InitializeComponent();
-            datePicker.SelectedDate = this._selectedOperation.Appointment;
-            durationTextBox.Text = operation.Duration.ToString();
+            Load();
+        }
+
+        public void Load()
+        {
+            datePicker.SelectedDate = _selectedOperation.Appointment;
+            durationTextBox.Text = _selectedOperation.Duration.ToString();
         }
 
         private void PatientComboBox_Loaded(object sender, RoutedEventArgs e)
@@ -43,7 +36,7 @@ namespace HealthInstitution.GUI.DoctorView
             {
                 patientComboBox.Items.Add(patient);
             }
-            patientComboBox.SelectedItem = this._selectedOperation.MedicalRecord.Patient;
+            patientComboBox.SelectedItem = _selectedOperation.MedicalRecord.Patient;
         }
 
         private void HourComboBox_Loaded(object sender, RoutedEventArgs e)
@@ -55,7 +48,7 @@ namespace HealthInstitution.GUI.DoctorView
                 hours.Add(i.ToString());
             }
             hourComboBox.ItemsSource = hours;
-            hourComboBox.SelectedItem = this._selectedOperation.Appointment.Hour.ToString();
+            hourComboBox.SelectedItem = _selectedOperation.Appointment.Hour.ToString();
         }
 
         private void MinuteComboBox_Loaded(object sender, RoutedEventArgs e)
@@ -75,27 +68,32 @@ namespace HealthInstitution.GUI.DoctorView
             minuteComboBox.SelectedItem = operationMinutes;
         }
 
-        private void Save_Click(object sender, RoutedEventArgs e)
+        private OperationDTO CreateOperationDTOFromInputData()
+        {
+            DateTime appointment = (DateTime)datePicker.SelectedDate;
+            int minutes = Int32.Parse(minuteComboBox.Text);
+            int hours = Int32.Parse(hourComboBox.Text);
+            appointment = appointment.AddHours(hours);
+            appointment = appointment.AddMinutes(minutes);
+            int duration = Int32.Parse(durationTextBox.Text);
+
+            Patient patient = (Patient)patientComboBox.SelectedItem;
+            MedicalRecord medicalRecord = MedicalRecordRepository.GetInstance().GetByPatientUsername(patient);
+
+            return new OperationDTO(appointment, duration, null, _selectedOperation.Doctor, medicalRecord);
+        }
+        private void Submit_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                DateTime appointment = (DateTime)datePicker.SelectedDate;
-                int minutes = Int32.Parse(minuteComboBox.Text);
-                int hours = Int32.Parse(hourComboBox.Text);
-                appointment = appointment.AddHours(hours);
-                appointment = appointment.AddMinutes(minutes);
-                int duration = Int32.Parse(durationTextBox.Text);
-
-                Patient patient = (Patient)patientComboBox.SelectedItem;
-                MedicalRecord medicalRecord = MedicalRecordRepository.GetInstance().GetByPatientUsername(patient);
-                if (appointment <= DateTime.Now)
+                OperationDTO operationDTO = CreateOperationDTOFromInputData();
+                if (operationDTO.Appointment <= DateTime.Now)
                 {
                     System.Windows.MessageBox.Show("You have to change dates for upcoming ones!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 }
                 else
                 {
-                    OperationRepository.GetInstance().Update(this._selectedOperation.Id, appointment, medicalRecord, duration);
-                    //ExaminationDoctorRepository.GetInstance().Save();
+                    OperationRepository.GetInstance().Update(this._selectedOperation.Id, operationDTO);
                     this.Close();
                 }
             }

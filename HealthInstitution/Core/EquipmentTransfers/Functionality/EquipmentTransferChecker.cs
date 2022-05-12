@@ -20,6 +20,7 @@ namespace HealthInstitution.Core.EquipmentTransfers.Functionality
         public static void UpdateByTransfer()
         {
             List<int> equipmentTransfersToRemove = new List<int>();
+            
             foreach (EquipmentTransfer equipmentTransfer in s_equipmentTransferRepository.EquipmentTransfers)
             {
                 if (equipmentTransfer.TransferTime == DateTime.Today)
@@ -29,7 +30,12 @@ namespace HealthInstitution.Core.EquipmentTransfers.Functionality
                     equipmentTransfersToRemove.Add(equipmentTransfer.Id);
                 }
             }
+            RemoveOldTransfers(equipmentTransfersToRemove);
+            
+        }
 
+        private static void RemoveOldTransfers(List<int> equipmentTransfersToRemove)
+        {
             foreach (int id in equipmentTransfersToRemove)
             {
                 s_equipmentTransferRepository.Delete(id);
@@ -49,6 +55,22 @@ namespace HealthInstitution.Core.EquipmentTransfers.Functionality
             {
                 Equipment newEquipment = s_equipmentRepository.Add(quantity, equipment.Name, equipment.Type, equipment.IsDynamic);
                 s_roomRepository.AddToRoom(toRoom.Id, newEquipment);
+            }
+        }
+
+        public static void Transfer(List<Equipment> toRoomEquipments, Equipment equipment, int quantity)
+        {
+            equipment.Quantity -= quantity;
+            int index = toRoomEquipments.FindIndex(eq => (eq.Name == equipment.Name && eq.Type == equipment.Type));
+            if (index >= 0)
+            {
+                toRoomEquipments[index].Quantity += quantity;
+                s_equipmentRepository.Save();
+            }
+            else
+            {
+                Equipment newEquipment = s_equipmentRepository.Add(quantity, equipment.Name, equipment.Type, equipment.IsDynamic);
+                toRoomEquipments.Add(newEquipment);
             }
         }
     }

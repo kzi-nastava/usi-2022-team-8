@@ -47,25 +47,31 @@ public class DrugRepository
             items.Add(ingredientById[token]);
         return items;
     }
+
+    private Drug Parse(JToken? drug)
+    {
+        DrugState drugState;
+        Enum.TryParse<DrugState>((string)drug["state"], out drugState);
+        return new Drug((int)drug["id"],
+                                  (string)drug["name"],
+                                  drugState,
+                                  JToken2Ingredients(drug["ingredients"]));
+    }
     public void LoadFromFile()
     {
-        var drugs = JArray.Parse(File.ReadAllText(_fileName));foreach (var drug in drugs)
+        var drugs = JArray.Parse(File.ReadAllText(_fileName));
+        foreach (var drug in drugs)
         {
-            DrugState drugState;
-            Enum.TryParse<DrugState>((string)drug["state"], out drugState);
-            Drug drugTemp = new Drug((int)drug["id"],
-                                      (string)drug["name"],
-                                      drugState,
-                                      JToken2Ingredients(drug["ingredients"]));
-            if (drugTemp.Id > _maxId)
+            Drug loadedDrug = Parse(drug);
+            if (loadedDrug.Id > _maxId)
             {
-                _maxId = drugTemp.Id;
+                _maxId = loadedDrug.Id;
             }
-            this.Drugs.Add(drugTemp);
-            this.DrugById[drugTemp.Id] = drugTemp;
+            this.Drugs.Add(loadedDrug);
+            this.DrugById[loadedDrug.Id] = loadedDrug;
         }
     }
-    private List<dynamic> ShortenDrug()
+    private List<dynamic> PrepareForSerialization()
     {
         List<dynamic> reducedDrugs = new List<dynamic>();
         foreach (var drug in this.Drugs)
@@ -85,7 +91,7 @@ public class DrugRepository
     }
     public void Save()
     {
-        var allDrugs = JsonSerializer.Serialize(ShortenDrug(), _options);
+        var allDrugs = JsonSerializer.Serialize(PrepareForSerialization(), _options);
         File.WriteAllText(this._fileName, allDrugs);
     }
 
@@ -101,22 +107,22 @@ public class DrugRepository
         return null;
     }
 
-    public void Add(string name, DrugState drugState, List<Ingredient> ingredients)
+    public void Add(DrugDTO drugDTO)
     {
         this._maxId++;
         int id = this._maxId;
-        Drug drug = new Drug(id, name, drugState, ingredients);
+        Drug drug = new Drug(id, drugDTO.Name, drugDTO.State, drugDTO.Ingredients);
         this.Drugs.Add(drug);
         this.DrugById[id] = drug;
         Save();
     }
 
-    public void Update(int id, string name, DrugState drugState, List<Ingredient> ingredients)
+    public void Update(int id, DrugDTO drugDTO)
     {
         Drug drug = GetById(id);
-        drug.Name = name;
-        drug.State = drugState;
-        drug.Ingredients= ingredients;
+        drug.Name = drugDTO.Name;
+        drug.State = drugDTO.State;
+        drug.Ingredients= drugDTO.Ingredients;
         DrugById[id] = drug;
         Save();
     }

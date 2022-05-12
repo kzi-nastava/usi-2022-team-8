@@ -61,11 +61,12 @@ namespace HealthInstitution.GUI.DoctorView
 
         private void DeleteButton_Click(object sender, RoutedEventArgs e)
         {
-            if (System.Windows.MessageBox.Show("Are you sure you want to delete selected examination", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+            var answer = System.Windows.MessageBox.Show("Are you sure you want to delete selected examination", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+            if (answer == MessageBoxResult.Yes)
             {
                 Examination selectedExamination = (Examination)dataGrid.SelectedItem;
                 dataGrid.Items.Remove(selectedExamination);
-                _examinationRepository.DeleteExamination(selectedExamination.Id);
+                _examinationRepository.Delete(selectedExamination.Id);
                 _doctorRepository.DeleteExamination(_loggedDoctor, selectedExamination);
                 _examinationDoctorRepository.Save();
             }

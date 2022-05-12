@@ -39,30 +39,31 @@ namespace HealthInstitution.Core.Prescriptions.Repository
                 return s_instance;
             }
         }
-        public void LoadFromFile()
+
+        private Prescription Parse(JToken? prescription)
         {
             Dictionary<int, Drug> drugById = DrugRepository.GetInstance().DrugById;
+            PrescriptionTime prescriptionTime;
+            Enum.TryParse<PrescriptionTime>((string)prescription["timeOfUse"], out prescriptionTime);
+
+            return new Prescription((int)prescription["id"], (int)prescription["dailyDose"], prescriptionTime, drugById[(int)prescription["drug"]]);
+        }
+        public void LoadFromFile()
+        {
             var prescriptions = JArray.Parse(File.ReadAllText(_fileName));
             //var prescriptions = JsonSerializer.Deserialize<List<Prescription>>(File.ReadAllText(@"..\..\..\Data\JSON\prescriptions.json"), _options);
             foreach (var prescription in prescriptions)
             {
-                PrescriptionTime prescriptionTime;
-                Enum.TryParse<PrescriptionTime>((string)prescription["timeOfUse"], out prescriptionTime);
-
-                Prescription prescriptionTemp = new Prescription((int)prescription["id"],
-                                                                    (int)prescription["dailyDose"],
-                                                                    prescriptionTime,
-                                                                    drugById[(int)prescription["drug"]]
-                                                                    );
-                if (prescriptionTemp.Id > _maxId)
+                Prescription loadedPrescription = Parse(prescription);
+                if (loadedPrescription.Id > _maxId)
                 {
-                    _maxId = prescriptionTemp.Id;
+                    _maxId = loadedPrescription.Id;
                 }
-                this.Prescriptions.Add(prescriptionTemp);
-                this.PrescriptionById[prescriptionTemp.Id] = prescriptionTemp;
+                this.Prescriptions.Add(loadedPrescription);
+                this.PrescriptionById[loadedPrescription.Id] = loadedPrescription;
             }
         }
-        private List<dynamic> ShortenPrescription()
+        private List<dynamic> PrepareForSerialization()
         {
             List<dynamic> reducedPrescriptions = new List<dynamic>();
             foreach (var prescription in this.Prescriptions)
@@ -80,7 +81,7 @@ namespace HealthInstitution.Core.Prescriptions.Repository
         public void Save()
         {
 
-            var allPrescriptions = JsonSerializer.Serialize(ShortenPrescription(), _options);
+            var allPrescriptions = JsonSerializer.Serialize(PrepareForSerialization(), _options);
             File.WriteAllText(this._fileName, allPrescriptions);
         }
 
@@ -96,22 +97,27 @@ namespace HealthInstitution.Core.Prescriptions.Repository
             return null;
         }
 
-        public void Add(int dailyDose, PrescriptionTime timeOfUse, Drug drug)
+        public Prescription Add(PrescriptionDTO prescriptionDTO)
         {
             this._maxId++;
             int id = this._maxId;
+            int dailyDose = prescriptionDTO.DailyDose;
+            PrescriptionTime timeOfUse = prescriptionDTO.TimeOfUse;
+            Drug drug = prescriptionDTO.Drug;
+
             Prescription prescription = new Prescription(id, dailyDose, timeOfUse, drug);
             this.Prescriptions.Add(prescription);
             this.PrescriptionById[id] = prescription;
             Save();
+            return prescription;
         }
 
-        public void Update(int id, int dailyDose, PrescriptionTime timeOfUse, Drug drug)
+        public void Update(int id,  PrescriptionDTO prescriptionDTO)
         {
             Prescription prescription = GetById(id);
-            prescription.DailyDose = dailyDose;
-            prescription.TimeOfUse = timeOfUse;
-            prescription.Drug = drug;
+            prescription.DailyDose = prescriptionDTO.DailyDose;
+            prescription.TimeOfUse = prescriptionDTO.TimeOfUse;
+            prescription.Drug = prescriptionDTO.Drug;
             PrescriptionById[id] = prescription;
             Save();
         }

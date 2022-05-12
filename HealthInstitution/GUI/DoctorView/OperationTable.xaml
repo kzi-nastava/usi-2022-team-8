@@ -30,7 +30,6 @@
                 <DataGridTextColumn Header="Duration (min)" FontSize="15" Binding="{Binding Duration}" Width ="100"/>
                 <DataGridTextColumn Header="Status" FontSize="15" Binding="{Binding Status}" Width =" 100"/>
                 <DataGridTextColumn Header="RoomNo" FontSize="15" Binding="{Binding room.Number}" Width =" 60"/>
-                <DataGridTextColumn Header="Report" FontSize="15" Width ="Auto" Binding="{Binding Report}"/>
             </DataGrid.Columns>
         </DataGrid>
         <Button Name="addButton" Content="Add" Click="AddButton_Click" HorizontalAlignment="Center" Height="30" Margin="0,240,350,0" VerticalAlignment="Top" Width="111" RenderTransformOrigin="0.243,0.514" Cursor="Arrow" FontSize="18" Visibility="Visible"/>

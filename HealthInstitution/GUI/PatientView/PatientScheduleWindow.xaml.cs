@@ -1,6 +1,7 @@
 ﻿using HealthInstitution.Core.Examinations.Model;
 using HealthInstitution.Core.Examinations.Repository;
 using HealthInstitution.Core.ScheduleEditRequests.Repository;
+using HealthInstitution.Core.SystemUsers.Patients.Model;
 using HealthInstitution.Core.SystemUsers.Users.Model;
 using HealthInstitution.Core.TrollCounters.Repository;
 using HealthInstitution.GUI.PatientView;
@@ -14,9 +15,9 @@ namespace HealthInstitution.GUI.PatientWindows;
 public partial class PatientScheduleWindow : Window
 {
     private ExaminationRepository _examinationRepository = ExaminationRepository.GetInstance();
-    private User _loggedPatient;
+    private Patient _loggedPatient;
 
-    public PatientScheduleWindow(User loggedPatient)
+    public PatientScheduleWindow(Patient loggedPatient)
     {
         InitializeComponent();
         this._loggedPatient = loggedPatient;
@@ -88,7 +89,7 @@ public partial class PatientScheduleWindow : Window
             else
             {
                 dataGrid.Items.Remove(selectedExamination);
-                _examinationRepository.DeleteExamination(selectedExamination.Id);
+                _examinationRepository.Delete(selectedExamination.Id);
                 selectedExamination.Doctor.Examinations.Remove(selectedExamination);
             }
         }

@@ -9,15 +9,13 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using HealthInstitution.GUI.PatientWindows;
-using HealthInstitution.Core.SystemUsers.Users.Model;
 using HealthInstitution.Core.TrollCounters.Repository;
 using HealthInstitution.Core.TrollCounters.Model;
-using HealthInstitution.Core.Examinations.Repository;
 using HealthInstitution.GUI.LoginView;
 using HealthInstitution.GUI.PatientView;
 using HealthInstitution.Core.SystemUsers.Patients.Model;
 using HealthInstitution.Core.Notifications.Model;
+using HealthInstitution.Core.SystemUsers.Patients.Model;
 
 namespace HealthInstitution.GUI.UserWindow
 {

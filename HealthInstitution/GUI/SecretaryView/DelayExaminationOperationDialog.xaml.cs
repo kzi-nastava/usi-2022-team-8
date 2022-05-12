@@ -70,7 +70,8 @@ namespace HealthInstitution.GUI.SecretaryView
                         Examination.Room = selectedAppointment.CurrentExamination.Room;
                         Examination.Doctor = selectedAppointment.CurrentExamination.Doctor;
                     }
-                    ExaminationRepository.GetInstance().AddExamination(Examination.Appointment, Examination.Room, Examination.Doctor, Examination.MedicalRecord);
+                    ExaminationDTO examinationDTO = new ExaminationDTO(Examination.Appointment, Examination.Room, Examination.Doctor, Examination.MedicalRecord);
+                    ExaminationRepository.GetInstance().Add(examinationDTO);
                     notificationRepository.Add(new DateTime(1, 1, 1), Examination.Appointment, Examination.Doctor, Examination.MedicalRecord.Patient);
                 }
                 else if (Examination == null)
@@ -89,7 +90,8 @@ namespace HealthInstitution.GUI.SecretaryView
                         Operation.Room = selectedAppointment.CurrentExamination.Room;
                         Operation.Doctor = selectedAppointment.CurrentExamination.Doctor;
                     }
-                    OperationRepository.GetInstance().Add(Operation.Appointment, Operation.Duration, Operation.Room, Operation.Doctor, Operation.MedicalRecord);
+                    OperationDTO operationDTO = new OperationDTO(Operation.Appointment, Operation.Duration, Operation.Room, Operation.Doctor, Operation.MedicalRecord);
+                    OperationRepository.GetInstance().Add(operationDTO);
                     notificationRepository.Add(new DateTime(1, 1, 1), Operation.Appointment, Operation.Doctor, Operation.MedicalRecord.Patient);
                 }
             }

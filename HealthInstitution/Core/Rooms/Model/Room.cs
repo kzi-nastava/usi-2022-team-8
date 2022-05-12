@@ -8,6 +8,7 @@ public class Room
     public RoomType Type { get; set; }
     public int Number { get; set; }
     public bool IsRenovating { get; set; }
+    public bool IsActive { get; set; }
     public List<Equipment> AvailableEquipment { get; set; }
 
     public Room(int id, RoomType type, int number, bool isRenovating, List<Equipment> availableEquipment)
@@ -17,6 +18,17 @@ public class Room
         this.Number = number;
         this.IsRenovating = isRenovating;
         this.AvailableEquipment = availableEquipment;
+        this.IsActive = true;
+    }
+
+    public Room(int id, RoomType type, int number, bool isRenovating, List<Equipment> availableEquipment, bool isActive)
+    {
+        this.Id = id;
+        this.Type = type;
+        this.Number = number;
+        this.IsRenovating = isRenovating;
+        this.AvailableEquipment = availableEquipment;
+        this.IsActive = isActive;
     }
 
     public override string? ToString()

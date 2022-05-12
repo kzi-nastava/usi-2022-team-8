@@ -9,6 +9,9 @@ using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using HealthInstitution.Core.Operations.Repository;
 using HealthInstitution.Core.TrollCounters.Repository;
 using HealthInstitution.Core.EquipmentTransfers.Functionality;
+using HealthInstitution.Core.SystemUsers.Patients.Repository;
+using HealthInstitution.Core.SystemUsers.Patients.Model;
+using HealthInstitution.Core.Renovations.Functionality;
 using HealthInstitution.Core.Notifications.Repository;
 using HealthInstitution.Core.SystemUsers.Patients.Repository;
 using HealthInstitution.Core.SystemUsers.Patients.Model;
@@ -101,6 +104,7 @@ namespace HealthInstitution.GUI.LoginView
         private static void Main(string[] args)
         {
             EquipmentTransferChecker.UpdateByTransfer();
+            RenovationChecker.UpdateByRenovation(); 
             LoginWindow window = new LoginWindow();
             window.ShowDialog();
         }

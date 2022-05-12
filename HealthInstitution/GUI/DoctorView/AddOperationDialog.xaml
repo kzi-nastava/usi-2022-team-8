@@ -22,7 +22,7 @@
         <Label Content="Time" HorizontalAlignment="Left" Margin="44,107,0,0" VerticalAlignment="Top"/>
         <ComboBox Name="hourComboBox" HorizontalAlignment="Left" Margin="120,111,0,0" Loaded="HourComboBox_Loaded" VerticalAlignment="Top" Width="45"/>
         <ComboBox Name="minuteComboBox" HorizontalAlignment="Left" Margin="225,111,0,0" VerticalAlignment="Top" Width="45" Loaded="MinuteComboBox_Loaded" />
-        <Button Content="Create" Click="Create_Click" HorizontalAlignment="Center" Height="22" Margin="0,284,0,0" VerticalAlignment="Top" Width="74"/>
+        <Button Content="Submit" Click="Submit_Click" HorizontalAlignment="Center" Height="22" Margin="0,284,0,0" VerticalAlignment="Top" Width="74"/>
         <Label Name="durationLabel" Content="Duration" HorizontalAlignment="Left" Margin="44,218,0,0" VerticalAlignment="Top"/>
         <TextBox Name="durationTextBox" HorizontalAlignment="Left" Margin="120,223,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="150" Height="26"/>
     </Grid>

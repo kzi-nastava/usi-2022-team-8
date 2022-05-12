@@ -5,6 +5,27 @@
     <Compile Update="GUI\DoctorView\AddExaminationDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="GUI\DoctorView\AddPrescriptionDialog.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="GUI\DoctorView\AddReferralDialog.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="GUI\ManagerView\RenovationView\ArrangeEquipmentForSplitWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="GUI\ManagerView\RenovationView\EquipmentTransferForSplitDialog.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="GUI\ManagerView\RenovationView\RoomMergeWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="GUI\ManagerView\RenovationView\RoomSplitWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="GUI\ManagerView\RenovationView\SimpleRenovationWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="GUI\DoctorView\DoctorNotificationsDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -117,6 +138,12 @@
     <Page Update="GUI\DoctorView\AddOperationDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="GUI\DoctorView\AddPrescriptionDialog.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="GUI\DoctorView\AddReferralDialog.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="GUI\DoctorView\DoctorNotificationsDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -142,6 +169,21 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="GUI\DoctorView\ScheduledExaminationTable.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="GUI\ManagerView\RenovationView\ArrangeEquipmentForSplitWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="GUI\ManagerView\RenovationView\EquipmentTransferForSplitDialog.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="GUI\ManagerView\RenovationView\RoomMergeWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="GUI\ManagerView\RenovationView\RoomSplitWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="GUI\ManagerView\RenovationView\SimpleRenovationWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="GUI\PatientView\AddExaminationDialog.xaml">
