@@ -32,6 +32,9 @@
     <Compile Update="GUI\SecretaryView\DelayExaminationOperationDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="GUI\SecretaryView\PatientSelectionDialog.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="GUI\SecretaryView\PatientsTable.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -163,6 +166,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="GUI\SecretaryView\DelayExaminationOperationDialog.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="GUI\SecretaryView\PatientSelectionDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="GUI\SecretaryView\PatientsTable.xaml">
