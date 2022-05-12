@@ -1,7 +1,6 @@
 using HealthInstitution.Core.Prescriptions.Model;
 using HealthInstitution.Core.Referrals.Model;
 using HealthInstitution.Core.SystemUsers.Patients.Model;
-
 namespace HealthInstitution.Core.MedicalRecords.Model;
 
 public class MedicalRecord

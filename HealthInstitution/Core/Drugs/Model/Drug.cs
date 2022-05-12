@@ -16,6 +16,11 @@ public class Drug
         this.State = state;
         this.Ingredients = ingredients;
     }
+
+    public override string ToString()
+    {
+        return this.Name;
+    }
 }
 
 public enum DrugState

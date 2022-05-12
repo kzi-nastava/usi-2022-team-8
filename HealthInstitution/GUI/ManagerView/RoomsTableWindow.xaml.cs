@@ -1,6 +1,8 @@
 ﻿using HealthInstitution.Core.EquipmentTransfers.Repository;
 using HealthInstitution.Core.Examinations.Repository;
 using HealthInstitution.Core.Operations.Repository;
+using HealthInstitution.Core.Renovations.Model;
+using HealthInstitution.Core.Renovations.Repository;
 using HealthInstitution.Core.Rooms.Model;
 using HealthInstitution.Core.Rooms.Repository;
 using System;
@@ -28,29 +30,29 @@ namespace HealthInstitution.GUI.ManagerView
         public RoomsTableWindow()
         {
             InitializeComponent();
-            loadRows();
+            LoadRows();
         }
 
-        private void loadRows()
+        private void LoadRows()
         {
             dataGrid.Items.Clear();
-            List<Room> rooms = _roomRepository.Rooms;
+            List<Room> rooms = _roomRepository.GetActive();
             foreach (Room room in rooms)
             {
                 dataGrid.Items.Add(room);
             }
         }
 
-        private void addButton_Click(object sender, RoutedEventArgs e)
+        private void AddButton_Click(object sender, RoutedEventArgs e)
         {
             AddRoomDialog addRoomDialog = new AddRoomDialog();
             addRoomDialog.ShowDialog();
 
-            loadRows();
+            LoadRows();
             dataGrid.Items.Refresh();
         }
 
-        private void editButton_Click(object sender, RoutedEventArgs e)
+        private void EditButton_Click(object sender, RoutedEventArgs e)
         {
             Room selectedRoom = (Room)dataGrid.SelectedItem;
             if (selectedRoom.Type == RoomType.Warehouse)
@@ -66,7 +68,7 @@ namespace HealthInstitution.GUI.ManagerView
             dataGrid.Items.Refresh();
         }
 
-        private void deleteButton_Click(object sender, RoutedEventArgs e)
+        private void DeleteButton_Click(object sender, RoutedEventArgs e)
         {
             Room selectedRoom = (Room)dataGrid.SelectedItem;
             if (selectedRoom.Type == RoomType.Warehouse)
@@ -75,7 +77,7 @@ namespace HealthInstitution.GUI.ManagerView
                 dataGrid.SelectedItem = null;
                 return;
             }
-            if (!checkOccurrenceOfRoom(selectedRoom))
+            if (!CheckOccurrenceOfRoom(selectedRoom))
             {
                 System.Windows.MessageBox.Show("You cant delete room because of scheduled connections!", "Edit error", MessageBoxButton.OK, MessageBoxImage.Error);
                 dataGrid.SelectedItem = null;
@@ -85,11 +87,38 @@ namespace HealthInstitution.GUI.ManagerView
             if (System.Windows.MessageBox.Show("Are you sure you want to delete selected room", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
             {
                 dataGrid.Items.Remove(selectedRoom);
-                _roomRepository.Delete(selectedRoom.Id);
+                if (CheckRenovationStatus(selectedRoom))
+                {
+                    _roomRepository.Delete(selectedRoom.Id);
+                }
+
             }
         }
 
-        private bool checkOccurrenceOfRoom(Room selectedRoom)
+        private bool CheckRenovationStatus(Room selectedRoom)
+        {
+            RenovationRepository renovationRepository = RenovationRepository.GetInstance();
+            foreach (Renovation renovation in renovationRepository.Renovations)
+            {
+                if (renovation.Room == selectedRoom)
+                {
+                    selectedRoom.IsActive = false;
+                    return false;
+                }
+                if (renovation.GetType() == typeof(RoomMerger))
+                {
+                    RoomMerger roomMerger = (RoomMerger)renovation;
+                    if (roomMerger.RoomForMerge == selectedRoom)
+                    {
+                        selectedRoom.IsActive = false;
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+
+        private bool CheckOccurrenceOfRoom(Room selectedRoom)
         {
             EquipmentTransferRepository equipmentTransferRepository = EquipmentTransferRepository.GetInstance();
             if (equipmentTransferRepository.EquipmentTransfers.Find(eqTransfer => eqTransfer.FromRoom == selectedRoom || eqTransfer.ToRoom == selectedRoom) != null)

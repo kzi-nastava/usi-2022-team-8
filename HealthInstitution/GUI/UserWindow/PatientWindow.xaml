@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:HealthInstitution.GUI.UserWindow"
         mc:Ignorable="d"
-        Title="PatientWindow" Height="450" Width="800">
+        WindowStartupLocation="CenterScreen"
+        Title="PatientWindow" Height="350" Width="600">
     <Grid>
         <Button x:Name="logout_button" Content="Logout" HorizontalAlignment="Left" Height="29" Margin="657,372,0,0" VerticalAlignment="Top" Width="108" Click="logOut_Click" />
         <Button x:Name="manuallSchedule_button" Content="Manually Schedule" HorizontalAlignment="Left" Height="40" Margin="46,347,0,0" VerticalAlignment="Top" Width="150" Click="manuallSchedule_Click" />

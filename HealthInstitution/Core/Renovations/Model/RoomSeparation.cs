@@ -8,7 +8,7 @@ public class RoomSeparation : Renovation
     public Room FirstRoom { get; set; }
     public Room SecondRoom { get; set; }
 
-    public RoomSeparation(DateTime startDate, DateTime endDate, Room initialRoom, Room firstRoom, Room secondRoom) : base(startDate, endDate, initialRoom)
+    public RoomSeparation(int id, Room initialRoom, Room firstRoom, Room secondRoom, DateTime startDate, DateTime endDate) : base(id, initialRoom, startDate, endDate)
     {
         this.FirstRoom = firstRoom;
         this.SecondRoom = secondRoom;

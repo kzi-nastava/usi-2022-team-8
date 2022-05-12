@@ -22,12 +22,12 @@
         <TextBox Name="patientTextBox" IsReadOnly = "True" HorizontalAlignment="Left" Height="26" Margin="206,46,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="139" FontSize="18"/>
         <TextBox Name="heightTextBox" HorizontalAlignment="Left" Height="26" Margin="206,101,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="105" FontSize="18"/>
         <TextBox Name="weightTextBox" HorizontalAlignment="Left" Height="26" Margin="206,150,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="105" FontSize="18"/>
-        <TextBox Name="illnessesTextBox" HorizontalAlignment="Left" Height="26" Margin="564,231,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="160"/>
-        <TextBox Name="allergensTextBox" HorizontalAlignment="Left" Height="26" Margin="563,331,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="161"/>
-        <Button Content="Add allergen" Click="addAllergen_Click" HorizontalAlignment="Left" Margin="597,371,0,0" VerticalAlignment="Top" FontSize="16"/>
-        <Button Content="Add illness" Click="addIllness_Click" HorizontalAlignment="Left" Margin="603,268,0,0" VerticalAlignment="Top" FontSize="16"/>
-        <Button Content="Finish" Click="finish_Click" HorizontalAlignment="Center" Margin="0,425,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.327,-0.439" Width="100" FontSize="16"/>
-        <Button Content="Create referral" Click="finish_Click" HorizontalAlignment="Left" Margin="487,425,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.327,-0.439" Width="121" FontSize="16"/>
-        <Button Content="Create prescription" Click="finish_Click" HorizontalAlignment="Left" Margin="157,425,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.327,-0.439" Width="154" FontSize="16"/>
+        <TextBox Name="illnessTextBox" HorizontalAlignment="Left" Height="26" Margin="564,231,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="160"/>
+        <TextBox Name="allergenTextBox" HorizontalAlignment="Left" Height="26" Margin="563,331,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="161"/>
+        <Button Content="Add allergen" Click="AddAllergen_Click" HorizontalAlignment="Left" Margin="597,371,0,0" VerticalAlignment="Top" FontSize="16"/>
+        <Button Content="Add illness" Click="AddIllness_Click" HorizontalAlignment="Left" Margin="603,268,0,0" VerticalAlignment="Top" FontSize="16"/>
+        <Button Content="Submit" Click="Submit_Click" HorizontalAlignment="Center" Margin="0,425,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.327,-0.439" Width="100" FontSize="16"/>
+        <Button Content="Create prescription" Click="CreatePrescription_Click" HorizontalAlignment="Left" Margin="487,425,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.327,-0.439" Width="151" FontSize="16"/>
+        <Button Content="Create referral" Click="CreateReferral_Click" HorizontalAlignment="Left" Margin="157,425,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.327,-0.439" Width="154" FontSize="16"/>
     </Grid>
 </Window>

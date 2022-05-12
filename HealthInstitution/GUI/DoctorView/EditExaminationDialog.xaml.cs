@@ -19,11 +19,16 @@ namespace HealthInstitution.GUI.DoctorView
         {
             this._selectedExamination = examination;
             InitializeComponent();
+            Load();
+        }
+
+        public void Load()
+        {
             datePicker.SelectedDate = this._selectedExamination.Appointment.Date;
             datePicker.Text = this._selectedExamination.Appointment.Date.ToString();
         }
 
-        private void patientComboBox_Loaded(object sender, RoutedEventArgs e)
+        private void PatientComboBox_Loaded(object sender, RoutedEventArgs e)
         {
             var patientComboBox = sender as System.Windows.Controls.ComboBox;
             List<Patient> patients = PatientRepository.GetInstance().Patients;
@@ -34,7 +39,7 @@ namespace HealthInstitution.GUI.DoctorView
             patientComboBox.SelectedItem = this._selectedExamination.MedicalRecord.Patient;
         }
 
-        private void hourComboBox_Loaded(object sender, RoutedEventArgs e)
+        private void HourComboBox_Loaded(object sender, RoutedEventArgs e)
         {
             var hourComboBox = sender as System.Windows.Controls.ComboBox;
             List<String> hours = new List<String>();
@@ -46,7 +51,7 @@ namespace HealthInstitution.GUI.DoctorView
             hourComboBox.SelectedItem = this._selectedExamination.Appointment.Hour.ToString();
         }
 
-        private void minuteComboBox_Loaded(object sender, RoutedEventArgs e)
+        private void MinuteComboBox_Loaded(object sender, RoutedEventArgs e)
         {
             var minuteComboBox = sender as System.Windows.Controls.ComboBox;
             List<String> minutes = new List<String>();
@@ -63,10 +68,8 @@ namespace HealthInstitution.GUI.DoctorView
             minuteComboBox.SelectedItem = examinationMinutes;
         }
 
-        private void save_Click(object sender, RoutedEventArgs e)
+        private ExaminationDTO CreateExaminationByForms()
         {
-            //try
-            //{
             DateTime appointment = (DateTime)datePicker.SelectedDate;
             int minutes = Int32.Parse(minuteComboBox.Text);
             int hours = Int32.Parse(hourComboBox.Text);
@@ -74,21 +77,29 @@ namespace HealthInstitution.GUI.DoctorView
             appointment = appointment.AddMinutes(minutes);
             Patient patient = (Patient)patientComboBox.SelectedItem;
             MedicalRecord medicalRecord = MedicalRecordRepository.GetInstance().GetByPatientUsername(patient);
-            if (appointment <= DateTime.Now)
-            {
-                System.Windows.MessageBox.Show("You have to change dates for upcoming ones!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            var doctor = _selectedExamination.Doctor;
+            ExaminationDTO examination = new ExaminationDTO(appointment, null, doctor, medicalRecord);
+            return examination;
+        }
+        private void Submit_Click(object sender, RoutedEventArgs e)
+        {
+            try
+                {
+                ExaminationDTO examination = CreateExaminationByForms();
+                if (examination.Appointment <= DateTime.Now)
+                {
+                    System.Windows.MessageBox.Show("You have to change dates for upcoming ones!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                else
+                {
+                    ExaminationRepository.GetInstance().Update(_selectedExamination.Id, examination);
+                    this.Close();
+                }
             }
-            else
+            catch (Exception ex)
             {
-                ExaminationRepository.GetInstance().UpdateExamination(_selectedExamination.Id, appointment, medicalRecord);
-                //ExaminationDoctorRepository.GetInstance().Save();
-                this.Close();
+              System.Windows.MessageBox.Show(ex.Message, "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
-           // }
-            //catch (Exception ex)
-            //{
-              //  System.Windows.MessageBox.Show(ex.Message, "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
-            //}
         }
     }
 }

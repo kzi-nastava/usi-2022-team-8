@@ -4,19 +4,9 @@ using HealthInstitution.Core.MedicalRecords.Model;
 using HealthInstitution.Core.MedicalRecords.Repository;
 using HealthInstitution.Core.Prescriptions.Model;
 using HealthInstitution.Core.Referrals.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using HealthInstitution.Core.SystemUsers.Doctors.Model;
+using HealthInstitution.Core.SystemUsers.Patients.Model;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace HealthInstitution.GUI.DoctorView
 {
@@ -26,39 +16,84 @@ namespace HealthInstitution.GUI.DoctorView
     public partial class PerformExaminationDialog : Window
     {
         private Examination _selectedExamination;
+        private MedicalRecord _medicalRecord;
         public PerformExaminationDialog(Examination examination)
         {
             InitializeComponent();
-            this._selectedExamination= examination;
-            MedicalRecord medicalRecord = this._selectedExamination.MedicalRecord;
-            patientTextBox.Text = medicalRecord.Patient.ToString();
-            heightTextBox.Text = medicalRecord.Height.ToString();
-            weightTextBox.Text = medicalRecord.Weight.ToString();
-            foreach (String illness in medicalRecord.PreviousIllnesses)
+            this._selectedExamination = examination;
+            Load();
+        }
+
+        private void Load()
+        {
+            _medicalRecord = this._selectedExamination.MedicalRecord;
+            patientTextBox.Text = _medicalRecord.Patient.ToString();
+            heightTextBox.Text = _medicalRecord.Height.ToString();
+            weightTextBox.Text = _medicalRecord.Weight.ToString();
+            foreach (String illness in _medicalRecord.PreviousIllnesses)
                 illnessListBox.Items.Add(illness);
-            foreach (String allergen in medicalRecord.Allergens)
+            foreach (String allergen in _medicalRecord.Allergens)
                 allergenListBox.Items.Add(allergen);
         }
 
-        private void addIllness_Click(object sender, RoutedEventArgs e)
+        private void AddIllness_Click(object sender, RoutedEventArgs e)
         {
-            if (illnessesTextBox.Text.Trim() != "")
+            String illness = illnessTextBox.Text.Trim();
+            if (illness != "")
             {
-                illnessListBox.Items.Add(illnessesTextBox.Text);
+                illnessListBox.Items.Add(illness);
                 illnessListBox.Items.Refresh();
+                illnessTextBox.Clear();
             }
         }
 
-        private void addAllergen_Click(object sender, RoutedEventArgs e)
+        private void AddAllergen_Click(object sender, RoutedEventArgs e)
         {
-            if (illnessesTextBox.Text.Trim() != "")
+            string allergen = allergenTextBox.Text.Trim();
+            if (allergen != "")
             {
-                allergenListBox.Items.Add(allergensTextBox.Text);
+                allergenListBox.Items.Add(allergen);
                 allergenListBox.Items.Refresh();
+                allergenTextBox.Clear();
             }
         }
+        private void CreateReferral_Click(object sender, RoutedEventArgs e)
+        {
+            Patient patient = _medicalRecord.Patient;
+            Doctor doctor = _selectedExamination.Doctor;
+            AddReferralDialog dialog = new AddReferralDialog(doctor, patient);
+            dialog.ShowDialog();
+        }
 
-        private void finish_Click(object sender, RoutedEventArgs e)
+        private void CreatePrescription_Click(object sender, RoutedEventArgs e)
+        {
+            AddPrescriptionDialog dialog = new AddPrescriptionDialog(_medicalRecord);
+            dialog.ShowDialog();
+        }
+
+        public void CreateExaminationDTOFromInputData()
+        {
+            double height = Double.Parse(heightTextBox.Text);
+            double weight = Double.Parse(weightTextBox.Text);
+            List<String> previousIllnesses = new List<String>();
+            foreach (String illness in illnessListBox.Items)
+            {
+                previousIllnesses.Add(illness);
+            };
+            List<String> allergens = new List<String>();
+            foreach (String allergen in allergenListBox.Items)
+            {
+                allergens.Add(allergen);
+            }
+            List<Prescription> prescriptions = _medicalRecord.Prescriptions;
+            List<Referral> referrals = _medicalRecord.Referrals;
+            //ExaminationDTO medicalRecord = new MedicalRecordDTO(_medicalRecord.Patient, height, weight, previousIllnesses, allergens, prescriptions, referrals);
+            //MedicalRecordRepository.GetInstance().Update(medicalRecord);
+            this._selectedExamination.Anamnesis = anamnesisTextBox.Text;
+            this._selectedExamination.Status = ExaminationStatus.Completed;
+        }
+
+        private void Submit_Click(object sender, RoutedEventArgs e)
         {
             try
             {
@@ -74,10 +109,9 @@ namespace HealthInstitution.GUI.DoctorView
                 {
                     allergens.Add(allergen);
                 }
-                MedicalRecord medicalRecord = this._selectedExamination.MedicalRecord;
-                List<Prescription> prescriptions = medicalRecord.Prescriptions;
-                List<Referral> referrals = medicalRecord.Referrals;
-                MedicalRecordRepository.GetInstance().Update(medicalRecord.Patient, height, weight, previousIllnesses, allergens, prescriptions, referrals);
+                List<Prescription> prescriptions = _medicalRecord.Prescriptions;
+                List<Referral> referrals = _medicalRecord.Referrals;
+                MedicalRecordRepository.GetInstance().Update(_medicalRecord.Patient, height, weight, previousIllnesses, allergens, prescriptions, referrals);
                 this._selectedExamination.Anamnesis = anamnesisTextBox.Text;
                 this._selectedExamination.Status = ExaminationStatus.Completed;
                 ExaminationRepository.GetInstance().Save();

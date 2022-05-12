@@ -1,6 +1,7 @@
 ﻿using HealthInstitution.Core.Examinations.Model;
 using HealthInstitution.Core.Examinations.Repository;
 using HealthInstitution.Core.ScheduleEditRequests.Repository;
+using HealthInstitution.Core.SystemUsers.Patients.Model;
 using HealthInstitution.Core.SystemUsers.Users.Model;
 using HealthInstitution.Core.TrollCounters.Repository;
 using HealthInstitution.GUI.PatientView;
@@ -14,16 +15,16 @@ namespace HealthInstitution.GUI.PatientWindows;
 public partial class PatientScheduleWindow : Window
 {
     private ExaminationRepository _examinationRepository = ExaminationRepository.GetInstance();
-    private User _loggedPatient;
+    private Patient _loggedPatient;
 
-    public PatientScheduleWindow(User loggedPatient)
+    public PatientScheduleWindow(Patient loggedPatient)
     {
         InitializeComponent();
         this._loggedPatient = loggedPatient;
-        loadRows();
+        LoadRows();
     }
 
-    private void addButton_click(object sender, RoutedEventArgs e)
+    private void AddButton_click(object sender, RoutedEventArgs e)
     {
         try
         {
@@ -31,7 +32,7 @@ public partial class PatientScheduleWindow : Window
             AddExaminationDialog addExaminationDialog = new AddExaminationDialog(_loggedPatient);
             addExaminationDialog.ShowDialog();
             dataGrid.Items.Clear();
-            loadRows();
+            LoadRows();
             TrollCounterFileRepository.GetInstance().GetById(_loggedPatient.Username).AppendCreateDates(DateTime.Today);
             TrollCounterFileRepository.GetInstance().Save();
         }
@@ -42,7 +43,7 @@ public partial class PatientScheduleWindow : Window
         }
     }
 
-    private void editButton_click(object sender, RoutedEventArgs e)
+    private void EditButton_click(object sender, RoutedEventArgs e)
     {
         try
         {
@@ -51,7 +52,7 @@ public partial class PatientScheduleWindow : Window
             EditExaminationDialog editExaminationDialog = new EditExaminationDialog(selectedExamination);
             editExaminationDialog.ShowDialog();
             dataGrid.Items.Clear();
-            loadRows();
+            LoadRows();
             TrollCounterFileRepository.GetInstance().GetById(_loggedPatient.Username).AppendEditDeleteDates(DateTime.Today);
             TrollCounterFileRepository.GetInstance().Save();
         }
@@ -62,7 +63,7 @@ public partial class PatientScheduleWindow : Window
         }
     }
 
-    private void deleteButton_click(object sender, RoutedEventArgs e)
+    private void DeleteButton_click(object sender, RoutedEventArgs e)
     {
         Examination selectedExamination = (Examination)dataGrid.SelectedItem;
         try
@@ -70,7 +71,7 @@ public partial class PatientScheduleWindow : Window
             TrollCounterFileRepository.GetInstance().TrollCheck(_loggedPatient.Username);
             ExaminationDoctorRepository.GetInstance().Save();
             dataGrid.Items.Clear();
-            loadRows();
+            LoadRows();
             TrollCounterFileRepository.GetInstance().GetById(_loggedPatient.Username).AppendEditDeleteDates(DateTime.Today);
             TrollCounterFileRepository.GetInstance().Save();
         }
@@ -88,7 +89,7 @@ public partial class PatientScheduleWindow : Window
             else
             {
                 dataGrid.Items.Remove(selectedExamination);
-                _examinationRepository.DeleteExamination(selectedExamination.Id);
+                _examinationRepository.Delete(selectedExamination.Id);
                 selectedExamination.Doctor.Examinations.Remove(selectedExamination);
             }
         }
@@ -99,7 +100,7 @@ public partial class PatientScheduleWindow : Window
         LoadGrid();
     }*/
 
-    private void loadRows()
+    private void LoadRows()
     {
         foreach (Examination examination in ExaminationRepository.GetInstance().Examinations)
         {

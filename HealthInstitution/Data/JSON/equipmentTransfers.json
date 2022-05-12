@@ -1,4 +1,4 @@
-[
+[  
   {
     "id": 1,
     "equipment": 1,
@@ -26,5 +26,12 @@
     "fromRoom": 1,
     "toRoom": 3,
     "transferTime": "2022-08-12T00:00:00"
+  },
+  {
+    "id": 5,
+    "equipment": 15,
+    "fromRoom": 2,
+    "toRoom": 4,
+    "transferTime": "2022-09-16T00:00:00"
   }
 ]

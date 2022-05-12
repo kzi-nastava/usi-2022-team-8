@@ -26,10 +26,10 @@ namespace HealthInstitution.GUI.ManagerView
         public EquipmentTableWindow(List<TableItemEquipment> items)
         {
             InitializeComponent();
-            load(items);
+            Load(items);
         }
 
-        private void load(List<TableItemEquipment> items)
+        private void Load(List<TableItemEquipment> items)
         {
             dataGrid.Items.Clear();
             foreach (var item in items)

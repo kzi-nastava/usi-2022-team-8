@@ -9,6 +9,12 @@ using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using HealthInstitution.Core.Operations.Repository;
 using HealthInstitution.Core.TrollCounters.Repository;
 using HealthInstitution.Core.EquipmentTransfers.Functionality;
+using HealthInstitution.Core.SystemUsers.Patients.Repository;
+using HealthInstitution.Core.SystemUsers.Patients.Model;
+using HealthInstitution.Core.Renovations.Functionality;
+using HealthInstitution.Core.Notifications.Repository;
+using HealthInstitution.Core.SystemUsers.Patients.Repository;
+using HealthInstitution.Core.SystemUsers.Patients.Model;
 
 namespace HealthInstitution.GUI.LoginView
 {
@@ -27,7 +33,7 @@ namespace HealthInstitution.GUI.LoginView
             InitializeComponent();
         }
 
-        private void loginButton_click(object sender, RoutedEventArgs e)
+        private void LoginButton_click(object sender, RoutedEventArgs e)
         {
             _usernameInput = usernameBox.Text;
             _passwordInput = passwordBox.Password.ToString();
@@ -51,19 +57,26 @@ namespace HealthInstitution.GUI.LoginView
                     case UserType.Patient:
                         try
                         {
+                            NotificationDoctorRepository.GetInstance();
+                            NotificationPatientRepository.GetInstance();
                             TrollCounterFileRepository.GetInstance().TrollCheck(foundUser.Username);
-                            new PatientWindow(foundUser).ShowDialog();
+                            PatientRepository patientRepository = PatientRepository.GetInstance();
+                            Patient loggedPatient = patientRepository.GetByUsername(_usernameInput);
+                            new PatientWindow(loggedPatient).ShowDialog();
                         }
                         catch (Exception ex)
                         {
                             System.Windows.MessageBox.Show(ex.Message, "Troll Alert", MessageBoxButton.OK, MessageBoxImage.Error);
                         }
+                        
                         break;
 
                     case UserType.Doctor:
                         DoctorRepository doctorRepository = DoctorRepository.GetInstance();
                         ExaminationRepository.GetInstance();
                         ExaminationDoctorRepository.GetInstance();
+                        NotificationDoctorRepository.GetInstance();
+                        NotificationPatientRepository.GetInstance();
                         OperationDoctorRepository.GetInstance();
                         Doctor loggedDoctor = doctorRepository.GetById(_usernameInput);
                         new DoctorWindow(loggedDoctor).ShowDialog();
@@ -71,6 +84,10 @@ namespace HealthInstitution.GUI.LoginView
                         break;
 
                     case UserType.Secretary:
+                        DoctorRepository.GetInstance();
+                        ExaminationRepository.GetInstance();
+                        ExaminationDoctorRepository.GetInstance();
+                        OperationDoctorRepository.GetInstance();
                         SecretaryWindow secretaryWindow = new SecretaryWindow();
                         secretaryWindow.ShowDialog();
                         break;
@@ -87,6 +104,7 @@ namespace HealthInstitution.GUI.LoginView
         private static void Main(string[] args)
         {
             EquipmentTransferChecker.UpdateByTransfer();
+            RenovationChecker.UpdateByRenovation(); 
             LoginWindow window = new LoginWindow();
             window.ShowDialog();
         }

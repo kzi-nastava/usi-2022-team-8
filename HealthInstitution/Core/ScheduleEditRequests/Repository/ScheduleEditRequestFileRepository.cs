@@ -51,10 +51,10 @@ public class ScheduleEditRequestFileRepository
 
     public void LoadFromFile()
     {
-        var roomsById = RoomRepository.GetInstance().RoomById;
-        var doctorsByUsername = DoctorRepository.GetInstance().DoctorsByUsername;
+        Dictionary<int, Room> roomsById = RoomRepository.GetInstance().RoomById;
+        Dictionary<String, Doctor> doctorsByUsername = DoctorRepository.GetInstance().DoctorsByUsername;
         ExaminationDoctorRepository.GetInstance();
-        var medicalRecordsByUsername = MedicalRecordRepository.GetInstance().MedicalRecordByUsername;
+        Dictionary<String, MedicalRecord> medicalRecordsByUsername = MedicalRecordRepository.GetInstance().MedicalRecordByUsername;
 
         var requests = JArray.Parse(File.ReadAllText(this._fileName));
         Examination loadedExamination;
@@ -91,11 +91,11 @@ public class ScheduleEditRequestFileRepository
 
     public void Save()
     {
-        var allExaminations = JsonSerializer.Serialize(shortenRequests(), _options);
+        var allExaminations = JsonSerializer.Serialize(ShortenRequests(), _options);
         File.WriteAllText(this._fileName, allExaminations);
     }
 
-    private List<dynamic> shortenRequests()
+    private List<dynamic> ShortenRequests()
     {
         List<dynamic> reducedRequests = new List<dynamic>();
         foreach (ScheduleEditRequest scheduleEditRequest in this.Requests)

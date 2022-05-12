@@ -1,4 +1,5 @@
 ﻿using HealthInstitution.GUI.LoginView;
+using HealthInstitution.GUI.SecretaryView;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,20 +26,38 @@ namespace HealthInstitution.GUI.UserWindow
             InitializeComponent();
         }
 
-        private void patients_Click(object sender, RoutedEventArgs e)
+        private void Patients_Click(object sender, RoutedEventArgs e)
         {
             PatientsTable patientsTableWindow = new PatientsTable();
             patientsTableWindow.ShowDialog();
         }
 
 
-        private void examinationRequests_Click(object sender, RoutedEventArgs e)
+        private void ExaminationRequests_Click(object sender, RoutedEventArgs e)
         {
             ExaminationRequestsReview examinationRequestsReview = new ExaminationRequestsReview();
             examinationRequestsReview.ShowDialog();
         }
 
-        private void logOut_Click(object sender, RoutedEventArgs e)
+
+        private void UrgentExaminations_Click(object sender, RoutedEventArgs e)
+        {
+            AddUrgentExaminationDialog addUrgentExaminationDialog=new AddUrgentExaminationDialog();
+            addUrgentExaminationDialog.ShowDialog();
+        }
+
+        private void UrgentOperations_Click(object sender, RoutedEventArgs e)
+        {
+            AddUrgentOperationDialog addUrgentOperationDialog = new AddUrgentOperationDialog();
+            addUrgentOperationDialog.ShowDialog();
+        }
+
+        private void Scheduling_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void LogOut_Click(object sender, RoutedEventArgs e)
         {
             if (System.Windows.MessageBox.Show("Are you sure you want to log out?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
             {

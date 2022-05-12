@@ -2,19 +2,7 @@
 using HealthInstitution.Core.Operations.Repository;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using HealthInstitution.Core.SystemUsers.Doctors.Repository;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace HealthInstitution.GUI.DoctorView
 {
@@ -31,9 +19,9 @@ namespace HealthInstitution.GUI.DoctorView
         {
             this._loggedDoctor = doctor;
             InitializeComponent();
-            loadRows();
+            LoadRows();
         }
-        private void loadRows()
+        private void LoadRows()
         {
             dataGrid.Items.Clear();
             List<Operation> doctorOperations = this._loggedDoctor.Operations;
@@ -43,24 +31,25 @@ namespace HealthInstitution.GUI.DoctorView
             }
         }
 
-        private void addButton_Click(object sender, RoutedEventArgs e)
+        private void AddButton_Click(object sender, RoutedEventArgs e)
         {
             new AddOperationDialog(this._loggedDoctor).ShowDialog();
-            loadRows();
+            LoadRows();
             dataGrid.Items.Refresh();
         }
 
-        private void editButton_Click(object sender, RoutedEventArgs e)
+        private void EditButton_Click(object sender, RoutedEventArgs e)
         {
             Operation selectedOperation = (Operation)dataGrid.SelectedItem;
             new EditOperationDialog(selectedOperation).ShowDialog();
-            loadRows();
+            LoadRows();
             dataGrid.Items.Refresh();
         }
 
         private void DeleteButton_Click(object sender, RoutedEventArgs e)
         {
-            if (System.Windows.MessageBox.Show("Are you sure you want to delete selected examination", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+            var answer = System.Windows.MessageBox.Show("Are you sure you want to delete selected examination", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+            if (answer == MessageBoxResult.Yes)
             {
                 Operation selectedOperation = (Operation)dataGrid.SelectedItem;
                 dataGrid.Items.Remove(selectedOperation);

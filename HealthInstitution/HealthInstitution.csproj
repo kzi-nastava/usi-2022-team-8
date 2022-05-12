@@ -19,7 +19,6 @@
       <Folder Include="Core\EquipmentTransfers\Repository" />
       <Folder Include="Core\MedicalRecords\Repository" />
       <Folder Include="Core\Polls\Repository\" />
-      <Folder Include="Core\Renovations\Repository" />
       <Folder Include="Core\RestRequests\Repository" />
       <Folder Include="Core\SystemUsers\Doctors\Repository" />
       <Folder Include="Core\Rooms\Repository" />

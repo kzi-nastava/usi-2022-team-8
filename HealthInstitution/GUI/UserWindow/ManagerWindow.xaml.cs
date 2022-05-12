@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using HealthInstitution.GUI.LoginView;
+using HealthInstitution.GUI.ManagerView.RenovationView;
 
 namespace HealthInstitution.GUI.UserWindow
 {
@@ -26,7 +27,7 @@ namespace HealthInstitution.GUI.UserWindow
             InitializeComponent();
         }
 
-        private void logOut_Click(object sender, RoutedEventArgs e)
+        private void LogOut_Click(object sender, RoutedEventArgs e)
         {
             if (System.Windows.MessageBox.Show("Are you sure you want to log out?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
             {
@@ -36,23 +37,29 @@ namespace HealthInstitution.GUI.UserWindow
             }
         }
 
-        private void equipmentTransfer_Click(object sender, RoutedEventArgs e)
+        private void EquipmentTransfer_Click(object sender, RoutedEventArgs e)
         {
             EquipmentTransferDialog equipmentTransferDialog = new EquipmentTransferDialog();
             equipmentTransferDialog.ShowDialog();
         }
 
-        private void equipmentInspection_Click(object sender, RoutedEventArgs e)
+        private void EquipmentInspection_Click(object sender, RoutedEventArgs e)
         {
             EquipmentInspectionDialog equipmentInspectionDialog = new EquipmentInspectionDialog();
             equipmentInspectionDialog.ShowDialog();
         }
 
-        private void rooms_Click(object sender, RoutedEventArgs e)
+        private void Rooms_Click(object sender, RoutedEventArgs e)
         {
             RoomsTableWindow roomsTableWindow = new RoomsTableWindow();
             roomsTableWindow.ShowDialog();
             
+        }
+
+        private void Renovate_Click(object sender, RoutedEventArgs e)
+        {
+            SimpleRenovationWindow simpleRenovationWindow = new SimpleRenovationWindow();
+            simpleRenovationWindow.ShowDialog();
         }
     }
 }
