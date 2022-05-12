@@ -144,7 +144,7 @@ internal class ExaminationRepository
         AddToContainers(examination);
     }
 
-    public void Add(ExaminationDTO examinationDTO)
+    private Examination GenerateExamination(ExaminationDTO examinationDTO)
     {
         int id = ++this._maxId;
         DateTime appointment = examinationDTO.Appointment;
@@ -153,6 +153,18 @@ internal class ExaminationRepository
         MedicalRecord medicalRecord = examinationDTO.MedicalRecord;
 
         Examination examination = new Examination(id, ExaminationStatus.Scheduled, appointment, room, doctor, medicalRecord, "");
+        return examination;
+    }
+
+    public void Add(ExaminationDTO examinationDTO)
+    {
+        /*int id = ++this._maxId;
+        DateTime appointment = examinationDTO.Appointment;
+        Room room = examinationDTO.Room;
+        Doctor doctor = examinationDTO.Doctor;
+        MedicalRecord medicalRecord = examinationDTO.MedicalRecord;*/
+
+        Examination examination = GenerateExamination(examinationDTO);
         AddToContainers(examination);
     }
 
@@ -538,6 +550,32 @@ internal class ExaminationRepository
         return priorityExaminationsAndOperations;
     }
 
+    private ExaminationDTO FindFit(ExaminationDTO examinationDTO, DateTime fit, DateTime end, int minHour, int minMinutes, int maxHour, int maxMinutes)
+    {
+        bool found = false;
+        while (fit <= end)
+        {
+            try
+            {
+                Room room = FindAvailableRoom(fit);
+                examinationDTO.Appointment = fit;
+                examinationDTO.Room = room;
+                CheckIfPatientIsAvailable(examinationDTO);
+                CheckIfDoctorIsAvailable(examinationDTO);
+                found = true;
+                break;
+            }
+            catch
+            {
+                fit = incrementFit(fit, maxHour, maxMinutes, minHour, minMinutes);
+            }
+        }
+        if (found)
+            return examinationDTO;
+        else
+            return null;
+    }
+
     public bool FindFirstFit(int minHour, int minMinutes, DateTime end, int maxHour, int maxMinutes, int maxWorkingHour, string patientUsername, string doctorUsername)
     {
         bool found = false;
@@ -548,38 +586,12 @@ internal class ExaminationRepository
         fit = fit.AddHours(minHour);
         fit = fit.AddMinutes(minMinutes);
         ExaminationDTO examinationDTO = new ExaminationDTO(fit, null, doctor, medicalRecord);
-
-        while (fit <= end)
+        ExaminationDTO firstFit = FindFit(examinationDTO, fit, end, minHour, minMinutes, maxHour, maxMinutes);
+        if (firstFit is not null)
         {
-            try
-            {
-                Room room = FindAvailableRoom(fit);
-                examinationDTO.Appointment = fit;
-                examinationDTO.Room = room;
-                CheckIfPatientIsAvailable(examinationDTO);
-                CheckIfDoctorIsAvailable(examinationDTO);
-                this.Add(examinationDTO);
-                MessageBox.Show("Examination scheduled for: " + fit.ToString());
-                found = true;
-                break;
-            }
-            catch
-            {
-                fit = fit.AddMinutes(15);
-
-                if (fit.Hour > maxHour)
-                {
-                    fit = fit.AddDays(1);
-                    fit = fit.AddHours(minHour - fit.Hour);
-                    fit = fit.AddMinutes(minMinutes - fit.Minute);
-                }
-                else if (fit.Hour == maxHour && fit.Minute > maxMinutes)
-                {
-                    fit = fit.AddDays(1);
-                    fit = fit.AddHours(minHour - fit.Hour);
-                    fit = fit.AddMinutes(minMinutes - fit.Minute);
-                }
-            }
+            found = true;
+            this.Add(examinationDTO);
+            MessageBox.Show("Examination scheduled for: " + fit.ToString());
         }
         return found;
     }
@@ -592,6 +604,8 @@ internal class ExaminationRepository
         var medicalRecord = MedicalRecordRepository.GetInstance().GetByPatientUsername(patient);
         List<Examination> suggestions = new List<Examination>();
         List<Doctor> viableDoctors = new List<Doctor>();
+        fit = fit.AddHours(minHour);
+        fit = fit.AddMinutes(minMinutes);
         if (doctorPriority)
         {
             maxHour = 22;
@@ -606,39 +620,34 @@ internal class ExaminationRepository
 
         foreach (Doctor doctor in viableDoctors)
         {
+            ExaminationDTO examinationDTO = new ExaminationDTO(fit, null, doctor, medicalRecord);
+
             if (suggestions.Count == 3) break;
             while (fit <= end)
             {
                 if (suggestions.Count == 3) break;
-                try
+                ExaminationDTO firstFit = FindFit(examinationDTO, fit, end, minHour, minMinutes, maxHour, maxMinutes);
+                if (firstFit is not null)
                 {
-                    Room room = FindAvailableRoom(fit);
-                    ExaminationDTO examinationDTO = new ExaminationDTO(fit, room, doctor, medicalRecord);
-                    CheckIfPatientIsAvailable(examinationDTO);
-                    CheckIfDoctorIsAvailable(examinationDTO);
-                    this.Add(examinationDTO);
-                    int id = ++this._maxId;
-                    suggestions.Add(new Examination(id, ExaminationStatus.Scheduled, fit, room, doctor, medicalRecord, ""));
-                }
-                catch
-                {
-                    fit = fit.AddMinutes(15);
-
-                    if (fit.Hour > maxHour)
-                    {
-                        fit = fit.AddDays(1);
-                        fit = fit.AddHours(minHour - fit.Hour);
-                        fit = fit.AddMinutes(minMinutes - fit.Minute);
-                    }
-                    else if (fit.Hour == maxHour && fit.Minute > maxMinutes)
-                    {
-                        fit = fit.AddDays(1);
-                        fit = fit.AddHours(minHour - fit.Hour);
-                        fit = fit.AddMinutes(minMinutes - fit.Minute);
-                    }
+                    suggestions.Add(GenerateExamination(firstFit));
+                    fit = firstFit.Appointment;
+                    fit = incrementFit(fit, maxHour, maxMinutes, minHour, minMinutes);
                 }
             }
         }
         return suggestions;
+    }
+
+    private DateTime incrementFit(DateTime fit, int maxHour, int maxMinutes, int minHour, int minMinutes)
+    {
+        fit = fit.AddMinutes(15);
+
+        if ((fit.Hour > maxHour) || (fit.Hour == maxHour && fit.Minute > maxMinutes))
+        {
+            fit = fit.AddDays(1);
+            fit = fit.AddHours(minHour - fit.Hour);
+            fit = fit.AddMinutes(minMinutes - fit.Minute);
+        }
+        return fit;
     }
 }

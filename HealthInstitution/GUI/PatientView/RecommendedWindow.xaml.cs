@@ -120,9 +120,9 @@ namespace HealthInstitution.GUI.PatientView
             DateTime.TryParse(formatDate, out var dateTime);
             bool found = ExaminationRepository.GetInstance().
                 FindFirstFit(_startHours, _startMinutes, dateTime, _endHours, _endMinutes, 23, _loggedPatient.Username, _doctorUsername);
-            bool doctorPriority = doctorRadioButton.IsChecked == true;
             if (!found)
             {
+                bool doctorPriority = doctorRadioButton.IsChecked == true;
                 List<Examination> suggestions =
                     ExaminationRepository.GetInstance().FindClosestFit
                     (_startHours, _startMinutes, dateTime, _endHours, _endMinutes, 23, _loggedPatient.Username, _doctorUsername, doctorPriority);
