@@ -24,7 +24,7 @@
     "id": 4,
     "type": "Specialty",
     "prescribedBy": "jovan",
-    "referredDoctor": null,
+    "referredDoctor": "ivan",
     "referredSpecialty": "Pediatrician"
   }
 ]

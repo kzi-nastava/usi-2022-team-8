@@ -22,6 +22,7 @@ using HealthInstitution.GUI.LoginView;
 using HealthInstitution.GUI.PatientView;
 using HealthInstitution.Core.SystemUsers.Patients.Model;
 using HealthInstitution.Core.Notifications.Model;
+
 using HealthInstitution.Core.SystemUsers.Patients.Model;
 
 namespace HealthInstitution.GUI.UserWindow
@@ -39,6 +40,7 @@ namespace HealthInstitution.GUI.UserWindow
             this._loggedPatient = loggedPatient;
             ShowNotificationsDialog();
         }
+
         private void ShowNotificationsDialog()
         {
             ExaminationDoctorRepository.GetInstance();
@@ -55,7 +57,7 @@ namespace HealthInstitution.GUI.UserWindow
             }
         }
 
-            private void LogOut_Click(object sender, RoutedEventArgs e)
+        private void LogOut_Click(object sender, RoutedEventArgs e)
         {
             if (System.Windows.MessageBox.Show("Are you sure you want to log out?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
             {

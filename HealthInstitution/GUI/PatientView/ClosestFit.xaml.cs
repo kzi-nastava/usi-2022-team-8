@@ -36,7 +36,7 @@ namespace HealthInstitution.GUI.PatientView
             Examination selectedExamination = _suggestions[0];
             if (secondRadioButton.IsChecked == true) selectedExamination = _suggestions[1];
             if (thirdRadioButton.IsChecked == true) selectedExamination = _suggestions[2];
-            examinationRepository.AddExamination(selectedExamination.Appointment, selectedExamination.Room, selectedExamination.Doctor, selectedExamination.MedicalRecord);
+            examinationRepository.Add(selectedExamination);
             this.Close();
         }
 
