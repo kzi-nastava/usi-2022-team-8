@@ -54,7 +54,8 @@ namespace HealthInstitution.GUI.UserWindow
 
         private void Scheduling_Click(object sender, RoutedEventArgs e)
         {
-
+            PatientSelectionDialog patientSelectionDialog = new PatientSelectionDialog();
+            patientSelectionDialog.ShowDialog();
         }
 
         private void LogOut_Click(object sender, RoutedEventArgs e)

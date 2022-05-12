@@ -8,6 +8,8 @@ public class Referral
     //public ReferralType Type { get; set; }
     public Doctor PrescribedBy { get; set; }
     public Doctor ReferredDoctor { get; set; }
+
+    public bool Active { get; set; }   
    //public SpecialtyType ReferredSpecialty { get; set; }
 
     public Referral(int id, Doctor prescribedBy, Doctor referredDoctor)
@@ -17,6 +19,7 @@ public class Referral
         this.PrescribedBy = prescribedBy;
         this.ReferredDoctor = referredDoctor;
         //this.ReferredSpecialty = referredSpecialty;
+        this.Active= true;
     }
 }
 
