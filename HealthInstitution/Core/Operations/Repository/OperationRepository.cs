@@ -36,6 +36,7 @@ namespace HealthInstitution.Core.Operations.Repository
             this.OperationsById = new Dictionary<int, Operation>();
             this._maxId = 0;
             this.LoadFromFile();
+            this.Complete();
         }
         private static OperationRepository s_instance = null;
         public static OperationRepository GetInstance()
@@ -118,6 +119,15 @@ namespace HealthInstitution.Core.Operations.Repository
                 return OperationsById[id];
             }
             return null;
+        }
+
+        private void Complete()
+        {
+            foreach (var operation in this.Operations)
+            {
+                if ((operation.Status == ExaminationStatus.Scheduled) && (operation.Appointment <= DateTime.Now))
+                    operation.Status = ExaminationStatus.Completed;
+            }
         }
 
         public void Add(OperationDTO operationDTO)

@@ -47,10 +47,18 @@ namespace HealthInstitution.Core.Referrals.Repository
             Enum.TryParse(referral["type"].ToString(), out referralType);
             SpecialtyType specialtyType;
             Enum.TryParse(referral["referredSpecialty"].ToString(), out specialtyType);
+            Doctor refferedDoctor;
+            try
+            {
+                refferedDoctor = doctorByUsername[(string)referral["referredDoctor"]];
+            } catch
+            {
+                refferedDoctor = null;
+            }
             return new Referral((int)referral["id"],
                                       referralType,
                                         doctorByUsername[(string)referral["prescribedBy"]],
-                                          doctorByUsername[(string)referral["referredDoctor"]],
+                                          refferedDoctor,
                                             specialtyType);
         }
         public void LoadFromFile()

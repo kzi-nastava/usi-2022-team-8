@@ -71,7 +71,7 @@ namespace HealthInstitution.GUI.DoctorView
             dialog.ShowDialog();
         }
 
-        public void CreateExaminationDTOFromInputData()
+        private MedicalRecordDTO CreateMedicalRecordDTOFromInputData()
         {
             double height = Double.Parse(heightTextBox.Text);
             double weight = Double.Parse(weightTextBox.Text);
@@ -87,34 +87,24 @@ namespace HealthInstitution.GUI.DoctorView
             }
             List<Prescription> prescriptions = _medicalRecord.Prescriptions;
             List<Referral> referrals = _medicalRecord.Referrals;
-            //ExaminationDTO medicalRecord = new MedicalRecordDTO(_medicalRecord.Patient, height, weight, previousIllnesses, allergens, prescriptions, referrals);
-            //MedicalRecordRepository.GetInstance().Update(medicalRecord);
+
+        }
+
+        private void UpdateExaminationFromInputData()
+        {
             this._selectedExamination.Anamnesis = anamnesisTextBox.Text;
             this._selectedExamination.Status = ExaminationStatus.Completed;
+            ExaminationRepository.GetInstance().Save();
         }
+
 
         private void Submit_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                double height = Double.Parse(heightTextBox.Text);
-                double weight = Double.Parse(weightTextBox.Text);
-                List<String> previousIllnesses = new List<String>();
-                foreach (String illness in illnessListBox.Items)
-                {
-                    previousIllnesses.Add(illness);
-                };
-                List<String> allergens = new List<String>();
-                foreach (String allergen in allergenListBox.Items)
-                {
-                    allergens.Add(allergen);
-                }
-                List<Prescription> prescriptions = _medicalRecord.Prescriptions;
-                List<Referral> referrals = _medicalRecord.Referrals;
-                MedicalRecordRepository.GetInstance().Update(_medicalRecord.Patient, height, weight, previousIllnesses, allergens, prescriptions, referrals);
-                this._selectedExamination.Anamnesis = anamnesisTextBox.Text;
-                this._selectedExamination.Status = ExaminationStatus.Completed;
-                ExaminationRepository.GetInstance().Save();
+                MedicalRecordDTO medicalRecordDTO = CreateMedicalRecordDTOFromInputData();
+                MedicalRecordRepository.GetInstance().Update(medicalRecordDTO);
+                UpdateExaminationFromInputData();
                 System.Windows.MessageBox.Show("You have finished the examination!", "Congrats", MessageBoxButton.OK, MessageBoxImage.Information);
                 this.Close();
             }

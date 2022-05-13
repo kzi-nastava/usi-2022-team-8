@@ -101,7 +101,7 @@ namespace HealthInstitution.GUI.DoctorView
             new MedicalRecordDialog(selectedMedicalRecord).ShowDialog();
         }
 
-        private bool IsExaminationSelected()
+        private bool IsPassedExaminationSelected()
         {
             if (!(bool)examinationRadioButton.IsChecked)
             {
@@ -117,17 +117,11 @@ namespace HealthInstitution.GUI.DoctorView
         }
         private void StartExamination_Click(object sender, RoutedEventArgs e)
         {
-            bool isSelected = IsExaminationSelected();
+            bool isSelected = IsPassedExaminationSelected();
             if (isSelected)
             { 
                 Examination selectedExamination = (Examination)dataGrid.SelectedItem;
-                if (selectedExamination.Status == ExaminationStatus.Scheduled)
-                {
-                    new PerformExaminationDialog(selectedExamination).ShowDialog();
-                } else
-                {
-                    System.Windows.MessageBox.Show("Examination is already completed!", "Error", MessageBoxButton.OKCancel, MessageBoxImage.Error);
-                }
+                new PerformExaminationDialog(selectedExamination).ShowDialog();
             }
             dataGrid.Items.Refresh();
         }
