@@ -8,12 +8,12 @@
         WindowStartupLocation="CenterScreen"
         Title="Patients" Height="400" Width="650">
     <Grid>
-        <DataGrid  ItemsSource="{Binding Patient}" AutoGenerateColumns="False" Name="dataGrid"  Height="250" VerticalAlignment="Top">
+        <DataGrid  ItemsSource="{Binding MedicalRecord}" AutoGenerateColumns="False" Name="dataGrid"  Height="250" VerticalAlignment="Top">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Username" FontSize="18" Binding="{Binding Username}" Width ="150"/>
-                <DataGridTextColumn Header="Name" FontSize="18" Binding="{Binding Name}" Width =" 150"/>
-                <DataGridTextColumn Header="Surname" FontSize="18" Binding="{Binding Surname}" Width =" 150"/>
-                <DataGridTextColumn Header="Blocked status" FontSize="18" Binding="{Binding Blocked}" Width =" 170"/>
+                <DataGridTextColumn Header="Username" FontSize="18" Binding="{Binding Patient.Username}" Width ="150"/>
+                <DataGridTextColumn Header="Name" FontSize="18" Binding="{Binding Patient.Name}" Width =" 150"/>
+                <DataGridTextColumn Header="Surname" FontSize="18" Binding="{Binding Patient.Surname}" Width =" 150"/>
+                <DataGridTextColumn Header="Blocked status" FontSize="18" Binding="{Binding Patient.Blocked}" Width =" 170"/>
             </DataGrid.Columns>
         </DataGrid>
         <Button Content="Select" Name="selectButton" Click="SelectPatient_Click" HorizontalAlignment="Center" Margin="0,300,0,0" VerticalAlignment="Top" FontSize="15" Width="130"/>

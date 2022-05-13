@@ -1,1 +1,19 @@
-[{"Type":"Patient","Username":"pera","Password":"pera","Name":"Petar","Surname":"Petrovic","Blocked":"NotBlocked"},{"Type":"Patient","Username":"marko","Password":"marko","Name":"Marko","Surname":"Markovic","Blocked":"NotBlocked"}]
+[
+  
+  {
+    "Type": "Patient",
+    "Username": "pera",
+    "Password": "pera",
+    "Name": "Petar",
+    "Surname": "Petrovic",
+    "Blocked": "NotBlocked"
+  },
+  {
+    "Type": "Patient",
+    "Username": "marko",
+    "Password": "marko",
+    "Name": "Marko",
+    "Surname": "Markovic",
+    "Blocked": "NotBlocked"
+  }
+]

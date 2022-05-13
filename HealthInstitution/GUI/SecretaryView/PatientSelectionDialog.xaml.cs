@@ -1,4 +1,6 @@
-﻿using HealthInstitution.Core.SystemUsers.Patients.Model;
+﻿using HealthInstitution.Core.MedicalRecords.Model;
+using HealthInstitution.Core.MedicalRecords.Repository;
+using HealthInstitution.Core.SystemUsers.Patients.Model;
 using HealthInstitution.Core.SystemUsers.Patients.Repository;
 using System;
 using System.Collections.Generic;
@@ -29,21 +31,22 @@ namespace HealthInstitution.GUI.SecretaryView
         private void LoadRows()
         {
             dataGrid.Items.Clear();
-            List<Patient> patients = PatientRepository.GetInstance().Patients;
-            foreach (Patient patient in patients)
+            List<MedicalRecord> medicalRecords = MedicalRecordRepository.GetInstance().MedicalRecords;
+            foreach (MedicalRecord medicalRecord in medicalRecords)
             {
-                if(patient.Blocked==Core.SystemUsers.Users.Model.BlockState.NotBlocked)
-                    dataGrid.Items.Add(patient);
+                if(medicalRecord.Patient.Blocked==Core.SystemUsers.Users.Model.BlockState.NotBlocked)
+                    dataGrid.Items.Add(medicalRecord);
             }
             dataGrid.Items.Refresh();
         }
 
         private void SelectPatient_Click(object sender, RoutedEventArgs e)
         {
-            Patient selectedPatient = (Patient)dataGrid.SelectedItem;
-            if (selectedPatient != null)
+            MedicalRecord selectedMedicalRecord = (MedicalRecord)dataGrid.SelectedItem;
+            if (selectedMedicalRecord != null)
             {
-                //TODO
+                PatientReferralsDialog patientReferralsDialog = new PatientReferralsDialog(selectedMedicalRecord);
+                patientReferralsDialog.ShowDialog();
                 dataGrid.SelectedItem = null;
 
             }

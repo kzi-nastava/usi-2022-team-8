@@ -1,1 +1,1 @@
-[{"id":1,"type":"SpecificDoctor","prescribedBy":"jovan","referredDoctor":"ivan","referredSpecialty":"GeneralPractitioner"},{"id":2,"type":"SpecificDoctor","prescribedBy":"jovan","referredDoctor":"ivan","referredSpecialty":null}]
+[{"id":1,"type":"Specialty","prescribedBy":"jovan","referredDoctor":null,"referredSpecialty":"Surgeon","active":false},{"id":2,"type":"SpecificDoctor","prescribedBy":"jovan","referredDoctor":"ivan","referredSpecialty":null,"active":false}]

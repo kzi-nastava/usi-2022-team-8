@@ -1,18 +1,1 @@
-[
-  {
-    "id": 1,
-    "status": "Completed",
-    "appointment": "2022-05-20T13:00:00",
-    "room": 3,
-    "medicalRecord": "pera",
-    "anamnesis": "blabla"
-  },
-  {
-    "id": 2,
-    "status": "Completed",
-    "appointment": "2022-05-13T09:00:00",
-    "room": 3,
-    "medicalRecord": "pera",
-    "anamnesis": "sssssss"
-  }
-]
+[{"id":1,"status":"Completed","appointment":"2022-05-20T13:00:00","room":3,"medicalRecord":"pera","anamnesis":"blabla"},{"id":2,"status":"Completed","appointment":"2022-05-13T09:00:00","room":3,"medicalRecord":"pera","anamnesis":"sssssss"},{"id":3,"status":"Scheduled","appointment":"2022-05-27T09:15:00","room":3,"medicalRecord":"pera","anamnesis":""},{"id":4,"status":"Scheduled","appointment":"2022-05-27T19:45:00","room":3,"medicalRecord":"pera","anamnesis":""},{"id":5,"status":"Scheduled","appointment":"2022-05-21T16:45:00","room":3,"medicalRecord":"pera","anamnesis":""},{"id":6,"status":"Scheduled","appointment":"2022-05-18T15:45:00","room":3,"medicalRecord":"pera","anamnesis":""},{"id":7,"status":"Scheduled","appointment":"2022-05-16T10:30:00","room":3,"medicalRecord":"marko","anamnesis":""},{"id":8,"status":"Scheduled","appointment":"2022-05-16T10:45:00","room":3,"medicalRecord":"pera","anamnesis":""}]

@@ -41,6 +41,9 @@
     <Compile Update="GUI\PatientView\PatientScheduleWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="GUI\SecretaryView\AddExaminationWithReferralDialog.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="GUI\SecretaryView\AddUrgentExaminationDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -51,6 +54,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="GUI\SecretaryView\DelayExaminationOperationDialog.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="GUI\SecretaryView\PatientReferralsDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="GUI\SecretaryView\PatientSelectionDialog.xaml.cs">
@@ -198,6 +204,9 @@
     <Page Update="GUI\PatientView\PatientScheduleWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="GUI\SecretaryView\AddExaminationWithReferralDialog.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="GUI\SecretaryView\AddUrgentExaminationDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -208,6 +217,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="GUI\SecretaryView\DelayExaminationOperationDialog.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="GUI\SecretaryView\PatientReferralsDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="GUI\SecretaryView\PatientSelectionDialog.xaml">
