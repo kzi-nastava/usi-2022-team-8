@@ -129,7 +129,16 @@ internal class ExaminationRepository
         return null;
     }
 
-    private void AddToContainers(Examination examination)
+    public List<Examination> GetPatientExaminations(Patient patient)
+    {
+        List<Examination> patientExaminations = new List<Examination>();
+        foreach (var examination in this.Examinations)
+            if (examination.MedicalRecord.Patient.Username == patient.Username)
+                patientExaminations.Add(examination);
+        return patientExaminations;
+    }
+
+    public void Add(ExaminationDTO examinationDTO)
     {
         examination.Doctor.Examinations.Add(examination);
         this.Examinations.Add(examination);
@@ -246,11 +255,11 @@ internal class ExaminationRepository
     {
         var patient = examinationDTO.MedicalRecord.Patient;
         DateTime appointment = examinationDTO.Appointment;
+        var patientExaminations = GetPatientExaminations(patient);
 
-        var allExaminations = this.Examinations;
-        foreach (var examination in allExaminations)
+        foreach (var examination in patientExaminations)
         {
-            if ((examination.MedicalRecord.Patient.Username == patient.Username) && examination.Appointment == appointment)
+            if (examination.Appointment == appointment)
             {
                 throw new Exception("That patient is not available");
             }
@@ -261,16 +270,13 @@ internal class ExaminationRepository
     {
         var patient = examinationDTO.MedicalRecord.Patient;
         DateTime appointment = examinationDTO.Appointment;
+        var patientOperations = OperationRepository.GetInstance().GetPatientOperations(patient);
 
-        var allOperations = OperationRepository.GetInstance().Operations;
-        foreach (var operation in allOperations)
+        foreach (var operation in patientOperations)
         {
-            if (operation.MedicalRecord.Patient.Username == patient.Username)
+            if ((appointment < operation.Appointment.AddMinutes(operation.Duration)) && (appointment.AddMinutes(15) > operation.Appointment))
             {
-                if ((appointment < operation.Appointment.AddMinutes(operation.Duration)) && (appointment.AddMinutes(15) > operation.Appointment))
-                {
-                    throw new Exception("That patient is not available");
-                }
+                throw new Exception("That patient is not available");
             }
         }
     }

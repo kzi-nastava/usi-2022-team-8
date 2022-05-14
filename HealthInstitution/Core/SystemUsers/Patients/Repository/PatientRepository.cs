@@ -68,11 +68,11 @@ namespace HealthInstitution.Core.SystemUsers.Patients.Repository
             return null;
         }
 
-        public void Add(UserDTO userDTO, double height, double weight, List<string> allergens, List<string> previousIlnesses)
+        public void Add(UserDTO userDTO, MedicalRecords.Model.MedicalRecordDTO medicalRecordDTO)
         {
             Patient patient = new Patient(userDTO.Type, userDTO.Username, userDTO.Password, userDTO.Name, userDTO.Surname);
             MedicalRecordRepository medicalRecordRepository = MedicalRecordRepository.GetInstance();
-            medicalRecordRepository.Add(height, weight, previousIlnesses, allergens, patient);
+            medicalRecordRepository.Add(medicalRecordDTO);
 
             this.Patients.Add(patient);
             this.PatientByUsername[userDTO.Username] = patient;
