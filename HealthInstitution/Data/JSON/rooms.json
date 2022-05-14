@@ -46,13 +46,5 @@
     "isRenovating": false,
     "isActive": true,
     "availableEquipment": []
-  },
-  {
-    "id": 7,
-    "type": "OperatingRoom",
-    "number": 77,
-    "isRenovating": false,
-    "isActive": true,
-    "availableEquipment": [ 25 ]
   }
 ]
