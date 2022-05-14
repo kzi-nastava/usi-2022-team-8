@@ -19,6 +19,7 @@ using System.Threading.Tasks;
 using HealthInstitution.Core.Operations.Repository;
 using HealthInstitution.Core.Operations.Model;
 using HealthInstitution.Core.Notifications.Repository;
+using HealthInstitution.Core.RecommededDTO;
 
 namespace HealthInstitution.Core.Examinations.Repository;
 
@@ -573,7 +574,7 @@ internal class ExaminationRepository
         return priorityExaminationsAndOperations;
     }
 
-    private ExaminationDTO FindFit(ExaminationDTO examinationDTO, DateTime fit, DateTime end, int minHour, int minMinutes, int maxHour, int maxMinutes)
+    private ExaminationDTO FindFit(ExaminationDTO examinationDTO, )
     {
         bool found = false;
         while (fit <= end)
@@ -599,7 +600,7 @@ internal class ExaminationRepository
             return null;
     }
 
-    public bool FindFirstFit(int minHour, int minMinutes, DateTime end, int maxHour, int maxMinutes, int maxWorkingHour, string patientUsername, string doctorUsername)
+    public bool FindFirstFit(F)
     {
         bool found = false;
         DateTime fit = DateTime.Today.AddDays(1);
@@ -619,20 +620,20 @@ internal class ExaminationRepository
         return found;
     }
 
-    public List<Examination> FindClosestFit(int minHour, int minMinutes, DateTime end, int maxHour, int maxMinutes, int maxWorkingHour, string patientUsername, string doctorUsername, bool doctorPriority)
+    public List<Examination> FindClosestFit(ClosestFitDTO closestFitDTO)
     {
         DateTime fit = DateTime.Today.AddDays(1);
-        Doctor pickedDoctor = DoctorRepository.GetInstance().GetById(doctorUsername);
-        Patient patient = PatientRepository.GetInstance().GetByUsername(patientUsername);
+        Doctor pickedDoctor = DoctorRepository.GetInstance().GetById(closestFitDTO.doctorUsername);
+        Patient patient = PatientRepository.GetInstance().GetByUsername(closestFitDTO.patientUsername);
         var medicalRecord = MedicalRecordRepository.GetInstance().GetByPatientUsername(patient);
         List<Examination> suggestions = new List<Examination>();
         List<Doctor> viableDoctors = new List<Doctor>();
-        fit = fit.AddHours(minHour);
-        fit = fit.AddMinutes(minMinutes);
-        if (doctorPriority)
+        fit = fit.AddHours(closestFitDTO.minHour);
+        fit = fit.AddMinutes(closestFitDTO.minMinutes);
+        if (closestFitDTO.doctorPriority)
         {
-            maxHour = 22;
-            maxMinutes = 45;
+            closestFitDTO.maxHour = 22;
+            closestFitDTO.maxMinutes = 45;
             viableDoctors.Add(pickedDoctor);
         }
         else
@@ -646,9 +647,10 @@ internal class ExaminationRepository
             ExaminationDTO examinationDTO = new ExaminationDTO(fit, null, doctor, medicalRecord);
 
             if (suggestions.Count == 3) break;
-            while (fit <= end)
+            while (fit <= closestFitDTO.end)
             {
                 if (suggestions.Count == 3) break;
+                FindFitDTO findFitDTO;
                 ExaminationDTO firstFit = FindFit(examinationDTO, fit, end, minHour, minMinutes, maxHour, maxMinutes);
                 if (firstFit is not null)
                 {
