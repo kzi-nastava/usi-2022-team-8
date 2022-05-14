@@ -47,5 +47,37 @@
     "Name": null,
     "Surname": null,
     "Blocked": "NotBlocked"
+  },
+  {
+    "Type": "Doctor",
+    "username": "nikola",
+    "password": "nikola",
+    "Name": null,
+    "Surname": null,
+    "Blocked": "NotBlocked"
+  },
+  {
+    "Type": "Doctor",
+    "username": "milorad",
+    "password": "milorad",
+    "Name": null,
+    "Surname": null,
+    "Blocked": "NotBlocked"
+  },
+  {
+    "Type": "Doctor",
+    "username": "sinisa",
+    "password": "sinisa",
+    "Name": null,
+    "Surname": null,
+    "Blocked": "NotBlocked"
+  },
+  {
+    "Type": "Doctor",
+    "username": "miroslav",
+    "password": "miroslav",
+    "Name": null,
+    "Surname": null,
+    "Blocked": "NotBlocked"
   }
 ]

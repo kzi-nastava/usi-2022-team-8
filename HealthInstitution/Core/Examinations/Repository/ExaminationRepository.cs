@@ -305,26 +305,9 @@ internal class ExaminationRepository
         CheckIfPatientHasOperations(examinationDTO);
     }
 
-    private Room FindAvailableRoom(DateTime dateTime)
+    private Room FindAvailableRoom(DateTime appointment)
     {
-        bool isAvailable;
-        List<Room> availableRooms = new List<Room>();
-        var rooms = RoomRepository.GetInstance().GetNotRenovating();
-        foreach (var room in rooms)
-        {
-            if (room.Type != RoomType.ExaminationRoom) continue;
-            isAvailable = true;
-            foreach (var examination in this.Examinations)
-            {
-                if (examination.Appointment == dateTime && examination.Room.Id == room.Id)
-                {
-                    isAvailable = false;
-                    break;
-                }
-            }
-            if (isAvailable)
-                availableRooms.Add(room);
-        }
+        List<Room> availableRooms = FindAllAvailableRooms(appointment);
 
         if (availableRooms.Count == 0) throw new Exception("There are no available rooms!");
 
@@ -337,7 +320,7 @@ internal class ExaminationRepository
     {
         bool isAvailable;
         List<Room> availableRooms = new List<Room>();
-        foreach (var room in RoomRepository.GetInstance().GetAll())
+        foreach (var room in RoomRepository.GetInstance().GetNotRenovating())
         {
             if (room.Type != RoomType.ExaminationRoom) continue;
             isAvailable = true;
@@ -476,18 +459,16 @@ internal class ExaminationRepository
         List<DateTime> possibleAppointments = new List<DateTime>();
         DateTime current = DateTime.Now;
         DateTime firstAppointment = current;
+
         if (current.Minute > 0) firstAppointment = new DateTime(current.Year, current.Month, current.Day, current.Hour, 15, 0);
         if (current.Minute > 15) firstAppointment = new DateTime(current.Year, current.Month, current.Day, current.Hour, 30, 0);
         if (current.Minute > 30) firstAppointment = new DateTime(current.Year, current.Month, current.Day, current.Hour, 45, 0);
         if (current.Minute > 45) firstAppointment = new DateTime(current.Year, current.Month, current.Day, current.Hour + 1, 0, 0);
+        
         for (int i = 0; i <= 7; i++)
         {
             TimeSpan ts = new TimeSpan(0, 15, 0);
             possibleAppointments.Add(firstAppointment + i * ts);
-            /*if ((firstAppointment + i * ts).Hour < 23)
-                possibleAppointments.Add(firstAppointment + i * ts);
-            else
-                break;*/
         }
         return possibleAppointments;
     }
@@ -566,11 +547,7 @@ internal class ExaminationRepository
             }
         }
         priorityExaminationsAndOperations.Add(new Tuple<int, int, DateTime>(this._maxId + 1, 2, new DateTime(1, 1, 1)));
-        List<Tuple<int, int, DateTime>> temporaryPriority = FindClosest(nextTwoHoursAppointments, specialtyType);
-        foreach (Tuple<int, int, DateTime> tuple in temporaryPriority)
-        {
-            priorityExaminationsAndOperations.Add(tuple);
-        }
+        priorityExaminationsAndOperations.AddRange(FindClosest(nextTwoHoursAppointments, specialtyType));
         return priorityExaminationsAndOperations;
     }
 

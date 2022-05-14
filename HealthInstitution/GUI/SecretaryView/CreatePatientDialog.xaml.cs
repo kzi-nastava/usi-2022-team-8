@@ -30,57 +30,77 @@ namespace HealthInstitution.GUI.UserWindow
             InitializeComponent();
         }
 
-        private void CreatePatient_Click(object sender, RoutedEventArgs e)
+        private UserDTO CreateUserDTOFromInputData()
         {
-            string username = usernameBox.Text.Trim();
-            string password=passwordBox.Password.ToString().Trim();
-            string name = nameBox.Text.Trim();
-            string surname=surnameBox.Text.Trim();
-            string allergensNotParsed=allergensBox.Text.Trim();
-            string previousIlnessesNotParsed=previousIlnessesBox.Text.Trim();
-            string height = heightBox.Text;
-            string weight = weightBox.Text;
             UserRepository userRepository = UserRepository.GetInstance();
-            try {
-                
-                if (username == "" || password == "" || name == "" || surname == "" ||height==""||weight=="")
+            string username = usernameBox.Text.Trim();
+            string password = passwordBox.Password.ToString().Trim();
+            string name = nameBox.Text.Trim();
+            string surname = surnameBox.Text.Trim();
+            if (username == "" || password == "" || name == "" || surname == "")
+            {
+                System.Windows.MessageBox.Show("All fields excluding Allergens and Previous ilnesses must be filled!", "Create patient error", MessageBoxButton.OK, MessageBoxImage.Error);
+                throw new Exception();
+            }
+            else if (userRepository.UsersByUsername.ContainsKey(username))
+            {
+                System.Windows.MessageBox.Show("This username is already used!", "Create patient error", MessageBoxButton.OK, MessageBoxImage.Error);
+                throw new Exception();
+            }
+            UserDTO userDTO = new UserDTO(UserType.Patient, username, password, name, surname);
+            return userDTO;
+        }
+        private MedicalRecordDTO CreateMedicalRecordDTOFromInputData()
+        {
+            string allergensNotParsed = allergensBox.Text.Trim();
+            string previousIlnessesNotParsed = previousIlnessesBox.Text.Trim();
+            string height = heightBox.Text.Trim();
+            string weight = weightBox.Text.Trim();
+            if (height == "" || weight == "")
+            {
+                System.Windows.MessageBox.Show("All fields excluding Allergens and Previous ilnesses must be filled!", "Create patient error", MessageBoxButton.OK, MessageBoxImage.Error);
+                throw new Exception();
+            }
+            try
+            {
+                double heightValue = Convert.ToDouble(height);
+                double weightValue = Convert.ToDouble(weight);
+                List<string> allergens = new List<string>();
+                List<string> previousIlnesses = new List<string>();
+                if (allergensNotParsed != "")
                 {
-                    System.Windows.MessageBox.Show("All fields excluding Allergens and Previous ilnesses must be filled!", "Create patient error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    allergens = allergensNotParsed.Split(",").ToList();
                 }
-                else if(userRepository.UsersByUsername.ContainsKey(username))
+                if (previousIlnessesNotParsed != "")
                 {
-                    System.Windows.MessageBox.Show("This username is already used!", "Create patient error", MessageBoxButton.OK, MessageBoxImage.Error);
+                    previousIlnesses = previousIlnessesNotParsed.Split(",").ToList();
                 }
-                else
-                {
-                    double heightValue = Convert.ToDouble(height);
-                    double weightValue = Convert.ToDouble(weight);
-                    List<string> allergens = new List<string>();
-                    List<string> previousIlnesses = new List<string>();
-                    if(allergensNotParsed!="")
-                    {
-                        allergens = allergensNotParsed.Split(",").ToList();
-                    }
-                    if (previousIlnessesNotParsed != "")
-                    {
-                        previousIlnesses = previousIlnessesNotParsed.Split(",").ToList();
-                    }
-                    PatientRepository patientRepository = PatientRepository.GetInstance();
-                    UserDTO userDTO = new UserDTO(UserType.Patient, username, password, name, surname);
-                    MedicalRecordDTO medicalRecordDTO = new MedicalRecordDTO(heightValue, weightValue, allergens, previousIlnesses, null);
-                    patientRepository.Add(userDTO, medicalRecordDTO);
-                    userRepository.Add(userDTO);
-                    TrollCounterFileRepository.GetInstance().Add(username);
-                    this.Close();
-                }
+                MedicalRecordDTO medicalRecordDTO = new MedicalRecordDTO(heightValue, weightValue, allergens, previousIlnesses, null);
+                return medicalRecordDTO;
             }
             catch
             {
                 System.Windows.MessageBox.Show("Height and weight must be numbers!", "Create patient error", MessageBoxButton.OK, MessageBoxImage.Error);
+                throw new Exception();
             }
-            
+        }
 
+        private void CreatePatient_Click(object sender, RoutedEventArgs e)
+        {
+            try {
+                UserRepository userRepository = UserRepository.GetInstance();
+                PatientRepository patientRepository = PatientRepository.GetInstance();
+                UserDTO userDTO = CreateUserDTOFromInputData();
+                MedicalRecordDTO medicalRecordDTO = CreateMedicalRecordDTOFromInputData();
+                patientRepository.Add(userDTO, medicalRecordDTO);
+                userRepository.Add(userDTO);
+                TrollCounterFileRepository.GetInstance().Add(userDTO.Username);
+                this.Close();
+            }
+            catch
+            {
 
+            }
         }
     }
 }

@@ -72,15 +72,13 @@ namespace HealthInstitution.GUI.SecretaryView
             ExaminationDTO examination = new ExaminationDTO(appointment, null, doctor, _medicalRecord);
             return examination;
         }
-        private void ScheduleWithSpecificDoctor(Doctor doctor)
+        private void ScheduleWithSpecificDoctor()
         {
             try
             {
-                ExaminationDTO examination = CreateExaminationDTOFromInputData(doctor);
+                ExaminationDTO examination = CreateExaminationDTOFromInputData(_referral.ReferredDoctor);
                 if (examination.Appointment <= DateTime.Now)
-                {
                     System.Windows.MessageBox.Show("You have to change dates for upcoming ones!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
                 else
                 {
                     ExaminationRepository.GetInstance().ReserveExamination(examination);
@@ -95,15 +93,13 @@ namespace HealthInstitution.GUI.SecretaryView
                 System.Windows.MessageBox.Show(ex.Message, "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
-        private void ScheduleWithOrderedSpecialty(Doctor doctor)
+        private void ScheduleWithOrderedSpecialist(Doctor doctor)
         {
             try
             {
                 ExaminationDTO examination = CreateExaminationDTOFromInputData(doctor);
                 if (examination.Appointment <= DateTime.Now)
-                {
                     System.Windows.MessageBox.Show("You have to change dates for upcoming ones!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
                 else
                 {
                     ExaminationRepository.GetInstance().ReserveExamination(examination);
@@ -121,31 +117,36 @@ namespace HealthInstitution.GUI.SecretaryView
                     System.Windows.MessageBox.Show(ex.Message, "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
+
+        void ScheduleWithOrderedSpecialty()
+        {
+            List<Doctor> doctors = DoctorRepository.GetInstance().Doctors;
+            foreach (Doctor doctor in doctors)
+            {
+                if (doctor.Specialty == _referral.ReferredSpecialty)
+                {
+                    try
+                    {
+                        ScheduleWithOrderedSpecialist(doctor);
+                        break;
+                    }
+                    catch
+                    {
+                        continue;
+                    }
+
+                }
+            }
+        }
         private void Submit_Click(object sender, RoutedEventArgs e)
         {
             if (_referral.Type == ReferralType.SpecificDoctor)
             {
-                ScheduleWithSpecificDoctor(_referral.ReferredDoctor);
+                ScheduleWithSpecificDoctor();
             }
             else
             {
-                List<Doctor> doctors = DoctorRepository.GetInstance().Doctors;
-                foreach (Doctor doctor in doctors)
-                {
-                    if(doctor.Specialty==_referral.ReferredSpecialty)
-                    {
-                        try
-                        {
-                            ScheduleWithOrderedSpecialty(doctor);
-                            break;
-                        }
-                        catch
-                        {
-                            continue;
-                        }
-                        
-                    }
-                }
+                ScheduleWithOrderedSpecialty();
             }
         }
     }

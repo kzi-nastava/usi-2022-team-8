@@ -1,4 +1,5 @@
 [
+  
   {
     "height": 189.6,
     "weight": 85,
@@ -12,9 +13,9 @@
     "height": 174,
     "weight": 75.1,
     "patientUsername": "marko",
-    "previousIlnesses": [ "Headaches", "Mononucleosis", "Arthritis", "fff" ],
-    "allergens": [ "Milk", "Soya", "Nuts", "fff" ],
-    "prescriptionsId": [],
-    "referralsId": []
+    "previousIlnesses": [ "Headaches", "Mononucleosis", "Arthritis", "fff", "nova bolest" ],
+    "allergens": [ "Milk", "Soya", "diazepam", "Nuts", "fff", "novi alergen" ],
+    "prescriptionsId": [ 6 ],
+    "referralsId": [ 1 ]
   }
 ]

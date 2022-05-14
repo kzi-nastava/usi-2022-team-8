@@ -1,1 +1,39 @@
-[{"id":1,"dailyDose":5,"timeOfUse":"DuringMeal","drug":2},{"id":2,"dailyDose":33,"timeOfUse":"DuringMeal","drug":2},{"id":3,"dailyDose":99,"timeOfUse":"PreMeal","drug":1},{"id":4,"dailyDose":2,"timeOfUse":"DuringMeal","drug":1},{"id":5,"dailyDose":1,"timeOfUse":"DuringMeal","drug":1}]
+[
+  
+  {
+    "id": 1,
+    "dailyDose": 5,
+    "timeOfUse": "DuringMeal",
+    "drug": 2
+  },
+  {
+    "id": 2,
+    "dailyDose": 33,
+    "timeOfUse": "DuringMeal",
+    "drug": 2
+  },
+  {
+    "id": 3,
+    "dailyDose": 99,
+    "timeOfUse": "PreMeal",
+    "drug": 1
+  },
+  {
+    "id": 4,
+    "dailyDose": 2,
+    "timeOfUse": "DuringMeal",
+    "drug": 1
+  },
+  {
+    "id": 5,
+    "dailyDose": 1,
+    "timeOfUse": "DuringMeal",
+    "drug": 1
+  },
+  {
+    "id": 6,
+    "dailyDose": 6,
+    "timeOfUse": "DuringMeal",
+    "drug": 2
+  }
+]

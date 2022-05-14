@@ -81,7 +81,7 @@ namespace HealthInstitution.Core.Operations.Repository
             }
         }
 
-        private List<dynamic> GetForSerialization()
+        private List<dynamic> PrepareForSerialization()
         {
             List<dynamic> reducedOperations = new List<dynamic>();
             foreach (Operation operation in this.Operations)
@@ -102,7 +102,7 @@ namespace HealthInstitution.Core.Operations.Repository
 
         public void Save()
         {
-            List<dynamic> reducedOperations = GetForSerialization();
+            List<dynamic> reducedOperations = PrepareForSerialization();
             var allOperations = JsonSerializer.Serialize(reducedOperations, _options);
             File.WriteAllText(this._fileName, allOperations);
         }
@@ -330,7 +330,6 @@ namespace HealthInstitution.Core.Operations.Repository
                             CheckIfPatientIsAvailable(operationDTO);
                             operationDTO.Room = FindAvailableRoom(operationDTO);
                             Add(operationDTO);
-
                             NotificationRepository.GetInstance().Add(new DateTime(1, 1, 1), appointment, doctor, patient);
                             priorityExaminationsAndOperations.Add(new Tuple<int, int, DateTime>(this._maxId, 2, appointment));
                             return priorityExaminationsAndOperations;
@@ -341,14 +340,9 @@ namespace HealthInstitution.Core.Operations.Repository
                         }
                     }
                 }
-
             }
             priorityExaminationsAndOperations.Add(new Tuple<int, int, DateTime>(this._maxId+1, 2, new DateTime(1, 1, 1)));
-            List<Tuple<int, int, DateTime>> temporaryPriority = ExaminationRepository.FindClosest(nextTwoHoursAppointments, specialtyType);
-            foreach (Tuple<int, int, DateTime> tuple in temporaryPriority)
-            {
-                priorityExaminationsAndOperations.Add(tuple);
-            }
+            priorityExaminationsAndOperations.AddRange(ExaminationRepository.FindClosest(nextTwoHoursAppointments, specialtyType));
             return priorityExaminationsAndOperations;
         }
     }

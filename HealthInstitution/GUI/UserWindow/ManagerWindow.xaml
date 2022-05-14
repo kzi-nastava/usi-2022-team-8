@@ -8,7 +8,7 @@
         WindowStartupLocation="CenterScreen"
         Title="ManagerWindow" Height="400" Width="600">
     <Grid>
-        <Menu Margin="0,0,0,280">
+        <Menu Margin="0,0,0,330">
             <MenuItem Header="Rooms" Click="Rooms_Click" FontSize="14" Height="30" Width="111" />
         </Menu>
         <Button Content="Equipment inspection" Click="EquipmentInspection_Click" Height="28" HorizontalAlignment="Center" Margin="0,200,0,0" VerticalAlignment="Top" FontSize="18"/>

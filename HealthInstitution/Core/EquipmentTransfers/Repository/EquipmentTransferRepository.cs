@@ -68,7 +68,7 @@ namespace HealthInstitution.Core.EquipmentTransfers.Repository
         public void LoadFromFile()
         {
             var equipmentTransfers = JArray.Parse(File.ReadAllText(_fileName));
-            //var equipmentTransfers = JsonSerializer.Deserialize<List<Room>>(File.ReadAllText(@"..\..\..\Data\JSON\equipmentTransfers.json"), _options);
+           
             foreach (var equipmentTransfer in equipmentTransfers)
             {
                 EquipmentTransfer loadedEquipmentTransfer = Parse(equipmentTransfer);
@@ -118,23 +118,27 @@ namespace HealthInstitution.Core.EquipmentTransfers.Repository
             return null;
         }
 
-        public void Add(Equipment equipment, Room fromRoom, Room toRoom, DateTime transferTime)
+        public void Add(EquipmentTransferDTO equipmentTransferDTO)
         {
             this._maxId++;
             int id = this._maxId;
+            Equipment equipment = equipmentTransferDTO.Equipment;
+            Room fromRoom = equipmentTransferDTO.FromRoom;
+            Room toRoom = equipmentTransferDTO.ToRoom;
+            DateTime transferTime = equipmentTransferDTO.TransferTime;
             EquipmentTransfer equipmentTransfer = new EquipmentTransfer(id,equipment,fromRoom,toRoom,transferTime);
             this.EquipmentTransfers.Add(equipmentTransfer);
             this.EquipmentTransferById.Add(equipmentTransfer.Id, equipmentTransfer);
             Save();
         }
 
-        public void Update(int id,Equipment equipment, Room fromRoom, Room toRoom, DateTime transferTime)
+        public void Update(int id, EquipmentTransferDTO equipmentTransferDTO)
         {
             EquipmentTransfer equipmentTransfer = GetById(id);
-            equipmentTransfer.Equipment = equipment;
-            equipmentTransfer.FromRoom = fromRoom;
-            equipmentTransfer.ToRoom = toRoom;
-            equipmentTransfer.TransferTime = transferTime;
+            equipmentTransfer.Equipment = equipmentTransferDTO.Equipment;
+            equipmentTransfer.FromRoom = equipmentTransferDTO.FromRoom;
+            equipmentTransfer.ToRoom = equipmentTransferDTO.ToRoom;
+            equipmentTransfer.TransferTime = equipmentTransferDTO.TransferTime;
             Save();
         }
 

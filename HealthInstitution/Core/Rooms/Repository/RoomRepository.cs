@@ -131,12 +131,17 @@ namespace HealthInstitution.Core.Rooms.Repository
             return null;
         }
 
-        public Room AddRoom(RoomType type, int number, bool isRenovating=false, bool isActive = true)
+        public Room AddRoom(RoomDTO roomDTO)
         {
 
             this._maxId++;
             int id = this._maxId;
             List<Equipment> availableEquipment = new List<Equipment>();
+            RoomType type = roomDTO.Type;
+            int number = roomDTO.Number;
+            bool isRenovating = roomDTO.IsRenovating;
+            bool isActive = roomDTO.IsActive;
+
             Room room = new Room(id, type, number, isRenovating, availableEquipment, isActive);
             this.Rooms.Add(room);
             this.RoomById.Add(room.Id, room);
@@ -144,13 +149,13 @@ namespace HealthInstitution.Core.Rooms.Repository
             return room;
         }
 
-        public void Update(int id, RoomType type, int number, bool isRenovating, bool isActive = true)
+        public void Update(int id, RoomDTO roomDTO)
         {
             Room room = GetById(id);
-            room.Type = type;
-            room.Number = number;
-            room.IsRenovating = isRenovating;
-            room.IsActive = isActive;
+            room.Type = roomDTO.Type;
+            room.Number = roomDTO.Number;
+            room.IsRenovating = roomDTO.IsRenovating;
+            room.IsActive = roomDTO.IsActive;
             Save();
         }
 

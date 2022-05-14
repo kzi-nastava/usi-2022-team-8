@@ -53,7 +53,8 @@ namespace HealthInstitution.Core.EquipmentTransfers.Functionality
             }
             else
             {
-                Equipment newEquipment = s_equipmentRepository.Add(quantity, equipment.Name, equipment.Type, equipment.IsDynamic);
+                EquipmentDTO equipmentDTO = new EquipmentDTO(quantity, equipment.Name, equipment.Type, equipment.IsDynamic);
+                Equipment newEquipment = s_equipmentRepository.Add(equipmentDTO);
                 s_roomRepository.AddToRoom(toRoom.Id, newEquipment);
             }
         }
@@ -69,7 +70,8 @@ namespace HealthInstitution.Core.EquipmentTransfers.Functionality
             }
             else
             {
-                Equipment newEquipment = s_equipmentRepository.Add(quantity, equipment.Name, equipment.Type, equipment.IsDynamic);
+                EquipmentDTO equipmentDTO = new EquipmentDTO(quantity, equipment.Name, equipment.Type, equipment.IsDynamic);
+                Equipment newEquipment = s_equipmentRepository.Add(equipmentDTO);
                 toRoomEquipments.Add(newEquipment);
             }
         }

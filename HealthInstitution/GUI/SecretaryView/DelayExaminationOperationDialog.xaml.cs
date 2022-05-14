@@ -47,52 +47,64 @@ namespace HealthInstitution.GUI.SecretaryView
             }
             dataGrid.Items.Refresh();
         }
-
-        private void Accept_Click(object sender, RoutedEventArgs e)
+        private void DelayExamination(ScheduleEditRequest selectedAppointment)
         {
             NotificationRepository notificationRepository = NotificationRepository.GetInstance();
+            ExaminationRepository.GetInstance().SwapExaminationValue(selectedAppointment.NewExamination);
+            notificationRepository.Add(selectedAppointment.CurrentExamination.Appointment, selectedAppointment.NewExamination.Appointment, selectedAppointment.NewExamination.Doctor, selectedAppointment.NewExamination.MedicalRecord.Patient);
+            if (selectedAppointment.CurrentExamination == null)
+            {
+                Examination.Appointment = selectedAppointment.CurrentOperation.Appointment;
+                Examination.Room = selectedAppointment.CurrentOperation.Room;
+                Examination.Doctor = selectedAppointment.CurrentOperation.Doctor;
+            }
+            else
+            {
+                Examination.Appointment = selectedAppointment.CurrentExamination.Appointment;
+                Examination.Room = selectedAppointment.CurrentExamination.Room;
+                Examination.Doctor = selectedAppointment.CurrentExamination.Doctor;
+            }
+            ExaminationDTO examinationDTO = new ExaminationDTO(Examination.Appointment, Examination.Room, Examination.Doctor, Examination.MedicalRecord);
+            ExaminationRepository.GetInstance().Add(examinationDTO);
+            notificationRepository.Add(new DateTime(1, 1, 1), Examination.Appointment, Examination.Doctor, Examination.MedicalRecord.Patient);
+
+        }
+
+        private void DelayOperation(ScheduleEditRequest selectedAppointment)
+        {
+            NotificationRepository notificationRepository = NotificationRepository.GetInstance();
+            OperationRepository.GetInstance().SwapOperationValue(selectedAppointment.NewOperation);
+            notificationRepository.Add(selectedAppointment.CurrentOperation.Appointment, selectedAppointment.NewOperation.Appointment, selectedAppointment.NewOperation.Doctor, selectedAppointment.NewOperation.MedicalRecord.Patient);
+            if (selectedAppointment.CurrentExamination == null)
+            {
+                Operation.Appointment = selectedAppointment.CurrentOperation.Appointment;
+                Operation.Room = selectedAppointment.CurrentOperation.Room;
+                Operation.Doctor = selectedAppointment.CurrentOperation.Doctor;
+            }
+            else
+            {
+                Operation.Appointment = selectedAppointment.CurrentExamination.Appointment;
+                Operation.Room = selectedAppointment.CurrentExamination.Room;
+                Operation.Doctor = selectedAppointment.CurrentExamination.Doctor;
+            }
+            OperationDTO operationDTO = new OperationDTO(Operation.Appointment, Operation.Duration, Operation.Room, Operation.Doctor, Operation.MedicalRecord);
+            OperationRepository.GetInstance().Add(operationDTO);
+            notificationRepository.Add(new DateTime(1, 1, 1), Operation.Appointment, Operation.Doctor, Operation.MedicalRecord.Patient);
+
+        }
+        private void Accept_Click(object sender, RoutedEventArgs e)
+        {
+            
             ScheduleEditRequest selectedAppointment = (ScheduleEditRequest)dataGrid.SelectedItem;
             if (selectedAppointment != null)
             {
                 if (Operation == null)
                 {
-                    ExaminationRepository.GetInstance().SwapExaminationValue(selectedAppointment.NewExamination);
-                    notificationRepository.Add(selectedAppointment.CurrentExamination.Appointment, selectedAppointment.NewExamination.Appointment, selectedAppointment.NewExamination.Doctor, selectedAppointment.NewExamination.MedicalRecord.Patient);
-                    if (selectedAppointment.CurrentExamination == null)
-                    {
-                        Examination.Appointment = selectedAppointment.CurrentOperation.Appointment;
-                        Examination.Room = selectedAppointment.CurrentOperation.Room;
-                        Examination.Doctor = selectedAppointment.CurrentOperation.Doctor;
-                    }
-                    else
-                    {
-                        Examination.Appointment = selectedAppointment.CurrentExamination.Appointment;
-                        Examination.Room = selectedAppointment.CurrentExamination.Room;
-                        Examination.Doctor = selectedAppointment.CurrentExamination.Doctor;
-                    }
-                    ExaminationDTO examinationDTO = new ExaminationDTO(Examination.Appointment, Examination.Room, Examination.Doctor, Examination.MedicalRecord);
-                    ExaminationRepository.GetInstance().Add(examinationDTO);
-                    notificationRepository.Add(new DateTime(1, 1, 1), Examination.Appointment, Examination.Doctor, Examination.MedicalRecord.Patient);
+                    DelayExamination(selectedAppointment);
                 }
                 else if (Examination == null)
                 {
-                    OperationRepository.GetInstance().SwapOperationValue(selectedAppointment.NewOperation);
-                    notificationRepository.Add(selectedAppointment.CurrentOperation.Appointment, selectedAppointment.NewOperation.Appointment, selectedAppointment.NewOperation.Doctor, selectedAppointment.NewOperation.MedicalRecord.Patient);
-                    if (selectedAppointment.CurrentExamination == null)
-                    {
-                        Operation.Appointment = selectedAppointment.CurrentOperation.Appointment;
-                        Operation.Room = selectedAppointment.CurrentOperation.Room;
-                        Operation.Doctor = selectedAppointment.CurrentOperation.Doctor;
-                    }
-                    else
-                    {
-                        Operation.Appointment = selectedAppointment.CurrentExamination.Appointment;
-                        Operation.Room = selectedAppointment.CurrentExamination.Room;
-                        Operation.Doctor = selectedAppointment.CurrentExamination.Doctor;
-                    }
-                    OperationDTO operationDTO = new OperationDTO(Operation.Appointment, Operation.Duration, Operation.Room, Operation.Doctor, Operation.MedicalRecord);
-                    OperationRepository.GetInstance().Add(operationDTO);
-                    notificationRepository.Add(new DateTime(1, 1, 1), Operation.Appointment, Operation.Doctor, Operation.MedicalRecord.Patient);
+                    DelayOperation(selectedAppointment);
                 }
             }
         }

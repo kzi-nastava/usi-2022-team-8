@@ -1,4 +1,6 @@
-﻿using HealthInstitution.Core.SystemUsers.Patients.Model;
+﻿using HealthInstitution.Core.Examinations.Repository;
+using HealthInstitution.Core.Operations.Repository;
+using HealthInstitution.Core.SystemUsers.Patients.Model;
 using HealthInstitution.Core.SystemUsers.Patients.Repository;
 using HealthInstitution.Core.SystemUsers.Users.Repository;
 using HealthInstitution.GUI.SecretaryView;
@@ -63,12 +65,18 @@ namespace HealthInstitution.GUI.UserWindow
             Patient selectedPatient = (Patient)dataGrid.SelectedItem;
             if (selectedPatient != null)
             {
-                UserRepository userRepository = UserRepository.GetInstance();
-                PatientRepository patientRepository = PatientRepository.GetInstance();
-                patientRepository.Delete(selectedPatient.Username);
-                userRepository.Delete(selectedPatient.Username);
-                dataGrid.SelectedItem = null;
-                LoadRows();
+                ExaminationRepository examinationRepository = ExaminationRepository.GetInstance();
+                OperationRepository operationRepository = OperationRepository.GetInstance();
+                if (examinationRepository.GetPatientExaminations(selectedPatient).Count() == 0 && operationRepository.GetPatientOperations(selectedPatient).Count() == 0)
+                {
+                    PatientRepository.GetInstance().Delete(selectedPatient.Username);
+                    dataGrid.SelectedItem = null;
+                    LoadRows();
+                }
+                else
+                {
+                    System.Windows.MessageBox.Show("The patient must not be deleted.", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
             }
         }
 
