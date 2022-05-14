@@ -1,1 +1,1 @@
-[]
+[{"id":1652535368,"examinationId":7,"state":"OnHold","newExamination":{"id":7,"status":"Scheduled","appointment":"2022-06-02T18:00:00","doctor":"ivan","room":3,"medicalRecord":"pera","anamnesis":""}},{"id":1652535378,"examinationId":7,"state":"OnHold","newExamination":{"id":7,"status":"Scheduled","appointment":"2022-06-02T18:00:00","doctor":"ivan","room":3,"medicalRecord":"pera","anamnesis":""}}]
