@@ -57,19 +57,13 @@ namespace HealthInstitution.GUI.LoginView
                 switch (foundUser.Type)
                 {
                     case UserType.Patient:
-                        try
-                        {
-                            NotificationDoctorRepository.GetInstance();
-                            NotificationPatientRepository.GetInstance();
-                            TrollCounterFileRepository.GetInstance().TrollCheck(foundUser.Username);
-                            PatientRepository patientRepository = PatientRepository.GetInstance();
-                            Patient loggedPatient = patientRepository.GetByUsername(_usernameInput);
-                            new PatientWindow(loggedPatient).ShowDialog();
-                        }
-                        catch (Exception ex)
-                        {
-                            System.Windows.MessageBox.Show(ex.Message, "Troll Alert", MessageBoxButton.OK, MessageBoxImage.Error);
-                        }
+
+                        NotificationDoctorRepository.GetInstance();
+                        NotificationPatientRepository.GetInstance();
+                        TrollCounterFileRepository.GetInstance().TrollCheck(foundUser.Username);
+                        PatientRepository patientRepository = PatientRepository.GetInstance();
+                        Patient loggedPatient = patientRepository.GetByUsername(_usernameInput);
+                        new PatientWindow(loggedPatient).ShowDialog();
 
                         break;
 

@@ -48,7 +48,7 @@ public class TrollCounter
     public void AppendEditDeleteDates(DateTime date)
     {
         this.CheckDates(this.EditDeleteDates);
-        //if (createDates.Count > 5) throw new Exception("Montly quota spent");
+
         this.EditDeleteDates.Add(date);
     }
 }

@@ -1,7 +1,12 @@
 ﻿using HealthInstitution.Core.TrollCounters.Model;
+using HealthInstitution.Core.SystemUsers.Patients.Repository;
+using HealthInstitution.Core.SystemUsers.Patients.Model;
+using HealthInstitution.Core.SystemUsers.Users.Repository;
+using HealthInstitution.Core.SystemUsers.Users.Model;
 using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using System.Windows;
 
 namespace HealthInstitution.Core.TrollCounters.Repository;
 
@@ -80,8 +85,31 @@ public class TrollCounterFileRepository
 
     public void TrollCheck(string username)
     {
-        CheckCreateTroll(username);
-        CheckEditDeleteTroll(username);
+        try
+        {
+            CheckCreateTroll(username);
+            CheckEditDeleteTroll(username);
+        }
+        catch (Exception ex)
+        {
+            System.Windows.MessageBox.Show(ex.Message, "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+            BlockUser(username);
+
+            PatientRepository.GetInstance().Save();
+            Environment.Exit(0);
+        }
+    }
+
+    private void BlockUser(string username)
+    {
+        var patientRepository = PatientRepository.GetInstance();
+        var patient = patientRepository.GetByUsername(username);
+        var userRepository = UserRepository.GetInstance();
+        var user = userRepository.GetByUsername(username);
+        patient.Blocked = BlockState.BlockedBySystem;
+        user.Blocked = BlockState.BlockedBySystem;
+        patientRepository.Save();
+        userRepository.Save();
     }
 
     public void CheckCreateTroll(string username)
