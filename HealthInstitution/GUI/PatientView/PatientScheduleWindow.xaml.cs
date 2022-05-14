@@ -24,13 +24,17 @@ public partial class PatientScheduleWindow : Window
         LoadRows();
     }
 
+    private void GridRefresh()
+    {
+        dataGrid.Items.Clear();
+        LoadRows();
+    }
+
     private void AddButton_click(object sender, RoutedEventArgs e)
     {
         TrollCounterFileRepository.GetInstance().TrollCheck(_loggedPatient.Username);
-        AddExaminationDialog addExaminationDialog = new AddExaminationDialog(_loggedPatient);
-        addExaminationDialog.ShowDialog();
-        dataGrid.Items.Clear();
-        LoadRows();
+        new AddExaminationDialog(_loggedPatient).ShowDialog();
+        GridRefresh();
         TrollCounterFileRepository.GetInstance().GetById(_loggedPatient.Username).AppendCreateDates(DateTime.Today);
         TrollCounterFileRepository.GetInstance().Save();
     }
@@ -39,10 +43,8 @@ public partial class PatientScheduleWindow : Window
     {
         TrollCounterFileRepository.GetInstance().TrollCheck(_loggedPatient.Username);
         Examination selectedExamination = (Examination)dataGrid.SelectedItem;
-        EditExaminationDialog editExaminationDialog = new EditExaminationDialog(selectedExamination);
-        editExaminationDialog.ShowDialog();
-        dataGrid.Items.Clear();
-        LoadRows();
+        new EditExaminationDialog(selectedExamination).ShowDialog();
+        GridRefresh();
         TrollCounterFileRepository.GetInstance().GetById(_loggedPatient.Username).AppendEditDeleteDates(DateTime.Today);
         TrollCounterFileRepository.GetInstance().Save();
     }
@@ -50,19 +52,23 @@ public partial class PatientScheduleWindow : Window
     private void DeleteButton_click(object sender, RoutedEventArgs e)
     {
         Examination selectedExamination = (Examination)dataGrid.SelectedItem;
-
         TrollCounterFileRepository.GetInstance().TrollCheck(_loggedPatient.Username);
         ExaminationDoctorRepository.GetInstance().Save();
-        dataGrid.Items.Clear();
-        LoadRows();
+        GridRefresh();
         TrollCounterFileRepository.GetInstance().GetById(_loggedPatient.Username).AppendEditDeleteDates(DateTime.Today);
         TrollCounterFileRepository.GetInstance().Save();
         ConfirmDelete(selectedExamination);
     }
 
+    private bool isConfirmedDelete()
+    {
+        return System.Windows.MessageBox.Show("Are you sure you want to delete selected examination", "Question",
+            MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes;
+    }
+
     private void ConfirmDelete(Examination selectedExamination)
     {
-        if (System.Windows.MessageBox.Show("Are you sure you want to delete selected examination", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+        if (isConfirmedDelete())
         {
             if (selectedExamination.Appointment.AddDays(-2) < DateTime.Now)
             {

@@ -74,6 +74,15 @@ namespace HealthInstitution.GUI.PatientView
             doctorComboBox.Items.Refresh();
         }
 
+        private void CreateExamination(DateTime dateTime)
+        {
+            MedicalRecord medicalRecord = MedicalRecordRepository.GetInstance().GetByPatientUsername(_loggedPatient);
+            Doctor doctor = DoctorRepository.GetInstance().GetById(_doctorUsername);
+            ExaminationDTO examination = new ExaminationDTO(dateTime, null, doctor, medicalRecord);
+            ExaminationRepository.GetInstance().ReserveExamination(examination);
+            ExaminationDoctorRepository.GetInstance().Save();
+        }
+
         private void Create_Click(object sender, RoutedEventArgs e)
         {
             string formatDate = datePicker.SelectedDate.ToString();
@@ -84,11 +93,7 @@ namespace HealthInstitution.GUI.PatientView
             dateTime = dateTime.AddMinutes(_minutes);
             try
             {
-                MedicalRecord medicalRecord = MedicalRecordRepository.GetInstance().GetByPatientUsername(_loggedPatient);
-                Doctor doctor = DoctorRepository.GetInstance().GetById(_doctorUsername);
-                ExaminationDTO examination = new ExaminationDTO(dateTime, null, doctor, medicalRecord);
-                ExaminationRepository.GetInstance().ReserveExamination(examination);
-                ExaminationDoctorRepository.GetInstance().Save();
+                CreateExamination(dateTime);
                 this.Close();
             }
             catch (Exception ex)

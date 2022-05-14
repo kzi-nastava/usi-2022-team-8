@@ -77,13 +77,6 @@ namespace HealthInstitution.GUI.PatientView
             minuteComboBox.Items.Refresh();
         }
 
-        /* private void HourComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-         {
-             var hourComboBox = sender as System.Windows.Controls.ComboBox;
-             int h = hourComboBox.SelectedIndex;
-             this._hours = h + 9;
-         }*/
-
         private void EndMinuteComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var minuteComboBox = sender as System.Windows.Controls.ComboBox;

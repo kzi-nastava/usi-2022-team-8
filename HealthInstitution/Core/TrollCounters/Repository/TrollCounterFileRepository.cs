@@ -94,22 +94,31 @@ public class TrollCounterFileRepository
         {
             System.Windows.MessageBox.Show(ex.Message, "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
             BlockUser(username);
-
-            PatientRepository.GetInstance().Save();
             Environment.Exit(0);
         }
     }
 
     private void BlockUser(string username)
     {
-        var patientRepository = PatientRepository.GetInstance();
-        var patient = patientRepository.GetByUsername(username);
+        BlockUserUser(username);
+        BlocUserPatient(username);
+    }
+
+    private void BlockUserUser(string username)
+    {
         var userRepository = UserRepository.GetInstance();
         var user = userRepository.GetByUsername(username);
-        patient.Blocked = BlockState.BlockedBySystem;
         user.Blocked = BlockState.BlockedBySystem;
-        patientRepository.Save();
         userRepository.Save();
+    }
+
+    private void BlocUserPatient(string username)
+    {
+        var patientRepository = PatientRepository.GetInstance();
+        var patient = patientRepository.GetByUsername(username);
+        patient.Blocked = BlockState.BlockedBySystem;
+
+        patientRepository.Save();
     }
 
     public void CheckCreateTroll(string username)
