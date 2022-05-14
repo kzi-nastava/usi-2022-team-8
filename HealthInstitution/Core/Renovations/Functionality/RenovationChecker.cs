@@ -61,7 +61,7 @@ namespace HealthInstitution.Core.Renovations.Functionality
 
         private static void UpdateSeparationRenovation(RoomSeparation roomSeparation)
         {
-            if (roomSeparation.StartDate == DateTime.Today)
+            if (roomSeparation.StartDate <= DateTime.Today.AddDays(-1))
             {
                 StartSeparation(roomSeparation.Room, roomSeparation.FirstRoom, roomSeparation.SecondRoom);
             }
@@ -74,7 +74,7 @@ namespace HealthInstitution.Core.Renovations.Functionality
 
         private static void UpdateMergeRenovation(RoomMerger roomMerger)
         {
-            if (roomMerger.StartDate == DateTime.Today)
+            if (roomMerger.StartDate <= DateTime.Today.AddDays(-1))
             {
                 StartMerge(roomMerger.Room, roomMerger.RoomForMerge, roomMerger.MergedRoom);
             }
@@ -87,7 +87,7 @@ namespace HealthInstitution.Core.Renovations.Functionality
 
         private static void UpdateSimpleRenovation(Renovation renovation)
         {
-            if (renovation.StartDate == DateTime.Today)
+            if (renovation.StartDate <= DateTime.Today.AddDays(-1))
             {
                 StartRenovation(renovation.Room);
             }
