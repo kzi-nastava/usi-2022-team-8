@@ -1,1 +1,19 @@
-[]
+[
+
+  {
+    "id": 1,
+    "room": 7,
+    "startDate": "2022-05-11T00:00:00",
+    "endDate": "2022-05-18T00:00:00",
+    "type": "simple"
+  },
+  {
+    "id": 2,
+    "room": 8,
+    "startDate": "2022-05-11T00:00:00",
+    "endDate": "2022-05-12T00:00:00",
+    "firstRoom": 9,
+    "secondRoom": 10,
+    "type": "separation"
+  }
+]
