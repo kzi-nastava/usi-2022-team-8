@@ -138,7 +138,22 @@ internal class ExaminationRepository
         return patientExaminations;
     }
 
-    public void Add(ExaminationDTO examinationDTO)
+    /* public void Add(ExaminationDTO examinationDTO)
+     {
+         examination.Doctor.Examinations.Add(examination);
+         this.Examinations.Add(examination);
+         this.ExaminationsById.Add(examination.Id, examination);
+
+         Save();
+         ExaminationDoctorRepository.GetInstance().Save();
+     }*/
+
+    public void Add(Examination examination)
+    {
+        AddToContainers(examination);
+    }
+
+    private void AddToContainers(Examination examination)
     {
         examination.Doctor.Examinations.Add(examination);
         this.Examinations.Add(examination);
@@ -146,11 +161,6 @@ internal class ExaminationRepository
 
         Save();
         ExaminationDoctorRepository.GetInstance().Save();
-    }
-
-    public void Add(Examination examination)
-    {
-        AddToContainers(examination);
     }
 
     private Examination GenerateExamination(ExaminationDTO examinationDTO)
@@ -167,11 +177,11 @@ internal class ExaminationRepository
 
     public void Add(ExaminationDTO examinationDTO)
     {
-        /*int id = ++this._maxId;
+        int id = ++this._maxId;
         DateTime appointment = examinationDTO.Appointment;
         Room room = examinationDTO.Room;
         Doctor doctor = examinationDTO.Doctor;
-        MedicalRecord medicalRecord = examinationDTO.MedicalRecord;*/
+        MedicalRecord medicalRecord = examinationDTO.MedicalRecord;
 
         Examination examination = GenerateExamination(examinationDTO);
         AddToContainers(examination);

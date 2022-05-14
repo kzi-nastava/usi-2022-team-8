@@ -57,7 +57,7 @@ namespace HealthInstitution.GUI.LoginView
                 switch (foundUser.Type)
                 {
                     case UserType.Patient:
-                        /*    try*/
+                        try
                         {
                             NotificationDoctorRepository.GetInstance();
                             NotificationPatientRepository.GetInstance();
@@ -65,10 +65,10 @@ namespace HealthInstitution.GUI.LoginView
                             PatientRepository patientRepository = PatientRepository.GetInstance();
                             Patient loggedPatient = patientRepository.GetByUsername(_usernameInput);
                             new PatientWindow(loggedPatient).ShowDialog();
-                            /*      }
-                                  catch (Exception ex)
-                                  {
-                                      System.Windows.MessageBox.Show(ex.Message, "Troll Alert", MessageBoxButton.OK, MessageBoxImage.Error);*/
+                        }
+                        catch (Exception ex)
+                        {
+                            System.Windows.MessageBox.Show(ex.Message, "Troll Alert", MessageBoxButton.OK, MessageBoxImage.Error);
                         }
 
                         break;

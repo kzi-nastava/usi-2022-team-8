@@ -1,1 +1,3 @@
-[{"id":1,"type":"SpecificDoctor","prescribedBy":"jovan","referredDoctor":"ivan","referredSpecialty":"GeneralPractitioner"},{"id":2,"type":"SpecificDoctor","prescribedBy":"jovan","referredDoctor":"ivan","referredSpecialty":"GeneralPractitioner"},{"id":3,"type":"SpecificDoctor","prescribedBy":"jovan","referredDoctor":"ivan","referredSpecialty":"GeneralPractitioner"},{"id":4,"type":"Specialty","prescribedBy":"jovan","referredDoctor":null,"referredSpecialty":"Pediatrician"},{"id":5,"type":"Specialty","prescribedBy":"jovan","referredDoctor":null,"referredSpecialty":"Surgeon"}]
+[
+
+]
