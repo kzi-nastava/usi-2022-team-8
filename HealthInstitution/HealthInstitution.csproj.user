@@ -32,10 +32,16 @@
     <Compile Update="GUI\PatientView\AddExaminationDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="GUI\PatientView\ClosestFit.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="GUI\PatientView\EditExaminationDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="GUI\PatientView\PatientNotificationsDialog.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="GUI\PatientView\MedicalRecordView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="GUI\PatientView\PatientScheduleWindow.xaml.cs">
@@ -48,6 +54,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="GUI\SecretaryView\AddUrgentOperationDialog.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="GUI\PatientView\RecommendedWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="GUI\SecretaryView\CreatePatientDialog.xaml.cs">
@@ -195,7 +204,13 @@
     <Page Update="GUI\PatientView\AddExaminationDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="GUI\PatientView\ClosestFit.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="GUI\PatientView\EditExaminationDialog.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="GUI\PatientView\MedicalRecordView.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="GUI\PatientView\PatientNotificationsDialog.xaml">
@@ -211,6 +226,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="GUI\SecretaryView\AddUrgentOperationDialog.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="GUI\PatientView\RecommendedWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="GUI\SecretaryView\CreatePatientDialog.xaml">

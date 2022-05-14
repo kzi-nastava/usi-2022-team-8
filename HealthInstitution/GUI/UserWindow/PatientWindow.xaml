@@ -6,12 +6,11 @@
         xmlns:local="clr-namespace:HealthInstitution.GUI.UserWindow"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="PatientWindow" Height="350" Width="600">
+        Title="PatientWindow" Height="450" Width="800">
     <Grid>
-        <Button x:Name="logout_button" Content="Log out" HorizontalAlignment="Left" Margin="500,280,0,0" VerticalAlignment="Top" FontSize="14" Width="60" Click="LogOut_Click"/>
-        <Button x:Name="schedule_button" Content="Schedule now" HorizontalAlignment="Center" Height="30" Margin="0,250,0,0" VerticalAlignment="Top" Width="200" Click="Schedule_Click" FontSize="18"/>
-
-        <Image HorizontalAlignment="Center" Height="100" Margin="0,65,0,0" VerticalAlignment="Top" Width="100" Source="/Data/Images/Hospital.png"/>
-
+        <Button x:Name="logout_button" Content="Logout" HorizontalAlignment="Left" Height="29" Margin="657,372,0,0" VerticalAlignment="Top" Width="108" Click="LogOut_Click" />
+        <Button x:Name="manuallSchedule_button" Content="Manually Schedule" HorizontalAlignment="Left" Height="40" Margin="46,347,0,0" VerticalAlignment="Top" Width="150" Click="manuallSchedule_Click" />
+        <Button x:Name="recommendedSchedule_button" Content="Recommended Schedule" HorizontalAlignment="Left" Height="40" Margin="276,347,0,0" VerticalAlignment="Top" Width="150" Click="recommendedSchedule_Click" />
+        <Button x:Name="medicalRecordView_button" Content="View Medical Record" HorizontalAlignment="Left" Height="40" Margin="465,347,0,0" VerticalAlignment="Top" Width="150" Click="medicalRecordView_button_Click" />
     </Grid>
 </Window>

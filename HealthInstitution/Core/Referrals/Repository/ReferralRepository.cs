@@ -20,13 +20,13 @@ namespace HealthInstitution.Core.Referrals.Repository
             Converters = { new JsonStringEnumConverter() },
             PropertyNameCaseInsensitive = true
         };
-        private ReferralRepository(string fileName) 
+        private ReferralRepository(string fileName)
         {
             this._maxId = 0;
             this._fileName = fileName;
             this.Referrals = new List<Referral>();
             this.ReferralById = new Dictionary<int, Referral>();
-            this.LoadFromFile(); 
+            this.LoadFromFile();
         }
         private static ReferralRepository s_instance = null;
         public static ReferralRepository GetInstance()
@@ -71,7 +71,7 @@ namespace HealthInstitution.Core.Referrals.Repository
             //var referrals = JsonSerializer.Deserialize<List<Referral>>(File.ReadAllText(@"..\..\..\Data\JSON\referrals.json"), _options);
             foreach (var referral in referrals)
             {
-                Referral loadedReferral = Parse(referral);   
+                Referral loadedReferral = Parse(referral);
                 if (loadedReferral.Id > _maxId)
                 {
                     _maxId = loadedReferral.Id;
@@ -80,6 +80,15 @@ namespace HealthInstitution.Core.Referrals.Repository
                 this.Referrals.Add(loadedReferral);
                 this.ReferralById[loadedReferral.Id] = loadedReferral;
             }
+        }
+
+        private String GetReferredDoctorUsername(Referral referral)
+        {
+            if (referral.ReferredDoctor != null)
+            {
+                return referral.ReferredDoctor.Username;
+            }
+            return null;
         }
         private List<dynamic> PrepareForSerialization()
         {

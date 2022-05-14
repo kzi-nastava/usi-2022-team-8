@@ -13,6 +13,7 @@ using HealthInstitution.Core.SystemUsers.Patients.Repository;
 using HealthInstitution.Core.SystemUsers.Patients.Model;
 using HealthInstitution.Core.Renovations.Functionality;
 using HealthInstitution.Core.Notifications.Repository;
+
 using HealthInstitution.Core.SystemUsers.Patients.Repository;
 using HealthInstitution.Core.SystemUsers.Patients.Model;
 
@@ -45,7 +46,8 @@ namespace HealthInstitution.GUI.LoginView
             else if (foundUser.Password != _passwordInput)
             {
                 System.Windows.MessageBox.Show("Username and password don't match!", "Log in error", MessageBoxButton.OK, MessageBoxImage.Error);
-            } else if (foundUser.Blocked == BlockState.BlockedBySecretary || foundUser.Blocked == BlockState.BlockedBySystem)
+            }
+            else if (foundUser.Blocked == BlockState.BlockedBySecretary || foundUser.Blocked == BlockState.BlockedBySystem)
             {
                 System.Windows.MessageBox.Show("Account is blocked!", "Log in error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
@@ -55,7 +57,7 @@ namespace HealthInstitution.GUI.LoginView
                 switch (foundUser.Type)
                 {
                     case UserType.Patient:
-                        try
+                        /*    try*/
                         {
                             NotificationDoctorRepository.GetInstance();
                             NotificationPatientRepository.GetInstance();
@@ -63,12 +65,12 @@ namespace HealthInstitution.GUI.LoginView
                             PatientRepository patientRepository = PatientRepository.GetInstance();
                             Patient loggedPatient = patientRepository.GetByUsername(_usernameInput);
                             new PatientWindow(loggedPatient).ShowDialog();
+                            /*      }
+                                  catch (Exception ex)
+                                  {
+                                      System.Windows.MessageBox.Show(ex.Message, "Troll Alert", MessageBoxButton.OK, MessageBoxImage.Error);*/
                         }
-                        catch (Exception ex)
-                        {
-                            System.Windows.MessageBox.Show(ex.Message, "Troll Alert", MessageBoxButton.OK, MessageBoxImage.Error);
-                        }
-                        
+
                         break;
 
                     case UserType.Doctor:
@@ -104,7 +106,7 @@ namespace HealthInstitution.GUI.LoginView
         private static void Main(string[] args)
         {
             EquipmentTransferChecker.UpdateByTransfer();
-            RenovationChecker.UpdateByRenovation(); 
+            RenovationChecker.UpdateByRenovation();
             LoginWindow window = new LoginWindow();
             window.ShowDialog();
         }

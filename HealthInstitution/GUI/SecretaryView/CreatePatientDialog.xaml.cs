@@ -65,8 +65,9 @@ namespace HealthInstitution.GUI.UserWindow
                         previousIlnesses = previousIlnessesNotParsed.Split(",").ToList();
                     }
                     PatientRepository patientRepository = PatientRepository.GetInstance();
-                    patientRepository.Add(username, password, name, surname, heightValue, weightValue, allergens, previousIlnesses);
-                    userRepository.Add(UserType.Patient, username, password, name, surname);
+                    UserDTO userDTO = new UserDTO(UserType.Patient, username, password, name, surname);
+                    patientRepository.Add(userDTO, heightValue, weightValue, allergens, previousIlnesses);
+                    userRepository.Add(userDTO);
                     TrollCounterFileRepository.GetInstance().Add(username);
                     this.Close();
                 }
