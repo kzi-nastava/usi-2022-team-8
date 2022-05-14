@@ -65,10 +65,7 @@ namespace HealthInstitution.GUI.DoctorView
             foreach (var ingredient in ingredients)
             {
                 if (_medicalRecord.Allergens.Contains(ingredient.Name))
-                {
-                    System.Windows.MessageBox.Show("Patient is alergic to the ingredients of this drug!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     return true;
-                }
             }
             return false;
         }
