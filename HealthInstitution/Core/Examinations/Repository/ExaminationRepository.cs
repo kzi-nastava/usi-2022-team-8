@@ -304,26 +304,9 @@ internal class ExaminationRepository
         CheckIfPatientHasOperations(examinationDTO);
     }
 
-    private Room FindAvailableRoom(DateTime dateTime)
+    private Room FindAvailableRoom(DateTime appointment)
     {
-        bool isAvailable;
-        List<Room> availableRooms = new List<Room>();
-        var rooms = RoomRepository.GetInstance().GetNotRenovating();
-        foreach (var room in rooms)
-        {
-            if (room.Type != RoomType.ExaminationRoom) continue;
-            isAvailable = true;
-            foreach (var examination in this.Examinations)
-            {
-                if (examination.Appointment == dateTime && examination.Room.Id == room.Id)
-                {
-                    isAvailable = false;
-                    break;
-                }
-            }
-            if (isAvailable)
-                availableRooms.Add(room);
-        }
+        List<Room> availableRooms = FindAllAvailableRooms(appointment);
 
         if (availableRooms.Count == 0) throw new Exception("There are no available rooms!");
 
@@ -336,7 +319,7 @@ internal class ExaminationRepository
     {
         bool isAvailable;
         List<Room> availableRooms = new List<Room>();
-        foreach (var room in RoomRepository.GetInstance().GetAll())
+        foreach (var room in RoomRepository.GetInstance().GetNotRenovating())
         {
             if (room.Type != RoomType.ExaminationRoom) continue;
             isAvailable = true;

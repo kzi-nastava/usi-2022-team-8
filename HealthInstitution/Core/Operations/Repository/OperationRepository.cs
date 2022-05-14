@@ -81,7 +81,7 @@ namespace HealthInstitution.Core.Operations.Repository
             }
         }
 
-        private List<dynamic> GetForSerialization()
+        private List<dynamic> PrepareForSerialization()
         {
             List<dynamic> reducedOperations = new List<dynamic>();
             foreach (Operation operation in this.Operations)
@@ -102,7 +102,7 @@ namespace HealthInstitution.Core.Operations.Repository
 
         public void Save()
         {
-            List<dynamic> reducedOperations = GetForSerialization();
+            List<dynamic> reducedOperations = PrepareForSerialization();
             var allOperations = JsonSerializer.Serialize(reducedOperations, _options);
             File.WriteAllText(this._fileName, allOperations);
         }
