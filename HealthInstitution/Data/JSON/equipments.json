@@ -1,4 +1,4 @@
-[ 
+[  
   {
     "Id": 1,
     "Quantity": 30,
@@ -8,14 +8,14 @@
   },
   {
     "Id": 2,
-    "Quantity": 80,
+    "Quantity": 60,
     "Name": "chair",
     "Type": "AppointmentEquipment",
     "IsDynamic": false
   },
   {
     "Id": 3,
-    "Quantity": 80,
+    "Quantity": 58,
     "Name": "injection",
     "Type": "AppointmentEquipment",
     "IsDynamic": true
@@ -128,13 +128,6 @@
   {
     "Id": 23,
     "Quantity": 5,
-    "Name": "injection",
-    "Type": "AppointmentEquipment",
-    "IsDynamic": true
-  },
-  {
-    "Id": 24,
-    "Quantity": 4,
     "Name": "injection",
     "Type": "AppointmentEquipment",
     "IsDynamic": true

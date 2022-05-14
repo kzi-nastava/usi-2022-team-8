@@ -5,6 +5,7 @@ using HealthInstitution.Core.Operations.Repository;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using HealthInstitution.Core.SystemUsers.Patients.Model;
 using HealthInstitution.Core.SystemUsers.Patients.Repository;
+using HealthInstitution.Core.SystemUsers.Users.Model;
 
 namespace HealthInstitution.GUI.DoctorView
 {
@@ -62,16 +63,9 @@ namespace HealthInstitution.GUI.DoctorView
             int hours = Int32.Parse(hourComboBox.Text);
             appointment = appointment.AddHours(hours);
             appointment = appointment.AddMinutes(minutes);
-            if (appointment <= DateTime.Now)
-                throw new Exception("You have to change dates for upcoming ones!");
-
             int duration = Int32.Parse(durationTextBox.Text);
-            if (duration <= 15)
-                throw new Exception("Operation can't last less than 15 minutes!");
-
             var patient = (Patient)patientComboBox.SelectedItem;
             var medicalRecord = MedicalRecordRepository.GetInstance().GetByPatientUsername(patient);
-
             return new OperationDTO(appointment, duration, null, _loggedDoctor, medicalRecord);
         }
 
@@ -80,6 +74,7 @@ namespace HealthInstitution.GUI.DoctorView
             try
             {
                 OperationDTO operationDTO = CreateOperationDTOFromInputData();
+                operationDTO.Validate();
                 OperationRepository.GetInstance().ReserveOperation(operationDTO);
                 this.Close();
             }

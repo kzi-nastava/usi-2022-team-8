@@ -138,22 +138,6 @@ internal class ExaminationRepository
         return patientExaminations;
     }
 
-    public void Add(Examination examination)
-    {
-        AddToContainers(examination);
-    }
-
-    private Examination GenerateExamination(ExaminationDTO examinationDTO)
-    {
-        int id = ++this._maxId;
-        DateTime appointment = examinationDTO.Appointment;
-        Room room = examinationDTO.Room;
-        Doctor doctor = examinationDTO.Doctor;
-        MedicalRecord medicalRecord = examinationDTO.MedicalRecord;
-
-        Examination examination = new Examination(id, ExaminationStatus.Scheduled, appointment, room, doctor, medicalRecord, "");
-        return examination;
-    }
     private void AddToContainers(Examination examination)
     {
         examination.Doctor.Examinations.Add(examination);
@@ -163,6 +147,7 @@ internal class ExaminationRepository
         Save();
         ExaminationDoctorRepository.GetInstance().Save();
     }
+
     public void Add(ExaminationDTO examinationDTO)
     {
         int id = ++this._maxId;
@@ -178,6 +163,35 @@ internal class ExaminationRepository
 
         Save();
         ExaminationDoctorRepository.GetInstance().Save();
+    }
+
+    public void Add(Examination examination)
+    {
+        AddToContainers(examination);
+    }
+
+    /*public void AddStanic(ExaminationDTO examinationDTO)
+    {
+        *//*int id = ++this._maxId;
+        DateTime appointment = examinationDTO.Appointment;
+        Room room = examinationDTO.Room;
+        Doctor doctor = examinationDTO.Doctor;
+        MedicalRecord medicalRecord = examinationDTO.MedicalRecord;*//*
+
+        Examination examination = GenerateExamination(examinationDTO);
+        AddToContainers(examination);
+    }*/
+
+    private Examination GenerateExamination(ExaminationDTO examinationDTO)
+    {
+        int id = ++this._maxId;
+        DateTime appointment = examinationDTO.Appointment;
+        Room room = examinationDTO.Room;
+        Doctor doctor = examinationDTO.Doctor;
+        MedicalRecord medicalRecord = examinationDTO.MedicalRecord;
+
+        Examination examination = new Examination(id, ExaminationStatus.Scheduled, appointment, room, doctor, medicalRecord, "");
+        return examination;
     }
 
     private ExaminationDTO ParseExaminationToExaminationDTO(Examination examination)
@@ -290,26 +304,9 @@ internal class ExaminationRepository
         CheckIfPatientHasOperations(examinationDTO);
     }
 
-    private Room FindAvailableRoom(DateTime dateTime)
+    private Room FindAvailableRoom(DateTime appointment)
     {
-        bool isAvailable;
-        List<Room> availableRooms = new List<Room>();
-        var rooms = RoomRepository.GetInstance().GetNotRenovating();
-        foreach (var room in rooms)
-        {
-            if (room.Type != RoomType.ExaminationRoom) continue;
-            isAvailable = true;
-            foreach (var examination in this.Examinations)
-            {
-                if (examination.Appointment == dateTime && examination.Room.Id == room.Id)
-                {
-                    isAvailable = false;
-                    break;
-                }
-            }
-            if (isAvailable)
-                availableRooms.Add(room);
-        }
+        List<Room> availableRooms = FindAllAvailableRooms(appointment);
 
         if (availableRooms.Count == 0) throw new Exception("There are no available rooms!");
 
@@ -322,7 +319,7 @@ internal class ExaminationRepository
     {
         bool isAvailable;
         List<Room> availableRooms = new List<Room>();
-        foreach (var room in RoomRepository.GetInstance().GetAll())
+        foreach (var room in RoomRepository.GetInstance().GetNotRenovating())
         {
             if (room.Type != RoomType.ExaminationRoom) continue;
             isAvailable = true;

@@ -74,11 +74,16 @@ namespace HealthInstitution.Core.Equipments.Repository
             return null;
         }
 
-        public Equipment Add(int quantity, string name, EquipmentType type, bool isDynamic)
+        public Equipment Add(EquipmentDTO equipmentDTO)
         {
 
             this._maxId++;
             int id = this._maxId;
+            int quantity = equipmentDTO.Quantity;
+            string name = equipmentDTO.Name;
+            EquipmentType type = equipmentDTO.Type;
+            bool isDynamic = equipmentDTO.IsDynamic;
+
             Equipment equipment = new Equipment(id, quantity, name, type, isDynamic);
             this.Equipments.Add(equipment);
             this.EquipmentById.Add(equipment.Id, equipment);
@@ -86,13 +91,13 @@ namespace HealthInstitution.Core.Equipments.Repository
             return equipment;
         }
 
-        public void Update(int id, int quantity, string name, EquipmentType type, bool isDynamic)
+        public void Update(int id, EquipmentDTO equipmentDTO)
         {
             Equipment equipment = GetById(id);
-            equipment.Quantity = quantity;
-            equipment.Name = name;
-            equipment.Type = type;
-            equipment.IsDynamic = isDynamic;
+            equipment.Quantity = equipmentDTO.Quantity;
+            equipment.Name = equipmentDTO.Name;
+            equipment.Type = equipmentDTO.Type;
+            equipment.IsDynamic = equipmentDTO.IsDynamic;
             Save();
         }
         public void Delete(int id)

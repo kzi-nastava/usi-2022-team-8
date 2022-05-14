@@ -91,7 +91,8 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
             DateTime endDate = (DateTime)endDatePicker.SelectedDate;
             Room selectedRoom = (Room)roomComboBox.SelectedItem;
 
-            _renovationRepository.AddRenovation(selectedRoom, startDate, endDate);
+            RenovationDTO renovationDTO = new RenovationDTO(selectedRoom, startDate, endDate);
+            _renovationRepository.AddRenovation(renovationDTO);
             if (startDate == DateTime.Today)
             {
                 RenovationChecker.StartRenovation(selectedRoom);

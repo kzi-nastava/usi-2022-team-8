@@ -1,5 +1,4 @@
 [
-
   {
     "username": "jovan",
     "password": "jovan",
@@ -12,6 +11,34 @@
     "password": "ivan",
     "name": "Ivan",
     "surname": "Ivanovic",
-    "specialty": "Surgeon"
+    "specialty": "GeneralPractitioner"
+  },
+  {
+    "username": "nikola",
+    "password": "nikola",
+    "name": "Nikola",
+    "surname": "Nikolic",
+    "specialty": "GeneralPractitioner"
+  },
+  {
+    "username": "milorad",
+    "password": "milorad",
+    "name": "Milorad",
+    "surname": "Miloradic",
+    "specialty": "Pediatrician"
+  },
+  {
+    "username": "sinisa",
+    "password": "sinisa",
+    "name": "Sinisa",
+    "surname": "Sinisic",
+    "specialty": "Radiologist"
+  },
+  {
+    "username": "miroslav",
+    "password": "miroslav",
+    "name": "Miroslav",
+    "surname": "Jevandjele",
+    "specialty": "Radiologist"
   }
 ]

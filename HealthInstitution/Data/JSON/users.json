@@ -1,1 +1,83 @@
-[{"Type":"Patient","Username":"pera","Password":"pera","Name":"Petar","Surname":"Popov","Blocked":"NotBlocked"},{"Type":"Doctor","Username":"jovan","Password":"jovan","Name":null,"Surname":null,"Blocked":"NotBlocked"},{"Type":"Doctor","Username":"ivan","Password":"ivan","Name":null,"Surname":null,"Blocked":"NotBlocked"},{"Type":"Secretary","Username":"simo","Password":"simo","Name":null,"Surname":null,"Blocked":"NotBlocked"},{"Type":"Manager","Username":"milos","Password":"milos","Name":null,"Surname":null,"Blocked":"NotBlocked"}]
+[
+
+  {
+    "Type": "Patient",
+    "Username": "pera",
+    "Password": "pera",
+    "Name": null,
+    "Surname": null,
+    "Blocked": "NotBlocked"
+  },
+  {
+    "Type": "Patient",
+    "Username": "marko",
+    "Password": "marko",
+    "Name": "Marko",
+    "Surname": "Markovic",
+    "Blocked": "NotBlocked"
+  },
+  {
+    "Type": "Doctor",
+    "Username": "jovan",
+    "Password": "jovan",
+    "Name": null,
+    "Surname": null,
+    "Blocked": "NotBlocked"
+  },
+  {
+    "Type": "Doctor",
+    "Username": "ivan",
+    "Password": "ivan",
+    "Name": null,
+    "Surname": null,
+    "Blocked": "NotBlocked"
+  },
+  {
+    "Type": "Secretary",
+    "Username": "simo",
+    "Password": "simo",
+    "Name": null,
+    "Surname": null,
+    "Blocked": "NotBlocked"
+  },
+  {
+    "Type": "Manager",
+    "Username": "milos",
+    "Password": "milos",
+    "Name": null,
+    "Surname": null,
+    "Blocked": "NotBlocked"
+  },
+  {
+    "Type": "Doctor",
+    "username": "nikola",
+    "password": "nikola",
+    "Name": null,
+    "Surname": null,
+    "Blocked": "NotBlocked"
+  },
+  {
+    "Type": "Doctor",
+    "username": "milorad",
+    "password": "milorad",
+    "Name": null,
+    "Surname": null,
+    "Blocked": "NotBlocked"
+  },
+  {
+    "Type": "Doctor",
+    "username": "sinisa",
+    "password": "sinisa",
+    "Name": null,
+    "Surname": null,
+    "Blocked": "NotBlocked"
+  },
+  {
+    "Type": "Doctor",
+    "username": "miroslav",
+    "password": "miroslav",
+    "Name": null,
+    "Surname": null,
+    "Blocked": "NotBlocked"
+  }
+]

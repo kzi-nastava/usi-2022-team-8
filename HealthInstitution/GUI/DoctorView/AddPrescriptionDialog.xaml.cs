@@ -60,22 +60,12 @@ namespace HealthInstitution.GUI.DoctorView
             drugComboBox.Items.Refresh();
         }
 
-        private void CollectForms()
-        {
-            Drug drug = (Drug)drugComboBox.SelectedItem;
-            PrescriptionTime timeOfUse = (PrescriptionTime)timeComboBox.SelectedIndex;
-            int dailyDose = Int32.Parse(doseTextBox.Text);
-        }
-
         private bool IsPatientAlergic(List<Ingredient> ingredients)
         {
             foreach (var ingredient in ingredients)
             {
                 if (_medicalRecord.Allergens.Contains(ingredient.Name))
-                {
-                    System.Windows.MessageBox.Show("Patient is alergic to the ingredients of this drug!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                     return true;
-                }
             }
             return false;
         }
