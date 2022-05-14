@@ -87,7 +87,8 @@ namespace HealthInstitution.GUI.DoctorView
             }
             List<Prescription> prescriptions = _medicalRecord.Prescriptions;
             List<Referral> referrals = _medicalRecord.Referrals;
-
+            MedicalRecordDTO medicalRecordDTO = new MedicalRecordDTO(height, weight, previousIllnesses, allergens, _selectedExamination.MedicalRecord.Patient);
+            return medicalRecordDTO;
         }
 
         private void UpdateExaminationFromInputData()

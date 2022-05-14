@@ -36,7 +36,7 @@ namespace HealthInstitution.Core.Operations.Repository
             this.OperationsById = new Dictionary<int, Operation>();
             this._maxId = 0;
             this.LoadFromFile();
-            this.Complete();
+            this.ChangeStatus();
         }
         private static OperationRepository s_instance = null;
         public static OperationRepository GetInstance()
@@ -120,8 +120,16 @@ namespace HealthInstitution.Core.Operations.Repository
             }
             return null;
         }
+        public List<Operation> GetPatientOperations(Patient patient)
+        {
+            List<Operation> patientOperations = new List<Operation>();
+            foreach (var operation in this.Operations)
+                if (operation.MedicalRecord.Patient.Username == patient.Username)
+                    patientOperations.Add(operation);
+            return patientOperations;
+        }
 
-        private void Complete()
+        private void ChangeStatus()
         {
             foreach (var operation in this.Operations)
             {
@@ -210,16 +218,13 @@ namespace HealthInstitution.Core.Operations.Repository
             Patient patient = operationDTO.MedicalRecord.Patient;
             DateTime appointment = operationDTO.Appointment;
             int duration = operationDTO.Duration;
+            var patientExaminations = ExaminationRepository.GetInstance().GetPatientExaminations(patient);
 
-            var allExaminations = ExaminationRepository.GetInstance().Examinations;
-            foreach (var examination in allExaminations)
+            foreach (var examination in patientExaminations)
             {
-                if ((examination.MedicalRecord.Patient.Username == patient.Username))
+                if ((appointment < examination.Appointment.AddMinutes(15)) && (appointment.AddMinutes(duration) > examination.Appointment))
                 {
-                    if ((appointment < examination.Appointment.AddMinutes(15)) && (appointment.AddMinutes(duration) > examination.Appointment))
-                    {
-                        throw new Exception("That patient is not available");
-                    }
+                    throw new Exception("That patient is not available");
                 }
             }
         }
@@ -229,16 +234,13 @@ namespace HealthInstitution.Core.Operations.Repository
             Patient patient = operationDTO.MedicalRecord.Patient;
             DateTime appointment = operationDTO.Appointment;
             int duration = operationDTO.Duration;
+            var patientOperations = GetPatientOperations(patient);
 
-            var allOperations = GetInstance().Operations;
-            foreach (var operation in allOperations)
+            foreach (var operation in patientOperations)
             {
-                if (operation.MedicalRecord.Patient.Username == patient.Username)
+                if ((appointment < operation.Appointment.AddMinutes(operation.Duration)) && (appointment.AddMinutes(duration) > operation.Appointment))
                 {
-                    if ((appointment < operation.Appointment.AddMinutes(operation.Duration)) && (appointment.AddMinutes(duration) > operation.Appointment))
-                    {
-                        throw new Exception("That patient is not available");
-                    }
+                    throw new Exception("That patient is not available");
                 }
             }
         }

@@ -101,7 +101,7 @@ namespace HealthInstitution.GUI.DoctorView
             new MedicalRecordDialog(selectedMedicalRecord).ShowDialog();
         }
 
-        private bool IsPassedExaminationSelected()
+        private bool IsExaminationSelected()
         {
             if (!(bool)examinationRadioButton.IsChecked)
             {
@@ -115,13 +115,24 @@ namespace HealthInstitution.GUI.DoctorView
             }
             return true;
         }
+
+        private bool IsExaminationReadyForPerforming(Examination selectedExamination)
+        {
+            if (!(selectedExamination.Appointment <= DateTime.Now))
+            {
+                System.Windows.MessageBox.Show("Date of examination didn't pass!", "Error", MessageBoxButton.OKCancel, MessageBoxImage.Error);
+                return false;
+            }
+            return true;
+        }
         private void StartExamination_Click(object sender, RoutedEventArgs e)
         {
-            bool isSelected = IsPassedExaminationSelected();
+            bool isSelected = IsExaminationSelected();
             if (isSelected)
             { 
                 Examination selectedExamination = (Examination)dataGrid.SelectedItem;
-                new PerformExaminationDialog(selectedExamination).ShowDialog();
+                if (IsExaminationReadyForPerforming(selectedExamination))
+                    new PerformExaminationDialog(selectedExamination).ShowDialog();
             }
             dataGrid.Items.Refresh();
         }
