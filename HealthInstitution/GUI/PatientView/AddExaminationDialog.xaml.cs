@@ -82,18 +82,19 @@ namespace HealthInstitution.GUI.PatientView
             DateTime.TryParse(formatDate, out var dateTime);
             dateTime = dateTime.AddHours(_hours);
             dateTime = dateTime.AddMinutes(_minutes);
-            try
+            //try
             {
                 MedicalRecord medicalRecord = MedicalRecordRepository.GetInstance().GetByPatientUsername(_loggedPatient);
                 Doctor doctor = DoctorRepository.GetInstance().GetById(_doctorUsername);
                 ExaminationDTO examination = new ExaminationDTO(dateTime, null, doctor, medicalRecord);
+                ExaminationRepository.GetInstance().ReserveExamination(examination);
                 ExaminationDoctorRepository.GetInstance().Save();
                 this.Close();
             }
-            catch (Exception ex)
-            {
-                System.Windows.MessageBox.Show(ex.Message, "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
-            }
+            /* catch (Exception ex)
+             {
+                 System.Windows.MessageBox.Show(ex.Message, "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+             }*/
         }
 
         private void MinuteComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)

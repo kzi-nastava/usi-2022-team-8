@@ -83,6 +83,8 @@ namespace HealthInstitution.GUI.DoctorView
         private PrescriptionDTO CreatePrescriptionDTOFromInputData()
         {
             Drug drug = (Drug)drugComboBox.SelectedItem;
+            if (IsPatientAlergic(drug.Ingredients))
+                throw new Exception("Patient is alergic to drug ingredients");
             PrescriptionTime timeOfUse = (PrescriptionTime)timeComboBox.SelectedIndex;
             int dailyDose = Int32.Parse(doseTextBox.Text);
             PrescriptionDTO prescription = new PrescriptionDTO(dailyDose, timeOfUse, drug);
@@ -94,13 +96,10 @@ namespace HealthInstitution.GUI.DoctorView
             try
             {
                 PrescriptionDTO prescriptionDTO = CreatePrescriptionDTOFromInputData();
-                if (!IsPatientAlergic(prescriptionDTO.Drug.Ingredients))
-                {
-                    Prescription prescription = _prescriptionRepository.Add(prescriptionDTO);
-                    _medicalRecordRepository.AddPrescription(_medicalRecord.Patient, prescription);
-                    System.Windows.MessageBox.Show("You have created the prescription!", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
-                    this.Close();
-                }
+                Prescription prescription = _prescriptionRepository.Add(prescriptionDTO);
+                _medicalRecordRepository.AddPrescription(_medicalRecord.Patient, prescription);
+                System.Windows.MessageBox.Show("You have created the prescription!", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
+                this.Close();
             }
             catch (Exception ex)
             {

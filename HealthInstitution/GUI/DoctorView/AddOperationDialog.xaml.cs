@@ -62,7 +62,13 @@ namespace HealthInstitution.GUI.DoctorView
             int hours = Int32.Parse(hourComboBox.Text);
             appointment = appointment.AddHours(hours);
             appointment = appointment.AddMinutes(minutes);
+            if (appointment <= DateTime.Now)
+                throw new Exception("You have to change dates for upcoming ones!");
+
             int duration = Int32.Parse(durationTextBox.Text);
+            if (duration <= 15)
+                throw new Exception("Operation can't last less than 15 minutes!");
+
             var patient = (Patient)patientComboBox.SelectedItem;
             var medicalRecord = MedicalRecordRepository.GetInstance().GetByPatientUsername(patient);
 
@@ -74,17 +80,8 @@ namespace HealthInstitution.GUI.DoctorView
             try
             {
                 OperationDTO operationDTO = CreateOperationDTOFromInputData();
-                if (operationDTO.Appointment <= DateTime.Now)
-                {
-                    System.Windows.MessageBox.Show("You have to change dates for upcoming ones!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                } else if (operationDTO.Duration <= 15) {
-                    System.Windows.MessageBox.Show("Operation can't last less than 15 minutes!", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-                }
-                else
-                {
-                    OperationRepository.GetInstance().ReserveOperation(operationDTO);
-                    this.Close();
-                }
+                OperationRepository.GetInstance().ReserveOperation(operationDTO);
+                this.Close();
             }
             catch (Exception ex)
             {

@@ -9,7 +9,6 @@ public class MedicalRecord
     public double Weight { get; set; }
     public List<String> PreviousIllnesses { get; set; }
     public List<String> Allergens { get; set; }
-    //public string patientUsername { get; set; }
     public Patient Patient { get; set; }
     public List<Prescription> Prescriptions { get; set; }
     public List<Referral> Referrals { get; set; }

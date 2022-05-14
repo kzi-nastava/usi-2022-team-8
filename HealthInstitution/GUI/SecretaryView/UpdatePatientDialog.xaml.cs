@@ -48,8 +48,9 @@ namespace HealthInstitution.GUI.SecretaryView
             {
                 UserRepository userRepository = UserRepository.GetInstance();
                 PatientRepository patientRepository = PatientRepository.GetInstance();
-                patientRepository.Update(username, password, name, surname, Patient.Blocked);
-                userRepository.Update(username, password, name, surname);
+                UserDTO userDTO = new UserDTO(UserType.Patient, username, password, name, surname);
+                patientRepository.Update(userDTO);
+                userRepository.Update(userDTO);
                 this.Close();
             }
         }

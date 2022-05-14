@@ -75,8 +75,10 @@ namespace HealthInstitution.GUI.DoctorView
             int hours = Int32.Parse(hourComboBox.Text);
             appointment = appointment.AddHours(hours);
             appointment = appointment.AddMinutes(minutes);
-            int duration = Int32.Parse(durationTextBox.Text);
+            if (appointment <= DateTime.Now)
+                throw new Exception("You have to change dates for upcoming ones!");
 
+            int duration = Int32.Parse(durationTextBox.Text);
             Patient patient = (Patient)patientComboBox.SelectedItem;
             MedicalRecord medicalRecord = MedicalRecordRepository.GetInstance().GetByPatientUsername(patient);
 
@@ -87,22 +89,13 @@ namespace HealthInstitution.GUI.DoctorView
             try
             {
                 OperationDTO operationDTO = CreateOperationDTOFromInputData();
-                if (operationDTO.Appointment <= DateTime.Now)
-                {
-                    System.Windows.MessageBox.Show("You have to change dates for upcoming ones!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                }
-                else
-                {
-                    OperationRepository.GetInstance().Update(this._selectedOperation.Id, operationDTO);
-                    this.Close();
-                }
+                OperationRepository.GetInstance().Update(this._selectedOperation.Id, operationDTO);
+                this.Close();
             }
             catch (Exception ex)
             {
                 System.Windows.MessageBox.Show(ex.Message, "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
-
-       
     }
 }

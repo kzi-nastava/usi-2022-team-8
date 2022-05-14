@@ -55,7 +55,6 @@ namespace HealthInstitution.GUI.DoctorView
                 dataGrid.Items.Remove(selectedOperation);
                 _operationRepository.Delete(selectedOperation.Id);
                 _doctorRepository.DeleteOperation(_loggedDoctor, selectedOperation);
-                _operationDoctorRepository.Save();
             }
         }
     }

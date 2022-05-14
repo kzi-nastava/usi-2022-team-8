@@ -62,8 +62,10 @@ namespace HealthInstitution.GUI.DoctorView
             int hours = Int32.Parse(hourComboBox.Text);
             appointment = appointment.AddHours(hours);
             appointment = appointment.AddMinutes(minutes);
-            Patient patient = (Patient)patientComboBox.SelectedItem;
+            if (appointment <= DateTime.Now)
+                throw new Exception("You have to change dates for upcoming ones!");
 
+            Patient patient = (Patient)patientComboBox.SelectedItem;
             MedicalRecord medicalRecord = MedicalRecordRepository.GetInstance().GetByPatientUsername(patient);
             ExaminationDTO examination = new ExaminationDTO(appointment, null, _loggedDoctor, medicalRecord);
             return examination;
@@ -74,14 +76,8 @@ namespace HealthInstitution.GUI.DoctorView
             try
             {
                 ExaminationDTO examination = CreateExaminationDTOFromInputData();
-                if (examination.Appointment <= DateTime.Now)
-                {
-                    System.Windows.MessageBox.Show("You have to change dates for upcoming ones!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                } else
-                {
-                    ExaminationRepository.GetInstance().ReserveExamination(examination);
-                    this.Close();
-                }
+                ExaminationRepository.GetInstance().ReserveExamination(examination);
+                this.Close();
             }
             catch (Exception ex)
             {

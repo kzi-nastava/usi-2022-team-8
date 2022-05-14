@@ -115,19 +115,24 @@ namespace HealthInstitution.GUI.DoctorView
             }
             return true;
         }
+
+        private bool IsExaminationReadyForPerforming(Examination selectedExamination)
+        {
+            if (!(selectedExamination.Appointment <= DateTime.Now))
+            {
+                System.Windows.MessageBox.Show("Date of examination didn't pass!", "Error", MessageBoxButton.OKCancel, MessageBoxImage.Error);
+                return false;
+            }
+            return true;
+        }
         private void StartExamination_Click(object sender, RoutedEventArgs e)
         {
             bool isSelected = IsExaminationSelected();
             if (isSelected)
             { 
                 Examination selectedExamination = (Examination)dataGrid.SelectedItem;
-                if (selectedExamination.Status == ExaminationStatus.Scheduled)
-                {
+                if (IsExaminationReadyForPerforming(selectedExamination))
                     new PerformExaminationDialog(selectedExamination).ShowDialog();
-                } else
-                {
-                    System.Windows.MessageBox.Show("Examination is already completed!", "Error", MessageBoxButton.OKCancel, MessageBoxImage.Error);
-                }
             }
             dataGrid.Items.Refresh();
         }
