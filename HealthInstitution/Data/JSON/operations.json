@@ -1,1 +1,35 @@
-[{"id":1,"status":"Scheduled","room":2,"duration":99,"appointment":"2022-05-26T09:00:00","medicalRecord":"pera"},{"id":3,"status":"Scheduled","room":2,"duration":60,"appointment":"2022-05-31T11:45:00","medicalRecord":"pera"},{"id":4,"status":"Scheduled","room":2,"duration":45,"appointment":"2022-05-31T12:45:00","medicalRecord":"marko"},{"id":5,"status":"Scheduled","room":5,"duration":50,"appointment":"2022-05-31T14:00:00","medicalRecord":"marko"}]
+[
+
+  {
+    "id": 1,
+    "status": "Scheduled",
+    "room": 2,
+    "duration": 99,
+    "appointment": "2022-05-26T09:00:00",
+    "medicalRecord": "pera"
+  },
+  {
+    "id": 3,
+    "status": "Scheduled",
+    "room": 2,
+    "duration": 60,
+    "appointment": "2022-05-31T11:45:00",
+    "medicalRecord": "pera"
+  },
+  {
+    "id": 4,
+    "status": "Scheduled",
+    "room": 2,
+    "duration": 45,
+    "appointment": "2022-05-31T12:45:00",
+    "medicalRecord": "marko"
+  },
+  {
+    "id": 5,
+    "status": "Scheduled",
+    "room": 5,
+    "duration": 50,
+    "appointment": "2022-05-31T14:00:00",
+    "medicalRecord": "marko"
+  }
+]

@@ -64,9 +64,9 @@ namespace HealthInstitution.GUI.LoginView
         }
         private void LoginButton_click(object sender, RoutedEventArgs e)
         {
-            User user = GetUserFromInputData();   
-            if (IsUserFound(user) && !IsUserBlocked(user)) 
-            { 
+            User user = GetUserFromInputData();
+            if (IsUserFound(user) && !IsUserBlocked(user))
+            {
                 this.Close();
                 switch (user.Type)
                 {

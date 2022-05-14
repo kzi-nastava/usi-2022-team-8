@@ -49,13 +49,44 @@ public class ScheduleEditRequestFileRepository
         }
     }
 
-    public void LoadFromFile()
+    private Examination ParseExamination(JToken? request, int id)
     {
         Dictionary<int, Room> roomsById = RoomRepository.GetInstance().RoomById;
         Dictionary<String, Doctor> doctorsByUsername = DoctorRepository.GetInstance().DoctorsByUsername;
         ExaminationDoctorRepository.GetInstance();
         Dictionary<String, MedicalRecord> medicalRecordsByUsername = MedicalRecordRepository.GetInstance().MedicalRecordByUsername;
 
+        ExaminationStatus status;
+        Enum.TryParse(request["newExamination"]["status"].ToString(), out status);
+        DateTime appointment = (DateTime)request["newExamination"]["appointment"];
+        int roomId = (int)request["newExamination"]["room"];
+        Room room = roomsById[roomId];
+        String doctorUsername = (String)request["newExamination"]["doctor"];
+        Doctor doctor = doctorsByUsername[doctorUsername];
+        String patientUsername = (String)request["newExamination"]["medicalRecord"];
+        MedicalRecord medicalRecord = medicalRecordsByUsername[patientUsername];
+        String anamnesis = (String)request["newExamination"]["anamnesis"];
+
+        Examination loadedExamination = new Examination(id, status, appointment, room, doctor, medicalRecord, anamnesis);
+        return loadedExamination;
+    }
+
+    private Examination ParseLoadedExamination(JToken? request, int id)
+    {
+        Examination loadedExamination;
+        if (request["newExamination"] is not null)
+        {
+            loadedExamination = ParseExamination(request, id);
+        }
+        else
+        {
+            loadedExamination = null;
+        }
+        return loadedExamination;
+    }
+
+    public void LoadFromFile()
+    {
         var requests = JArray.Parse(File.ReadAllText(this._fileName));
         Examination loadedExamination;
         foreach (var request in requests)
@@ -64,26 +95,8 @@ public class ScheduleEditRequestFileRepository
             RestRequestState state;
             Enum.TryParse(request["state"].ToString(), out state);
             int examinationId = (int)request["examinationId"];
-            if (request["newExamination"] is not null)
-            {
-                ExaminationStatus status;
-                Enum.TryParse(request["newExamination"]["status"].ToString(), out status);
-                DateTime appointment = (DateTime)request["newExamination"]["appointment"];
-                int roomId = (int)request["newExamination"]["room"];
-                Room room = roomsById[roomId];
-                String doctorUsername = (String)request["newExamination"]["doctor"];
-                Doctor doctor = doctorsByUsername[doctorUsername];
-                String patientUsername = (String)request["newExamination"]["medicalRecord"];
-                MedicalRecord medicalRecord = medicalRecordsByUsername[patientUsername];
-                String anamnesis = (String)request["newExamination"]["anamnesis"];
-
-                loadedExamination = new Examination(id, status, appointment, room, doctor, medicalRecord, anamnesis);
-            }
-            else
-            {
-                loadedExamination = null;
-            }
-            ScheduleEditRequest scheduleEditRequest = new ScheduleEditRequest(id, null, examinationId, state);
+            loadedExamination = ParseLoadedExamination(request, id);
+            ScheduleEditRequest scheduleEditRequest = new ScheduleEditRequest(id, loadedExamination, examinationId, state);
             this.Requests.Add(scheduleEditRequest);
             this.RequestsById.Add(id, scheduleEditRequest);
         }
@@ -91,42 +104,52 @@ public class ScheduleEditRequestFileRepository
 
     public void Save()
     {
-        var allExaminations = JsonSerializer.Serialize(ShortenRequests(), _options);
+        var allExaminations = JsonSerializer.Serialize(PrepareForSerialization(), _options);
         File.WriteAllText(this._fileName, allExaminations);
     }
 
-    private List<dynamic> ShortenRequests()
+    private dynamic MakeWithoutExamination(ScheduleEditRequest scheduleEditRequest)
+    {
+        return new
+        {
+            id = scheduleEditRequest.Id,
+            examinationId = scheduleEditRequest.CurrentExamination.Id,
+            state = scheduleEditRequest.State
+        };
+    }
+
+    private dynamic MakeWithExamination(ScheduleEditRequest scheduleEditRequest)
+    {
+        return new
+        {
+            id = scheduleEditRequest.Id,
+            examinationId = scheduleEditRequest.CurrentExamination.Id,
+            state = scheduleEditRequest.State,
+            newExamination = new
+            {
+                id = scheduleEditRequest.NewExamination.Id,
+                status = scheduleEditRequest.NewExamination.Status,
+                appointment = scheduleEditRequest.NewExamination.Appointment,
+                doctor = scheduleEditRequest.NewExamination.Doctor.Username,
+                room = scheduleEditRequest.NewExamination.Room.Id,
+                medicalRecord = scheduleEditRequest.NewExamination.MedicalRecord.Patient.Username,
+                anamnesis = scheduleEditRequest.NewExamination.Anamnesis
+            }
+        };
+    }
+
+    private List<dynamic> PrepareForSerialization()
     {
         List<dynamic> reducedRequests = new List<dynamic>();
         foreach (ScheduleEditRequest scheduleEditRequest in this.Requests)
         {
             if (scheduleEditRequest.NewExamination is null)
             {
-                reducedRequests.Add(new
-                {
-                    id = scheduleEditRequest.Id,
-                    examinationId = scheduleEditRequest.CurrentExamination.Id,
-                    state = scheduleEditRequest.State
-                });
+                reducedRequests.Add(MakeWithoutExamination(scheduleEditRequest));
             }
             else
             {
-                reducedRequests.Add(new
-                {
-                    id = scheduleEditRequest.Id,
-                    examinationId = scheduleEditRequest.CurrentExamination.Id,
-                    state = scheduleEditRequest.State,
-                    newExamination = new
-                    {
-                        id = scheduleEditRequest.NewExamination.Id,
-                        status = scheduleEditRequest.NewExamination.Status,
-                        appointment = scheduleEditRequest.NewExamination.Appointment,
-                        doctor = scheduleEditRequest.NewExamination.Doctor.Username,
-                        room = scheduleEditRequest.NewExamination.Room.Id,
-                        medicalRecord = scheduleEditRequest.NewExamination.MedicalRecord.Patient.Username,
-                        anamnesis = scheduleEditRequest.NewExamination.Anamnesis
-                    }
-                });
+                reducedRequests.Add(MakeWithExamination(scheduleEditRequest));
             }
         }
         return reducedRequests;
@@ -170,6 +193,7 @@ public class ScheduleEditRequestFileRepository
             Save();
         }
     }
+
     public void AcceptScheduleEditRequests(int id)
     {
         ScheduleEditRequest scheduleEditRequest = GetById(id);
@@ -180,6 +204,7 @@ public class ScheduleEditRequestFileRepository
             Save();
         }
     }
+
     public void RejectScheduleEditRequests(int id)
     {
         ScheduleEditRequest scheduleEditRequest = GetById(id);
