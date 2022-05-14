@@ -6,7 +6,7 @@
     "Password": "pera",
     "Name": null,
     "Surname": null,
-    "Blocked": "NotBlocked"
+    "Blocked": "BlockedBySecretary"
   },
   {
     "Type": "Patient",

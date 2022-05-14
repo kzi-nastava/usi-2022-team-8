@@ -60,13 +60,6 @@ namespace HealthInstitution.GUI.DoctorView
             drugComboBox.Items.Refresh();
         }
 
-        private void CollectForms()
-        {
-            Drug drug = (Drug)drugComboBox.SelectedItem;
-            PrescriptionTime timeOfUse = (PrescriptionTime)timeComboBox.SelectedIndex;
-            int dailyDose = Int32.Parse(doseTextBox.Text);
-        }
-
         private bool IsPatientAlergic(List<Ingredient> ingredients)
         {
             foreach (var ingredient in ingredients)

@@ -1,12 +1,12 @@
 [
 
   {
-    "type": "Patient",
-    "username": "pera",
-    "password": "pera",
-    "name": "Petar",
-    "surname": "Petrovic",
-    "blocked": "NotBlocked"
+    "Type": "Patient",
+    "Username": "pera",
+    "Password": "pera",
+    "Name": "Petar",
+    "Surname": "Petrovic",
+    "Blocked": "BlockedBySecretary"
   },
   {
     "type": "Patient",
