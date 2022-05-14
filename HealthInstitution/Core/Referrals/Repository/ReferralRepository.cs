@@ -80,15 +80,6 @@ namespace HealthInstitution.Core.Referrals.Repository
                 this.ReferralById[loadedReferral.Id] = loadedReferral;
             }
         }
-
-        private String GetReferredDoctorUsername(Referral referral)
-        {
-            if (referral.ReferredDoctor != null)
-            {
-                return referral.ReferredDoctor.Username;
-            }
-            return null;
-        }
         private List<dynamic> PrepareForSerialization()
         {
             List<dynamic> reducedReferrals = new List<dynamic>();

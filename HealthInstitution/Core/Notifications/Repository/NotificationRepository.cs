@@ -50,9 +50,7 @@ namespace HealthInstitution.Core.Notifications.Repository
             }
         }
         public void LoadFromFile()
-        {
-            var doctorsByUsername = DoctorRepository.GetInstance().DoctorsByUsername;
-            var patientsByUsername = PatientRepository.GetInstance().PatientByUsername;
+        { 
             var allNotifications = JArray.Parse(File.ReadAllText(this._fileName));
             foreach (var notification in allNotifications)
             {
@@ -84,8 +82,6 @@ namespace HealthInstitution.Core.Notifications.Repository
                     newAppointment = notification.NewAppointment,
                     activeForDoctor = notification.ActiveForDoctor,
                     activeForPatient=notification.ActiveForPatient
-                    //doctor=notification.Doctor.Username,
-                    //patient=notification.Patient.Username
                 }) ;
             }
             var allNotifications = JsonSerializer.Serialize(reducedNotifications, _options);

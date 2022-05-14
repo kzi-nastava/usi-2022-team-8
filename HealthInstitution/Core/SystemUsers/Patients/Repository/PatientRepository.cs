@@ -3,6 +3,7 @@ using HealthInstitution.Core.Notifications.Model;
 using HealthInstitution.Core.SystemUsers.Patients.Model;
 using HealthInstitution.Core.SystemUsers.Users.Model;
 using HealthInstitution.Core.SystemUsers.Users.Repository;
+using HealthInstitution.Core.TrollCounters.Repository;
 using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -72,10 +73,11 @@ namespace HealthInstitution.Core.SystemUsers.Patients.Repository
         {
             Patient patient = new Patient(userDTO.Type, userDTO.Username, userDTO.Password, userDTO.Name, userDTO.Surname);
             MedicalRecordRepository medicalRecordRepository = MedicalRecordRepository.GetInstance();
-            medicalRecordRepository.Add(medicalRecordDTO);
 
+            medicalRecordDTO.Patient = patient;
             this.Patients.Add(patient);
             this.PatientByUsername[userDTO.Username] = patient;
+            medicalRecordRepository.Add(medicalRecordDTO);
             Save();
         }
 
@@ -94,6 +96,8 @@ namespace HealthInstitution.Core.SystemUsers.Patients.Repository
         public void Delete(string username)
         {
             Patient patient = GetByUsername(username);
+            TrollCounterFileRepository.GetInstance().Delete(username);
+            MedicalRecordRepository.GetInstance().Delete(patient);
             this.Patients.Remove(patient);
             this.PatientByUsername.Remove(username);
             userRepository.Delete(username);

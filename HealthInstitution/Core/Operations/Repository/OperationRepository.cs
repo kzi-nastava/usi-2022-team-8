@@ -330,7 +330,6 @@ namespace HealthInstitution.Core.Operations.Repository
                             CheckIfPatientIsAvailable(operationDTO);
                             operationDTO.Room = FindAvailableRoom(operationDTO);
                             Add(operationDTO);
-
                             NotificationRepository.GetInstance().Add(new DateTime(1, 1, 1), appointment, doctor, patient);
                             priorityExaminationsAndOperations.Add(new Tuple<int, int, DateTime>(this._maxId, 2, appointment));
                             return priorityExaminationsAndOperations;
@@ -341,14 +340,9 @@ namespace HealthInstitution.Core.Operations.Repository
                         }
                     }
                 }
-
             }
             priorityExaminationsAndOperations.Add(new Tuple<int, int, DateTime>(this._maxId+1, 2, new DateTime(1, 1, 1)));
-            List<Tuple<int, int, DateTime>> temporaryPriority = ExaminationRepository.FindClosest(nextTwoHoursAppointments, specialtyType);
-            foreach (Tuple<int, int, DateTime> tuple in temporaryPriority)
-            {
-                priorityExaminationsAndOperations.Add(tuple);
-            }
+            priorityExaminationsAndOperations.AddRange(ExaminationRepository.FindClosest(nextTwoHoursAppointments, specialtyType));
             return priorityExaminationsAndOperations;
         }
     }
