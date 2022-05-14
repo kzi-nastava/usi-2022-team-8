@@ -51,7 +51,8 @@ namespace HealthInstitution.Core.Referrals.Repository
             try
             {
                 refferedDoctor = doctorByUsername[(string)referral["referredDoctor"]];
-            } catch
+            }
+            catch
             {
                 refferedDoctor = null;
             }
@@ -64,7 +65,6 @@ namespace HealthInstitution.Core.Referrals.Repository
         public void LoadFromFile()
         {
             var referrals = JArray.Parse(File.ReadAllText(_fileName));
-            //var referrals = JsonSerializer.Deserialize<List<Referral>>(File.ReadAllText(@"..\..\..\Data\JSON\referrals.json"), _options);
             foreach (var referral in referrals)
             {
                 Referral loadedReferral = Parse(referral);   
@@ -91,7 +91,6 @@ namespace HealthInstitution.Core.Referrals.Repository
             List<dynamic> reducedReferrals = new List<dynamic>();
             foreach (var referral in this.Referrals)
             {
-                
                 reducedReferrals.Add(new
                 {
                     id=referral.Id,
