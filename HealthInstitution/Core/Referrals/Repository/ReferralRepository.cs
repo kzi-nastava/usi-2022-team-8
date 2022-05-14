@@ -80,7 +80,6 @@ namespace HealthInstitution.Core.Referrals.Repository
                 this.ReferralById[loadedReferral.Id] = loadedReferral;
             }
         }
-
         private List<dynamic> PrepareForSerialization()
         {
             List<dynamic> reducedReferrals = new List<dynamic>();
