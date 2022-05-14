@@ -111,8 +111,12 @@ namespace HealthInstitution.GUI.ManagerView
             }
             else
             {
-                Equipment newEquipment = _equipmentRepository.Add(quantity, equipment.Name, equipment.Type, equipment.IsDynamic);
-                _equipmentTransferRepository.Add(newEquipment, fromRoom, toRoom, date);
+                EquipmentDTO equipmentDTO = new EquipmentDTO(quantity, equipment.Name, equipment.Type, equipment.IsDynamic);
+                Equipment newEquipment = _equipmentRepository.Add(equipmentDTO);
+
+                EquipmentTransferDTO equipmentTransferDTO = new EquipmentTransferDTO(newEquipment, fromRoom, toRoom, date);
+                _equipmentTransferRepository.Add(equipmentTransferDTO);
+
                 System.Windows.MessageBox.Show("Equipment transfer scheduled!", "Equipment transfer", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }

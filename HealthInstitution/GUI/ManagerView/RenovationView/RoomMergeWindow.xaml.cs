@@ -125,8 +125,11 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
             Room secondSelectedRoom = (Room)secondRoomComboBox.SelectedItem;
             RoomType type = (RoomType)roomTypeComboBox.SelectedItem;
 
-            Room mergedRoom = _roomRepository.AddRoom(type, number, true, false);
-            _renovationRepository.AddRoomMerger(firstSelectedRoom, secondSelectedRoom, mergedRoom, startDate, endDate);
+            RoomDTO roomDTO = new RoomDTO(type, number, true, false);
+            Room mergedRoom = _roomRepository.AddRoom(roomDTO);
+
+            RoomMergerDTO roomMergerDTO = new RoomMergerDTO(firstSelectedRoom, secondSelectedRoom, mergedRoom, startDate, endDate);
+            _renovationRepository.AddRoomMerger(roomMergerDTO);
             if (startDate == DateTime.Today)
             {
                 RenovationChecker.StartMerge(firstSelectedRoom, secondSelectedRoom, mergedRoom);
