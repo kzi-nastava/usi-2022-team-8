@@ -34,6 +34,8 @@ public class FirstFitDTO
         this.maxWorkingHour = maxWorkingHour;
         this.patientUsername = patientUsername;
         this.doctorUsername = doctorUsername;
+        this.end = this.end.AddMinutes(maxMinutes);
+        this.end = this.end.AddHours(maxHour);
     }
 }
 
@@ -74,6 +76,8 @@ public class ClosestFitDTO
         this.patientUsername = patientUsername;
         this.doctorUsername = doctorUsername;
         this.doctorPriority = doctorPriority;
+        this.end = this.end.AddMinutes(maxMinutes);
+        this.end = this.end.AddHours(maxHour);
     }
 
     public int minHour { get; set; }
