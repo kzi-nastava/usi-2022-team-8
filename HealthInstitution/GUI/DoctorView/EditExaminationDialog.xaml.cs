@@ -4,6 +4,7 @@ using HealthInstitution.Core.MedicalRecords.Model;
 using HealthInstitution.Core.MedicalRecords.Repository;
 using HealthInstitution.Core.SystemUsers.Patients.Model;
 using HealthInstitution.Core.SystemUsers.Patients.Repository;
+using HealthInstitution.Core.SystemUsers.Users.Model;
 using System.Windows;
 
 namespace HealthInstitution.GUI.DoctorView
@@ -68,16 +69,13 @@ namespace HealthInstitution.GUI.DoctorView
             minuteComboBox.SelectedItem = examinationMinutes;
         }
 
-        private ExaminationDTO CreateExaminationByForms()
+        private ExaminationDTO CreateExaminationDTOFromInputData()
         {
             DateTime appointment = (DateTime)datePicker.SelectedDate;
             int minutes = Int32.Parse(minuteComboBox.Text);
             int hours = Int32.Parse(hourComboBox.Text);
             appointment = appointment.AddHours(hours);
             appointment = appointment.AddMinutes(minutes);
-            if (appointment <= DateTime.Now)
-                throw new Exception("You have to change dates for upcoming ones!");
-
             Patient patient = (Patient)patientComboBox.SelectedItem;
             MedicalRecord medicalRecord = MedicalRecordRepository.GetInstance().GetByPatientUsername(patient);
             var doctor = _selectedExamination.Doctor;
@@ -88,8 +86,9 @@ namespace HealthInstitution.GUI.DoctorView
         {
             try
                 {
-                ExaminationDTO examination = CreateExaminationByForms();
-                ExaminationRepository.GetInstance().Update(_selectedExamination.Id, examination);
+                ExaminationDTO examinationDTO = CreateExaminationDTOFromInputData();
+                examinationDTO.Validate();
+                ExaminationRepository.GetInstance().Update(_selectedExamination.Id, examinationDTO);
                 this.Close();
             }
             catch (Exception ex)
