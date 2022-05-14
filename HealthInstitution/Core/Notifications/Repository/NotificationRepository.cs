@@ -61,10 +61,6 @@ namespace HealthInstitution.Core.Notifications.Repository
                 DateTime newAppointment = (DateTime)notification["newAppointment"];
                 bool activeForDoctor = (bool)notification["activeForDoctor"];
                 bool activeForPatient = (bool)notification["activeForPatient"];
-                /*String doctorUsername = (String)notification["doctor"];
-                String patientUsername = (String)notification["patient"];
-                Doctor doctor = doctorsByUsername[doctorUsername];
-                Patient patient = patientsByUsername[patientUsername];*/
 
                 Notification loadedNotification = new Notification(id,oldAppointment,newAppointment,null,null,activeForDoctor, activeForPatient);
 
