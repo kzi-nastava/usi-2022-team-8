@@ -1,4 +1,4 @@
-[ 
+[  
   {
     "Id": 1,
     "Quantity": 30,
@@ -8,14 +8,14 @@
   },
   {
     "Id": 2,
-    "Quantity": 80,
+    "Quantity": 72,
     "Name": "chair",
     "Type": "AppointmentEquipment",
     "IsDynamic": false
   },
   {
     "Id": 3,
-    "Quantity": 80,
+    "Quantity": 70,
     "Name": "injection",
     "Type": "AppointmentEquipment",
     "IsDynamic": true
@@ -135,6 +135,41 @@
   {
     "Id": 24,
     "Quantity": 4,
+    "Name": "injection",
+    "Type": "AppointmentEquipment",
+    "IsDynamic": true
+  },
+  {
+    "Id": 25,
+    "Quantity": 10,
+    "Name": "injection",
+    "Type": "AppointmentEquipment",
+    "IsDynamic": true
+  },
+  {
+    "Id": 26,
+    "Quantity": 1,
+    "Name": "injection",
+    "Type": "AppointmentEquipment",
+    "IsDynamic": true
+  },
+  {
+    "Id": 27,
+    "Quantity": 7,
+    "Name": "injection",
+    "Type": "AppointmentEquipment",
+    "IsDynamic": true
+  },
+  {
+    "Id": 28,
+    "Quantity": 3,
+    "Name": "injection",
+    "Type": "AppointmentEquipment",
+    "IsDynamic": true
+  },
+  {
+    "Id": 29,
+    "Quantity": 5,
     "Name": "injection",
     "Type": "AppointmentEquipment",
     "IsDynamic": true

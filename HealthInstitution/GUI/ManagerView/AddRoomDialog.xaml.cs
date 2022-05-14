@@ -61,7 +61,8 @@ namespace HealthInstitution.GUI.ManagerView
             }
             RoomType type = (RoomType)typeComboBox.SelectedItem;
 
-            _roomRepository.AddRoom(type, number);
+            RoomDTO roomDTO = new RoomDTO(type, number);
+            _roomRepository.AddRoom(roomDTO);
             System.Windows.MessageBox.Show("Room added!", "Room creation", MessageBoxButton.OK, MessageBoxImage.Information);
             
             this.Close();

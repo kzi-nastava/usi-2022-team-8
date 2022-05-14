@@ -68,7 +68,8 @@ namespace HealthInstitution.GUI.ManagerView
             }
             RoomType type = (RoomType)typeComboBox.SelectedItem;
 
-            _roomRepository.Update(_room.Id, type, number, _room.IsRenovating);
+            RoomDTO roomDTO = new RoomDTO(type, number, _room.IsRenovating);
+            _roomRepository.Update(_room.Id, roomDTO);
             System.Windows.MessageBox.Show("Room edited!", "Room edit", MessageBoxButton.OK, MessageBoxImage.Information);
 
             this.Close();

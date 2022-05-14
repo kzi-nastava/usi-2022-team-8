@@ -164,8 +164,10 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
             RoomType firstRoomType = (RoomType)firstRoomTypeComboBox.SelectedItem;
             RoomType secondRoomType = (RoomType)secondRoomTypeComboBox.SelectedItem;
 
-            Room firstRoom = _roomRepository.AddRoom(firstRoomType, firstRoomNumber, true, false);       
-            Room secondRoom = _roomRepository.AddRoom(secondRoomType, secondRoomNumber, true, false);
+            RoomDTO firstRoomDTO = new RoomDTO(firstRoomType, firstRoomNumber, true, false);
+            Room firstRoom = _roomRepository.AddRoom(firstRoomDTO);
+            RoomDTO secondRoomDTO = new RoomDTO(secondRoomType, secondRoomNumber, true, false);
+            Room secondRoom = _roomRepository.AddRoom(secondRoomDTO);
 
             if (IsEmpty(_firstRoomEquipmentFromArranging) && IsEmpty(_secondRoomEquipmentFromArranging))
             {
@@ -179,7 +181,8 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
                 _roomRepository.Save();
             }
 
-            _renovationRepository.AddRoomSeparation(selectedRoom, firstRoom, secondRoom, startDate, endDate);
+            RoomSeparationDTO roomSeparationDTO = new RoomSeparationDTO(selectedRoom, firstRoom, secondRoom, startDate, endDate);
+            _renovationRepository.AddRoomSeparation(roomSeparationDTO);
             if (startDate == DateTime.Today)
             {
                 RenovationChecker.StartSeparation(selectedRoom, firstRoom, secondRoom);
@@ -282,7 +285,8 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
             List<Equipment> equipments = new List<Equipment>();
             foreach (Equipment equipment in availableEquipment)
             {
-                Equipment newEquipment = _equipmentRepository.Add(equipment.Quantity, equipment.Name, equipment.Type, equipment.IsDynamic);
+                EquipmentDTO equipmentDTO = new EquipmentDTO(equipment.Quantity, equipment.Name, equipment.Type, equipment.IsDynamic);
+                Equipment newEquipment = _equipmentRepository.Add(equipmentDTO);
                 equipments.Add(newEquipment);
             }
             return equipments;
