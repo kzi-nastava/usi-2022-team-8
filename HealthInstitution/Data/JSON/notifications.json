@@ -1,17 +1,1 @@
-[
-  
-  {
-    "id": 1,
-    "oldAppointment": null,
-    "newAppointment": "2022-05-14T22:00:00",
-    "activeForDoctor": true,
-    "activeForPatient": false
-  },
-  {
-    "id": 2,
-    "oldAppointment": null,
-    "newAppointment": "2022-05-14T22:15:00",
-    "activeForDoctor": true,
-    "activeForPatient": false
-  }
-]
+[{"id":1,"oldAppointment":null,"newAppointment":"2022-05-14T22:00:00","activeForDoctor":false,"activeForPatient":false},{"id":2,"oldAppointment":null,"newAppointment":"2022-05-14T22:15:00","activeForDoctor":false,"activeForPatient":false},{"id":3,"oldAppointment":null,"newAppointment":"2022-05-14T23:45:00","activeForDoctor":false,"activeForPatient":false}]

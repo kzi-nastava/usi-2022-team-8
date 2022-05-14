@@ -464,7 +464,7 @@ internal class ExaminationRepository
         if (current.Minute > 15) firstAppointment = new DateTime(current.Year, current.Month, current.Day, current.Hour, 30, 0);
         if (current.Minute > 30) firstAppointment = new DateTime(current.Year, current.Month, current.Day, current.Hour, 45, 0);
         if (current.Minute > 45) firstAppointment = new DateTime(current.Year, current.Month, current.Day, current.Hour + 1, 0, 0);
-        
+
         for (int i = 0; i <= 7; i++)
         {
             TimeSpan ts = new TimeSpan(0, 15, 0);
@@ -617,6 +617,8 @@ internal class ExaminationRepository
             closestFitDTO.maxHour = 22;
             closestFitDTO.maxMinutes = 45;
             viableDoctors.Add(pickedDoctor);
+            closestFitDTO.end = closestFitDTO.end.AddHours(-closestFitDTO.end.Hour + 22);
+            closestFitDTO.end = closestFitDTO.end.AddMinutes(-closestFitDTO.end.Minute + 45);
         }
         else
         {
