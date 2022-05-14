@@ -1,1 +1,17 @@
-[{"username":"jovan","password":"jovan","name":"Jovan","surname":"Jovanovic","specialty":"Surgeon"},{"username":"ivan","password":"ivan","name":"Ivan","surname":"Ivanovic","specialty":"Surgeon"}]
+[
+  
+  {
+    "username": "jovan",
+    "password": "jovan",
+    "name": "Jovan",
+    "surname": "Jovanovic",
+    "specialty": "Surgeon"
+  },
+  {
+    "username": "ivan",
+    "password": "ivan",
+    "name": "Ivan",
+    "surname": "Ivanovic",
+    "specialty": "Surgeon"
+  }
+]
