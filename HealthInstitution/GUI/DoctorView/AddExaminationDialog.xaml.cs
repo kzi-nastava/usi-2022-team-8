@@ -5,6 +5,7 @@ using HealthInstitution.Core.MedicalRecords.Repository;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using HealthInstitution.Core.SystemUsers.Patients.Model;
 using HealthInstitution.Core.SystemUsers.Patients.Repository;
+using HealthInstitution.Core.SystemUsers.Users.Model;
 using System.Windows;
 
 namespace HealthInstitution.GUI.DoctorView
@@ -62,9 +63,6 @@ namespace HealthInstitution.GUI.DoctorView
             int hours = Int32.Parse(hourComboBox.Text);
             appointment = appointment.AddHours(hours);
             appointment = appointment.AddMinutes(minutes);
-            if (appointment <= DateTime.Now)
-                throw new Exception("You have to change dates for upcoming ones!");
-
             Patient patient = (Patient)patientComboBox.SelectedItem;
             MedicalRecord medicalRecord = MedicalRecordRepository.GetInstance().GetByPatientUsername(patient);
             ExaminationDTO examination = new ExaminationDTO(appointment, null, _loggedDoctor, medicalRecord);
@@ -75,8 +73,9 @@ namespace HealthInstitution.GUI.DoctorView
         {
             try
             {
-                ExaminationDTO examination = CreateExaminationDTOFromInputData();
-                ExaminationRepository.GetInstance().ReserveExamination(examination);
+                ExaminationDTO examinationDTO = CreateExaminationDTOFromInputData();
+                examinationDTO.Validate();
+                ExaminationRepository.GetInstance().ReserveExamination(examinationDTO);
                 this.Close();
             }
             catch (Exception ex)

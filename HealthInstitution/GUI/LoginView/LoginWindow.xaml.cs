@@ -14,9 +14,6 @@ using HealthInstitution.Core.SystemUsers.Patients.Model;
 using HealthInstitution.Core.Renovations.Functionality;
 using HealthInstitution.Core.Notifications.Repository;
 
-using HealthInstitution.Core.SystemUsers.Patients.Repository;
-using HealthInstitution.Core.SystemUsers.Patients.Model;
-
 namespace HealthInstitution.GUI.LoginView
 {
     /// <summary>
@@ -34,72 +31,106 @@ namespace HealthInstitution.GUI.LoginView
             InitializeComponent();
         }
 
-        private void LoginButton_click(object sender, RoutedEventArgs e)
+        private User GetUserFromInputData()
         {
             _usernameInput = usernameBox.Text;
             _passwordInput = passwordBox.Password.ToString();
-            User foundUser = _userRepository.GetByUsername(_usernameInput);
-            if (foundUser == null)
+            return _userRepository.GetByUsername(_usernameInput);
+        }
+
+        private bool IsUserFound(User user)
+        {
+            if (user == null)
             {
                 System.Windows.MessageBox.Show("Username doesn't exist!", "Log in error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
             }
-            else if (foundUser.Password != _passwordInput)
+            if (user.Password != _passwordInput)
             {
                 System.Windows.MessageBox.Show("Username and password don't match!", "Log in error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
             }
-            else if (foundUser.Blocked == BlockState.BlockedBySecretary || foundUser.Blocked == BlockState.BlockedBySystem)
+            return true;
+        }
+
+        private bool IsUserBlocked(User user)
+        {
+            if (user.Blocked != BlockState.NotBlocked)
             {
                 System.Windows.MessageBox.Show("Account is blocked!", "Log in error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return true;
             }
-            else
-            {
+            return false;
+        }
+        private void LoginButton_click(object sender, RoutedEventArgs e)
+        {
+            User user = GetUserFromInputData();   
+            if (IsUserFound(user) && !IsUserBlocked(user)) 
+            { 
                 this.Close();
-                switch (foundUser.Type)
+                switch (user.Type)
                 {
                     case UserType.Patient:
-                        /*    try*/
-                        {
-                            NotificationDoctorRepository.GetInstance();
-                            NotificationPatientRepository.GetInstance();
-                            TrollCounterFileRepository.GetInstance().TrollCheck(foundUser.Username);
-                            PatientRepository patientRepository = PatientRepository.GetInstance();
-                            Patient loggedPatient = patientRepository.GetByUsername(_usernameInput);
-                            new PatientWindow(loggedPatient).ShowDialog();
-                            /*      }
-                                  catch (Exception ex)
-                                  {
-                                      System.Windows.MessageBox.Show(ex.Message, "Troll Alert", MessageBoxButton.OK, MessageBoxImage.Error);*/
-                        }
-
+                        RedirectPatient(user);
                         break;
 
                     case UserType.Doctor:
-                        DoctorRepository doctorRepository = DoctorRepository.GetInstance();
-                        ExaminationRepository.GetInstance();
-                        ExaminationDoctorRepository.GetInstance();
-                        NotificationDoctorRepository.GetInstance();
-                        NotificationPatientRepository.GetInstance();
-                        OperationDoctorRepository.GetInstance();
-                        Doctor loggedDoctor = doctorRepository.GetById(_usernameInput);
-                        new DoctorWindow(loggedDoctor).ShowDialog();
-
+                        RedirectDoctor();
                         break;
 
                     case UserType.Secretary:
-                        DoctorRepository.GetInstance();
-                        ExaminationRepository.GetInstance();
-                        ExaminationDoctorRepository.GetInstance();
-                        OperationDoctorRepository.GetInstance();
-                        SecretaryWindow secretaryWindow = new SecretaryWindow();
-                        secretaryWindow.ShowDialog();
+                        RedirectSecretary();
                         break;
 
                     case UserType.Manager:
-                        ManagerWindow managerWindow = new ManagerWindow();
-                        managerWindow.ShowDialog();
+                        RedirectManager();
                         break;
                 }
             }
+        }
+
+        private void RedirectPatient(User foundUser)
+        {
+            /*    try*/
+            {
+                /*NotificationDoctorRepository.GetInstance();
+                NotificationPatientRepository.GetInstance();*/
+                PatientRepository patientRepository = PatientRepository.GetInstance();
+                TrollCounterFileRepository.GetInstance().TrollCheck(foundUser.Username);
+                Patient loggedPatient = patientRepository.GetByUsername(_usernameInput);
+                new PatientWindow(loggedPatient).ShowDialog();
+                /*      }
+                      catch (Exception ex)
+                      {
+                          System.Windows.MessageBox.Show(ex.Message, "Troll Alert", MessageBoxButton.OK, MessageBoxImage.Error);*/
+            }
+        }
+        private void RedirectDoctor()
+        {
+            DoctorRepository doctorRepository = DoctorRepository.GetInstance();
+            /*ExaminationRepository.GetInstance();
+            ExaminationDoctorRepository.GetInstance();
+            NotificationDoctorRepository.GetInstance();
+            NotificationPatientRepository.GetInstance();
+            OperationDoctorRepository.GetInstance();*/
+            Doctor loggedDoctor = doctorRepository.GetById(_usernameInput);
+            new DoctorWindow(loggedDoctor).ShowDialog();
+        }
+
+        private void RedirectSecretary()
+        {
+            /*DoctorRepository.GetInstance();
+            ExaminationRepository.GetInstance();
+            ExaminationDoctorRepository.GetInstance();
+            OperationDoctorRepository.GetInstance();*/
+            SecretaryWindow secretaryWindow = new SecretaryWindow();
+            secretaryWindow.ShowDialog();
+        }
+
+        private void RedirectManager()
+        {
+            ManagerWindow managerWindow = new ManagerWindow();
+            managerWindow.ShowDialog();
         }
 
         [STAThread]
