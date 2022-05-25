@@ -21,6 +21,11 @@ public class Drug
     {
         return this.Name;
     }
+
+    public bool ContainsIngredient(Ingredient ingredient)
+    {
+        return Ingredients.Contains(ingredient);
+    }
 }
 
 public enum DrugState

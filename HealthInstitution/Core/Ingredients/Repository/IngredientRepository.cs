@@ -91,4 +91,10 @@ public class IngredientRepository
         this.IngredientById.Remove(id);
         Save();
     }
+
+    public bool Contains(string name)
+    {
+        return this.Ingredients.Any(ingredient => ingredient.Name == name);
+    }
+    
 }

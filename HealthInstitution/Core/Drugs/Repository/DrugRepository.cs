@@ -134,4 +134,16 @@ public class DrugRepository
         this.DrugById.Remove(id);
         Save();
     }
+
+    public bool ContainsDrugWithIngredient(Ingredient ingredient)
+    {
+        foreach (Drug drug in this.Drugs)
+        {
+            if (drug.ContainsIngredient(ingredient))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
 }
