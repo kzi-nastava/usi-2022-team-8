@@ -1,5 +1,5 @@
 [
-  
+
   {
     "id": 1,
     "name": "Brufen",
@@ -24,8 +24,15 @@
   {
     "id": 4,
     "name": "gfd",
-    "state": "Created",
-    "ingredients": [ 1 ],
-    "rejectionReason": ""
+    "state": "Rejected",
+    "ingredients": [ 1, 3, 4 ],
+    "rejectionReason": "Incorrect name"
+  },
+  {
+    "id": 5,
+    "name": "ffff",
+    "state": "Rejected",
+    "ingredients": [],
+    "rejectionReason": "Incorrect name"
   }
 ]

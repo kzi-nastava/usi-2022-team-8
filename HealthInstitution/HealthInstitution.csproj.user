@@ -23,6 +23,9 @@
     <Compile Update="GUI\ManagerView\DrugView\RejectedDrugsTableWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="GUI\ManagerView\DrugView\ReviseDrugDialog.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="GUI\ManagerView\IngredientView\AddIngredientDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -217,6 +220,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="GUI\ManagerView\DrugView\RejectedDrugsTableWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="GUI\ManagerView\DrugView\ReviseDrugDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="GUI\ManagerView\IngredientView\AddIngredientDialog.xaml">
