@@ -35,6 +35,9 @@
     <Compile Update="GUI\PatientView\ClosestFit.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="GUI\PatientView\DoctorPickExamination.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="GUI\PatientView\EditExaminationDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -205,6 +208,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="GUI\PatientView\ClosestFit.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="GUI\PatientView\DoctorPickExamination.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="GUI\PatientView\EditExaminationDialog.xaml">
