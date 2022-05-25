@@ -20,7 +20,7 @@ public class DrugRepository
         Converters = { new JsonStringEnumConverter() },
         PropertyNameCaseInsensitive = true
     };
-    private DrugRepository(string fileName) //singleton
+    private DrugRepository(string fileName) 
     {
         this._fileName = fileName;
         this.Drugs = new List<Drug>();
@@ -55,7 +55,8 @@ public class DrugRepository
         return new Drug((int)drug["id"],
                                   (string)drug["name"],
                                   drugState,
-                                  JToken2Ingredients(drug["ingredients"]));
+                                  JToken2Ingredients(drug["ingredients"]),
+                                  (string)drug["rejectionReason"]);
     }
     public void LoadFromFile()
     {
@@ -84,7 +85,8 @@ public class DrugRepository
                 id=drug.Id,
                 name=drug.Name,
                 state=drug.State,
-                ingredients=ingredientsId
+                ingredients=ingredientsId,
+                rejectionReason=drug.RejectionReason
             });
         }
         return reducedDrugs;
@@ -100,6 +102,45 @@ public class DrugRepository
         return this.Drugs;
     }
 
+    public List<Drug> GetAllAccepted()
+    {
+        List <Drug> acceptedDrugs = new List<Drug> ();
+        foreach (Drug drug in this.Drugs)
+        {
+            if (drug.State.Equals(DrugState.Accepted))
+            {
+                acceptedDrugs.Add(drug);
+            }
+        }
+        return acceptedDrugs;
+    }
+
+    public List<Drug> GetAllCreated()
+    {
+        List<Drug> createdDrugs = new List<Drug>();
+        foreach (Drug drug in this.Drugs)
+        {
+            if (drug.State.Equals(DrugState.Created))
+            {
+                createdDrugs.Add(drug);
+            }
+        }
+        return createdDrugs;
+    }
+
+    public List<Drug> GetAllRejected()
+    {
+        List<Drug> rejectedDrugs = new List<Drug>();
+        foreach (Drug drug in this.Drugs)
+        {
+            if (drug.State.Equals(DrugState.Rejected))
+            {
+                rejectedDrugs.Add(drug);
+            }
+        }
+        return rejectedDrugs;
+    }
+
     public Drug GetById(int id)
     {
         if (DrugById.ContainsKey(id))
@@ -111,7 +152,7 @@ public class DrugRepository
     {
         this._maxId++;
         int id = this._maxId;
-        Drug drug = new Drug(id, drugDTO.Name, drugDTO.State, drugDTO.Ingredients);
+        Drug drug = new Drug(id, drugDTO.Name, drugDTO.State, drugDTO.Ingredients, drugDTO.RejectionReason);
         this.Drugs.Add(drug);
         this.DrugById[id] = drug;
         Save();
@@ -123,6 +164,7 @@ public class DrugRepository
         drug.Name = drugDTO.Name;
         drug.State = drugDTO.State;
         drug.Ingredients= drugDTO.Ingredients;
+        drug.RejectionReason = drugDTO.RejectionReason;
         DrugById[id] = drug;
         Save();
     }
@@ -145,5 +187,9 @@ public class DrugRepository
             }
         }
         return false;
+    }
+    public bool Contains(string name)
+    {
+        return this.Drugs.Any(drug => drug.Name == name);
     }
 }

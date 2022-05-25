@@ -12,12 +12,14 @@ namespace HealthInstitution.Core.Drugs.Model
         public String Name { get; set; }
         public DrugState State { get; set; }
         public List<Ingredient> Ingredients { get; set; }
+        public String RejectionReason { get; set; }
 
-        public DrugDTO(string name, DrugState state, List<Ingredient> ingredients)
+        public DrugDTO(string name, DrugState state, List<Ingredient> ingredients, string rejectionReason = "")
         {
             this.Name = name;
             this.State = state;
             this.Ingredients = ingredients;
+            this.RejectionReason = rejectionReason;
         }
     }
 }

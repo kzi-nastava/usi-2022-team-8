@@ -11,7 +11,13 @@
     <Compile Update="GUI\DoctorView\AddReferralDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="GUI\ManagerView\DrugView\AddDrugDialog.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="GUI\ManagerView\DrugView\DrugsOnVerificationTableWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="GUI\ManagerView\DrugView\EditDrugDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="GUI\ManagerView\DrugView\RejectedDrugsTableWindow.xaml.cs">
@@ -201,7 +207,13 @@
     <Page Update="GUI\DoctorView\ScheduledExaminationTable.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="GUI\ManagerView\DrugView\AddDrugDialog.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="GUI\ManagerView\DrugView\DrugsOnVerificationTableWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="GUI\ManagerView\DrugView\EditDrugDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="GUI\ManagerView\DrugView\RejectedDrugsTableWindow.xaml">
