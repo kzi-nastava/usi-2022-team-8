@@ -31,6 +31,7 @@ namespace HealthInstitution.Core.SystemUsers.Doctors.Repository
         }
 
         private static DoctorRepository s_instance = null;
+
         public static DoctorRepository GetInstance()
         {
             if (s_instance == null)
@@ -39,6 +40,7 @@ namespace HealthInstitution.Core.SystemUsers.Doctors.Repository
             }
             return s_instance;
         }
+
         private Doctor Parse(JToken? doctor)
         {
             String username = (String)doctor["username"];
@@ -49,6 +51,7 @@ namespace HealthInstitution.Core.SystemUsers.Doctors.Repository
             Enum.TryParse(doctor["specialty"].ToString(), out specialtyType);
             return new Doctor(username, password, name, surname, specialtyType);
         }
+
         public void LoadFromFile()
         {
             var allDoctors = JArray.Parse(File.ReadAllText(this._fileName));
@@ -141,6 +144,7 @@ namespace HealthInstitution.Core.SystemUsers.Doctors.Repository
             }
             return upcomingExaminations;
         }
+
         public List<Operation> GetOperationsInThreeDays(List<Operation> operations)
         {
             var upcomingOperations = new List<Operation>();
@@ -164,6 +168,7 @@ namespace HealthInstitution.Core.SystemUsers.Doctors.Repository
             }
             return examinationsForDate;
         }
+
         public List<Operation> GetOperationsByDate(List<Operation> operations, DateTime date)
         {
             var operationsForDate = new List<Operation>();
@@ -179,6 +184,11 @@ namespace HealthInstitution.Core.SystemUsers.Doctors.Repository
         {
             doctor.Notifications.Remove(notification);
             Save();
+        }
+
+        public void ChangeRating(string username, double rating)
+        {
+            GetById(username).AvgRating = rating;
         }
     }
 }

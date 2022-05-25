@@ -15,6 +15,7 @@
 
     <ItemGroup>
       <Folder Include="Controllers" />
+      <Folder Include="Core\DoctorRatings\Repository\" />
       <Folder Include="Core\Equipments\Repository" />
       <Folder Include="Core\EquipmentTransfers\Repository" />
       <Folder Include="Core\MedicalRecords\Repository" />

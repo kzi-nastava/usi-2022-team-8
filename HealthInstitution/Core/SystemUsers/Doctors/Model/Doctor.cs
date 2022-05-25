@@ -14,6 +14,8 @@ public class Doctor : User
     public List<RestRequest> RestRequests { get; set; }
     public List<Notification> Notifications { get; set; }
 
+    public double AvgRating { get; set; }
+
     public Doctor(string username, string password, string name, string surname, SpecialtyType specialty) : base(UserType.Doctor, username, password, name, surname)
     {
         this.Specialty = specialty;
@@ -22,6 +24,7 @@ public class Doctor : User
         this.RestRequests = new List<RestRequest>();
         this.Notifications = new List<Notification>();
     }
+
     public override string? ToString()
     {
         return this.Name + " " + this.Surname;
