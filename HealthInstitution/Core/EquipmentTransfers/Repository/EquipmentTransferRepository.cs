@@ -57,7 +57,7 @@ namespace HealthInstitution.Core.EquipmentTransfers.Repository
             int equipmentId = (int)equipmentTransfer["equipment"];
             Equipment equipment = equipmentById[equipmentId];
             int fromRoomId = (int)equipmentTransfer["fromRoom"];
-            Room fromRoom = roomById[fromRoomId];
+            Room fromRoom = (fromRoomId == 0) ? null : roomById[fromRoomId];
             int toRoomId = (int)equipmentTransfer["toRoom"];
             Room toRoom = roomById[toRoomId];
             DateTime transferTime = (DateTime)equipmentTransfer["transferTime"];
@@ -93,7 +93,7 @@ namespace HealthInstitution.Core.EquipmentTransfers.Repository
                 {
                     id = equipmentTransfer.Id,
                     equipment = equipmentTransfer.Equipment.Id,
-                    fromRoom = equipmentTransfer.FromRoom.Id,
+                    fromRoom = (equipmentTransfer.FromRoom==null) ? 0 : equipmentTransfer.FromRoom.Id,
                     toRoom = equipmentTransfer.ToRoom.Id,
                     transferTime = equipmentTransfer.TransferTime
                 });
@@ -123,7 +123,7 @@ namespace HealthInstitution.Core.EquipmentTransfers.Repository
             this._maxId++;
             int id = this._maxId;
             Equipment equipment = equipmentTransferDTO.Equipment;
-            Room fromRoom = equipmentTransferDTO.FromRoom;
+            Room? fromRoom = equipmentTransferDTO.FromRoom;
             Room toRoom = equipmentTransferDTO.ToRoom;
             DateTime transferTime = equipmentTransferDTO.TransferTime;
             EquipmentTransfer equipmentTransfer = new EquipmentTransfer(id,equipment,fromRoom,toRoom,transferTime);

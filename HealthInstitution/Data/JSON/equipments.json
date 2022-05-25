@@ -1,4 +1,5 @@
-[  
+[
+  
   {
     "Id": 1,
     "Quantity": 30,
@@ -15,7 +16,7 @@
   },
   {
     "Id": 3,
-    "Quantity": 58,
+    "Quantity": 59,
     "Name": "injection",
     "Type": "AppointmentEquipment",
     "IsDynamic": true
@@ -85,7 +86,7 @@
   },
   {
     "Id": 13,
-    "Quantity": 1,
+    "Quantity": 0,
     "Name": "injection",
     "Type": "AppointmentEquipment",
     "IsDynamic": true
@@ -129,6 +130,55 @@
     "Id": 23,
     "Quantity": 5,
     "Name": "injection",
+    "Type": "AppointmentEquipment",
+    "IsDynamic": true
+  },
+  {
+    "Id": 24,
+    "Quantity": 0,
+    "Name": "hanzaplast",
+    "Type": "AppointmentEquipment",
+    "IsDynamic": true
+  },
+  {
+    "Id": 25,
+    "Quantity": 0,
+    "Name": "pen",
+    "Type": "AppointmentEquipment",
+    "IsDynamic": true
+  },
+  {
+    "Id": 26,
+    "Quantity": 0,
+    "Name": "paper",
+    "Type": "AppointmentEquipment",
+    "IsDynamic": true
+  },
+  {
+    "Id": 27,
+    "Quantity": 0,
+    "Name": "gauze",
+    "Type": "AppointmentEquipment",
+    "IsDynamic": true
+  },
+  {
+    "Id": 28,
+    "Quantity": 0,
+    "Name": "pen",
+    "Type": "AppointmentEquipment",
+    "IsDynamic": true
+  },
+  {
+    "Id": 29,
+    "Quantity": 100,
+    "Name": "paper",
+    "Type": "AppointmentEquipment",
+    "IsDynamic": true
+  },
+  {
+    "Id": 30,
+    "Quantity": 5,
+    "Name": "hanzaplast",
     "Type": "AppointmentEquipment",
     "IsDynamic": true
   }

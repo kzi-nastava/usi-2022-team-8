@@ -65,6 +65,12 @@
     <Compile Update="GUI\SecretaryView\DelayExaminationOperationDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="GUI\SecretaryView\DynamicEquipmentDialog.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="GUI\SecretaryView\DynamicEquipmentTransferDialog.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="GUI\SecretaryView\PatientReferralsDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -235,6 +241,12 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="GUI\SecretaryView\DelayExaminationOperationDialog.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="GUI\SecretaryView\DynamicEquipmentDialog.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="GUI\SecretaryView\DynamicEquipmentTransferDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="GUI\SecretaryView\PatientReferralsDialog.xaml">

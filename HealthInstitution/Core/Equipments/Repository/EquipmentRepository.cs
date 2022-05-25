@@ -17,6 +17,7 @@ namespace HealthInstitution.Core.Equipments.Repository
         private int _maxId;
         public List<Equipment> Equipments { get; set; }
         public Dictionary<int, Equipment> EquipmentById { get; set; }
+        public Dictionary<string, int> EquipmentPerQuantity { get; set; }
 
         private JsonSerializerOptions _options = new JsonSerializerOptions
         {
@@ -28,6 +29,7 @@ namespace HealthInstitution.Core.Equipments.Repository
             this._fileName = fileName;
             this.Equipments = new List<Equipment>();
             this.EquipmentById = new Dictionary<int, Equipment>();
+            this.EquipmentPerQuantity = new Dictionary<string, int>();
             this._maxId = 0;
             this.LoadFromFile();
         }
@@ -42,6 +44,7 @@ namespace HealthInstitution.Core.Equipments.Repository
                 return s_instance;
             }
         }
+
         public void LoadFromFile()
         {
             var equipments = JsonSerializer.Deserialize<List<Equipment>>(File.ReadAllText(@"..\..\..\Data\JSON\equipments.json"), _options);
@@ -53,6 +56,25 @@ namespace HealthInstitution.Core.Equipments.Repository
                 }
                 this.Equipments.Add(equipment);
                 this.EquipmentById.Add(equipment.Id, equipment);
+            }
+            FillTotalQuantityOfEquipment();
+        }
+
+        private void FillTotalQuantityOfEquipment()
+        {
+            foreach (Equipment equipment in Equipments)
+            {
+                if(equipment.IsDynamic)
+                { 
+                    if (EquipmentPerQuantity.ContainsKey(equipment.Name))
+                    {
+                        EquipmentPerQuantity[equipment.Name] += equipment.Quantity;
+                    }
+                    else
+                    {
+                        EquipmentPerQuantity.Add(equipment.Name, equipment.Quantity);
+                    }
+                }
             }
         }
 

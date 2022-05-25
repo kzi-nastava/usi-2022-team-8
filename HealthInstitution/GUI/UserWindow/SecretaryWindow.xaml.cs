@@ -57,7 +57,17 @@ namespace HealthInstitution.GUI.UserWindow
             PatientSelectionDialog patientSelectionDialog = new PatientSelectionDialog();
             patientSelectionDialog.ShowDialog();
         }
+        private void DynamicEquipment_Click(object sender, RoutedEventArgs e)
+        {
+            DynamicEquipmentDialog dynamicEquipmentDialog = new DynamicEquipmentDialog();
+            dynamicEquipmentDialog.ShowDialog();
+        }
 
+        private void TransferDynamicEquipment_Click(object sender, RoutedEventArgs e)
+        {
+            DynamicEquipmentTransferDialog dynamicEquipmentTransferDialog = new DynamicEquipmentTransferDialog();
+            dynamicEquipmentTransferDialog.ShowDialog();
+        }
         private void LogOut_Click(object sender, RoutedEventArgs e)
         {
             if (System.Windows.MessageBox.Show("Are you sure you want to log out?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
@@ -67,5 +77,6 @@ namespace HealthInstitution.GUI.UserWindow
                 window.ShowDialog();
             }
         }
+
     }
 }
