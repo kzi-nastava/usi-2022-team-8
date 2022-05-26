@@ -1,5 +1,5 @@
 [
-
+  
   {
     "id": 1,
     "name": "Brufen",
@@ -17,22 +17,22 @@
   {
     "id": 3,
     "name": "ricinusovo ulje",
-    "state": "Created",
+    "state": "Accepted",
     "ingredients": [ 4 ],
     "rejectionReason": ""
   },
   {
     "id": 4,
     "name": "gfd",
-    "state": "Rejected",
+    "state": "Created",
     "ingredients": [ 1, 3, 4 ],
-    "rejectionReason": "Incorrect name"
+    "rejectionReason": ""
   },
   {
     "id": 5,
     "name": "ffff",
-    "state": "Rejected",
+    "state": "Created",
     "ingredients": [],
-    "rejectionReason": "Incorrect name"
+    "rejectionReason": ""
   }
 ]

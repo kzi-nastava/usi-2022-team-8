@@ -71,6 +71,11 @@ namespace HealthInstitution.GUI.DoctorView
         {
             new ScheduledExaminationTable(this._loggedDoctor).ShowDialog();
         }
+
+        private void ManageDrugs_Click(object sender, RoutedEventArgs e)
+        {
+            new DrugsVerificationTable().ShowDialog();
+        }
     }
 
 }
