@@ -20,7 +20,7 @@ namespace HealthInstitution.Core.Prescriptions.Repository
             Converters = { new JsonStringEnumConverter() },
             PropertyNameCaseInsensitive = true
         };
-        private PrescriptionRepository(string fileName) //singleton
+        private PrescriptionRepository(string fileName)
         {
             this._maxId = 0;
             this._fileName = fileName;
