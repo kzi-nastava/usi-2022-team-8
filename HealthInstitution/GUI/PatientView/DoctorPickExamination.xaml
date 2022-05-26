@@ -7,6 +7,22 @@
         mc:Ignorable="d"
         Title="DoctorPickExamination" Height="450" Width="800">
     <Grid>
-        
+        <DataGrid  ItemsSource="{Binding Doctor}" AutoGenerateColumns="True" Name="dataGrid" Grid.ColumnSpan="3" Margin="0,0,0,0">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Name" FontSize="18" Binding="{Binding Name}" Width ="150" />
+                <DataGridTextColumn Header="Surname" FontSize="18" Binding="{Binding Surname}" Width =" 150" />
+                <DataGridTextColumn Header="Speciality" FontSize="18" Binding="{Binding Specialty}" Width =" 150" />
+                <DataGridTextColumn Header="Average Rating" FontSize="18" Binding="{Binding Specialty}" />
+            </DataGrid.Columns>
+        </DataGrid>
+        <TextBox x:Name="SearchBox" HorizontalAlignment="Center" Height="23" Margin="0,334,0,0" TextWrapping="Wrap" Text="Search term" VerticalAlignment="Top" Width="108" />
+        <Button Name="NameSearch" Content="Name search" HorizontalAlignment="Left" Height="23" Margin="26,387,0,0" VerticalAlignment="Top" Width="93" Click="NameSearch_Click" />
+        <Button x:Name="SurnameSearch" Content="Surname search" HorizontalAlignment="Left" Height="23" Margin="119,387,0,0" VerticalAlignment="Top" Width="96" Click="SurnameSearch_Click" />
+        <Button x:Name="SpecialitySearch" Content="Speciality search" HorizontalAlignment="Left" Height="23" Margin="215,387,0,0" VerticalAlignment="Top" Width="103" Click="SpecialitySearch_Click" />
+        <Button Name="NameSort" Content="Name sort" HorizontalAlignment="Left" Height="23" Margin="383,387,0,0" VerticalAlignment="Top" Width="93" Click="NameSort_Click" />
+        <Button x:Name="SurnameSort" Content="Surname sort" HorizontalAlignment="Left" Height="23" Margin="476,387,0,0" VerticalAlignment="Top" Width="96" Click="SurnameSort_Click" />
+        <Button x:Name="SpecialitySort" Content="Speciality sort" HorizontalAlignment="Left" Height="23" Margin="572,387,0,0" VerticalAlignment="Top" Width="103" Click="SpecialitySort_Click" />
+        <Button x:Name="RatingSort" Content="Rating sort" HorizontalAlignment="Left" Height="23" Margin="675,387,0,0" VerticalAlignment="Top" Width="85" Click="RatingSort_Click" />
+        <Button Content="Schedule" HorizontalAlignment="Left" Height="23" Margin="476,334,0,0" VerticalAlignment="Top" Width="96" Click="Button_Click" />
     </Grid>
 </Window>
