@@ -10,8 +10,14 @@
     <Grid Margin="0,115,0,0">
         <DataGrid ItemsSource="{Binding Drug}" Name="dataGrid"  AutoGenerateColumns="False" Grid.ColumnSpan="3" Margin="0,-108,0,108">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Name" FontSize="18" Binding="{Binding Name}" Width ="auto"/>
-                <DataGridTextColumn Header="Ingredients" FontSize="18" Binding="{Binding Ingredients}" Width ="auto"/>
+                <DataGridTextColumn Header="Name" FontSize="18" Binding="{Binding Name}" Width ="*"/>
+                <DataGridTemplateColumn Header="Ingredients" Width="*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <ListBox ItemsSource="{Binding Ingredients}" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
             </DataGrid.Columns>
         </DataGrid>
         <Button Name="acceptButton" Content="Accept" Click="AcceptButton_Click" IsEnabled="{Binding ElementName=dataGrid, Path=SelectedItems.Count}" HorizontalAlignment="Left" Height="30"  VerticalAlignment="Top" Width="111" RenderTransformOrigin="0.243,0.514" FontSize="18" Margin="184,195,0,0"/>

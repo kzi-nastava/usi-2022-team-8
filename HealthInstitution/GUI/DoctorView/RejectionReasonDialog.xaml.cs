@@ -39,6 +39,7 @@ namespace HealthInstitution.GUI.DoctorView
             else
             {
                 _drugRepository.Reject(_selectedDrug, rejectionReason);
+                Close();
             }
         }
     }
