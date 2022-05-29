@@ -1,14 +1,1 @@
-[
-  {
-    "id": 1,
-    "name": "diazepam"
-  },
-  {
-    "id": 2,
-    "name": "bromazepam"
-  },
-  {
-    "id": 3,
-    "name": "paracetamol"
-  }
-]
+[{"Id":1,"Name":"diazepam"},{"Id":2,"Name":"bromazepam"},{"Id":3,"Name":"paracetamol"},{"Id":4,"Name":"ricinusna kiselina"}]

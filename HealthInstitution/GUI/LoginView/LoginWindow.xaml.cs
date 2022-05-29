@@ -64,9 +64,9 @@ namespace HealthInstitution.GUI.LoginView
         }
         private void LoginButton_click(object sender, RoutedEventArgs e)
         {
-            User user = GetUserFromInputData();   
-            if (IsUserFound(user) && !IsUserBlocked(user)) 
-            { 
+            User user = GetUserFromInputData();
+            if (IsUserFound(user) && !IsUserBlocked(user))
+            {
                 this.Close();
                 switch (user.Type)
                 {
@@ -93,8 +93,8 @@ namespace HealthInstitution.GUI.LoginView
         {
             /*    try*/
             {
-                /*NotificationDoctorRepository.GetInstance();
-                NotificationPatientRepository.GetInstance();*/
+                NotificationDoctorRepository.GetInstance();
+                NotificationPatientRepository.GetInstance();
                 PatientRepository patientRepository = PatientRepository.GetInstance();
                 TrollCounterFileRepository.GetInstance().TrollCheck(foundUser.Username);
                 Patient loggedPatient = patientRepository.GetByUsername(_usernameInput);
@@ -109,10 +109,10 @@ namespace HealthInstitution.GUI.LoginView
         {
             DoctorRepository doctorRepository = DoctorRepository.GetInstance();
             /*ExaminationRepository.GetInstance();
-            ExaminationDoctorRepository.GetInstance();
+            ExaminationDoctorRepository.GetInstance();*/
             NotificationDoctorRepository.GetInstance();
             NotificationPatientRepository.GetInstance();
-            OperationDoctorRepository.GetInstance();*/
+            OperationDoctorRepository.GetInstance();
             Doctor loggedDoctor = doctorRepository.GetById(_usernameInput);
             new DoctorWindow(loggedDoctor).ShowDialog();
         }

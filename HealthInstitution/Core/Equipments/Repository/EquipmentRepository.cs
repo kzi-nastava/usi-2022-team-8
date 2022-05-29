@@ -108,6 +108,7 @@ namespace HealthInstitution.Core.Equipments.Repository
 
             Equipment equipment = new Equipment(id, quantity, name, type, isDynamic);
             this.Equipments.Add(equipment);
+            this.EquipmentPerQuantity[name] += quantity;
             this.EquipmentById.Add(equipment.Id, equipment);
             Save();
             return equipment;

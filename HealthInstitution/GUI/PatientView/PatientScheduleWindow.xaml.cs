@@ -24,63 +24,51 @@ public partial class PatientScheduleWindow : Window
         LoadRows();
     }
 
+    private void GridRefresh()
+    {
+        dataGrid.Items.Clear();
+        LoadRows();
+    }
+
     private void AddButton_click(object sender, RoutedEventArgs e)
     {
-        try
-        {
-            TrollCounterFileRepository.GetInstance().TrollCheck(_loggedPatient.Username);
-            AddExaminationDialog addExaminationDialog = new AddExaminationDialog(_loggedPatient);
-            addExaminationDialog.ShowDialog();
-            dataGrid.Items.Clear();
-            LoadRows();
-            TrollCounterFileRepository.GetInstance().GetById(_loggedPatient.Username).AppendCreateDates(DateTime.Today);
-            TrollCounterFileRepository.GetInstance().Save();
-        }
-        catch (Exception ex)
-        {
-            System.Windows.MessageBox.Show(ex.Message, "Troll Alert", MessageBoxButton.OK, MessageBoxImage.Error);
-            this.Close();
-        }
+        TrollCounterFileRepository.GetInstance().TrollCheck(_loggedPatient.Username);
+        new AddExaminationDialog(_loggedPatient).ShowDialog();
+        GridRefresh();
+        TrollCounterFileRepository.GetInstance().GetById(_loggedPatient.Username).AppendCreateDates(DateTime.Today);
+        TrollCounterFileRepository.GetInstance().Save();
     }
 
     private void EditButton_click(object sender, RoutedEventArgs e)
     {
-        try
-        {
-            TrollCounterFileRepository.GetInstance().TrollCheck(_loggedPatient.Username);
-            Examination selectedExamination = (Examination)dataGrid.SelectedItem;
-            EditExaminationDialog editExaminationDialog = new EditExaminationDialog(selectedExamination);
-            editExaminationDialog.ShowDialog();
-            dataGrid.Items.Clear();
-            LoadRows();
-            TrollCounterFileRepository.GetInstance().GetById(_loggedPatient.Username).AppendEditDeleteDates(DateTime.Today);
-            TrollCounterFileRepository.GetInstance().Save();
-        }
-        catch (Exception ex)
-        {
-            System.Windows.MessageBox.Show(ex.Message, "Troll Alert", MessageBoxButton.OK, MessageBoxImage.Error);
-            this.Close();
-        }
+        TrollCounterFileRepository.GetInstance().TrollCheck(_loggedPatient.Username);
+        Examination selectedExamination = (Examination)dataGrid.SelectedItem;
+        new EditExaminationDialog(selectedExamination).ShowDialog();
+        GridRefresh();
+        TrollCounterFileRepository.GetInstance().GetById(_loggedPatient.Username).AppendEditDeleteDates(DateTime.Today);
+        TrollCounterFileRepository.GetInstance().Save();
     }
 
     private void DeleteButton_click(object sender, RoutedEventArgs e)
     {
         Examination selectedExamination = (Examination)dataGrid.SelectedItem;
-        try
-        {
-            TrollCounterFileRepository.GetInstance().TrollCheck(_loggedPatient.Username);
-            ExaminationDoctorRepository.GetInstance().Save();
-            dataGrid.Items.Clear();
-            LoadRows();
-            TrollCounterFileRepository.GetInstance().GetById(_loggedPatient.Username).AppendEditDeleteDates(DateTime.Today);
-            TrollCounterFileRepository.GetInstance().Save();
-        }
-        catch (Exception ex)
-        {
-            System.Windows.MessageBox.Show(ex.Message, "Troll Alert", MessageBoxButton.OK, MessageBoxImage.Error);
-            this.Close();
-        }
-        if (System.Windows.MessageBox.Show("Are you sure you want to delete selected examination", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
+        TrollCounterFileRepository.GetInstance().TrollCheck(_loggedPatient.Username);
+        ExaminationDoctorRepository.GetInstance().Save();
+        GridRefresh();
+        TrollCounterFileRepository.GetInstance().GetById(_loggedPatient.Username).AppendEditDeleteDates(DateTime.Today);
+        TrollCounterFileRepository.GetInstance().Save();
+        ConfirmDelete(selectedExamination);
+    }
+
+    private bool isConfirmedDelete()
+    {
+        return System.Windows.MessageBox.Show("Are you sure you want to delete selected examination", "Question",
+            MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes;
+    }
+
+    private void ConfirmDelete(Examination selectedExamination)
+    {
+        if (isConfirmedDelete())
         {
             if (selectedExamination.Appointment.AddDays(-2) < DateTime.Now)
             {
@@ -94,11 +82,6 @@ public partial class PatientScheduleWindow : Window
             }
         }
     }
-
-    /*private void dataGrid_Loaded(object sender, RoutedEventArgs e)
-    {
-        LoadGrid();
-    }*/
 
     private void LoadRows()
     {

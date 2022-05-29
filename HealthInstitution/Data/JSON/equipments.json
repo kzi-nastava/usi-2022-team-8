@@ -181,5 +181,12 @@
     "Name": "injection",
     "Type": "AppointmentEquipment",
     "IsDynamic": true
+  },
+  {
+    "Id": 31,
+    "Quantity": 16,
+    "Name": "hanzaplast",
+    "Type": "AppointmentEquipment",
+    "IsDynamic": true
   }
 ]

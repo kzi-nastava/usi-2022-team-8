@@ -11,6 +11,36 @@
     <Compile Update="GUI\DoctorView\AddReferralDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="GUI\DoctorView\DrugsVerificationTable.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="GUI\DoctorView\RejectionReasonDialog.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="GUI\ManagerView\DrugView\AddDrugDialog.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="GUI\ManagerView\DrugView\DrugsOnVerificationTableWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="GUI\ManagerView\DrugView\EditDrugDialog.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="GUI\ManagerView\DrugView\RejectedDrugsTableWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="GUI\ManagerView\DrugView\ReviseDrugDialog.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="GUI\ManagerView\IngredientView\AddIngredientDialog.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="GUI\ManagerView\IngredientView\EditIngredientDialog.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="GUI\ManagerView\IngredientView\IngredientsTableWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="GUI\ManagerView\RenovationView\ArrangeEquipmentForSplitWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -174,6 +204,9 @@
     <Page Update="GUI\DoctorView\DoctorWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="GUI\DoctorView\DrugsVerificationTable.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="GUI\DoctorView\EditExaminationDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -192,7 +225,34 @@
     <Page Update="GUI\DoctorView\PerformExaminationDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="GUI\DoctorView\RejectionReasonDialog.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="GUI\DoctorView\ScheduledExaminationTable.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="GUI\ManagerView\DrugView\AddDrugDialog.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="GUI\ManagerView\DrugView\DrugsOnVerificationTableWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="GUI\ManagerView\DrugView\EditDrugDialog.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="GUI\ManagerView\DrugView\RejectedDrugsTableWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="GUI\ManagerView\DrugView\ReviseDrugDialog.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="GUI\ManagerView\IngredientView\AddIngredientDialog.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="GUI\ManagerView\IngredientView\EditIngredientDialog.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="GUI\ManagerView\IngredientView\IngredientsTableWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="GUI\ManagerView\RenovationView\ArrangeEquipmentForSplitWindow.xaml">

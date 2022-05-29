@@ -28,6 +28,19 @@ public partial class EditExaminationDialog : Window
         InitializeComponent();
     }
 
+    private void GenerateRequest(DateTime dateTime)
+    {
+        Examination newExamination = ExaminationRepository.GetInstance().GenerateRequestExamination(_selectedExamination, _doctorUsername, dateTime);
+        ScheduleEditRequestFileRepository.GetInstance().AddEditRequest(newExamination);
+    }
+
+    private void EditNow(DateTime dateTime)
+    {
+        ExaminationRepository.GetInstance().EditExamination(_selectedExamination, _doctorUsername, dateTime);
+        ExaminationDoctorRepository.GetInstance().Save();
+        ExaminationRepository.GetInstance().Save();
+    }
+
     private void Save_Click(object sender, RoutedEventArgs e)
     {
         string formatDate = datePicker.SelectedDate.ToString();
@@ -39,14 +52,11 @@ public partial class EditExaminationDialog : Window
         {
             if (_selectedExamination.Appointment.AddDays(-2) < DateTime.Today)
             {
-                Examination newExamination = ExaminationRepository.GetInstance().GenerateRequestExamination(_selectedExamination, _doctorUsername, dateTime);
-                ScheduleEditRequestFileRepository.GetInstance().AddEditRequest(newExamination);
+                GenerateRequest(dateTime);
             }
             else
             {
-                ExaminationRepository.GetInstance().EditExamination(_selectedExamination, _doctorUsername, dateTime);
-                ExaminationDoctorRepository.GetInstance().Save();
-                ExaminationRepository.GetInstance().Save();
+                EditNow(dateTime);
             }
 
             this.Close();
@@ -95,10 +105,10 @@ public partial class EditExaminationDialog : Window
         minutes.Add("45");
         minuteComboBox.ItemsSource = minutes;
 
-        if (_selectedExamination.Appointment.Minute == 0) minuteComboBox.SelectedIndex = 0;
-        if (_selectedExamination.Appointment.Minute == 15) minuteComboBox.SelectedIndex = 1;
-        if (_selectedExamination.Appointment.Minute == 30) minuteComboBox.SelectedIndex = 2;
-        if (_selectedExamination.Appointment.Minute == 45) minuteComboBox.SelectedIndex = 3;
+        for (int i = 0; i < 4; i++)
+        {
+            if (_selectedExamination.Appointment.Minute == i * 15) minuteComboBox.SelectedIndex = i;
+        }
         minuteComboBox.SelectedIndex = _selectedExamination.Appointment.Minute / 15;
     }
 

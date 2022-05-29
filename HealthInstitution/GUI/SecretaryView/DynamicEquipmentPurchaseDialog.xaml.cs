@@ -82,13 +82,19 @@ namespace HealthInstitution.GUI.SecretaryView
             EquipmentTransferRepository.GetInstance().Add(equipmentTransferDTO);
 
             System.Windows.MessageBox.Show("Request for warehouse refill is created successfully", "Warehouse refill", MessageBoxButton.OK, MessageBoxImage.Information);
-
+            LoadEquipmentComboBox();
         }
         
         private void EquipmentComboBox_Loaded(object sender, RoutedEventArgs e)
         {
+            LoadEquipmentComboBox();
+        }
+
+        private void LoadEquipmentComboBox()
+        {
+            equipmentComboBox.Items.Clear();
             Dictionary<string, int> equipmentPerQuantity = EquipmentRepository.GetInstance().EquipmentPerQuantity;
-            
+
             foreach (var equipment in equipmentPerQuantity)
             {
                 if (equipment.Value == 0)

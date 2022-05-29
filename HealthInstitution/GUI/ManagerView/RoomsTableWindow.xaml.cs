@@ -79,7 +79,7 @@ namespace HealthInstitution.GUI.ManagerView
             }
             if (!CheckOccurrenceOfRoom(selectedRoom))
             {
-                System.Windows.MessageBox.Show("You cant delete room because of scheduled connections!", "Edit error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.MessageBox.Show("You cant delete room because of scheduled connections!", "Delete error", MessageBoxButton.OK, MessageBoxImage.Error);
                 dataGrid.SelectedItem = null;
                 return;
             }

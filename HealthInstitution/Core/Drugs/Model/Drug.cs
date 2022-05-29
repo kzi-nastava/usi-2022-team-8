@@ -8,18 +8,25 @@ public class Drug
     public String Name { get; set; }
     public DrugState State { get; set; }
     public List<Ingredient> Ingredients { get; set; }
+    public String RejectionReason { get; set; }
 
-    public Drug(int id, string name, DrugState state, List<Ingredient> ingredients)
+    public Drug(int id, string name, DrugState state, List<Ingredient> ingredients, string rejectionReason = "")
     {
         this.Id = id;
         this.Name = name;
         this.State = state;
         this.Ingredients = ingredients;
+        this.RejectionReason = rejectionReason;
     }
 
     public override string ToString()
     {
         return this.Name;
+    }
+
+    public bool ContainsIngredient(Ingredient ingredient)
+    {
+        return Ingredients.Contains(ingredient);
     }
 }
 
