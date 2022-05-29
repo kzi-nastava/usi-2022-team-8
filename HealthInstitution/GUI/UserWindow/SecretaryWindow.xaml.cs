@@ -59,14 +59,14 @@ namespace HealthInstitution.GUI.UserWindow
         }
         private void DynamicEquipment_Click(object sender, RoutedEventArgs e)
         {
-            DynamicEquipmentDialog dynamicEquipmentDialog = new DynamicEquipmentDialog();
-            dynamicEquipmentDialog.ShowDialog();
+            DynamicEquipmentPurchaseDialog dynamicEquipmentPurchaseDialog = new DynamicEquipmentPurchaseDialog();
+            dynamicEquipmentPurchaseDialog.ShowDialog();
         }
 
         private void TransferDynamicEquipment_Click(object sender, RoutedEventArgs e)
         {
-            DynamicEquipmentTransferDialog dynamicEquipmentTransferDialog = new DynamicEquipmentTransferDialog();
-            dynamicEquipmentTransferDialog.ShowDialog();
+            DynamicEquipmentReviewDialog dynamicEquipmentReviewDialog = new DynamicEquipmentReviewDialog();
+            dynamicEquipmentReviewDialog.ShowDialog();
         }
         private void LogOut_Click(object sender, RoutedEventArgs e)
         {

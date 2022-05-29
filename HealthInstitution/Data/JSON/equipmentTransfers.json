@@ -27,12 +27,5 @@
     "fromRoom": 2,
     "toRoom": 4,
     "transferTime": "2022-09-16T00:00:00"
-  },
-  {
-    "id": 7,
-    "equipment": 30,
-    "fromRoom": 0,
-    "toRoom": 1,
-    "transferTime": "2022-05-26T23:35:11.3674584+02:00"
   }
 ]

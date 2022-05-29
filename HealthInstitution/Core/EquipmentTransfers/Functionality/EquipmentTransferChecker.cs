@@ -27,7 +27,7 @@ namespace HealthInstitution.Core.EquipmentTransfers.Functionality
                 {
                     FillWarehouse(equipmentTransfer, equipmentTransfersToRemove);
                 }
-                if (equipmentTransfer.TransferTime == DateTime.Today)
+                if (equipmentTransfer.TransferTime <= DateTime.Today)
                 {
                     Equipment equipmentFromRoom = equipmentTransfer.FromRoom.AvailableEquipment.Find(eq => (eq.Type == equipmentTransfer.Equipment.Type && eq.Name == equipmentTransfer.Equipment.Name));
                     Transfer(equipmentTransfer.ToRoom, equipmentFromRoom, equipmentTransfer.Equipment.Quantity);

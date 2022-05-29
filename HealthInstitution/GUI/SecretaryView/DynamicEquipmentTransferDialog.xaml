@@ -6,24 +6,14 @@
         xmlns:local="clr-namespace:HealthInstitution.GUI.SecretaryView"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="Patients" Height="400" Width="350">
+        Title="Dynamic eqipment transfer" Height="300" Width="300">
     <Grid>
-        <DataGrid  ItemsSource="{Binding dynamic}" AutoGenerateColumns="False" Name="dataGrid"  Height="250" VerticalAlignment="Top">
-            <DataGrid.CellStyle>
-                <Style TargetType="{x:Type DataGridCell}">
-                    <Style.Triggers>
-                        <DataTrigger Binding="{Binding Quantity}" Value="0">
-                            <Setter Property="Background" Value="Red" />
-                        </DataTrigger>
-                    </Style.Triggers>
-                </Style>
-            </DataGrid.CellStyle>
-            <DataGrid.Columns>
-                <DataGridTextColumn Header="Room No." FontSize="18" Binding="{Binding Room}" Width ="80"/>
-                <DataGridTextColumn Header="Equipment" FontSize="18" Binding="{Binding Equipment}" Width =" 150"/>
-                <DataGridTextColumn Header="Quantity" FontSize="18" Binding="{Binding Quantity}" Width =" 80"/>
-            </DataGrid.Columns>
-        </DataGrid>
-        <Button Content="Select" Name="selectButton" Click="selectEquipment_Click" HorizontalAlignment="Center" Margin="0,300,0,0" VerticalAlignment="Top" FontSize="15" Width="130"/>
-        </Grid>
+        <Label Content="From room" HorizontalAlignment="Center" VerticalAlignment="Top" Margin="-150,50,0,0"/>
+        <Label Content="Quantity" HorizontalAlignment="Center" Margin="-150,100,0,0" VerticalAlignment="Top"/>
+        <TextBox Name ="quantityBox" HorizontalAlignment="Center" PreviewTextInput="NumberValidationTextBox" Height="25" Margin="70,100,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="130" FontSize="16"/>
+        <ComboBox Name="roomComboBox" HorizontalAlignment="Center" Height="25" Margin="70,50,0,0" Loaded="RoomComboBox_Loaded"  VerticalAlignment="Top" Width="130"/>
+
+        <Button Content="Transfer" Click="Select_Click" HorizontalAlignment="Center" Margin="0,200,0,0" VerticalAlignment="Top" FontSize="14" Width="60" />
+
+    </Grid>
 </Window>

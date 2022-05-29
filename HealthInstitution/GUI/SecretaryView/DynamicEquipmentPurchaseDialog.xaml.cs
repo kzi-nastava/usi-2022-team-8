@@ -23,32 +23,42 @@ using System.Windows.Shapes;
 namespace HealthInstitution.GUI.SecretaryView
 {
     /// <summary>
-    /// Interaction logic for DynamicEquipmentDialog.xaml
+    /// Interaction logic for DynamicEquipmentPurchaseDialog.xaml
     /// </summary>
-    public partial class DynamicEquipmentDialog : Window
+    public partial class DynamicEquipmentPurchaseDialog : Window
     {
         static EquipmentRepository _equipmentRepository = EquipmentRepository.GetInstance();
-        public DynamicEquipmentDialog()
+        public DynamicEquipmentPurchaseDialog()
         {
             InitializeComponent();
         }
         private void Select_Click(object sender, RoutedEventArgs e)
         {
-            int quantity = Int32.Parse(quantityBox.Text);
-            string equipmentName= (string)equipmentComboBox.SelectedItem;
-            EquipmentType equipmentType = GetEquipmentType(equipmentName);
-            
-            EquipmentDTO selectedEquipment = new EquipmentDTO(quantity, equipmentName, equipmentType, true);
-            if (selectedEquipment != null)
+            try
             {
-                ScheduleWarehouseRefill(selectedEquipment);
+                int quantity = Int32.Parse(quantityBox.Text);
+                string? equipmentName = (string)equipmentComboBox.SelectedItem;
+
+                if (equipmentName != null)
+                {
+                    EquipmentType equipmentType = GetEquipmentType(equipmentName);
+
+                    EquipmentDTO selectedEquipment = new EquipmentDTO(quantity, equipmentName, equipmentType, true);
+                    ScheduleWarehouseRefill(selectedEquipment);
+                    quantityBox.Clear();
+                    equipmentComboBox.SelectedItem = null;
+                }
+                else
+                {
+                    System.Windows.MessageBox.Show("Equipment must be selected", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+                
             }
-            else
+            catch
             {
-                System.Windows.MessageBox.Show("Equipment must be selected", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.MessageBox.Show("Quantity must be filled", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-            quantityBox.Clear();
-            equipmentComboBox.SelectedItem = null;
+
         }
 
         private EquipmentType GetEquipmentType(string equipmentName)
