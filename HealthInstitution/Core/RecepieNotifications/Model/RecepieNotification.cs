@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using HealthInstitution.Core.SystemUsers.Patients.Model;
-using HealthInstitution.Core.Prescriptions.Model;
+﻿using HealthInstitution.Core.Prescriptions.Model;
 
 namespace HealthInstitution.Core.RecepieNotifications.Model;
 
 public class RecepieNotification
 {
-    public RecepieNotification(string id, Patient patient, Prescription prescription, bool activeForPatient)
+    public RecepieNotification(string id, string patient, Prescription prescription, bool activeForPatient)
     {
         Id = id;
         Patient = patient;

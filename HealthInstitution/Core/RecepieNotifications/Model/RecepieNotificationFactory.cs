@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using HealthInstitution.Core.SystemUsers.Patients.Model;
-using HealthInstitution.Core.Prescriptions.Model;
-
-namespace HealthInstitution.Core.RecepieNotifications.Model;
+﻿namespace HealthInstitution.Core.RecepieNotifications.Model;
 
 public class RecepieNotificationFactory
 {

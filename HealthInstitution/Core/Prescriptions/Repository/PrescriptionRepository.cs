@@ -111,7 +111,7 @@ namespace HealthInstitution.Core.Prescriptions.Repository
             PrescriptionTime timeOfUse = prescriptionDTO.TimeOfUse;
             Drug drug = prescriptionDTO.Drug;
 
-            Prescription prescription = new Prescription(id, dailyDose, timeOfUse, drug, );
+            Prescription prescription = new Prescription(id, dailyDose, timeOfUse, drug, prescriptionDTO.showTime);
             this.Prescriptions.Add(prescription);
             this.PrescriptionById[id] = prescription;
             Save();
