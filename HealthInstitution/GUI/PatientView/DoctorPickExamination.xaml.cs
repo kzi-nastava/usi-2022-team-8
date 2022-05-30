@@ -31,14 +31,16 @@ public partial class DoctorPickExamination : Window
         InitializeComponent();
         _loggedPatient = loggedPatinent;
         dataGrid.SelectedIndex = 0;
+        _currentDoctors = DoctorRepository.GetInstance().GetAll();
+        LoadRows();
     }
 
     private void Button_Click(object sender, RoutedEventArgs e)
     {
         var doctor = dataGrid.SelectedItem as Doctor;
         var dialog = new AddExaminationDialog(_loggedPatient);
+        dialog.Show();
         dialog.SetSelectedDoctor(doctor);
-        dialog.ShowDialog();
     }
 
     private void NameSort_Click(object sender, RoutedEventArgs e)
@@ -94,5 +96,10 @@ public partial class DoctorPickExamination : Window
         string name = SearchBox.Text;
         _currentDoctors = DoctorRepository.GetInstance().SearchDoctorByName(name);
         LoadRows();
+    }
+
+    private void seachParameter_GotFocus(object sender, RoutedEventArgs e)
+    {
+        SearchBox.Clear();
     }
 }

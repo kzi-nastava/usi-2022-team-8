@@ -117,7 +117,18 @@ namespace HealthInstitution.GUI.PatientView
 
         public void SetSelectedDoctor(Doctor doctor)
         {
-            DoctorComboBox.SelectedItem = doctor;
+            int idx = DoctorComboBox.Items.Count;
+            for (int i = 0; i < DoctorComboBox.Items.Count; i++)
+            {
+                //Doctor doctor = ;
+                var str = DoctorComboBox.Items[i].ToString();
+                if (str == doctor.Username)
+                {
+                    idx = i;
+                    break;
+                }
+            }
+            DoctorComboBox.SelectedIndex = idx;
         }
     }
 }

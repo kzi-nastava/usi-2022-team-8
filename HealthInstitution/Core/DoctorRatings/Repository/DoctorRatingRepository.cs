@@ -38,7 +38,7 @@ public class DoctorRatingRepository
         {
             if (s_instance == null)
             {
-                s_instance = new DoctorRatingRepository(@"..\..\..\Data\JSON\trollCounters.json");
+                s_instance = new DoctorRatingRepository(@"..\..\..\Data\JSON\doctorRatings.json");
             }
             return s_instance;
         }
@@ -46,7 +46,7 @@ public class DoctorRatingRepository
 
     public void LoadFromFile()
     {
-        var ratings = JsonSerializer.Deserialize<List<DoctorRating>>(File.ReadAllText(@"..\..\..\Data\JSON\trollCounters.json"), _options);
+        var ratings = JsonSerializer.Deserialize<List<DoctorRating>>(File.ReadAllText(@"..\..\..\Data\JSON\doctorRatings.json"), _options);
         foreach (DoctorRating doctorRating in ratings)
         {
             this.Ratings.Add(doctorRating);

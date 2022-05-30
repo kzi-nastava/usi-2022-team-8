@@ -81,5 +81,10 @@ namespace HealthInstitution.GUI.UserWindow
         {
             new MedicalRecordView(_loggedPatient).ShowDialog();
         }
+
+        private void pickDoctor_button_Click(object sender, RoutedEventArgs e)
+        {
+            new DoctorPickExamination(_loggedPatient).ShowDialog();
+        }
     }
 }
