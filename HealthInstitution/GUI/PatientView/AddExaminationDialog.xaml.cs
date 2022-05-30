@@ -120,7 +120,6 @@ namespace HealthInstitution.GUI.PatientView
             int idx = DoctorComboBox.Items.Count;
             for (int i = 0; i < DoctorComboBox.Items.Count; i++)
             {
-                //Doctor doctor = ;
                 var str = DoctorComboBox.Items[i].ToString();
                 if (str == doctor.Username)
                 {
