@@ -1,0 +1,22 @@
+﻿<Window x:Class="HealthInstitution.GUI.PatientView.RecepieNotificationSettings"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:HealthInstitution.GUI.PatientView"
+        mc:Ignorable="d"
+        Title="RecepieNotificationSettings" Height="450" Width="800">
+    <Grid>
+        <DataGrid  ItemsSource="{Binding Notification}" AutoGenerateColumns="False" Name="dataGrid"  Height="250" VerticalAlignment="Top">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="ASD" FontSize="18" Binding="{Binding Patient.Username}" Width ="140" />
+                <DataGridTextColumn Header="ASD" FontSize="18" Binding="{Binding OldAppointment}" Width =" 180" />
+                <DataGridTextColumn Header="ASD" FontSize="18" Binding="{Binding NewAppointment}" Width =" 180" />
+            </DataGrid.Columns>
+        </DataGrid>
+        <Label Content="Time" HorizontalAlignment="Left" Margin="44,333,0,0" VerticalAlignment="Top" />
+        <ComboBox HorizontalAlignment="Left" Margin="130,337,0,0" Loaded="HourComboBox_Loaded" SelectionChanged="HourComboBox_SelectionChanged" VerticalAlignment="Top" Width="45" />
+        <ComboBox HorizontalAlignment="Left" Margin="225,337,0,0" VerticalAlignment="Top" Width="45" Loaded="MinuteComboBox_Loaded" SelectionChanged="MinuteComboBox_SelectionChanged" />
+        <Button Content="Set Time" HorizontalAlignment="Center" Margin="0,330,0,0" VerticalAlignment="Top" Height="32" Width="112" />
+    </Grid>
+</Window>

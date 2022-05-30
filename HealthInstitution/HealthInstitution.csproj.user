@@ -50,6 +50,9 @@
     <Compile Update="GUI\PatientView\PatientScheduleWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="GUI\PatientView\RecepieNotificationSettings.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="GUI\SecretaryView\AddExaminationWithReferralDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -223,6 +226,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="GUI\PatientView\PatientScheduleWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="GUI\PatientView\RecepieNotificationSettings.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="GUI\SecretaryView\AddExaminationWithReferralDialog.xaml">
