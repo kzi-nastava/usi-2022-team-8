@@ -175,7 +175,7 @@ namespace HealthInstitution.Core.SystemUsers.Doctors.Repository
             return operationsForDate;
         }
 
-        public void DeleteNotification(Doctor doctor, Notification notification)
+        public void DeleteNotification(Doctor doctor, AppointmentNotification notification)
         {
             doctor.Notifications.Remove(notification);
             Save();

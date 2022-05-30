@@ -1,5 +1,6 @@
 ﻿using HealthInstitution.Core.Equipments.Model;
 using HealthInstitution.Core.Equipments.Repository;
+using HealthInstitution.Core.Examinations.Repository;
 using HealthInstitution.Core.Rooms.Model;
 using Newtonsoft.Json.Linq;
 using System;
@@ -172,6 +173,39 @@ namespace HealthInstitution.Core.Rooms.Repository
         {
             RoomById[id].AvailableEquipment.Add(equipment);
             Save();
+        }
+
+        public Room FindAvailableRoom(DateTime appointment)
+        {
+            List<Room> availableRooms = FindAllAvailableRooms(appointment);
+
+            if (availableRooms.Count == 0) throw new Exception("There are no available rooms!");
+
+            Random random = new Random();
+            int index = random.Next(0, availableRooms.Count);
+            return availableRooms[index];
+        }
+
+        public List<Room> FindAllAvailableRooms(DateTime appointment)
+        {
+            bool isAvailable;
+            List<Room> availableRooms = new List<Room>();
+            foreach (var room in RoomRepository.GetInstance().GetNotRenovating())
+            {
+                if (room.Type != RoomType.ExaminationRoom) continue;
+                isAvailable = true;
+                foreach (var examination in ExaminationRepository.GetInstance().Examinations)
+                {
+                    if (examination.Appointment == appointment && examination.Room.Id == room.Id)
+                    {
+                        isAvailable = false;
+                        break;
+                    }
+                }
+                if (isAvailable)
+                    availableRooms.Add(room);
+            }
+            return availableRooms;
         }
 
         public List<Room> GetActive()

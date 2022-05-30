@@ -25,25 +25,25 @@ namespace HealthInstitution.GUI.DoctorView
     {
         private Doctor _loggedDoctor;
         private DoctorRepository _doctorRepository;
-        private NotificationRepository _notificationRepository;
+        private AppointmentNotificationRepository _notificationRepository;
         public DoctorNotificationsDialog(Doctor doctor)
         {
             _loggedDoctor = doctor;
             _doctorRepository = DoctorRepository.GetInstance();
-            _notificationRepository = NotificationRepository.GetInstance();
+            _notificationRepository = AppointmentNotificationRepository.GetInstance();
             InitializeComponent();
             LoadRows();
         }
         private void LoadRows()
         {
             dataGrid.Items.Clear();
-            List<Notification> doctorsNotifications = _loggedDoctor.Notifications;
+            List<AppointmentNotification> doctorsNotifications = _loggedDoctor.Notifications;
             //List<Notification> doctorsNotificationsCopy = doctorsNotifications.ConvertAll(notification => new Notification(notification.Id,notification.OldAppointment,notification.NewAppointment,notification.Doctor,notification.Patient,notification.ActiveForDoctor,notification.ActiveForPatient));
-            foreach (Notification notification in doctorsNotifications)
+            foreach (AppointmentNotification notification in doctorsNotifications)
             {
                 dataGrid.Items.Add(notification);
                 notification.ActiveForDoctor = false;
-                NotificationRepository.GetInstance().Save();
+                AppointmentNotificationRepository.GetInstance().Save();
                 //_notificationRepository.Delete(notification.Id);
                 //_doctorRepository.DeleteNotification(_loggedDoctor, notification);
             }

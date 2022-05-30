@@ -45,7 +45,7 @@ namespace HealthInstitution.GUI.UserWindow
         {
             ExaminationDoctorRepository.GetInstance();
             int activeNotifications = 0;
-            foreach (Notification notification in this._loggedPatient.Notifications)
+            foreach (AppointmentNotification notification in this._loggedPatient.Notifications)
             {
                 if (notification.ActiveForPatient)
                     activeNotifications++;
