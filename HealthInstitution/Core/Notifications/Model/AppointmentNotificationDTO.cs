@@ -8,14 +8,14 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.Notifications.Model
 {
-    public class NotificationDTO
+    public class AppointmentNotificationDTO
     {
         public DateTime? OldAppointment { get; set; }
         public DateTime NewAppointment { get; set; }
         public Doctor Doctor { get; set; }
         public Patient Patient { get; set; }
 
-        public NotificationDTO(DateTime? oldAppointment, DateTime newAppointment, Doctor doctor, Patient patient)
+        public AppointmentNotificationDTO(DateTime? oldAppointment, DateTime newAppointment, Doctor doctor, Patient patient)
         {
             OldAppointment = oldAppointment;
             NewAppointment = newAppointment;

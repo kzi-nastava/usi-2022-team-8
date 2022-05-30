@@ -18,33 +18,33 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.Notifications.Repository
 {
-    internal class NotificationRepository
+    internal class AppointmentNotificationRepository
     {
         private String _fileName;
         public int _maxId { get; set; }
-        public List<Notification> Notifications { get; set; }
-        public Dictionary<int, Notification> NotificationsById { get; set; }
+        public List<AppointmentNotification> Notifications { get; set; }
+        public Dictionary<int, AppointmentNotification> NotificationsById { get; set; }
 
         private JsonSerializerOptions _options = new JsonSerializerOptions
         {
             Converters = { new JsonStringEnumConverter() },
             PropertyNameCaseInsensitive = true
         };
-        private NotificationRepository(String fileName)
+        private AppointmentNotificationRepository(String fileName)
         {
             this._fileName = fileName;
-            this.Notifications = new List<Notification>();
-            this.NotificationsById = new Dictionary<int, Notification>();
+            this.Notifications = new List<AppointmentNotification>();
+            this.NotificationsById = new Dictionary<int, AppointmentNotification>();
             this._maxId = 0;
             this.LoadFromFile();
         }
-        private static NotificationRepository s_instance = null;
-        public static NotificationRepository GetInstance()
+        private static AppointmentNotificationRepository s_instance = null;
+        public static AppointmentNotificationRepository GetInstance()
         {
             {
                 if (s_instance == null)
                 {
-                    s_instance = new NotificationRepository(@"..\..\..\Data\JSON\notifications.json");
+                    s_instance = new AppointmentNotificationRepository(@"..\..\..\Data\JSON\notifications.json");
                 }
                 return s_instance;
             }
@@ -60,7 +60,7 @@ namespace HealthInstitution.Core.Notifications.Repository
                 bool activeForDoctor = (bool)notification["activeForDoctor"];
                 bool activeForPatient = (bool)notification["activeForPatient"];
 
-                Notification loadedNotification = new Notification(id,oldAppointment,newAppointment,null,null,activeForDoctor, activeForPatient);
+                AppointmentNotification loadedNotification = new AppointmentNotification(id,oldAppointment,newAppointment,null,null,activeForDoctor, activeForPatient);
 
                 if (id > _maxId) { _maxId = id; }
 
@@ -73,7 +73,7 @@ namespace HealthInstitution.Core.Notifications.Repository
         public void Save()
         {
             List<dynamic> reducedNotifications = new List<dynamic>();
-            foreach (Notification notification in this.Notifications)
+            foreach (AppointmentNotification notification in this.Notifications)
             {
                 reducedNotifications.Add(new
                 {
@@ -88,12 +88,12 @@ namespace HealthInstitution.Core.Notifications.Repository
             File.WriteAllText(this._fileName, allNotifications);
         }
 
-        public List<Notification> GetAll()
+        public List<AppointmentNotification> GetAll()
         {
             return this.Notifications;
         }
 
-        public Notification GetById(int id)
+        public AppointmentNotification GetById(int id)
         {
             if (NotificationsById.ContainsKey(id))
             {
@@ -102,27 +102,27 @@ namespace HealthInstitution.Core.Notifications.Repository
             return null;
         }
 
-        public void Add(DateTime oldAppointment, DateTime newAppointment, Doctor doctor, Patient patient)
+        public void Add(AppointmentNotificationDTO appointmentNotificationDTO)
         {
             int id = ++this._maxId;
-            Notification notification;
-            if (oldAppointment.Year==1)
-                notification = new Notification(id, null, newAppointment, doctor, patient,true,true);
+            AppointmentNotification notification;
+            if (appointmentNotificationDTO.OldAppointment==null)
+                notification = new AppointmentNotification(id, null, appointmentNotificationDTO.NewAppointment, appointmentNotificationDTO.Doctor, appointmentNotificationDTO.Patient, true,true);
             else
-                notification = new Notification(id, oldAppointment, newAppointment, doctor, patient, true, true);
-            doctor.Notifications.Add(notification);
-            patient.Notifications.Add(notification);
+                notification = new AppointmentNotification(id, appointmentNotificationDTO.OldAppointment, appointmentNotificationDTO.NewAppointment, appointmentNotificationDTO.Doctor, appointmentNotificationDTO.Patient, true, true);
+            appointmentNotificationDTO.Doctor.Notifications.Add(notification);
+            appointmentNotificationDTO.Patient.Notifications.Add(notification);
             this.Notifications.Add(notification);
             this.NotificationsById.Add(id, notification);
             Save();
-            NotificationPatientRepository.GetInstance().Save();
-            NotificationDoctorRepository.GetInstance().Save();
+            AppointmentNotificationPatientRepository.GetInstance().Save();
+            AppointmentNotificationDoctorRepository.GetInstance().Save();
 
         }
 
         public void Delete(int id)
         {
-            Notification notification=NotificationsById[id];
+            AppointmentNotification notification=NotificationsById[id];
             this.Notifications.Remove(notification);
             this.NotificationsById.Remove(id);
             Save();

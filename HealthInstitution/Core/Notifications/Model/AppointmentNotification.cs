@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.Notifications.Model;
 
-public class Notification
+public class AppointmentNotification
 {
     public int Id { get; set; }
     public DateTime? OldAppointment { get; set; }
@@ -21,7 +21,7 @@ public class Notification
     public bool ActiveForDoctor { get; set; }   
     public bool ActiveForPatient { get; set; }
 
-    public Notification(int id, DateTime? oldAppointment, DateTime newAppointment, Doctor doctor, Patient patient, bool activeForDoctor, bool activeForPatient)
+    public AppointmentNotification(int id, DateTime? oldAppointment, DateTime newAppointment, Doctor doctor, Patient patient, bool activeForDoctor, bool activeForPatient)
     {
         Id = id;
         OldAppointment = oldAppointment;

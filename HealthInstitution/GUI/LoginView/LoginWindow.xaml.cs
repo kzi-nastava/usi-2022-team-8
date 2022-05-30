@@ -93,8 +93,8 @@ namespace HealthInstitution.GUI.LoginView
         {
             /*    try*/
             {
-                NotificationDoctorRepository.GetInstance();
-                NotificationPatientRepository.GetInstance();
+                AppointmentNotificationDoctorRepository.GetInstance();
+                AppointmentNotificationPatientRepository.GetInstance();
                 PatientRepository patientRepository = PatientRepository.GetInstance();
                 TrollCounterFileRepository.GetInstance().TrollCheck(foundUser.Username);
                 Patient loggedPatient = patientRepository.GetByUsername(_usernameInput);
@@ -110,8 +110,8 @@ namespace HealthInstitution.GUI.LoginView
             DoctorRepository doctorRepository = DoctorRepository.GetInstance();
             /*ExaminationRepository.GetInstance();
             ExaminationDoctorRepository.GetInstance();*/
-            NotificationDoctorRepository.GetInstance();
-            NotificationPatientRepository.GetInstance();
+            AppointmentNotificationDoctorRepository.GetInstance();
+            AppointmentNotificationPatientRepository.GetInstance();
             OperationDoctorRepository.GetInstance();
             Doctor loggedDoctor = doctorRepository.GetById(_usernameInput);
             new DoctorWindow(loggedDoctor).ShowDialog();

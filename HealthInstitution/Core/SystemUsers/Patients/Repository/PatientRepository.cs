@@ -160,7 +160,7 @@ namespace HealthInstitution.Core.SystemUsers.Patients.Repository
             userRepository.Save();
         }
 
-        public void DeleteNotification(Patient patient, Notification notification)
+        public void DeleteNotification(Patient patient, AppointmentNotification notification)
         {
             patient.Notifications.Remove(notification);
             Save();

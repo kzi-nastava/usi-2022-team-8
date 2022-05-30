@@ -20,6 +20,7 @@ using HealthInstitution.Core.Operations.Repository;
 using HealthInstitution.Core.Operations.Model;
 using HealthInstitution.Core.Notifications.Repository;
 using HealthInstitution.Core.RecommededDTO;
+using HealthInstitution.Core.Notifications.Model;
 
 namespace HealthInstitution.Core.Examinations.Repository;
 
@@ -171,18 +172,6 @@ internal class ExaminationRepository
         AddToContainers(examination);
     }
 
-    /*public void AddStanic(ExaminationDTO examinationDTO)
-    {
-        *//*int id = ++this._maxId;
-        DateTime appointment = examinationDTO.Appointment;
-        Room room = examinationDTO.Room;
-        Doctor doctor = examinationDTO.Doctor;
-        MedicalRecord medicalRecord = examinationDTO.MedicalRecord;*//*
-
-        Examination examination = GenerateExamination(examinationDTO);
-        AddToContainers(examination);
-    }*/
-
     private Examination GenerateExamination(ExaminationDTO examinationDTO)
     {
         int id = ++this._maxId;
@@ -305,40 +294,23 @@ internal class ExaminationRepository
         CheckIfPatientHasOperations(examinationDTO);
     }
 
-    private Room FindAvailableRoom(DateTime appointment)
+    private void CheckIfDoctorHasExaminations(ExaminationDTO examinationDTO)
     {
-        List<Room> availableRooms = FindAllAvailableRooms(appointment);
+        var doctor = examinationDTO.Doctor;
+        DateTime appointment = examinationDTO.Appointment;
 
-        if (availableRooms.Count == 0) throw new Exception("There are no available rooms!");
-
-        Random random = new Random();
-        int index = random.Next(0, availableRooms.Count);
-        return availableRooms[index];
-    }
-
-    private List<Room> FindAllAvailableRooms(DateTime appointment)
-    {
-        bool isAvailable;
-        List<Room> availableRooms = new List<Room>();
-        foreach (var room in RoomRepository.GetInstance().GetNotRenovating())
+        foreach (var examination in doctor.Examinations)
         {
-            if (room.Type != RoomType.ExaminationRoom) continue;
-            isAvailable = true;
-            foreach (var examination in Examinations)
+            if (examination.Appointment == appointment)
             {
-                if (examination.Appointment == appointment && examination.Room.Id == room.Id)
-                {
-                    isAvailable = false;
-                    break;
-                }
+                throw new Exception("That doctor is not available");
             }
-            if (isAvailable)
-                availableRooms.Add(room);
         }
-        return availableRooms;
     }
-
-    public static void FillExaminationsForPriority(List<Examination> nextTwoHoursExaminations, List<Tuple<int, int, DateTime>> priorityExaminationsAndOperations)
+    public static void FindFirstAvailableAppointment()
+    { 
+    }
+    public static void GetExaminationsWithPriorities(List<Examination> nextTwoHoursExaminations, List<Tuple<int, int, DateTime>> priorityExaminationsAndOperations)
     {
         int appointmentCounter;
         TimeSpan ts = new TimeSpan(0, 15, 0);
@@ -358,15 +330,15 @@ internal class ExaminationRepository
                 try
                 {
                     ExaminationDTO examinationDTO = new ExaminationDTO(firstAvailableAppointment, null, examination.Doctor, examination.MedicalRecord);
-                    ExaminationRepository.GetInstance().CheckIfDoctorIsAvailable(examinationDTO);
-                    ExaminationRepository.GetInstance().CheckIfPatientIsAvailable(examinationDTO);
+                    GetInstance().CheckIfDoctorIsAvailable(examinationDTO);
+                    GetInstance().CheckIfPatientIsAvailable(examinationDTO);
                 }
                 catch
                 {
                     continue;
                 }
 
-                if (ExaminationRepository.GetInstance().FindAllAvailableRooms(firstAvailableAppointment).Contains(examination.Room))
+                if (RoomRepository.GetInstance().FindAllAvailableRooms(firstAvailableAppointment).Contains(examination.Room))
                 {
                     priorityExaminationsAndOperations.Add(new Tuple<int, int, DateTime>(examination.Id, 1, firstAvailableAppointment));
                     break;
@@ -375,21 +347,8 @@ internal class ExaminationRepository
         }
     }
 
-    private void CheckIfDoctorHasExaminations(ExaminationDTO examinationDTO)
-    {
-        var doctor = examinationDTO.Doctor;
-        DateTime appointment = examinationDTO.Appointment;
 
-        foreach (var examination in doctor.Examinations)
-        {
-            if (examination.Appointment == appointment)
-            {
-                throw new Exception("That doctor is not available");
-            }
-        }
-    }
-
-    public static void FillOperationsForPriority(List<Operation> nextTwoHoursOperations, List<Tuple<int, int, DateTime>> priorityExaminationsAndOperations)
+    public static void GetOperationsWithPriorities(List<Operation> nextTwoHoursOperations, List<Tuple<int, int, DateTime>> priorityExaminationsAndOperations)
     {
         int appointmentCounter;
         TimeSpan ts = new TimeSpan(0, 15, 0);
@@ -410,15 +369,15 @@ internal class ExaminationRepository
                 try
                 {
                     ExaminationDTO examinationDTO = new ExaminationDTO(firstAvailableAppointment, null, operation.Doctor, operation.MedicalRecord);
-                    ExaminationRepository.GetInstance().CheckIfDoctorIsAvailable(examinationDTO);
-                    ExaminationRepository.GetInstance().CheckIfPatientIsAvailable(examinationDTO);
+                    GetInstance().CheckIfDoctorIsAvailable(examinationDTO);
+                    GetInstance().CheckIfPatientIsAvailable(examinationDTO);
                 }
                 catch
                 {
                     continue;
                 }
 
-                if (ExaminationRepository.GetInstance().FindAllAvailableRooms(firstAvailableAppointment).Contains(operation.Room))
+                if (RoomRepository.GetInstance().FindAllAvailableRooms(firstAvailableAppointment).Contains(operation.Room))
                 {
                     priorityExaminationsAndOperations.Add(new Tuple<int, int, DateTime>(operation.Id, 0, firstAvailableAppointment));
                     break;
@@ -430,8 +389,8 @@ internal class ExaminationRepository
     public static List<Tuple<int, int, DateTime>> GetPriorityExaminationsAndOperations(List<Examination> nextTwoHoursExaminations, List<Operation> nextTwoHoursOperations)
     {
         List<Tuple<int, int, DateTime>> priorityExaminationsAndOperations = new List<Tuple<int, int, DateTime>>();
-        FillExaminationsForPriority(nextTwoHoursExaminations, priorityExaminationsAndOperations);
-        FillOperationsForPriority(nextTwoHoursOperations, priorityExaminationsAndOperations);
+        GetExaminationsWithPriorities(nextTwoHoursExaminations, priorityExaminationsAndOperations);
+        GetOperationsWithPriorities(nextTwoHoursOperations, priorityExaminationsAndOperations);
 
         priorityExaminationsAndOperations.Sort((x, y) => y.Item3.CompareTo(x.Item3));
         return priorityExaminationsAndOperations;
@@ -441,7 +400,7 @@ internal class ExaminationRepository
     {
         List<Examination> nextTwoHoursExaminations = new List<Examination>();
         List<Operation> nextTwoHoursOperations = new List<Operation>();
-        foreach (Examination examination in ExaminationRepository.GetInstance().Examinations)
+        foreach (Examination examination in GetInstance().Examinations)
         {
             if (nextTwoHoursAppointments.Contains(examination.Appointment) && examination.Doctor.Specialty == specialtyType)
                 nextTwoHoursExaminations.Add(examination);
@@ -491,7 +450,7 @@ internal class ExaminationRepository
         examinatioDTO.Appointment = dateTime;
         CheckIfDoctorIsAvailable(examinatioDTO);
         CheckIfPatientIsAvailable(examinatioDTO);
-        var room = FindAvailableRoom(dateTime);
+        var room = RoomRepository.GetInstance().FindAvailableRoom(dateTime);
         Examination e = new Examination(examination.Id, examination.Status, dateTime, room, doctor, examination.MedicalRecord, "");
         return e;
     }
@@ -503,7 +462,7 @@ internal class ExaminationRepository
         examinatioDTO.Appointment = dateTime;
         CheckIfDoctorIsAvailable(examinatioDTO);
         CheckIfPatientIsAvailable(examinatioDTO);
-        var room = FindAvailableRoom(dateTime);
+        var room = RoomRepository.GetInstance().FindAvailableRoom(dateTime);
         Examination e = new Examination(examination.Id, examination.Status, dateTime, room, doctor, examination.MedicalRecord, "");
         SwapExaminationValue(e);
     }
@@ -512,7 +471,7 @@ internal class ExaminationRepository
     {
         CheckIfDoctorIsAvailable(examinationDTO);
         CheckIfPatientIsAvailable(examinationDTO);
-        examinationDTO.Room = FindAvailableRoom(examinationDTO.Appointment);
+        examinationDTO.Room = RoomRepository.GetInstance().FindAvailableRoom(examinationDTO.Appointment);
         Add(examinationDTO);
     }
 
@@ -533,9 +492,10 @@ internal class ExaminationRepository
                         ExaminationDTO examinationDTO = new ExaminationDTO(appointment, null, doctor, medicalRecord);
                         CheckIfDoctorIsAvailable(examinationDTO);
                         CheckIfPatientIsAvailable(examinationDTO);
-                        examinationDTO.Room = FindAvailableRoom(appointment);
+                        examinationDTO.Room = RoomRepository.GetInstance().FindAvailableRoom(appointment);
                         Add(examinationDTO);
-                        NotificationRepository.GetInstance().Add(new DateTime(1, 1, 1), appointment, doctor, patient);
+                        AppointmentNotificationDTO appointmentNotificationDTO = new AppointmentNotificationDTO(null, appointment, doctor, patient);
+                        AppointmentNotificationRepository.GetInstance().Add(appointmentNotificationDTO);
                         priorityExaminationsAndOperations.Add(new Tuple<int, int, DateTime>(this._maxId, 2, appointment));
                         return priorityExaminationsAndOperations;
                     }
@@ -558,7 +518,7 @@ internal class ExaminationRepository
         {
             try
             {
-                Room room = FindAvailableRoom(findFitDTO.fit);
+                Room room = RoomRepository.GetInstance().FindAvailableRoom(findFitDTO.fit);
                 examinationDTO.Appointment = findFitDTO.fit;
                 examinationDTO.Room = room;
                 CheckIfPatientIsAvailable(examinationDTO);
@@ -568,7 +528,7 @@ internal class ExaminationRepository
             }
             catch
             {
-                findFitDTO.fit = incrementFit(findFitDTO.fit, findFitDTO.maxHour, findFitDTO.maxMinutes, findFitDTO.minHour, findFitDTO.minMinutes);
+                findFitDTO.fit = IncrementFit(findFitDTO.fit, findFitDTO.maxHour, findFitDTO.maxMinutes, findFitDTO.minHour, findFitDTO.minMinutes);
             }
         }
         if (found)
@@ -641,14 +601,14 @@ internal class ExaminationRepository
                 {
                     suggestions.Add(GenerateExamination(firstFit));
                     fit = firstFit.Appointment;
-                    fit = incrementFit(fit, closestFitDTO.maxHour, closestFitDTO.maxMinutes, closestFitDTO.minHour, closestFitDTO.minMinutes);
+                    fit = IncrementFit(fit, closestFitDTO.maxHour, closestFitDTO.maxMinutes, closestFitDTO.minHour, closestFitDTO.minMinutes);
                 }
             }
         }
         return suggestions;
     }
 
-    private DateTime incrementFit(DateTime fit, int maxHour, int maxMinutes, int minHour, int minMinutes)
+    public static DateTime IncrementFit(DateTime fit, int maxHour, int maxMinutes, int minHour, int minMinutes)
     {
         fit = fit.AddMinutes(15);
 
