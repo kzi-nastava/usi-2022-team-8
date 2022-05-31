@@ -10,7 +10,7 @@ namespace HealthInstitution.Core.Prescriptions.Repository
 {
     internal class PrescriptionRepository
     {
-        private int _maxId;
+        public int maxId;
         private String _fileName;
         public List<Prescription> Prescriptions { get; set; }
         public Dictionary<int, Prescription> PrescriptionById { get; set; }
@@ -22,7 +22,7 @@ namespace HealthInstitution.Core.Prescriptions.Repository
         };
         private PrescriptionRepository(string fileName)
         {
-            this._maxId = 0;
+            this.maxId = 0;
             this._fileName = fileName;
             this.Prescriptions = new List<Prescription>();
             this.PrescriptionById = new Dictionary<int, Prescription>();
@@ -55,9 +55,9 @@ namespace HealthInstitution.Core.Prescriptions.Repository
             foreach (var prescription in prescriptions)
             {
                 Prescription loadedPrescription = Parse(prescription);
-                if (loadedPrescription.Id > _maxId)
+                if (loadedPrescription.Id > maxId)
                 {
-                    _maxId = loadedPrescription.Id;
+                    maxId = loadedPrescription.Id;
                 }
                 this.Prescriptions.Add(loadedPrescription);
                 this.PrescriptionById[loadedPrescription.Id] = loadedPrescription;
@@ -95,39 +95,6 @@ namespace HealthInstitution.Core.Prescriptions.Repository
             if (PrescriptionById.ContainsKey(id))
                 return PrescriptionById[id];
             return null;
-        }
-
-        public Prescription Add(PrescriptionDTO prescriptionDTO)
-        {
-            this._maxId++;
-            int id = this._maxId;
-            int dailyDose = prescriptionDTO.DailyDose;
-            PrescriptionTime timeOfUse = prescriptionDTO.TimeOfUse;
-            Drug drug = prescriptionDTO.Drug;
-
-            Prescription prescription = new Prescription(id, dailyDose, timeOfUse, drug);
-            this.Prescriptions.Add(prescription);
-            this.PrescriptionById[id] = prescription;
-            Save();
-            return prescription;
-        }
-
-        public void Update(int id,  PrescriptionDTO prescriptionDTO)
-        {
-            Prescription prescription = GetById(id);
-            prescription.DailyDose = prescriptionDTO.DailyDose;
-            prescription.TimeOfUse = prescriptionDTO.TimeOfUse;
-            prescription.Drug = prescriptionDTO.Drug;
-            PrescriptionById[id] = prescription;
-            Save();
-        }
-
-        public void Delete(int id)
-        {
-            Prescription prescription = GetById(id);
-            this.Prescriptions.Remove(prescription);
-            this.PrescriptionById.Remove(id);
-            Save();
         }
     }
 }

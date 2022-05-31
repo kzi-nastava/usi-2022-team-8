@@ -1,4 +1,5 @@
-﻿using HealthInstitution.Core.Drugs.Model;
+﻿using HealthInstitution.Core.Drugs;
+using HealthInstitution.Core.Drugs.Model;
 using HealthInstitution.Core.Drugs.Repository;
 using System;
 using System.Collections.Generic;
@@ -23,6 +24,8 @@ namespace HealthInstitution.GUI.DoctorView
     {
 
         private DrugRepository _drugRepository = DrugRepository.GetInstance();
+        private DrugVerificationService _drugVerificationService = new DrugVerificationService();
+
         public DrugsVerificationTable()
         {
             InitializeComponent();
@@ -43,7 +46,7 @@ namespace HealthInstitution.GUI.DoctorView
         {
             Drug selectedDrug = (Drug)dataGrid.SelectedItem;
             System.Windows.MessageBox.Show("You have accepted a new drug!", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
-            _drugRepository.Accept(selectedDrug);
+            _drugVerificationService.Accept(selectedDrug);
             dataGrid.Items.Remove(selectedDrug);
         }
 
@@ -52,8 +55,6 @@ namespace HealthInstitution.GUI.DoctorView
             Drug selectedDrug = (Drug)dataGrid.SelectedItem;
             RejectionReasonDialog rejectionReasonDialog = new RejectionReasonDialog(selectedDrug);
             rejectionReasonDialog.ShowDialog();
-            /*EditExaminationDialog editExaminationDialog = new EditExaminationDialog(selectedExamination);
-            editExaminationDialog.ShowDialog();*/
             LoadRows();
             dataGrid.Items.Refresh();
         }

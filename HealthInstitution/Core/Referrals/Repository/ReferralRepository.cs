@@ -11,7 +11,7 @@ namespace HealthInstitution.Core.Referrals.Repository
     internal class ReferralRepository
     {
         private String _fileName;
-        private int _maxId;
+        public int maxId;
         public List<Referral> Referrals { get; set; }
         public Dictionary<int, Referral> ReferralById { get; set; }
 
@@ -22,7 +22,7 @@ namespace HealthInstitution.Core.Referrals.Repository
         };
         private ReferralRepository(string fileName)
         {
-            this._maxId = 0;
+            this.maxId = 0;
             this._fileName = fileName;
             this.Referrals = new List<Referral>();
             this.ReferralById = new Dictionary<int, Referral>();
@@ -71,9 +71,9 @@ namespace HealthInstitution.Core.Referrals.Repository
             foreach (var referral in referrals)
             {
                 Referral loadedReferral = Parse(referral);
-                if (loadedReferral.Id > _maxId)
+                if (loadedReferral.Id > maxId)
                 {
-                    _maxId = loadedReferral.Id;
+                    maxId = loadedReferral.Id;
                 }
 
                 this.Referrals.Add(loadedReferral);
@@ -113,41 +113,6 @@ namespace HealthInstitution.Core.Referrals.Repository
             if (ReferralById.ContainsKey(id))
                 return ReferralById[id];
             return null;
-        }
-
-        public Referral Add(ReferralDTO referralDTO)
-        {
-            this._maxId++;
-            int id = this._maxId;
-            ReferralType type = referralDTO.Type;
-            Doctor prescribedBy = referralDTO.PrescribedBy;
-            Doctor? referredDoctor = referralDTO.ReferredDoctor;
-            SpecialtyType? referredSpecialty = referralDTO.ReferredSpecialty;
-
-            Referral referral = new Referral(id, type, prescribedBy, referredDoctor, referredSpecialty, true);
-            this.Referrals.Add(referral);
-            this.ReferralById[id] = referral;
-            Save();
-
-            return referral;
-        }
-
-        public void Update(int id, ReferralDTO referralDTO)
-        {
-            Referral referral = GetById(id);
-            referral.PrescribedBy = referralDTO.PrescribedBy;
-            referral.ReferredDoctor = referralDTO.ReferredDoctor;
-            referral.ReferredSpecialty = referralDTO.ReferredSpecialty;
-            ReferralById[id] = referral;
-            Save();
-        }
-
-        public void Delete(int id)
-        {
-            Referral referral = GetById(id);
-            this.Referrals.Remove(referral);
-            this.ReferralById.Remove(referral.Id);
-            Save();
         }
     }
 }
