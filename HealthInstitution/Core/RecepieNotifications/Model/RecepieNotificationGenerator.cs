@@ -10,6 +10,13 @@ namespace HealthInstitution.Core.RecepieNotifications.Model;
 
 public class RecepieNotificationGenerator
 {
+    private string _loggedUser;
+
+    public RecepieNotificationGenerator(string loggedUser)
+    {
+        _loggedUser = loggedUser;
+    }
+
     public void GenerateAllSkippedNotifications()
     {
         foreach (var setting in RecepieNotificationSettingsRepository.GetInstance().Settings)
@@ -41,9 +48,17 @@ public class RecepieNotificationGenerator
         return lastDateTime;
     }
 
+    private void GenerateCronJobs(List<DateTime> dateTimes, RecepieNotificationSettings setting)
+    {
+        recepieNotificationCronJob recepieNotificationCronJob = new recepieNotificationCronJob();
+        foreach (DateTime dateTime in dateTimes)
+            recepieNotificationCronJob.GenerateJob(_loggedUser, setting, dateTime);
+    }
+
     private void GenerateForOne(RecepieNotificationSettings setting)
     {
         List<DateTime> dateTimes = GenerateDateTimes(setting);
+        GenerateCronJobs(dateTimes, setting);
 
         while (true)
         {
