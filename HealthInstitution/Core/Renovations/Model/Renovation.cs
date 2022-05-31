@@ -17,4 +17,9 @@ public class Renovation
         this.EndDate = endDate;
         this.Room = room;
     }
+
+    public bool IsRoomMerger()
+    {
+        return this.GetType() == typeof(RoomMerger);
+    }
 }

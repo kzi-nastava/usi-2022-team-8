@@ -229,5 +229,15 @@ namespace HealthInstitution.Core.Rooms.Repository
             }
             return availableRooms;
         }
+
+        public bool ContainsRoomNumber(int number)
+        {
+            return this.Rooms.Any(room => room.Number == number);
+        }
+
+        public int FindIndexWithRoomNumber(int number)
+        {
+            return this.Rooms.FindIndex(room => room.Number == number);
+        }
     }
 }

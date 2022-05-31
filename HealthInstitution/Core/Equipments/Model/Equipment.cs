@@ -21,6 +21,11 @@ public class Equipment
     {
         return Name+" (has "+Quantity+")";
     }
+
+    public bool HasEquipmentType(EquipmentType equipmentType)
+    {
+        return this.Type == equipmentType;
+    }
 }
 
 public enum EquipmentType

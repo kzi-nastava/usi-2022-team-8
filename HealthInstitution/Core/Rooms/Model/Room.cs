@@ -39,6 +39,16 @@ public class Room
     {
         return Type.ToString() + " " + Number + " (has " + availableEquipment + ")";
     }*/
+
+    public bool IsWarehouse()
+    {
+        return this.Type == RoomType.Warehouse;
+    }
+
+    public bool HasRoomType(RoomType roomType)
+    {
+        return roomType == this.Type;
+    }
 }
 
 public enum RoomType
