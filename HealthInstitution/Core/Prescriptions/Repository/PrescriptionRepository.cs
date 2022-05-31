@@ -2,6 +2,7 @@
 using HealthInstitution.Core.Drugs.Repository;
 using HealthInstitution.Core.Prescriptions.Model;
 using Newtonsoft.Json.Linq;
+using System.Globalization;
 using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -48,8 +49,9 @@ namespace HealthInstitution.Core.Prescriptions.Repository
             Dictionary<int, Drug> drugById = DrugRepository.GetInstance().DrugById;
             PrescriptionTime prescriptionTime;
             Enum.TryParse<PrescriptionTime>((string)prescription["timeOfUse"], out prescriptionTime);
-            DateTime dateTime;
-            DateTime.TryParse((string)prescription["dateTime"], out dateTime);
+            var dt = (string)prescription["dateTime"];
+            string format = "MM/dd/yyyy HH:mm:ss";
+            bool parse = DateTime.TryParseExact((string)prescription["dateTime"], format, null, DateTimeStyles.None, out var dateTime);
             return new Prescription((int)prescription["id"], (int)prescription["dailyDose"], prescriptionTime, drugById[(int)prescription["drug"]], dateTime);
         }
 

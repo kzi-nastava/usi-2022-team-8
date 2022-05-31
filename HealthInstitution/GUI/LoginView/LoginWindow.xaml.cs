@@ -13,6 +13,7 @@ using HealthInstitution.Core.SystemUsers.Patients.Repository;
 using HealthInstitution.Core.SystemUsers.Patients.Model;
 using HealthInstitution.Core.Renovations.Functionality;
 using HealthInstitution.Core.Notifications.Repository;
+using HealthInstitution.Core.RecepieNotifications.Model;
 
 namespace HealthInstitution.GUI.LoginView
 {
@@ -62,6 +63,7 @@ namespace HealthInstitution.GUI.LoginView
             }
             return false;
         }
+
         private void LoginButton_click(object sender, RoutedEventArgs e)
         {
             User user = GetUserFromInputData();
@@ -105,6 +107,7 @@ namespace HealthInstitution.GUI.LoginView
                           System.Windows.MessageBox.Show(ex.Message, "Troll Alert", MessageBoxButton.OK, MessageBoxImage.Error);*/
             }
         }
+
         private void RedirectDoctor()
         {
             DoctorRepository doctorRepository = DoctorRepository.GetInstance();
@@ -138,6 +141,7 @@ namespace HealthInstitution.GUI.LoginView
         {
             EquipmentTransferChecker.UpdateByTransfer();
             RenovationChecker.UpdateByRenovation();
+            new RecepieNotificationGenerator().GenerateAllSkippedNotifications();
             LoginWindow window = new LoginWindow();
             window.ShowDialog();
         }

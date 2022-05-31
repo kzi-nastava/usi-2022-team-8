@@ -4,7 +4,7 @@ namespace HealthInstitution.Core.RecepieNotifications.Model;
 
 public class RecepieNotification
 {
-    public RecepieNotification(string id, string patient, Prescription prescription, bool activeForPatient)
+    public RecepieNotification(int id, string patient, Prescription prescription, bool activeForPatient)
     {
         Id = id;
         Patient = patient;
@@ -15,7 +15,7 @@ public class RecepieNotification
     public RecepieNotification()
     { }
 
-    public string Id { get; set; }
+    public int Id { get; set; }
     public string Patient { get; set; }
     public Prescription Prescription { get; set; }
     public bool ActiveForPatient { get; set; }
