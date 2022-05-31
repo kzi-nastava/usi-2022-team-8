@@ -79,5 +79,38 @@ namespace HealthInstitution.Core.Equipments
         {
             return !equipmentFilter.ApplyRoomTypeFilter || room.HasRoomType(equipmentFilter.RoomTypeFilter);
         }
+
+        public static List<TableItemEquipment> SearchEquipment(string searchInput)
+        {
+            List<TableItemEquipment> items = new List<TableItemEquipment>();
+
+            RoomRepository roomRepository = RoomRepository.GetInstance();
+            List<Room> rooms = roomRepository.GetActive();
+            foreach (Room room in rooms)
+            {
+                foreach (Equipment equipment in room.AvailableEquipment)
+                {
+                    if (SearchMatch(room, equipment, searchInput))
+                    {
+                        TableItemEquipment equipmentByRoom = new TableItemEquipment(room, equipment);
+                        items.Add(equipmentByRoom);
+                    }
+                }
+            }
+            return items;
+        }
+
+        private static bool SearchMatch(Room room, Equipment equipment, string searchInput)
+        {
+            if (room.Type.ToString().ToLower().Contains(searchInput.ToLower()))
+                return true;
+            if (room.Number.ToString().ToLower().Contains(searchInput.ToLower()))
+                return true;
+            if (equipment.Type.ToString().ToLower().Contains(searchInput.ToLower()))
+                return true;
+            if (equipment.Name.ToString().ToLower().Contains(searchInput.ToLower()))
+                return true;
+            return false;
+        }
     }
 }

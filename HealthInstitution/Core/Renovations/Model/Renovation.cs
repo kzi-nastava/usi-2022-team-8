@@ -22,4 +22,9 @@ public class Renovation
     {
         return this.GetType() == typeof(RoomMerger);
     }
+
+    public bool IsRoomSeparation()
+    {
+        return this.GetType() == typeof(RoomSeparation);
+    }
 }

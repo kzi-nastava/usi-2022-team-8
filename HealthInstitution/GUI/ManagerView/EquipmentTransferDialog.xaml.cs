@@ -1,8 +1,10 @@
 ﻿using HealthInstitution.Core.Equipments.Model;
 using HealthInstitution.Core.Equipments.Repository;
+using HealthInstitution.Core.EquipmentTransfers;
 using HealthInstitution.Core.EquipmentTransfers.Functionality;
 using HealthInstitution.Core.EquipmentTransfers.Model;
 using HealthInstitution.Core.EquipmentTransfers.Repository;
+using HealthInstitution.Core.Renovations;
 using HealthInstitution.Core.Renovations.Model;
 using HealthInstitution.Core.Renovations.Repository;
 using HealthInstitution.Core.Rooms.Model;
@@ -133,7 +135,7 @@ namespace HealthInstitution.GUI.ManagerView
                 return false;
             }
 
-            int projectedQuantityLoss = CalculateProjectedQuantityLoss(fromRoom, equipment);
+            int projectedQuantityLoss = EquipmentTransferService.CalculateProjectedQuantityLoss(fromRoom, equipment);
             if (quantity > equipment.Quantity - projectedQuantityLoss)
             {
                 System.Windows.MessageBox.Show("You cant transfer more equipment than room has because of projected transfers!", "Failed transfer", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -154,7 +156,7 @@ namespace HealthInstitution.GUI.ManagerView
                 return false;
             }
 
-            if (!CheckRenovationStatus(fromRoom, date) || !CheckRenovationStatus(toRoom, date))
+            if (!RenovationService.CheckRenovationStatusForRoom(fromRoom, date) || !RenovationService.CheckRenovationStatusForRoom(toRoom, date))
             {
                 System.Windows.MessageBox.Show("You cant transfer equipment between rooms with renovation on that date span!", "Failed transfer", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
@@ -171,48 +173,7 @@ namespace HealthInstitution.GUI.ManagerView
                 return false;
             }
             return true;
-        }
-
-        private bool CheckRenovationStatus(Room room, DateTime date)
-        {
-            foreach(Renovation renovation in _renovationRepository.Renovations)
-            {
-                if (renovation.StartDate > date && renovation.GetType() != typeof(RoomSeparation))
-                {
-                    continue;
-                }
-                if(renovation.Room == room)
-                {
-                    return false;
-                }
-               
-                if (renovation.GetType() == typeof(RoomMerger))
-                {
-                    RoomMerger merger = (RoomMerger)renovation;
-                    if (merger.RoomForMerge == room)
-                    {
-                        return false;
-                    }
-                }
-            }
-            return true;
-        }
-
-        private int CalculateProjectedQuantityLoss(Room fromRoom, Equipment equipment)
-        {
-            int projectedQuantityLoss = 0;
-            foreach (EquipmentTransfer equipmentTransfer in _equipmentTransferRepository.EquipmentTransfers)
-            {
-                if (equipmentTransfer.FromRoom == fromRoom)
-                {
-                    if (equipmentTransfer.Equipment.Name == equipment.Name && equipmentTransfer.Equipment.Type == equipment.Type)
-                    {
-                        projectedQuantityLoss += equipmentTransfer.Equipment.Quantity;
-                    }
-                }
-            }
-            return projectedQuantityLoss;
-        }
+        }   
 
         private bool CheckCompleteness()
         {

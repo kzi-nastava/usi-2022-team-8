@@ -183,7 +183,7 @@ namespace HealthInstitution.GUI.ManagerView
                 return;
             }
 
-            List<TableItemEquipment> items = SearchEquipment(searchInput);
+            List<TableItemEquipment> items = EquipmentService.SearchEquipment(searchInput);
             
             if (items == null || !items.Any())
             {
@@ -194,38 +194,7 @@ namespace HealthInstitution.GUI.ManagerView
             this.Close();
             EquipmentTableWindow equipmentTableWindow = new EquipmentTableWindow(items);
             equipmentTableWindow.ShowDialog();
-        }
-
-        private List<TableItemEquipment> SearchEquipment(string searchInput)
-        {
-            List<TableItemEquipment> items = new List<TableItemEquipment>();
-            List<Room> rooms = _roomRepository.GetActive();
-            foreach (Room room in rooms)
-            {
-                foreach (Equipment equipment in room.AvailableEquipment)
-                {
-                    if (SearchMatch(room, equipment, searchInput))
-                    {
-                        TableItemEquipment equipmentByRoom = new TableItemEquipment(room, equipment);
-                        items.Add(equipmentByRoom);
-                    }
-                }
-            }
-            return items;
-        }
-
-        private bool SearchMatch(Room room, Equipment equipment, string searchInput)
-        {
-            if (room.Type.ToString().ToLower().Contains(searchInput.ToLower()))
-                return true;
-            if (room.Number.ToString().ToLower().Contains(searchInput.ToLower()))
-                return true;
-            if (equipment.Type.ToString().ToLower().Contains(searchInput.ToLower()))
-                return true;
-            if (equipment.Name.ToString().ToLower().Contains(searchInput.ToLower()))
-                return true;
-            return false;
-        }
+        }     
 
         private void ViewAll_Click(object sender, RoutedEventArgs e)
         {
@@ -242,16 +211,7 @@ namespace HealthInstitution.GUI.ManagerView
 
         private List<TableItemEquipment> LoadRows()
         {
-            List<TableItemEquipment> items = new List<TableItemEquipment>();
-            List<Room> rooms = _roomRepository.GetActive();
-            foreach (Room room in rooms)
-            {
-                foreach (Equipment equipment in room.AvailableEquipment)
-                {                   
-                    TableItemEquipment equipmentByRoom = new TableItemEquipment(room, equipment);
-                    items.Add(equipmentByRoom);                    
-                }
-            }
+            List<TableItemEquipment> items = _roomRepository.GetTableItemEquipments();
             return items;
         }
     }

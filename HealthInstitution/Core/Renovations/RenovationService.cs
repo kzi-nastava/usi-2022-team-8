@@ -39,6 +39,32 @@ namespace HealthInstitution.Core.Renovations
             }
             return true;
         }
+
+        public static bool CheckRenovationStatusForRoom(Room room, DateTime date)
+        {
+            RenovationRepository renovationRepository = RenovationRepository.GetInstance();
+            foreach (Renovation renovation in renovationRepository.Renovations)
+            {
+                if (renovation.StartDate > date && renovation.IsRoomSeparation())
+                {
+                    continue;
+                }
+                if (renovation.Room == room)
+                {
+                    return false;
+                }
+
+                if (renovation.IsRoomMerger())
+                {
+                    RoomMerger merger = (RoomMerger)renovation;
+                    if (merger.RoomForMerge == room)
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
     }
 
     

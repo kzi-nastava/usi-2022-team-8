@@ -23,7 +23,7 @@ namespace HealthInstitution.Core.EquipmentTransfers.Functionality
             
             foreach (EquipmentTransfer equipmentTransfer in s_equipmentTransferRepository.EquipmentTransfers)
             {
-                if(equipmentTransfer.ToRoom.Id==1 &&equipmentTransfer.TransferTime<=DateTime.Now)
+                if(equipmentTransfer.ToRoom.Id==1 && equipmentTransfer.TransferTime<=DateTime.Now)
                 {
                     FillWarehouse(equipmentTransfer, equipmentTransfersToRemove);
                 }

@@ -2,6 +2,7 @@
 using HealthInstitution.Core.Equipments.Repository;
 using HealthInstitution.Core.Examinations.Repository;
 using HealthInstitution.Core.Rooms.Model;
+using HealthInstitution.GUI.ManagerView;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -238,6 +239,21 @@ namespace HealthInstitution.Core.Rooms.Repository
         public int FindIndexWithRoomNumber(int number)
         {
             return this.Rooms.FindIndex(room => room.Number == number);
+        }
+
+        public List<TableItemEquipment> GetTableItemEquipments()
+        {
+            List<TableItemEquipment> items = new List<TableItemEquipment>();
+            
+            foreach (Room room in this.GetActive())
+            {
+                foreach (Equipment equipment in room.AvailableEquipment)
+                {
+                    TableItemEquipment equipmentByRoom = new TableItemEquipment(room, equipment);
+                    items.Add(equipmentByRoom);
+                }
+            }
+            return items;
         }
     }
 }
