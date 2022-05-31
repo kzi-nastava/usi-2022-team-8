@@ -27,7 +27,7 @@ public class RecepieNotificationGenerator
 
     private DateTime GetLastDateTime(RecepieNotificationSettings setting)
     {
-        var createdNotifications = RecepieNotificationRepository.GetInstance().GetPatientPresctiptionNotification(setting.PatientUsername, setting.PrescriptionId);
+        var createdNotifications = RecepieNotificationRepository.GetInstance().GetPatientPresctiptionNotification(setting.PatientUsername, setting.Prescription.Id);
         createdNotifications.OrderBy(o => o.TriggerDateTime).ToList();
         if (createdNotifications.Count == 0) return DateTime.Today.AddDays(-1);
 
@@ -36,13 +36,13 @@ public class RecepieNotificationGenerator
 
     private double CalculateIncrement(RecepieNotificationSettings setting)
     {
-        return 24 / PrescriptionRepository.GetInstance().GetById(setting.PrescriptionId).DailyDose;
+        return 24 / setting.Prescription.DailyDose;
     }
 
     private DateTime CalculateFirstDatetime(RecepieNotificationSettings setting)
     {
         DateTime lastDateTime = GetLastDateTime(setting);
-        var firstDate = PrescriptionRepository.GetInstance().GetById(setting.PrescriptionId).dateTime.AddHours(-setting.BeforeAmmount.Hour).AddMinutes(-setting.BeforeAmmount.Minute);
+        var firstDate = setting.Prescription.dateTime.AddHours(-setting.BeforeAmmount.Hour).AddMinutes(-setting.BeforeAmmount.Minute);
         lastDateTime = lastDateTime.AddMinutes(firstDate.Minute);
         lastDateTime = lastDateTime.AddHours(firstDate.Hour);
         return lastDateTime;
@@ -66,7 +66,7 @@ public class RecepieNotificationGenerator
             {
                 if (dateTime > DateTime.Now) return;
                 int id = RecepieNotificationRepository.GetInstance().Notifications.Count;
-                RecepieNotification recepieNotification = new RecepieNotification(id, setting.PatientUsername, PrescriptionRepository.GetInstance().GetById(setting.PrescriptionId), true);
+                RecepieNotification recepieNotification = new RecepieNotification(id, setting.PatientUsername, setting.Prescription, true);
                 recepieNotification.TriggerDateTime = dateTime;
                 RecepieNotificationRepository.GetInstance().Add(recepieNotification);
             }
@@ -87,7 +87,7 @@ public class RecepieNotificationGenerator
     {
         double increment = CalculateIncrement(setting);
         List<DateTime> notificationTimes = new List<DateTime>();
-        for (int i = 0; i < PrescriptionRepository.GetInstance().GetById(setting.PrescriptionId).DailyDose; i++)
+        for (int i = 0; i < setting.Prescription.DailyDose; i++)
         {
             if (notificationTimes.Count == 0) notificationTimes.Add(CalculateFirstDatetime(setting));
             else notificationTimes.Add(notificationTimes.Last().AddHours(increment));

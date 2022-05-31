@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
+using HealthInstitution.Core.Prescriptions.Model;
 
 namespace HealthInstitution.GUI.PatientView;
 
@@ -14,6 +15,7 @@ public partial class RecepieNotificationSettings : Window
     public RecepieNotificationSettings()
     {
         InitializeComponent();
+        FormDataGrid();
     }
 
     private void HourComboBox_Loaded(object sender, RoutedEventArgs e)
@@ -52,5 +54,13 @@ public partial class RecepieNotificationSettings : Window
         var minuteComboBox = sender as System.Windows.Controls.ComboBox;
         int m = minuteComboBox.SelectedIndex;
         this._minutes = m;
+    }
+
+    private void Button_Click(object sender, RoutedEventArgs e)
+    {
+    }
+
+    private void FormDataGrid()
+    {
     }
 }

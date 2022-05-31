@@ -100,7 +100,9 @@ namespace HealthInstitution.GUI.LoginView
                 PatientRepository patientRepository = PatientRepository.GetInstance();
                 TrollCounterFileRepository.GetInstance().TrollCheck(foundUser.Username);
                 Patient loggedPatient = patientRepository.GetByUsername(_usernameInput);
+                new RecepieNotificationGenerator(loggedPatient.Username).GenerateAllSkippedNotifications();
                 new PatientWindow(loggedPatient).ShowDialog();
+
                 /*      }
                       catch (Exception ex)
                       {
@@ -141,7 +143,7 @@ namespace HealthInstitution.GUI.LoginView
         {
             EquipmentTransferChecker.UpdateByTransfer();
             RenovationChecker.UpdateByRenovation();
-            new RecepieNotificationGenerator().GenerateAllSkippedNotifications();
+
             LoginWindow window = new LoginWindow();
             window.ShowDialog();
         }

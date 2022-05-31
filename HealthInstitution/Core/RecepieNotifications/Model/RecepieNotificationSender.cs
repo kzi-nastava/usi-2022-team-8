@@ -19,7 +19,7 @@ public class RecepieNotificationSender : IJob
         _loggedUsername = (string)context.MergedJobDataMap["loggedUser"];
         _settings = (RecepieNotificationSettings)context.MergedJobDataMap["settings"];
         Int32 unixTimestamp = (int)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
-        RecepieNotification recepieNotification = new RecepieNotification(unixTimestamp, _settings.PatientUsername, PrescriptionRepository.GetInstance().GetById(_settings.PrescriptionId), true);
+        RecepieNotification recepieNotification = new RecepieNotification(unixTimestamp, _settings.PatientUsername, _settings.Prescription, true);
         recepieNotification.TriggerDateTime = DateTime.Now;
 
         if (_loggedUsername == _settings.PatientUsername)
