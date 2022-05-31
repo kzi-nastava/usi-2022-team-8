@@ -22,7 +22,7 @@ public class RecepieNotificationGenerator
     {
         var createdNotifications = RecepieNotificationRepository.GetInstance().GetPatientPresctiptionNotification(setting.PatientUsername, setting.PrescriptionId);
         createdNotifications.OrderBy(o => o.TriggerDateTime).ToList();
-        if (createdNotifications.Count == 0) return DateTime.Today;
+        if (createdNotifications.Count == 0) return DateTime.Today.AddDays(-1);
 
         return createdNotifications.Last().TriggerDateTime;
     }
@@ -35,9 +35,9 @@ public class RecepieNotificationGenerator
     private DateTime CalculateFirstDatetime(RecepieNotificationSettings setting)
     {
         DateTime lastDateTime = GetLastDateTime(setting);
-        var firstDate = PrescriptionRepository.GetInstance().GetById(setting.PrescriptionId).dateTime.AddDays(-setting.BeforeAmmount.Hour).AddMinutes(-setting.BeforeAmmount.Minute);
-        lastDateTime.AddMinutes(firstDate.Minute);
-        lastDateTime.AddHours(firstDate.Hour);
+        var firstDate = PrescriptionRepository.GetInstance().GetById(setting.PrescriptionId).dateTime.AddHours(-setting.BeforeAmmount.Hour).AddMinutes(-setting.BeforeAmmount.Minute);
+        lastDateTime = lastDateTime.AddMinutes(firstDate.Minute);
+        lastDateTime = lastDateTime.AddHours(firstDate.Hour);
         return lastDateTime;
     }
 
