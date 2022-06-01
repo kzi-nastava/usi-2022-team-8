@@ -31,6 +31,16 @@ public class Room
         this.IsActive = isActive;
     }
 
+    public Room(RoomDTO roomDTO)
+    {
+        this.AvailableEquipment = new List<Equipment>();
+        this.Type = roomDTO.Type;
+        this.Number = roomDTO.Number;
+        this.IsRenovating = roomDTO.IsRenovating;
+        this.IsActive = roomDTO.IsActive;
+
+    }
+
     public override string? ToString()
     {
         return Type.ToString()+" "+Number;

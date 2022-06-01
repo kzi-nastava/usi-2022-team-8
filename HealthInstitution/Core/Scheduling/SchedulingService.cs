@@ -9,29 +9,21 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.Scheduling
 {
-    internal class SchedulingService
+    public static class SchedulingService
     {
         //koristiti urgentService
 
-        private ExaminationRepository _examinationRepository;
-        private OperationRepository _operationRepository;
-
-        public SchedulingService()
-        {
-            _examinationRepository = ExaminationRepository.GetInstance();
-            _operationRepository = OperationRepository.GetInstance();
-        }
+        private static ExaminationRepository s_examinationRepository = ExaminationRepository.GetInstance();
+        private static OperationRepository s_operationRepository = OperationRepository.GetInstance();
 
         public static bool CheckOccurrenceOfRoom(Room room)
         {
-            ExaminationRepository examinationRepository = ExaminationRepository.GetInstance();
-            if (examinationRepository.Examinations.Find(examination => examination.Room == room) == null)
+            if (s_examinationRepository.Examinations.Find(examination => examination.Room == room) == null)
             {
                 return false;
             }
 
-            OperationRepository operationRepository = OperationRepository.GetInstance();
-            if (operationRepository.Operations.Find(operation => operation.Room == room) == null)
+            if (s_operationRepository.Operations.Find(operation => operation.Room == room) == null)
             {
                 return false;
             }

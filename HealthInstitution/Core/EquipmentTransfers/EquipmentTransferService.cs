@@ -10,15 +10,32 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.EquipmentTransfers
 {
-    public class EquipmentTransferService
+    public static class EquipmentTransferService
     {
-        private EquipmentTransferRepository _equipmentTransferRepository;
+        private static EquipmentTransferRepository s_equipmentTransferRepository = EquipmentTransferRepository.GetInstance();
 
-        public EquipmentTransferService()
+        public static List<EquipmentTransfer> GetAll()
         {
-            _equipmentTransferRepository = EquipmentTransferRepository.GetInstance();
+            return s_equipmentTransferRepository.GetAll();
         }
 
+        public static void Add(EquipmentTransferDTO equipmentTransferDTO)
+        {
+            EquipmentTransfer equipmentTransfer = new EquipmentTransfer(equipmentTransferDTO);
+            s_equipmentTransferRepository.Add(equipmentTransfer);
+        }
+
+        public static void Update(int id, EquipmentTransferDTO equipmentTransferDTO)
+        {
+            EquipmentTransfer equipmentTransfer = new EquipmentTransfer(equipmentTransferDTO);
+            s_equipmentTransferRepository.Update(id, equipmentTransfer);
+        }
+
+
+        public static void Delete(int id)
+        {
+            s_equipmentTransferRepository.Delete(id);
+        }
         public static bool CheckOccurrenceOfRoom(Room room)
         {
             EquipmentTransferRepository equipmentTransferRepository = EquipmentTransferRepository.GetInstance();

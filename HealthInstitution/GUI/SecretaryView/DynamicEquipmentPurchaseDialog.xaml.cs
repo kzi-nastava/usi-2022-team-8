@@ -1,5 +1,7 @@
-﻿using HealthInstitution.Core.Equipments.Model;
+﻿using HealthInstitution.Core.Equipments;
+using HealthInstitution.Core.Equipments.Model;
 using HealthInstitution.Core.Equipments.Repository;
+using HealthInstitution.Core.EquipmentTransfers;
 using HealthInstitution.Core.EquipmentTransfers.Model;
 using HealthInstitution.Core.EquipmentTransfers.Repository;
 using HealthInstitution.Core.Rooms.Model;
@@ -74,12 +76,12 @@ namespace HealthInstitution.GUI.SecretaryView
 
         private void ScheduleWarehouseRefill(EquipmentDTO equipmentDTO)
         {
-            Equipment newEquipment = _equipmentRepository.Add(equipmentDTO);
+            Equipment newEquipment = EquipmentService.Add(equipmentDTO);
 
             DateTime tomorrowSameTime = DateTime.Now + new TimeSpan(1, 0, 0, 0);
             Room warehouse = RoomRepository.GetInstance().RoomById[1];
             EquipmentTransferDTO equipmentTransferDTO = new EquipmentTransferDTO(newEquipment, null, warehouse, tomorrowSameTime);
-            EquipmentTransferRepository.GetInstance().Add(equipmentTransferDTO);
+            EquipmentTransferService.Add(equipmentTransferDTO);
 
             System.Windows.MessageBox.Show("Request for warehouse refill is created successfully", "Warehouse refill", MessageBoxButton.OK, MessageBoxImage.Information);
             LoadEquipmentComboBox();

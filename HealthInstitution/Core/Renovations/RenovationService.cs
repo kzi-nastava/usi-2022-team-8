@@ -9,13 +9,52 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.Renovations
 {
-    public class RenovationService
+    public static class RenovationService
     {
-        private RenovationRepository _renovationRepository;
-        public RenovationService()
+        private static RenovationRepository s_renovationRepository = RenovationRepository.GetInstance();
+        
+        public static List<Renovation> GetAll()
         {
-            _renovationRepository = RenovationRepository.GetInstance();
+            return s_renovationRepository.GetAll();
         }
+
+        public static void AddRenovation(RenovationDTO renovationDTO)
+        {
+            Renovation renovation = new Renovation(renovationDTO);
+            s_renovationRepository.AddRenovation(renovation);
+        }
+        public static void AddRoomMerger(RoomMergerDTO roomMergerDTO)
+        {
+            Renovation renovation = new RoomMerger(roomMergerDTO);
+            s_renovationRepository.AddRenovation(renovation);
+        }
+        
+        public static void AddRoomSeparation(RoomSeparationDTO roomSeparationDTO)
+        {
+            Renovation renovation = new RoomSeparation(roomSeparationDTO);
+            s_renovationRepository.AddRenovation(renovation);
+        }
+
+        public static void UpdateRenovation(int id, RenovationDTO renovationDTO)
+        {
+            Renovation renovation = new Renovation(renovationDTO);
+            s_renovationRepository.UpdateRenovation(id, renovation);
+        }
+        public static void UpdateRoomMerger(int id, RoomMergerDTO roomMergerDTO)
+        {
+            RoomMerger roomMerger = new RoomMerger(roomMergerDTO);
+            s_renovationRepository.UpdateRoomMerger(id, roomMerger);
+        }
+        public static void UpdateRoomSeparation(int id, RoomSeparationDTO roomSeparationDTO)
+        {
+            RoomSeparation roomSeparation = new RoomSeparation(roomSeparationDTO);
+            s_renovationRepository.UpdateRoomSeparation(id, roomSeparation);
+        }
+        public static void Delete(int id)
+        {
+            s_renovationRepository.Delete(id);
+        }
+
 
         public static bool CheckRenovationStatusForHistoryDelete(Room room)
         {

@@ -1,7 +1,9 @@
-﻿using HealthInstitution.Core.Equipments.Model;
+﻿using HealthInstitution.Core.Equipments;
+using HealthInstitution.Core.Equipments.Model;
 using HealthInstitution.Core.Equipments.Repository;
 using HealthInstitution.Core.Renovations.Model;
 using HealthInstitution.Core.Renovations.Repository;
+using HealthInstitution.Core.Rooms;
 using HealthInstitution.Core.Rooms.Model;
 using HealthInstitution.Core.Rooms.Repository;
 using System;
@@ -101,21 +103,21 @@ namespace HealthInstitution.Core.Renovations.Functionality
         public static void StartRenovation(Room room)
         {
             RoomDTO roomDTO = new RoomDTO(room.Type, room.Number, true);
-            s_roomRepository.Update(room.Id, roomDTO);
+            RoomService.Update(room.Id, roomDTO);
         }
 
         public static void EndRenovation(Room room)
         {
             RoomDTO roomDTO = new RoomDTO(room.Type, room.Number, false);
-            s_roomRepository.Update(room.Id, roomDTO);
+            RoomService.Update(room.Id, roomDTO);
         }
 
         public static void StartMerge(Room firstRoom, Room secondRoom, Room mergedRoom)
         {
             RoomDTO firstRoomDTO = new RoomDTO(firstRoom.Type, firstRoom.Number, true);
             RoomDTO secondRoomDTO = new RoomDTO(secondRoom.Type, secondRoom.Number, true);
-            s_roomRepository.Update(firstRoom.Id, firstRoomDTO);
-            s_roomRepository.Update(secondRoom.Id, secondRoomDTO);
+            RoomService.Update(firstRoom.Id, firstRoomDTO);
+            RoomService.Update(secondRoom.Id, secondRoomDTO);
         }
 
         public static void EndMerge(Room firstRoom, Room secondRoom, Room mergedRoom)
@@ -133,11 +135,11 @@ namespace HealthInstitution.Core.Renovations.Functionality
             secondRoom.AvailableEquipment.Clear();
 
             RoomDTO mergedRoomDTO = new RoomDTO(mergedRoom.Type, mergedRoom.Number, false, true);
-            s_roomRepository.Update(mergedRoom.Id, mergedRoomDTO);
+            RoomService.Update(mergedRoom.Id, mergedRoomDTO);
             RoomDTO firstRoomDTO = new RoomDTO(firstRoom.Type, firstRoom.Number, false, false);
-            s_roomRepository.Update(firstRoom.Id, firstRoomDTO);
+            RoomService.Update(firstRoom.Id, firstRoomDTO);
             RoomDTO secondRoomDTO = new RoomDTO(secondRoom.Type, secondRoom.Number, false, false);
-            s_roomRepository.Update(secondRoom.Id, secondRoomDTO);
+            RoomService.Update(secondRoom.Id, secondRoomDTO);
         }
 
         private static void UpdateQuantity(Room mergedRoom, Equipment equipment)
@@ -146,7 +148,7 @@ namespace HealthInstitution.Core.Renovations.Functionality
             if (index >= 0)
             {
                 mergedRoom.AvailableEquipment[index].Quantity += equipment.Quantity;
-                s_equipmentRepository.Delete(equipment.Id);
+                EquipmentService.Delete(equipment.Id);
             }
             else
             {
@@ -157,7 +159,7 @@ namespace HealthInstitution.Core.Renovations.Functionality
         public static void StartSeparation(Room separationRoom , Room firstRoom, Room secondRoom)
         {
             RoomDTO separationRoomDTO = new RoomDTO(separationRoom.Type, separationRoom.Number, true);
-            s_roomRepository.Update(separationRoom.Id, separationRoomDTO);
+            RoomService.Update(separationRoom.Id, separationRoomDTO);
         }
 
         public static void EndSeparation(Room separationRoom, Room firstRoom, Room secondRoom)
@@ -165,18 +167,18 @@ namespace HealthInstitution.Core.Renovations.Functionality
             ClearFromList(separationRoom.AvailableEquipment);
 
             RoomDTO separationRoomDTO = new RoomDTO(separationRoom.Type, separationRoom.Number, false, false);
-            s_roomRepository.Update(separationRoom.Id, separationRoomDTO);
+            RoomService.Update(separationRoom.Id, separationRoomDTO);
             RoomDTO firstRoomDTO = new RoomDTO(firstRoom.Type, firstRoom.Number, false, true);
-            s_roomRepository.Update(firstRoom.Id, firstRoomDTO);
+            RoomService.Update(firstRoom.Id, firstRoomDTO);
             RoomDTO secondRoomDTO = new RoomDTO(secondRoom.Type, secondRoom.Number, false, true);
-            s_roomRepository.Update(secondRoom.Id, secondRoomDTO);
+            RoomService.Update(secondRoom.Id, secondRoomDTO);
         }
 
         private static void ClearFromList(List<Equipment> equipments)
         {
             foreach (Equipment equipment in equipments)
             {
-                s_equipmentRepository.Delete(equipment.Id);
+                EquipmentService.Delete(equipment.Id);
             }
             equipments.Clear();
         }

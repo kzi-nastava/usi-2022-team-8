@@ -11,21 +11,36 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.Equipments
 {
-    public class EquipmentService
+    public static class EquipmentService
     {
-        private EquipmentRepository _equipmentRepository;
+        private static EquipmentRepository s_equipmentRepository = EquipmentRepository.GetInstance();
+        private static RoomRepository s_roomRepository = RoomRepository.GetInstance();
 
-        public EquipmentService()
+        public static List<Equipment> GetAll()
         {
-            _equipmentRepository = EquipmentRepository.GetInstance();
+            return s_equipmentRepository.GetAll();
+        }
+
+        public static Equipment Add(EquipmentDTO equipmentDTO)
+        {
+            Equipment equipment = new Equipment(equipmentDTO);
+            return s_equipmentRepository.Add(equipment);
+        }
+
+        public static void Update(int id, EquipmentDTO equipmentDTO)
+        {
+            Equipment equipment = new Equipment(equipmentDTO);
+            s_equipmentRepository.Update(id, equipment);
+        }
+        public static void Delete(int id)
+        {
+            s_equipmentRepository.Delete(id);
         }
 
         public static List<TableItemEquipment> FilterEquipment(EquipmentFilterDTO equipmentFilter)
-        {
-            RoomRepository roomRepository = RoomRepository.GetInstance();
-
+        {           
             List<TableItemEquipment> items = new List<TableItemEquipment>();
-            List<Room> rooms = roomRepository.GetActive();
+            List<Room> rooms = s_roomRepository.GetActive();
             foreach (Room room in rooms)
             {
                 if (!MatchRoomTypeFilter(room,equipmentFilter))
@@ -84,8 +99,7 @@ namespace HealthInstitution.Core.Equipments
         {
             List<TableItemEquipment> items = new List<TableItemEquipment>();
 
-            RoomRepository roomRepository = RoomRepository.GetInstance();
-            List<Room> rooms = roomRepository.GetActive();
+            List<Room> rooms = s_roomRepository.GetActive();
             foreach (Room room in rooms)
             {
                 foreach (Equipment equipment in room.AvailableEquipment)

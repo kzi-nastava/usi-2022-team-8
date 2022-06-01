@@ -1,4 +1,5 @@
 ﻿using HealthInstitution.Core.Drugs.Repository;
+using HealthInstitution.Core.Ingredients;
 using HealthInstitution.Core.Ingredients.Model;
 using HealthInstitution.Core.Ingredients.Repository;
 using HealthInstitution.GUI.ManagerView.IngredientView;
@@ -68,7 +69,7 @@ namespace HealthInstitution.GUI.ManagerView
         {
             Ingredient selectedIngredient = (Ingredient)dataGrid.SelectedItem;
             
-            if (CheckOccurrenceOfIngredient(selectedIngredient))
+            if (IngredientService.CheckOccurrenceOfIngredient(selectedIngredient))
             {
                 System.Windows.MessageBox.Show("You cant delete ingredient because it's part of the drug!", "Delete error", MessageBoxButton.OK, MessageBoxImage.Error);
                 dataGrid.SelectedItem = null;
@@ -83,10 +84,6 @@ namespace HealthInstitution.GUI.ManagerView
             }
         }
 
-        private bool CheckOccurrenceOfIngredient(Ingredient ingredient)
-        {
-            DrugRepository drugRepository = DrugRepository.GetInstance();
-            return drugRepository.ContainsDrugWithIngredient(ingredient); 
-        }
+        
     }
 }

@@ -1,4 +1,5 @@
-﻿using HealthInstitution.Core.Rooms.Model;
+﻿using HealthInstitution.Core.Rooms;
+using HealthInstitution.Core.Rooms.Model;
 using HealthInstitution.Core.Rooms.Repository;
 using System;
 using System.Collections.Generic;
@@ -61,7 +62,7 @@ namespace HealthInstitution.GUI.ManagerView
             RoomType type = (RoomType)typeComboBox.SelectedItem;
 
             RoomDTO roomDTO = new RoomDTO(type, number);
-            _roomRepository.AddRoom(roomDTO);
+            RoomService.AddRoom(roomDTO);
             System.Windows.MessageBox.Show("Room added!", "Room creation", MessageBoxButton.OK, MessageBoxImage.Information);
             
             this.Close();
@@ -88,7 +89,7 @@ namespace HealthInstitution.GUI.ManagerView
             }
             int number = Int32.Parse(numberInput);
 
-            if (_roomRepository.ContainsRoomNumber(number))
+            if (RoomService.RoomNumberIsTaken(number))
             {
                 System.Windows.MessageBox.Show("This room number already exist!", "Create error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;

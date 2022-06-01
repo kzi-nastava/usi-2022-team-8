@@ -115,16 +115,11 @@ namespace HealthInstitution.Core.Referrals.Repository
             return null;
         }
 
-        public Referral Add(ReferralDTO referralDTO)
+        public Referral Add(Referral referral)
         {
             this._maxId++;
             int id = this._maxId;
-            ReferralType type = referralDTO.Type;
-            Doctor prescribedBy = referralDTO.PrescribedBy;
-            Doctor? referredDoctor = referralDTO.ReferredDoctor;
-            SpecialtyType? referredSpecialty = referralDTO.ReferredSpecialty;
-
-            Referral referral = new Referral(id, type, prescribedBy, referredDoctor, referredSpecialty, true);
+            referral.Id = id;
             this.Referrals.Add(referral);
             this.ReferralById[id] = referral;
             Save();
@@ -132,12 +127,12 @@ namespace HealthInstitution.Core.Referrals.Repository
             return referral;
         }
 
-        public void Update(int id, ReferralDTO referralDTO)
+        public void Update(int id, Referral referralTemp)
         {
             Referral referral = GetById(id);
-            referral.PrescribedBy = referralDTO.PrescribedBy;
-            referral.ReferredDoctor = referralDTO.ReferredDoctor;
-            referral.ReferredSpecialty = referralDTO.ReferredSpecialty;
+            referral.PrescribedBy = referralTemp.PrescribedBy;
+            referral.ReferredDoctor = referralTemp.ReferredDoctor;
+            referral.ReferredSpecialty = referralTemp.ReferredSpecialty;
             ReferralById[id] = referral;
             Save();
         }

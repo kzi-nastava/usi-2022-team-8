@@ -211,7 +211,7 @@ namespace HealthInstitution.GUI.ManagerView
 
         private List<TableItemEquipment> LoadRows()
         {
-            List<TableItemEquipment> items = _roomRepository.GetTableItemEquipments();
+            List<TableItemEquipment> items = RoomService.GetTableItemEquipments();
             return items;
         }
     }

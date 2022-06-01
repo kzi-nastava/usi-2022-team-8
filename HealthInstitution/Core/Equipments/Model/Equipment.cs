@@ -17,6 +17,14 @@ public class Equipment
         this.IsDynamic = isDynamic;
     }
 
+    public Equipment(EquipmentDTO equipmentDTO)
+    {
+        this.Quantity = equipmentDTO.Quantity;
+        this.Name = equipmentDTO.Name;
+        this.Type = equipmentDTO.Type;
+        this.IsDynamic = equipmentDTO.IsDynamic;
+    }
+
     public override string? ToString()
     {
         return Name+" (has "+Quantity+")";

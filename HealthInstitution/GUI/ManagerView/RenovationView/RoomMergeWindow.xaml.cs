@@ -1,12 +1,15 @@
-﻿using HealthInstitution.Core.EquipmentTransfers.Model;
+﻿using HealthInstitution.Core.EquipmentTransfers;
+using HealthInstitution.Core.EquipmentTransfers.Model;
 using HealthInstitution.Core.EquipmentTransfers.Repository;
 using HealthInstitution.Core.Examinations.Model;
 using HealthInstitution.Core.Examinations.Repository;
 using HealthInstitution.Core.Operations.Model;
 using HealthInstitution.Core.Operations.Repository;
+using HealthInstitution.Core.Renovations;
 using HealthInstitution.Core.Renovations.Functionality;
 using HealthInstitution.Core.Renovations.Model;
 using HealthInstitution.Core.Renovations.Repository;
+using HealthInstitution.Core.Rooms;
 using HealthInstitution.Core.Rooms.Model;
 using HealthInstitution.Core.Rooms.Repository;
 using System;
@@ -63,7 +66,7 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
 
         private void FirstRoomComboBox_Loaded(object sender, RoutedEventArgs e)
         {
-            List<Room> rooms = _roomRepository.GetActive();
+            List<Room> rooms = RoomService.GetActive();
 
             firstRoomComboBox.ItemsSource = rooms;
             firstRoomComboBox.SelectedItem = null;
@@ -71,7 +74,7 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
 
         private void SecondRoomComboBox_Loaded(object sender, RoutedEventArgs e)
         {
-            List<Room> rooms = _roomRepository.GetActive();
+            List<Room> rooms = RoomService.GetActive();
 
             secondRoomComboBox.ItemsSource = rooms;
             secondRoomComboBox.SelectedItem = null;
@@ -126,10 +129,10 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
             RoomType type = (RoomType)roomTypeComboBox.SelectedItem;
 
             RoomDTO roomDTO = new RoomDTO(type, number, true, false);
-            Room mergedRoom = _roomRepository.AddRoom(roomDTO);
+            Room mergedRoom = RoomService.AddRoom(roomDTO);
 
             RoomMergerDTO roomMergerDTO = new RoomMergerDTO(firstSelectedRoom, secondSelectedRoom, mergedRoom, startDate, endDate);
-            _renovationRepository.AddRoomMerger(roomMergerDTO);
+            RenovationService.AddRoomMerger(roomMergerDTO);
             if (startDate == DateTime.Today)
             {
                 RenovationChecker.StartMerge(firstSelectedRoom, secondSelectedRoom, mergedRoom);
@@ -233,7 +236,7 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
             Room secondSelectedRoom = (Room)secondRoomComboBox.SelectedItem;
             DateTime startDate = (DateTime)startDatePicker.SelectedDate;
 
-            foreach (EquipmentTransfer equipmentTransfer in _equipmentTransferRepository.GetAll())
+            foreach (EquipmentTransfer equipmentTransfer in EquipmentTransferService.GetAll())
             {
                 if (equipmentTransfer.TransferTime < startDate)
                 {
@@ -256,7 +259,7 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
             Room firstSelectedRoom = (Room)firstRoomComboBox.SelectedItem;
             Room secondSelectedRoom = (Room)secondRoomComboBox.SelectedItem;
 
-            foreach (Renovation renovation in _renovationRepository.GetAll())
+            foreach (Renovation renovation in RenovationService.GetAll())
             {
                 if (renovation.Room == firstSelectedRoom || renovation.Room == secondSelectedRoom)
                 {

@@ -18,6 +18,13 @@ public class Renovation
         this.Room = room;
     }
 
+    public Renovation(RenovationDTO renovationDTO)
+    {
+        this.Room = renovationDTO.Room;
+        this.StartDate = renovationDTO.StartDate;
+        this.EndDate = renovationDTO.EndDate;
+    }
+
     public bool IsRoomMerger()
     {
         return this.GetType() == typeof(RoomMerger);
