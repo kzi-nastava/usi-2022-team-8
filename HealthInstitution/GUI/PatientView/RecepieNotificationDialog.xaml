@@ -9,9 +9,9 @@
     <Grid Height="225" VerticalAlignment="Top">
         <DataGrid  ItemsSource="{Binding RecepieNotification}" AutoGenerateColumns="False" Name="dataGrid"  Height="250" VerticalAlignment="Top">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Id" FontSize="18" Binding="{Binding Prescription.Drug.Nmae}" Width ="140" />
-                <DataGridTextColumn Header="DailyDose" FontSize="18" Binding="{Binding TriggerTime}" Width ="140" />
-                <DataGridTextColumn Header="TimeOfUse" FontSize="18" Binding="{Binding TimeOfUse}" Width ="140" />
+                <DataGridTextColumn Header="Id" FontSize="18" Binding="{Binding Prescription.Drug.Name}" Width ="140" />
+                <DataGridTextColumn Header="DailyDose" FontSize="18" Binding="{Binding TriggerDateTime}" Width ="140" />
+                <DataGridTextColumn Header="TimeOfUse" FontSize="18" Binding="{Binding Prescription.TimeOfUse}" Width ="140" />
             </DataGrid.Columns>
         </DataGrid>
     </Grid>
