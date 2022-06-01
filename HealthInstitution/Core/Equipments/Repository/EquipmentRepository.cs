@@ -130,6 +130,17 @@ namespace HealthInstitution.Core.Equipments.Repository
             this.EquipmentById.Remove(id);
             Save();
         }
+        public EquipmentType GetEquipmentType(string equipmentName)
+        {
+            EquipmentType equipmentType = EquipmentType.AppointmentEquipment;
+            foreach (Equipment equipment in Equipments)
+            {
+                if (equipment.Name == equipmentName)
+                    equipmentType = equipment.Type;
+            }
+            return equipmentType;
+        }
+        
     }
 }
 

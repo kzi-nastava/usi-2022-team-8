@@ -1,22 +1,9 @@
 ﻿using HealthInstitution.Core.MedicalRecords.Model;
-using HealthInstitution.Core.SystemUsers.Patients.Model;
 using HealthInstitution.Core.SystemUsers.Patients.Repository;
 using HealthInstitution.Core.SystemUsers.Users.Model;
 using HealthInstitution.Core.SystemUsers.Users.Repository;
 using HealthInstitution.Core.TrollCounters.Repository;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace HealthInstitution.GUI.UserWindow
 {
@@ -25,6 +12,9 @@ namespace HealthInstitution.GUI.UserWindow
     /// </summary>
     public partial class CreatePatientDialog : Window
     {
+        PatientRepository _patientRepository = PatientRepository.GetInstance();
+        UserRepository _userRepository=UserRepository.GetInstance();
+        TrollCounterFileRepository _trollCounterFileRepository=TrollCounterFileRepository.GetInstance();   
         public CreatePatientDialog()
         {
             InitializeComponent();
@@ -32,7 +22,6 @@ namespace HealthInstitution.GUI.UserWindow
 
         private UserDTO CreateUserDTOFromInputData()
         {
-            UserRepository userRepository = UserRepository.GetInstance();
             string username = usernameBox.Text.Trim();
             string password = passwordBox.Password.ToString().Trim();
             string name = nameBox.Text.Trim();
@@ -42,7 +31,7 @@ namespace HealthInstitution.GUI.UserWindow
                 System.Windows.MessageBox.Show("All fields excluding Allergens and Previous ilnesses must be filled!", "Create patient error", MessageBoxButton.OK, MessageBoxImage.Error);
                 throw new Exception();
             }
-            else if (userRepository.UsersByUsername.ContainsKey(username))
+            else if (_userRepository.UsersByUsername.ContainsKey(username))
             {
                 System.Windows.MessageBox.Show("This username is already used!", "Create patient error", MessageBoxButton.OK, MessageBoxImage.Error);
                 throw new Exception();
@@ -54,17 +43,10 @@ namespace HealthInstitution.GUI.UserWindow
         {
             string allergensNotParsed = allergensBox.Text.Trim();
             string previousIlnessesNotParsed = previousIlnessesBox.Text.Trim();
-            string height = heightBox.Text.Trim();
-            string weight = weightBox.Text.Trim();
-            if (height == "" || weight == "")
-            {
-                System.Windows.MessageBox.Show("All fields excluding Allergens and Previous ilnesses must be filled!", "Create patient error", MessageBoxButton.OK, MessageBoxImage.Error);
-                throw new Exception();
-            }
             try
             {
-                double heightValue = Convert.ToDouble(height);
-                double weightValue = Convert.ToDouble(weight);
+                double height = Convert.ToDouble(heightBox.Text.Trim());
+                double weight = Convert.ToDouble(weightBox.Text.Trim());
                 List<string> allergens = new List<string>();
                 List<string> previousIlnesses = new List<string>();
                 if (allergensNotParsed != "")
@@ -75,7 +57,7 @@ namespace HealthInstitution.GUI.UserWindow
                 {
                     previousIlnesses = previousIlnessesNotParsed.Split(",").ToList();
                 }
-                MedicalRecordDTO medicalRecordDTO = new MedicalRecordDTO(heightValue, weightValue, allergens, previousIlnesses, null);
+                MedicalRecordDTO medicalRecordDTO = new MedicalRecordDTO(height, weight, allergens, previousIlnesses, null);
                 return medicalRecordDTO;
             }
             catch
@@ -84,18 +66,15 @@ namespace HealthInstitution.GUI.UserWindow
                 throw new Exception();
             }
         }
-
         private void CreatePatient_Click(object sender, RoutedEventArgs e)
         {
             try {
-                UserRepository userRepository = UserRepository.GetInstance();
-                PatientRepository patientRepository = PatientRepository.GetInstance();
                 UserDTO userDTO = CreateUserDTOFromInputData();
                 MedicalRecordDTO medicalRecordDTO = CreateMedicalRecordDTOFromInputData();
-                patientRepository.Add(userDTO, medicalRecordDTO);
-                userRepository.Add(userDTO);
-                TrollCounterFileRepository.GetInstance().Add(userDTO.Username);
-                this.Close();
+                _patientRepository.Add(userDTO, medicalRecordDTO);
+                _userRepository.Add(userDTO);
+                _trollCounterFileRepository.Add(userDTO.Username);
+                Close();
             }
             catch
             {

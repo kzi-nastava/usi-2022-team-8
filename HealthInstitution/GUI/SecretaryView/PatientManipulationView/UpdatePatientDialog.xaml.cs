@@ -2,19 +2,7 @@
 using HealthInstitution.Core.SystemUsers.Patients.Repository;
 using HealthInstitution.Core.SystemUsers.Users.Model;
 using HealthInstitution.Core.SystemUsers.Users.Repository;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace HealthInstitution.GUI.SecretaryView
 {
@@ -56,7 +44,7 @@ namespace HealthInstitution.GUI.SecretaryView
                 UserDTO userDTO = CreateUserDTOFromInputData();
                 patientRepository.Update(userDTO);
                 userRepository.Update(userDTO);
-                this.Close();
+                Close();
             }
             catch
             {

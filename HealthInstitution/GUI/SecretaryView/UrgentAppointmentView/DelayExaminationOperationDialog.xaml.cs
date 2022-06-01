@@ -28,21 +28,21 @@ namespace HealthInstitution.GUI.SecretaryView
     /// </summary>
     public partial class DelayExaminationOperationDialog : Window
     {
-        List<ScheduleEditRequest> DelayedAppointments;
-        Examination Examination;
-        Operation Operation;
-        public DelayExaminationOperationDialog(List<ScheduleEditRequest> delayedAppointments, Examination examination, Operation operation)
+        List<ScheduleEditRequest> _delayedAppointments;
+        Examination? _examination;
+        Operation? _operation;
+        public DelayExaminationOperationDialog(List<ScheduleEditRequest> delayedAppointments, Examination? examination, Operation? operation)
         {
             InitializeComponent();
-            DelayedAppointments=delayedAppointments;
-            Examination = examination;
-            Operation = operation;
+            _delayedAppointments=delayedAppointments;
+            _examination = examination;
+            _operation = operation;
             LoadRows();
         }
         private void LoadRows()
         {
             dataGrid.Items.Clear();
-            foreach (ScheduleEditRequest delayedAppointment in DelayedAppointments)
+            foreach (ScheduleEditRequest delayedAppointment in _delayedAppointments)
             {
                 dataGrid.Items.Add(delayedAppointment);
             }
@@ -56,23 +56,22 @@ namespace HealthInstitution.GUI.SecretaryView
             notificationRepository.Add(appointmentNotificationDto);
             if (selectedAppointment.CurrentExamination == null)
             {
-                Examination.Appointment = selectedAppointment.CurrentOperation.Appointment;
-                Examination.Room = selectedAppointment.CurrentOperation.Room;
-                Examination.Doctor = selectedAppointment.CurrentOperation.Doctor;
+                _examination.Appointment = selectedAppointment.CurrentOperation.Appointment;
+                _examination.Room = selectedAppointment.CurrentOperation.Room;
+                _examination.Doctor = selectedAppointment.CurrentOperation.Doctor;
             }
             else
             {
-                Examination.Appointment = selectedAppointment.CurrentExamination.Appointment;
-                Examination.Room = selectedAppointment.CurrentExamination.Room;
-                Examination.Doctor = selectedAppointment.CurrentExamination.Doctor;
+                _examination.Appointment = selectedAppointment.CurrentExamination.Appointment;
+                _examination.Room = selectedAppointment.CurrentExamination.Room;
+                _examination.Doctor = selectedAppointment.CurrentExamination.Doctor;
             }
-            ExaminationDTO examinationDTO = new ExaminationDTO(Examination.Appointment, Examination.Room, Examination.Doctor, Examination.MedicalRecord);
+            ExaminationDTO examinationDTO = new ExaminationDTO(_examination.Appointment, _examination.Room, _examination.Doctor, _examination.MedicalRecord);
             ExaminationRepository.GetInstance().Add(examinationDTO);
-            appointmentNotificationDto = new AppointmentNotificationDTO(null, Examination.Appointment, Examination.Doctor, Examination.MedicalRecord.Patient);
+            appointmentNotificationDto = new AppointmentNotificationDTO(null, _examination.Appointment, _examination.Doctor, _examination.MedicalRecord.Patient);
             notificationRepository.Add(appointmentNotificationDto);
 
-        }
-
+        }//EXTRACT
         private void DelayOperation(ScheduleEditRequest selectedAppointment)
         {
             AppointmentNotificationRepository notificationRepository = AppointmentNotificationRepository.GetInstance();
@@ -81,33 +80,33 @@ namespace HealthInstitution.GUI.SecretaryView
             notificationRepository.Add(appointmentNotificationDto);
             if (selectedAppointment.CurrentExamination == null)
             {
-                Operation.Appointment = selectedAppointment.CurrentOperation.Appointment;
-                Operation.Room = selectedAppointment.CurrentOperation.Room;
-                Operation.Doctor = selectedAppointment.CurrentOperation.Doctor;
+                _operation.Appointment = selectedAppointment.CurrentOperation.Appointment;
+                _operation.Room = selectedAppointment.CurrentOperation.Room;
+                _operation.Doctor = selectedAppointment.CurrentOperation.Doctor;
             }
             else
             {
-                Operation.Appointment = selectedAppointment.CurrentExamination.Appointment;
-                Operation.Room = selectedAppointment.CurrentExamination.Room;
-                Operation.Doctor = selectedAppointment.CurrentExamination.Doctor;
+                _operation.Appointment = selectedAppointment.CurrentExamination.Appointment;
+                _operation.Room = selectedAppointment.CurrentExamination.Room;
+                _operation.Doctor = selectedAppointment.CurrentExamination.Doctor;
             }
-            OperationDTO operationDTO = new OperationDTO(Operation.Appointment, Operation.Duration, Operation.Room, Operation.Doctor, Operation.MedicalRecord);
+            OperationDTO operationDTO = new OperationDTO(_operation.Appointment, _operation.Duration, _operation.Room, _operation.Doctor, _operation.MedicalRecord);
             OperationRepository.GetInstance().Add(operationDTO);
-            appointmentNotificationDto = new AppointmentNotificationDTO(null, Operation.Appointment, Operation.Doctor, Operation.MedicalRecord.Patient);
+            appointmentNotificationDto = new AppointmentNotificationDTO(null, _operation.Appointment, _operation.Doctor, _operation.MedicalRecord.Patient);
             notificationRepository.Add(appointmentNotificationDto);
 
-        }
+        }//EXTRACT
         private void Accept_Click(object sender, RoutedEventArgs e)
         {
             
             ScheduleEditRequest selectedAppointment = (ScheduleEditRequest)dataGrid.SelectedItem;
             if (selectedAppointment != null)
             {
-                if (Operation == null)
+                if (_operation == null)
                 {
                     DelayExamination(selectedAppointment);
                 }
-                else if (Examination == null)
+                else if (_examination == null)
                 {
                     DelayOperation(selectedAppointment);
                 }

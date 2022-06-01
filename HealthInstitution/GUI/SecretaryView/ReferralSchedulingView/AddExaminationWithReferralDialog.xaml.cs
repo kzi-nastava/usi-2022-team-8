@@ -62,7 +62,7 @@ namespace HealthInstitution.GUI.SecretaryView
             minuteComboBox.ItemsSource = minutes;
             minuteComboBox.SelectedIndex = 0;
         }
-        private ExaminationDTO CreateExaminationDTOFromInputData(Doctor doctor)
+        private ExaminationDTO? CreateExaminationDTOFromInputData(Doctor doctor)
         {
             DateTime appointment = (DateTime)datePicker.SelectedDate;
             int minutes = Int32.Parse(minuteComboBox.Text);
@@ -70,22 +70,26 @@ namespace HealthInstitution.GUI.SecretaryView
             appointment = appointment.AddHours(hours);
             appointment = appointment.AddMinutes(minutes);
             ExaminationDTO examination = new ExaminationDTO(appointment, null, doctor, _medicalRecord);
-            return examination;
+            if (examination.Appointment <= DateTime.Now)
+            {
+                System.Windows.MessageBox.Show("You have to change dates for upcoming ones!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return null;
+            }
+            else
+                return examination;
         }
         private void ScheduleWithSpecificDoctor()
         {
             try
             {
-                ExaminationDTO examination = CreateExaminationDTOFromInputData(_referral.ReferredDoctor);
-                if (examination.Appointment <= DateTime.Now)
-                    System.Windows.MessageBox.Show("You have to change dates for upcoming ones!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                else
+                ExaminationDTO? examination = CreateExaminationDTOFromInputData(_referral.ReferredDoctor);
+                if(examination!=null)
                 {
                     ExaminationRepository.GetInstance().ReserveExamination(examination);
                     System.Windows.MessageBox.Show("You have scheduled the examination!", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
                     _referral.Active = false;
                     ReferralRepository.GetInstance().Save();
-                    this.Close();
+                    Close();
                 }
             }
             catch (Exception ex)
@@ -97,16 +101,14 @@ namespace HealthInstitution.GUI.SecretaryView
         {
             try
             {
-                ExaminationDTO examination = CreateExaminationDTOFromInputData(doctor);
-                if (examination.Appointment <= DateTime.Now)
-                    System.Windows.MessageBox.Show("You have to change dates for upcoming ones!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                else
+                ExaminationDTO? examination = CreateExaminationDTOFromInputData(doctor);
+                if (examination!=null)
                 {
                     ExaminationRepository.GetInstance().ReserveExamination(examination);
                     System.Windows.MessageBox.Show("You have scheduled the examination! Doctor: " + doctor.Name + " " + doctor.Surname, "Info", MessageBoxButton.OK, MessageBoxImage.Information);
                     _referral.Active = false;
                     ReferralRepository.GetInstance().Save();
-                    this.Close();
+                    Close();
                 }
             }
             catch (Exception ex)
@@ -117,8 +119,7 @@ namespace HealthInstitution.GUI.SecretaryView
                     System.Windows.MessageBox.Show(ex.Message, "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
-
-        void ScheduleWithOrderedSpecialty()
+        void ScheduleWithOrderedSpecialty() 
         {
             List<Doctor> doctors = DoctorRepository.GetInstance().Doctors;
             foreach (Doctor doctor in doctors)

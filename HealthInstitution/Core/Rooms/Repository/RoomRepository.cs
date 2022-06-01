@@ -229,5 +229,19 @@ namespace HealthInstitution.Core.Rooms.Repository
             }
             return availableRooms;
         }
+        public Room? GetRoomFromString(string? roomFromForm)
+        {
+            if (roomFromForm != null)
+            {
+                string[] tokens = roomFromForm.Split(' ');
+                string type = tokens[0], number = tokens[1];
+                foreach (Room room in Rooms)
+                {
+                    if (room.Type.ToString() == type && room.Number.ToString() == number)
+                        return room;
+                }
+            }
+            return null;
+        }
     }
 }

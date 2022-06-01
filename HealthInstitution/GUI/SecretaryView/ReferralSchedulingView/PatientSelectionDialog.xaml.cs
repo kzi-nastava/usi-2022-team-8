@@ -2,6 +2,7 @@
 using HealthInstitution.Core.MedicalRecords.Repository;
 using HealthInstitution.Core.SystemUsers.Patients.Model;
 using HealthInstitution.Core.SystemUsers.Patients.Repository;
+using HealthInstitution.Core.SystemUsers.Users.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,13 +29,13 @@ namespace HealthInstitution.GUI.SecretaryView
             InitializeComponent();
             LoadRows();
         }
-        private void LoadRows()
+        private void LoadRows() //Pitati
         {
             dataGrid.Items.Clear();
             List<MedicalRecord> medicalRecords = MedicalRecordRepository.GetInstance().MedicalRecords;
             foreach (MedicalRecord medicalRecord in medicalRecords)
             {
-                if(medicalRecord.Patient.Blocked==Core.SystemUsers.Users.Model.BlockState.NotBlocked)
+                if(medicalRecord.Patient.Blocked==BlockState.NotBlocked)
                     dataGrid.Items.Add(medicalRecord);
             }
             dataGrid.Items.Refresh();

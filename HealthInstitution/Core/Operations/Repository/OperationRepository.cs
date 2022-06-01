@@ -138,23 +138,23 @@ namespace HealthInstitution.Core.Operations.Repository
                     operation.Status = ExaminationStatus.Completed;
             }
         }
-
+        private void AddToCollections(Operation operation)
+        {
+            operation.Doctor.Operations.Add(operation);
+            Operations.Add(operation);
+            OperationsById.Add(operation.Id, operation);
+        }
+        private void SaveAll()
+        {
+            Save();
+            OperationDoctorRepository.GetInstance().Save();
+        }
         public void Add(OperationDTO operationDTO)
         {
             int id = ++this._maxId;
-            DateTime appointment = operationDTO.Appointment;
-            int duration = operationDTO.Duration;
-            Room room = operationDTO.Room;
-            Doctor doctor = operationDTO.Doctor;
-            MedicalRecord medicalRecord = operationDTO.MedicalRecord;
-            
-            Operation operation = new Operation(id, appointment, duration, room, doctor, medicalRecord);
-            doctor.Operations.Add(operation);
-            this.Operations.Add(operation);
-            this.OperationsById.Add(id, operation);
-
-            Save();
-            OperationDoctorRepository.GetInstance().Save();
+            Operation operation = new Operation(id, operationDTO.Appointment, operationDTO.Duration, operationDTO.Room, operationDTO.Doctor, operationDTO.MedicalRecord);
+            AddToCollections(operation);
+            SaveAll();
         }
 
         public void Update(int id, OperationDTO operationDTO)
@@ -260,7 +260,7 @@ namespace HealthInstitution.Core.Operations.Repository
             CheckIfPatientHasOperations(operationDTO, id);
         }
 
-        private Room FindAvailableRoom(OperationDTO operationDTO, int id = 0)
+        public Room FindAvailableRoom(OperationDTO operationDTO, int id = 0)
         {
             bool isAvailable;
             List<Room> availableRooms = new List<Room>();
@@ -311,7 +311,17 @@ namespace HealthInstitution.Core.Operations.Repository
             CheckIfPatientIsAvailable(operationDTO);
             Add(operationDTO);
         }
-
+        private void TrySchedulingUrgentOperation(DateTime appointment, int duration, Doctor doctor, MedicalRecord medicalRecord, List<Tuple<int, int, DateTime>> priorityExaminationsAndOperations)
+        {
+            OperationDTO operationDTO = new OperationDTO(appointment, duration, null, doctor, medicalRecord);
+            CheckIfDoctorIsAvailable(operationDTO);
+            CheckIfPatientIsAvailable(operationDTO);
+            operationDTO.Room = FindAvailableRoom(operationDTO);
+            Add(operationDTO);
+            AppointmentNotificationDTO appointmentNotificationDTO = new AppointmentNotificationDTO(null, appointment, doctor, medicalRecord.Patient);
+            AppointmentNotificationRepository.GetInstance().Add(appointmentNotificationDTO);
+            priorityExaminationsAndOperations.Add(new Tuple<int, int, DateTime>(this._maxId, 2, appointment));
+        }
         public List<Tuple<int, int, DateTime>> ReserveUrgentOperation(string patientUsername, SpecialtyType specialtyType, int duration)
         {
             List<Tuple<int, int, DateTime>> priorityExaminationsAndOperations = new List<Tuple<int, int, DateTime>>();
@@ -326,14 +336,7 @@ namespace HealthInstitution.Core.Operations.Repository
                     {
                         try
                         {
-                            OperationDTO operationDTO = new OperationDTO(appointment, duration, null, doctor, medicalRecord);
-                            CheckIfDoctorIsAvailable(operationDTO);
-                            CheckIfPatientIsAvailable(operationDTO);
-                            operationDTO.Room = FindAvailableRoom(operationDTO);
-                            Add(operationDTO);
-                            AppointmentNotificationDTO appointmentNotificationDTO = new AppointmentNotificationDTO(null, appointment, doctor, patient);
-                            AppointmentNotificationRepository.GetInstance().Add(appointmentNotificationDTO);
-                            priorityExaminationsAndOperations.Add(new Tuple<int, int, DateTime>(this._maxId, 2, appointment));
+                            TrySchedulingUrgentOperation(appointment,duration,doctor,medicalRecord,priorityExaminationsAndOperations);
                             return priorityExaminationsAndOperations;
                         }
                         catch
