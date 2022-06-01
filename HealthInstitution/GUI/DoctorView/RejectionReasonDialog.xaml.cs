@@ -1,4 +1,5 @@
-﻿using HealthInstitution.Core.Drugs.Model;
+﻿using HealthInstitution.Core.Drugs;
+using HealthInstitution.Core.Drugs.Model;
 using HealthInstitution.Core.Drugs.Repository;
 using System;
 using System.Collections.Generic;
@@ -38,7 +39,7 @@ namespace HealthInstitution.GUI.DoctorView
             }
             else
             {
-                _drugRepository.Reject(_selectedDrug, rejectionReason);
+                DrugService.Reject(_selectedDrug, rejectionReason);
                 Close();
             }
         }

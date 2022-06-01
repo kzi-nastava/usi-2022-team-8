@@ -1,4 +1,5 @@
-﻿using HealthInstitution.Core.Drugs.Repository;
+﻿using HealthInstitution.Core.Drugs;
+using HealthInstitution.Core.Drugs.Repository;
 using HealthInstitution.Core.Ingredients.Model;
 using HealthInstitution.Core.Ingredients.Repository;
 using HealthInstitution.GUI.ManagerView.IngredientView;
@@ -85,8 +86,7 @@ namespace HealthInstitution.GUI.ManagerView
 
         private bool CheckOccurrenceOfIngredient(Ingredient ingredient)
         {
-            DrugRepository drugRepository = DrugRepository.GetInstance();
-            return drugRepository.ContainsDrugWithIngredient(ingredient); 
+            return DrugService.ContainsIngredient(ingredient); 
         }
     }
 }

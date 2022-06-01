@@ -1,4 +1,5 @@
-﻿using HealthInstitution.Core.Drugs.Model;
+﻿using HealthInstitution.Core.Drugs;
+using HealthInstitution.Core.Drugs.Model;
 using HealthInstitution.Core.Drugs.Repository;
 using HealthInstitution.Core.Ingredients.Model;
 using HealthInstitution.Core.Ingredients.Repository;
@@ -91,7 +92,7 @@ namespace HealthInstitution.GUI.ManagerView.DrugView
             }
 
             DrugDTO drugDTO = new DrugDTO(name, DrugState.Created, _ingredientsForDrug);
-            _drugRepository.Add(drugDTO);
+            DrugService.Add(drugDTO);
             System.Windows.MessageBox.Show("Drug created and waiting on verification!", "Ingredient creation", MessageBoxButton.OK, MessageBoxImage.Information);
 
             this.Close();

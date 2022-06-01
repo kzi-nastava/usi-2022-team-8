@@ -27,7 +27,7 @@ namespace HealthInstitution.GUI.DoctorView
     public partial class AddPrescriptionDialog : Window
     {
         private MedicalRecord _medicalRecord;
-        private DrugRepository _drugRepository = DrugRepository.GetInstance();
+        private DrugRepository DrugSerivce = DrugRepository.GetInstance();
         private PrescriptionRepository _prescriptionRepository = PrescriptionRepository.GetInstance();
         private MedicalRecordRepository _medicalRecordRepository = MedicalRecordRepository.GetInstance();
         public AddPrescriptionDialog(MedicalRecord medicalRecord)
@@ -50,7 +50,7 @@ namespace HealthInstitution.GUI.DoctorView
         private void DrugComboBox_Loaded(object sender, RoutedEventArgs e)
         {
             var drugComboBox = sender as System.Windows.Controls.ComboBox;
-            List<Drug> drugs = _drugRepository.GetAll();
+            List<Drug> drugs = DrugSerivce.GetAll();
             foreach (Drug drug in drugs)
             {
                 drugComboBox.Items.Add(drug);
