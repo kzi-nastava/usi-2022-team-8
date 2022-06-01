@@ -8,6 +8,7 @@ using HealthInstitution.Core.TrollCounters.Repository;
 using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using HealthInstitution.Core.TrollCounters;
 
 namespace HealthInstitution.Core.SystemUsers.Patients.Repository
 {
@@ -134,7 +135,7 @@ namespace HealthInstitution.Core.SystemUsers.Patients.Repository
         public void Delete(string username)
         {
             Patient patient = GetByUsername(username);
-            TrollCounterFileRepository.GetInstance().Delete(username);
+            TrollCounterService.Delete(username);
             MedicalRecordRepository.GetInstance().Delete(patient);
             this.Patients.Remove(patient);
             this.PatientByUsername.Remove(username);
@@ -142,22 +143,13 @@ namespace HealthInstitution.Core.SystemUsers.Patients.Repository
             Save();
         }
 
-        public void ChangeBlockedStatus(string username)
+        public void ChangeBlockedStatus(Patient patient)
         {
-            Patient patient = this.GetByUsername(username);
-            User user = userRepository.GetByUsername(username);
-            if (patient.Blocked == Users.Model.BlockState.NotBlocked)
-            {
-                patient.Blocked = Users.Model.BlockState.BlockedBySecretary;
-                user.Blocked = Users.Model.BlockState.BlockedBySecretary;
-            }
+            if (patient.Blocked == BlockState.NotBlocked)
+                patient.Blocked = BlockState.BlockedBySecretary;
             else
-            {
-                patient.Blocked = Users.Model.BlockState.NotBlocked;
-                user.Blocked = Users.Model.BlockState.NotBlocked;
-            }
+                patient.Blocked = BlockState.NotBlocked;
             Save();
-            userRepository.Save();
         }
 
         public void DeleteNotification(Patient patient, AppointmentNotification notification)

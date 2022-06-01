@@ -94,4 +94,13 @@ public class UserRepository
         this.UsersByUsername.Remove(username);
         Save();
     }
+    public void ChangeBlockedStatus(User user)
+    {
+        if (user.Blocked == BlockState.NotBlocked)
+            user.Blocked = BlockState.BlockedBySecretary;
+        else
+            user.Blocked = BlockState.NotBlocked;
+        Save();
+
+    }
 }

@@ -2,6 +2,7 @@
 using HealthInstitution.Core.SystemUsers.Patients.Repository;
 using HealthInstitution.Core.SystemUsers.Users.Model;
 using HealthInstitution.Core.SystemUsers.Users.Repository;
+using HealthInstitution.Core.TrollCounters;
 using HealthInstitution.Core.TrollCounters.Repository;
 using System.Windows;
 
@@ -73,7 +74,7 @@ namespace HealthInstitution.GUI.UserWindow
                 MedicalRecordDTO medicalRecordDTO = CreateMedicalRecordDTOFromInputData();
                 _patientRepository.Add(userDTO, medicalRecordDTO);
                 _userRepository.Add(userDTO);
-                _trollCounterFileRepository.Add(userDTO.Username);
+                TrollCounterService.Add(userDTO.Username);
                 Close();
             }
             catch

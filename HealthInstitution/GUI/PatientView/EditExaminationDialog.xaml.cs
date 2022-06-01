@@ -1,5 +1,6 @@
 ﻿using HealthInstitution.Core.Examinations.Model;
 using HealthInstitution.Core.Examinations.Repository;
+using HealthInstitution.Core.ScheduleEditRequests;
 using HealthInstitution.Core.ScheduleEditRequests.Repository;
 using HealthInstitution.Core.SystemUsers.Users.Model;
 using HealthInstitution.Core.SystemUsers.Users.Repository;
@@ -31,7 +32,7 @@ public partial class EditExaminationDialog : Window
     private void GenerateRequest(DateTime dateTime)
     {
         Examination newExamination = ExaminationRepository.GetInstance().GenerateRequestExamination(_selectedExamination, _doctorUsername, dateTime);
-        ScheduleEditRequestFileRepository.GetInstance().AddEditRequest(newExamination);
+        ScheduleEditRequestService.AddEditRequest(newExamination);
     }
 
     private void EditNow(DateTime dateTime)

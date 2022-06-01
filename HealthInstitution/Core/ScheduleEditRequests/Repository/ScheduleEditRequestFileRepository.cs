@@ -28,7 +28,7 @@ public class ScheduleEditRequestFileRepository
         PropertyNameCaseInsensitive = true
     };
 
-    private ScheduleEditRequestFileRepository(String fileName)
+    private ScheduleEditRequestFileRepository(string fileName)
     {
         this._fileName = fileName;
         this.Requests = new List<ScheduleEditRequest>();
@@ -102,7 +102,7 @@ public class ScheduleEditRequestFileRepository
         }
     }
 
-    public void Save()
+    private void Save()
     {
         var allExaminations = JsonSerializer.Serialize(PrepareForSerialization(), _options);
         File.WriteAllText(this._fileName, allExaminations);
@@ -165,53 +165,36 @@ public class ScheduleEditRequestFileRepository
         return this.RequestsById[id];
     }
 
-    public void AddEditRequest(Examination examination)
+    public void AddEditRequest(ScheduleEditRequest scheduleEditRequest, int unixTimestamp)
     {
-        Int32 unixTimestamp = (int)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
-        ScheduleEditRequest scheduleEditRequest = new ScheduleEditRequest(unixTimestamp, examination, examination.Id, RestRequests.Model.RestRequestState.OnHold);
-        this.Requests.Add(scheduleEditRequest);
-        this.RequestsById.Add(unixTimestamp, scheduleEditRequest);
+        Requests.Add(scheduleEditRequest);
+        RequestsById.Add(unixTimestamp, scheduleEditRequest);
         Save();
     }
 
-    public void AddDeleteRequest(Examination examination)
+    public void AddDeleteRequest(ScheduleEditRequest scheduleEditRequest, int unixTimestamp)
     {
-        Int32 unixTimestamp = (int)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
-        ScheduleEditRequest scheduleEditRequest = new ScheduleEditRequest(unixTimestamp, null, examination.Id, RestRequests.Model.RestRequestState.OnHold);
-        this.Requests.Add(scheduleEditRequest);
-        this.RequestsById.Add(unixTimestamp, scheduleEditRequest);
+        Requests.Add(scheduleEditRequest);
+        RequestsById.Add(unixTimestamp, scheduleEditRequest);
         Save();
     }
 
-    public void DeleteRequest(int id)
+    public void DeleteRequest(ScheduleEditRequest scheduleEditRequest)
     {
-        ScheduleEditRequest scheduleEditRequest = GetById(id);
-        if (scheduleEditRequest != null)
-        {
-            this.RequestsById.Remove(scheduleEditRequest.Id);
-            this.Requests.Remove(scheduleEditRequest);
-            Save();
-        }
+        RequestsById.Remove(scheduleEditRequest.Id);
+        Requests.Remove(scheduleEditRequest);
+        Save();
     }
 
-    public void AcceptScheduleEditRequests(int id)
+    public void AcceptScheduleEditRequests(ScheduleEditRequest scheduleEditRequest)
     {
-        ScheduleEditRequest scheduleEditRequest = GetById(id);
-        if (scheduleEditRequest != null)
-        {
-            scheduleEditRequest.State = RestRequests.Model.RestRequestState.Accepted;
-            ExaminationRepository.GetInstance().SwapExaminationValue(scheduleEditRequest.NewExamination);
-            Save();
-        }
+        scheduleEditRequest.State = RestRequestState.Accepted;
+        Save();
     }
 
-    public void RejectScheduleEditRequests(int id)
+    public void RejectScheduleEditRequests(ScheduleEditRequest scheduleEditRequest)
     {
-        ScheduleEditRequest scheduleEditRequest = GetById(id);
-        if (scheduleEditRequest != null)
-        {
-            scheduleEditRequest.State = RestRequests.Model.RestRequestState.Rejected;
-            Save();
-        }
+        scheduleEditRequest.State = RestRequestState.Rejected;
+        Save();
     }
 }

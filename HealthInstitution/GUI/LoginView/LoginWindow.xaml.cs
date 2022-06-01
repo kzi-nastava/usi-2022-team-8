@@ -13,6 +13,8 @@ using HealthInstitution.Core.SystemUsers.Patients.Repository;
 using HealthInstitution.Core.SystemUsers.Patients.Model;
 using HealthInstitution.Core.Renovations.Functionality;
 using HealthInstitution.Core.Notifications.Repository;
+using HealthInstitution.Core.SystemUsers.Users;
+using HealthInstitution.Core.TrollCounters;
 
 namespace HealthInstitution.GUI.LoginView
 {
@@ -35,7 +37,7 @@ namespace HealthInstitution.GUI.LoginView
         {
             _usernameInput = usernameBox.Text;
             _passwordInput = passwordBox.Password.ToString();
-            return _userRepository.GetByUsername(_usernameInput);
+            return UserService.GetByUsername(_usernameInput);
         }
 
         private bool IsUserFound(User user)
@@ -96,7 +98,7 @@ namespace HealthInstitution.GUI.LoginView
                 AppointmentNotificationDoctorRepository.GetInstance();
                 AppointmentNotificationPatientRepository.GetInstance();
                 PatientRepository patientRepository = PatientRepository.GetInstance();
-                TrollCounterFileRepository.GetInstance().TrollCheck(foundUser.Username);
+                TrollCounterService.TrollCheck(foundUser.Username);
                 Patient loggedPatient = patientRepository.GetByUsername(_usernameInput);
                 new PatientWindow(loggedPatient).ShowDialog();
                 /*      }

@@ -1,5 +1,6 @@
 ﻿using HealthInstitution.Core.Examinations.Repository;
 using HealthInstitution.Core.Operations.Repository;
+using HealthInstitution.Core.SystemUsers.Patients;
 using HealthInstitution.Core.SystemUsers.Patients.Model;
 using HealthInstitution.Core.SystemUsers.Patients.Repository;
 using HealthInstitution.GUI.SecretaryView;
@@ -76,7 +77,7 @@ namespace HealthInstitution.GUI.UserWindow
             if (selectedPatient != null)
             {
                 PatientRepository patientRepository = PatientRepository.GetInstance();
-                patientRepository.ChangeBlockedStatus(selectedPatient.Username);
+                PatientService.ChangeBlockedStatus(selectedPatient.Username);
                 dataGrid.SelectedItem = null;
                 LoadRows();
             }
