@@ -18,6 +18,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using HealthInstitution.Core.MedicalRecords.Model;
 using HealthInstitution.Core.MedicalRecords.Repository;
+using HealthInstitution.Core.MedicalRecords;
 
 namespace HealthInstitution.GUI.DoctorView
 {
@@ -87,7 +88,7 @@ namespace HealthInstitution.GUI.DoctorView
             Doctor refferedDoctor = (Doctor)doctorComboBox.SelectedItem;
             ReferralDTO referralDTO = new ReferralDTO(ReferralType.SpecificDoctor, _doctor, refferedDoctor, null);
             Referral referral = _referralRepository.Add(referralDTO);
-            _medicalRecordRepository.AddReferral(_patient, referral);
+            MedicalRecordService.AddReferral(_patient, referral);
             System.Windows.MessageBox.Show("You have created the referral!", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 
@@ -97,7 +98,7 @@ namespace HealthInstitution.GUI.DoctorView
             SpecialtyType specialtyType = (SpecialtyType)specialtyComboBox.SelectedIndex;
             ReferralDTO referralDTO = new ReferralDTO(ReferralType.Specialty, _doctor, null, specialtyType);
             Referral referral = _referralRepository.Add(referralDTO);
-            _medicalRecordRepository.AddReferral(_patient, referral);
+            MedicalRecordService.AddReferral(_patient, referral);
             System.Windows.MessageBox.Show("You have created the referral!", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
         }
 

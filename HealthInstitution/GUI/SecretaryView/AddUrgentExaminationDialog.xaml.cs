@@ -1,5 +1,6 @@
 ﻿using HealthInstitution.Core.Examinations.Model;
 using HealthInstitution.Core.Examinations.Repository;
+using HealthInstitution.Core.MedicalRecords;
 using HealthInstitution.Core.MedicalRecords.Model;
 using HealthInstitution.Core.MedicalRecords.Repository;
 using HealthInstitution.Core.Operations.Model;
@@ -86,7 +87,7 @@ namespace HealthInstitution.GUI.SecretaryView
             {
                 SpecialtyType specialtyType = (SpecialtyType)specialtyTypeComboBox.SelectedItem;
                 Patient patient = (Patient)patientComboBox.SelectedItem;
-                MedicalRecord medicalRecord = MedicalRecordRepository.GetInstance().GetByPatientUsername(patient);
+                MedicalRecord medicalRecord = MedicalRecordService.GetByPatientUsername(patient);
                 List<Tuple<int,int,DateTime>> examinationsAndOperationsForDelaying = ExaminationRepository.GetInstance().ReserveUrgentExamination(patient.Username, specialtyType);
                 
                 if (examinationsAndOperationsForDelaying.Count()==1)

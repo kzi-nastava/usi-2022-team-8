@@ -19,6 +19,16 @@ public class User
         this.Surname = surname;
         this.Blocked = BlockState.NotBlocked;
     }
+
+    public User(UserDTO userDTO)
+    {
+        this.Type = userDTO.Type;
+        this.Username = userDTO.Username;
+        this.Password = userDTO.Password;
+        this.Name = userDTO.Name;
+        this.Surname = userDTO.Surname;
+        this.Blocked = BlockState.NotBlocked;
+    }
 }
 
 public enum UserType

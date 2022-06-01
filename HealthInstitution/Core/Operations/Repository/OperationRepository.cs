@@ -1,5 +1,6 @@
 ﻿using HealthInstitution.Core.Examinations.Model;
 using HealthInstitution.Core.Examinations.Repository;
+using HealthInstitution.Core.MedicalRecords;
 using HealthInstitution.Core.MedicalRecords.Model;
 using HealthInstitution.Core.MedicalRecords.Repository;
 using HealthInstitution.Core.Notifications.Model;
@@ -316,7 +317,7 @@ namespace HealthInstitution.Core.Operations.Repository
         {
             List<Tuple<int, int, DateTime>> priorityExaminationsAndOperations = new List<Tuple<int, int, DateTime>>();
             Patient patient = PatientRepository.GetInstance().GetByUsername(patientUsername);
-            var medicalRecord = MedicalRecordRepository.GetInstance().GetByPatientUsername(patient);
+            var medicalRecord = MedicalRecordService.GetByPatientUsername(patient);
             List<DateTime> nextTwoHoursAppointments = ExaminationRepository.FindNextTwoHoursAppointments();
             foreach (DateTime appointment in nextTwoHoursAppointments)
             {

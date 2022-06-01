@@ -1,5 +1,6 @@
 ﻿using HealthInstitution.Core.Drugs.Model;
 using HealthInstitution.Core.Drugs.Repository;
+using HealthInstitution.Core.Ingredients;
 using HealthInstitution.Core.Ingredients.Model;
 using HealthInstitution.Core.Ingredients.Repository;
 using System;
@@ -33,8 +34,7 @@ namespace HealthInstitution.GUI.ManagerView.DrugView
         }
         private void IngredientsComboBox_Loaded(object sender, RoutedEventArgs e)
         {
-            IngredientRepository ingredientRepository = IngredientRepository.GetInstance();
-            List<Ingredient> ingredients = ingredientRepository.GetAll();
+            List<Ingredient> ingredients = IngredientService.GetAll();
             ingredientsComboBox.ItemsSource = ingredients;
             ingredientsComboBox.SelectedItem = null;
         }

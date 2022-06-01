@@ -1,4 +1,5 @@
-﻿using HealthInstitution.Core.SystemUsers.Patients.Model;
+﻿using HealthInstitution.Core.SystemUsers.Patients;
+using HealthInstitution.Core.SystemUsers.Patients.Model;
 using HealthInstitution.Core.SystemUsers.Patients.Repository;
 using HealthInstitution.Core.SystemUsers.Users.Model;
 using HealthInstitution.Core.SystemUsers.Users.Repository;
@@ -54,7 +55,7 @@ namespace HealthInstitution.GUI.SecretaryView
                 UserRepository userRepository = UserRepository.GetInstance();
                 PatientRepository patientRepository = PatientRepository.GetInstance();
                 UserDTO userDTO = CreateUserDTOFromInputData();
-                patientRepository.Update(userDTO);
+                PatientService.Update(userDTO);
                 userRepository.Update(userDTO);
                 this.Close();
             }

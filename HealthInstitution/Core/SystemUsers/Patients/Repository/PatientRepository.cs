@@ -8,6 +8,7 @@ using HealthInstitution.Core.TrollCounters.Repository;
 using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using HealthInstitution.Core.MedicalRecords;
 
 namespace HealthInstitution.Core.SystemUsers.Patients.Repository
 {
@@ -107,35 +108,24 @@ namespace HealthInstitution.Core.SystemUsers.Patients.Repository
             return null;
         }
 
-        public void Add(UserDTO userDTO, MedicalRecords.Model.MedicalRecordDTO medicalRecordDTO)
+        public void Add(Patient patient)
         {
-            Patient patient = new Patient(userDTO.Type, userDTO.Username, userDTO.Password, userDTO.Name, userDTO.Surname);
-            MedicalRecordRepository medicalRecordRepository = MedicalRecordRepository.GetInstance();
-
-            medicalRecordDTO.Patient = patient;
             this.Patients.Add(patient);
-            this.PatientByUsername[userDTO.Username] = patient;
-            medicalRecordRepository.Add(medicalRecordDTO);
+            this.PatientByUsername[patient.Username] = patient;
             Save();
         }
 
-        public void Update(UserDTO userDTO)
+        public void Update(Patient patient)
         {
-            Patient patient = this.GetByUsername(userDTO.Username);
-            patient.Password = userDTO.Password;
-            patient.Name = userDTO.Name;
-            patient.Surname = userDTO.Surname;
-
-            this.PatientByUsername[userDTO.Username] = patient;
+            this.PatientByUsername[patient.Username] = patient;
             Save();
-            userRepository.Update(userDTO);
         }
 
         public void Delete(string username)
         {
             Patient patient = GetByUsername(username);
             TrollCounterFileRepository.GetInstance().Delete(username);
-            MedicalRecordRepository.GetInstance().Delete(patient);
+            MedicalRecordService.Delete(patient);
             this.Patients.Remove(patient);
             this.PatientByUsername.Remove(username);
             userRepository.Delete(username);

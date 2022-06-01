@@ -80,7 +80,6 @@ namespace HealthInstitution.Core.Prescriptions.Repository
         }
         public void Save()
         {
-
             var allPrescriptions = JsonSerializer.Serialize(PrepareForSerialization(), _options);
             File.WriteAllText(this._fileName, allPrescriptions);
         }
@@ -97,28 +96,18 @@ namespace HealthInstitution.Core.Prescriptions.Repository
             return null;
         }
 
-        public Prescription Add(PrescriptionDTO prescriptionDTO)
+        public Prescription Add(Prescription prescription)
         {
-            this._maxId++;
-            int id = this._maxId;
-            int dailyDose = prescriptionDTO.DailyDose;
-            PrescriptionTime timeOfUse = prescriptionDTO.TimeOfUse;
-            Drug drug = prescriptionDTO.Drug;
-
-            Prescription prescription = new Prescription(id, dailyDose, timeOfUse, drug);
+            prescription.Id = ++_maxId;
             this.Prescriptions.Add(prescription);
-            this.PrescriptionById[id] = prescription;
+            this.PrescriptionById[prescription.Id] = prescription;
             Save();
             return prescription;
         }
 
-        public void Update(int id,  PrescriptionDTO prescriptionDTO)
+        public void Update(Prescription prescription)
         {
-            Prescription prescription = GetById(id);
-            prescription.DailyDose = prescriptionDTO.DailyDose;
-            prescription.TimeOfUse = prescriptionDTO.TimeOfUse;
-            prescription.Drug = prescriptionDTO.Drug;
-            PrescriptionById[id] = prescription;
+            PrescriptionById[prescription.Id] = prescription;
             Save();
         }
 

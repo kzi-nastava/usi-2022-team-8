@@ -1,5 +1,6 @@
 ﻿using HealthInstitution.Core.Examinations.Model;
 using HealthInstitution.Core.Examinations.Repository;
+using HealthInstitution.Core.SystemUsers.Doctors;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using HealthInstitution.Core.SystemUsers.Doctors.Repository;
 using System;
@@ -67,7 +68,7 @@ namespace HealthInstitution.GUI.DoctorView
                 Examination selectedExamination = (Examination)dataGrid.SelectedItem;
                 dataGrid.Items.Remove(selectedExamination);
                 _examinationRepository.Delete(selectedExamination.Id);
-                _doctorRepository.DeleteExamination(_loggedDoctor, selectedExamination);
+                DoctorService.DeleteExamination(selectedExamination);
             }
         }
     }

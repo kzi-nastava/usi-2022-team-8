@@ -24,6 +24,17 @@ public class MedicalRecord
         this.Referrals = new List<Referral>();
     }
 
+    public MedicalRecord(MedicalRecordDTO medicalRecordDTO)
+    {
+        this.Height = medicalRecordDTO.Height;
+        this.Weight = medicalRecordDTO.Weight;
+        this.PreviousIllnesses = medicalRecordDTO.PreviousIllnesses;
+        this.Allergens = medicalRecordDTO.Allergens;
+        this.Patient = medicalRecordDTO.Patient;
+        this.Prescriptions = new List<Prescription>();
+        this.Referrals = new List<Referral>();
+    }
+
     public MedicalRecord(double height, double weight, List<string> previousIllnesses, List<string> allergens, Patient patient, List<Prescription> prescriptions, List<Referral> referrals) : this(height, weight, previousIllnesses, allergens, patient)
     {
         this.Prescriptions = prescriptions;
