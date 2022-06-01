@@ -23,6 +23,7 @@ namespace HealthInstitution.Core.MedicalRecords.Repository
             Converters = { new JsonStringEnumConverter() },
             PropertyNameCaseInsensitive = true
         };
+
         private MedicalRecordRepository(string fileName) //singleton
         {
             this._fileName = fileName;
@@ -30,7 +31,9 @@ namespace HealthInstitution.Core.MedicalRecords.Repository
             this.MedicalRecordByUsername = new Dictionary<string, MedicalRecord>();
             this.LoadFromFile();
         }
+
         private static MedicalRecordRepository s_instance = null;
+
         public static MedicalRecordRepository GetInstance()
         {
             {
@@ -41,13 +44,15 @@ namespace HealthInstitution.Core.MedicalRecords.Repository
                 return s_instance;
             }
         }
+
         private List<string> JToken2Strings(JToken tokens)
         {
             List<string> items = new List<string>();
-            foreach(string token in tokens)
+            foreach (string token in tokens)
                 items.Add(token);
             return items;
         }
+
         private List<Prescription> JToken2Prescriptions(JToken tokens)
         {
             Dictionary<int, Prescription> prescriptionById = PrescriptionRepository.GetInstance().PrescriptionById;
@@ -56,6 +61,7 @@ namespace HealthInstitution.Core.MedicalRecords.Repository
                 items.Add(prescriptionById[token]);
             return items;
         }
+
         private List<Referral> JToken2Referrals(JToken tokens)
         {
             Dictionary<int, Referral> referralById = ReferralRepository.GetInstance().ReferralById;
@@ -77,6 +83,7 @@ namespace HealthInstitution.Core.MedicalRecords.Repository
                                                                     JToken2Referrals(medicalRecord["referralsId"])
                                                                     );
         }
+
         public void LoadFromFile()
         {
             var medicalRecords = JArray.Parse(File.ReadAllText(_fileName));
@@ -88,9 +95,10 @@ namespace HealthInstitution.Core.MedicalRecords.Repository
                 this.MedicalRecordByUsername[loadedMedicalRecord.Patient.Username] = loadedMedicalRecord;
             }
         }
+
         private List<dynamic> PrepareForSerialization()
         {
-            List <dynamic> reducedMedicalRecords = new List<dynamic>();
+            List<dynamic> reducedMedicalRecords = new List<dynamic>();
             foreach (var medicalRecord in this.MedicalRecords)
             {
                 List<int> prescriptionsId = new List<int>();
@@ -112,12 +120,13 @@ namespace HealthInstitution.Core.MedicalRecords.Repository
             }
             return reducedMedicalRecords;
         }
+
         public void Save()
         {
             var allMedicalRecords = JsonSerializer.Serialize(PrepareForSerialization(), _options);
             File.WriteAllText(this._fileName, allMedicalRecords);
         }
-        
+
         public List<MedicalRecord> GetAll()
         {
             return this.MedicalRecords;
@@ -140,7 +149,7 @@ namespace HealthInstitution.Core.MedicalRecords.Repository
 
             MedicalRecord medicalRecord = new MedicalRecord(height, weight, previousIlnesses, allergens, patient);
             this.MedicalRecords.Add(medicalRecord);
-            this.MedicalRecordByUsername[patient.Username]=medicalRecord;
+            this.MedicalRecordByUsername[patient.Username] = medicalRecord;
             Save();
         }
 
@@ -170,6 +179,7 @@ namespace HealthInstitution.Core.MedicalRecords.Repository
             medicalRecord.Prescriptions.Add(prescription);
             Save();
         }
+
         public void Delete(Patient patient)
         {
             MedicalRecord medicalRecord = GetByPatientUsername(patient);

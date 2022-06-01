@@ -65,6 +65,9 @@
     <Compile Update="GUI\PatientView\ClosestFit.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="GUI\PatientView\DoctorPickExamination.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="GUI\PatientView\EditExaminationDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -75,6 +78,12 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="GUI\PatientView\PatientScheduleWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="GUI\PatientView\RecepieNotificationDialog.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="GUI\PatientView\RecepieNotificationSettingsDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="GUI\SecretaryView\AddExaminationWithReferralDialog.xaml.cs">
@@ -276,6 +285,9 @@
     <Page Update="GUI\PatientView\ClosestFit.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="GUI\PatientView\DoctorPickExamination.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="GUI\PatientView\EditExaminationDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -286,6 +298,12 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="GUI\PatientView\PatientScheduleWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="GUI\PatientView\RecepieNotificationDialog.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="GUI\PatientView\RecepieNotificationSettingsDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="GUI\SecretaryView\AddExaminationWithReferralDialog.xaml">

@@ -8,13 +8,15 @@ public class Prescription
     public int DailyDose { get; set; }
     public PrescriptionTime TimeOfUse { get; set; }
     public Drug Drug { get; set; }
+    public DateTime dateTime { get; set; }
 
-    public Prescription(int id, int dailyDose, PrescriptionTime timeOfUse, Drug drug)
+    public Prescription(int id, int dailyDose, PrescriptionTime timeOfUse, Drug drug, DateTime dateTime)
     {
         this.Id = id;
         this.DailyDose = dailyDose;
         this.TimeOfUse = timeOfUse;
         this.Drug = drug;
+        this.dateTime = dateTime;
     }
 }
 
