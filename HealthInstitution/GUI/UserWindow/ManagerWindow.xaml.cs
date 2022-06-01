@@ -14,6 +14,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using HealthInstitution.GUI.LoginView;
 using HealthInstitution.GUI.ManagerView.RenovationView;
+using HealthInstitution.GUI.ManagerView.DrugView;
 
 namespace HealthInstitution.GUI.UserWindow
 {
@@ -60,6 +61,24 @@ namespace HealthInstitution.GUI.UserWindow
         {
             SimpleRenovationWindow simpleRenovationWindow = new SimpleRenovationWindow();
             simpleRenovationWindow.ShowDialog();
+        }
+
+        private void Ingredients_Click(object sender, RoutedEventArgs e)
+        {
+            IngredientsTableWindow ingredientsTableWindow = new IngredientsTableWindow();
+            ingredientsTableWindow.ShowDialog();
+        }
+
+        private void OnVerificationDrugs_Click(object sender, RoutedEventArgs e)
+        {
+            DrugsOnVerificationTableWindow drugsOnVerificationTableWindow = new DrugsOnVerificationTableWindow();
+            drugsOnVerificationTableWindow.ShowDialog();
+        }
+
+        private void RejectedDrugs_Click(object sender, RoutedEventArgs e)
+        {
+            RejectedDrugsTableWindow rejectedDrugsTableWindow = new RejectedDrugsTableWindow();
+            rejectedDrugsTableWindow.ShowDialog();
         }
     }
 }

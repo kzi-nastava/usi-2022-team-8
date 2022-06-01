@@ -2,6 +2,7 @@
 using HealthInstitution.Core.Examinations.Repository;
 using HealthInstitution.Core.MedicalRecords.Model;
 using HealthInstitution.Core.MedicalRecords.Repository;
+using HealthInstitution.Core.Notifications.Model;
 using HealthInstitution.Core.Notifications.Repository;
 using HealthInstitution.Core.Operations.Model;
 using HealthInstitution.Core.Rooms.Model;
@@ -90,7 +91,7 @@ namespace HealthInstitution.Core.Operations.Repository
                 {
                     id = operation.Id,
                     status = operation.Status,
-                    room = operation.Room.Number,
+                    room = operation.Room.Id,
                     duration = operation.Duration,
                     appointment = operation.Appointment,
                     medicalRecord = operation.MedicalRecord.Patient.Username,
@@ -330,7 +331,8 @@ namespace HealthInstitution.Core.Operations.Repository
                             CheckIfPatientIsAvailable(operationDTO);
                             operationDTO.Room = FindAvailableRoom(operationDTO);
                             Add(operationDTO);
-                            NotificationRepository.GetInstance().Add(new DateTime(1, 1, 1), appointment, doctor, patient);
+                            AppointmentNotificationDTO appointmentNotificationDTO = new AppointmentNotificationDTO(null, appointment, doctor, patient);
+                            AppointmentNotificationRepository.GetInstance().Add(appointmentNotificationDTO);
                             priorityExaminationsAndOperations.Add(new Tuple<int, int, DateTime>(this._maxId, 2, appointment));
                             return priorityExaminationsAndOperations;
                         }

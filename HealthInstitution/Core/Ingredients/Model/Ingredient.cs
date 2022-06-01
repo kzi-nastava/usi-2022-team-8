@@ -10,4 +10,8 @@ public class Ingredient
         this.Id = id;
         this.Name = name;
     }
+    public override string? ToString()
+    {
+        return this.Name;
+    }
 }

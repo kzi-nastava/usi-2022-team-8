@@ -23,7 +23,11 @@ namespace HealthInstitution.Core.EquipmentTransfers.Functionality
             
             foreach (EquipmentTransfer equipmentTransfer in s_equipmentTransferRepository.EquipmentTransfers)
             {
-                if (equipmentTransfer.TransferTime == DateTime.Today)
+                if(equipmentTransfer.ToRoom.Id==1 &&equipmentTransfer.TransferTime<=DateTime.Now)
+                {
+                    FillWarehouse(equipmentTransfer, equipmentTransfersToRemove);
+                }
+                if (equipmentTransfer.TransferTime <= DateTime.Today)
                 {
                     Equipment equipmentFromRoom = equipmentTransfer.FromRoom.AvailableEquipment.Find(eq => (eq.Type == equipmentTransfer.Equipment.Type && eq.Name == equipmentTransfer.Equipment.Name));
                     Transfer(equipmentTransfer.ToRoom, equipmentFromRoom, equipmentTransfer.Equipment.Quantity);
@@ -32,6 +36,12 @@ namespace HealthInstitution.Core.EquipmentTransfers.Functionality
             }
             RemoveOldTransfers(equipmentTransfersToRemove);
             
+        }
+        private static void FillWarehouse(EquipmentTransfer equipmentTransfer, List<int> equipmentTransfersToRemove)
+        {
+            Equipment purchasedEquipment = s_equipmentRepository.EquipmentById[equipmentTransfer.Equipment.Id];
+            Transfer(equipmentTransfer.ToRoom, purchasedEquipment, purchasedEquipment.Quantity);
+            equipmentTransfersToRemove.Add(equipmentTransfer.Id);
         }
 
         private static void RemoveOldTransfers(List<int> equipmentTransfersToRemove)
@@ -54,7 +64,7 @@ namespace HealthInstitution.Core.EquipmentTransfers.Functionality
             else
             {
                 EquipmentDTO equipmentDTO = new EquipmentDTO(quantity, equipment.Name, equipment.Type, equipment.IsDynamic);
-                Equipment newEquipment = s_equipmentRepository.Add(equipmentDTO);
+                Equipment newEquipment =(toRoom.Id==1)?equipment: s_equipmentRepository.Add(equipmentDTO);
                 s_roomRepository.AddToRoom(toRoom.Id, newEquipment);
             }
         }

@@ -180,53 +180,10 @@ internal class DoctorRepository
         return operationsForDate;
     }
 
-    public void DeleteNotification(Doctor doctor, Notification notification)
-    {
-        doctor.Notifications.Remove(notification);
-        Save();
-    }
-
-    public void ChangeRating(string username, double rating)
-    {
-        GetById(username).AvgRating = rating;
-    }
-
-    public List<Doctor> SearchDoctorByName(string keyword)
-    {
-        keyword = keyword.Trim();
-        List<Doctor> resault = new List<Doctor>();
-
-        foreach (Doctor doctor in Doctors)
+        public void DeleteNotification(Doctor doctor, AppointmentNotification notification)
         {
-            if (doctor.Name.ToLower().Contains(keyword)) resault.Add(doctor);
+            doctor.Notifications.Remove(notification);
+            Save();
         }
-
-        return resault;
-    }
-
-    public List<Doctor> SearchDoctorBySurname(string keyword)
-    {
-        keyword = keyword.Trim();
-        List<Doctor> resault = new List<Doctor>();
-
-        foreach (Doctor doctor in Doctors)
-        {
-            if (doctor.Surname.ToLower().Contains(keyword)) resault.Add(doctor);
-        }
-
-        return resault;
-    }
-
-    public List<Doctor> SearchDoctorBySpeciality(string keyword)
-    {
-        keyword = keyword.Trim();
-        List<Doctor> resault = new List<Doctor>();
-
-        foreach (Doctor doctor in Doctors)
-        {
-            if (doctor.Specialty.ToString().ToLower().Contains(keyword)) resault.Add(doctor);
-        }
-
-        return resault;
     }
 }

@@ -26,24 +26,24 @@ namespace HealthInstitution.GUI.PatientView
     {
         private Patient _loggedPatient;
         private PatientRepository _patientRepository;
-        private NotificationRepository _notificationRepository;
+        private AppointmentNotificationRepository _notificationRepository;
         public PatientNotificationsDialog(Patient patient)
         {
             _loggedPatient = patient;
             _patientRepository = PatientRepository.GetInstance();
-            _notificationRepository = NotificationRepository.GetInstance();
+            _notificationRepository = AppointmentNotificationRepository.GetInstance();
             InitializeComponent();
             LoadRows();
         }
         private void LoadRows()
         {
             dataGrid.Items.Clear();
-            List<Notification> patientsNotifications = _loggedPatient.Notifications;
-            foreach (Notification notification in patientsNotifications)
+            List<AppointmentNotification> patientsNotifications = _loggedPatient.Notifications;
+            foreach (AppointmentNotification notification in patientsNotifications)
             {
                 dataGrid.Items.Add(notification);
                 notification.ActiveForPatient = false;
-                NotificationRepository.GetInstance().Save();
+                AppointmentNotificationRepository.GetInstance().Save();
                 /*_notificationRepository.Delete(notification.Id);
                 _patientRepository.DeleteNotification(_loggedPatient, notification);*/
             }
