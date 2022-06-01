@@ -86,4 +86,14 @@ public class RecepieNotificationRepository
         }
         return ownNotifications;
     }
+
+    public List<RecepieNotification> GetPatientActiveNotification(string username)
+    {
+        List<RecepieNotification> ownNotifications = new List<RecepieNotification>();
+        foreach (var notification in this.Notifications)
+        {
+            if (notification.Patient == username && notification.ActiveForPatient) ownNotifications.Add(notification);
+        }
+        return ownNotifications;
+    }
 }

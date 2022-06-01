@@ -1,21 +1,26 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using HealthInstitution.Core.Prescriptions.Model;
+using HealthInstitution.Core.Prescriptions.Repository;
+using HealthInstitution.Core.RecepieNotifications.Model;
 
 namespace HealthInstitution.GUI.PatientView;
 
 /// <summary>
 /// Interaction logic for RecepieNotificationSettings.xaml
 /// </summary>
-public partial class RecepieNotificationSettings : Window
+public partial class RecepieNotificationSettingsDialog : Window
 {
     private int _hours;
     private int _minutes;
+    private string _loggedPatinet;
+    private List<Prescription> _prescriptions;
 
-    public RecepieNotificationSettings()
+    public RecepieNotificationSettingsDialog(string loggedPatient)
     {
         InitializeComponent();
-        FormDataGrid();
+        _loggedPatinet = loggedPatient;
+        _prescriptions = PrescriptionRepository.GetInstance().Prescriptions;
     }
 
     private void HourComboBox_Loaded(object sender, RoutedEventArgs e)
@@ -58,9 +63,23 @@ public partial class RecepieNotificationSettings : Window
 
     private void Button_Click(object sender, RoutedEventArgs e)
     {
+        Prescription prescription = _prescriptions[dataGrid.SelectedIndex];
+        DateTime before = DateTime.Today;
+        before = before.AddMinutes(_minutes).AddHours(_hours);
+        RecepieNotificationSettings recepieNotificationSettings = new RecepieNotificationSettings(before, _loggedPatinet, prescription, DateTime.Now, prescription.Id);
+        RecepieNotificationGenerator recepieNotificationGenerator = new RecepieNotificationGenerator(_loggedPatinet);
+        List<DateTime> dateTimes = recepieNotificationGenerator.GenerateDateTimes(recepieNotificationSettings);
+        recepieNotificationGenerator.GenerateCronJobs(dateTimes, recepieNotificationSettings);
     }
 
-    private void FormDataGrid()
+    private void LoadRows()
     {
+        dataGrid.Items.Clear();
+
+        foreach (var prescription in _prescriptions)
+        {
+            dataGrid.Items.Add(prescription);
+        }
+        dataGrid.SelectedIndex = 0;
     }
 }

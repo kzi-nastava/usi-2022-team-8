@@ -1,0 +1,18 @@
+﻿<Window x:Class="HealthInstitution.GUI.PatientView.RecepieNotificationDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:HealthInstitution.GUI.PatientView"
+        mc:Ignorable="d"
+        Title="RecepieNotificationDialog" Height="243" Width="800">
+    <Grid Height="225" VerticalAlignment="Top">
+        <DataGrid  ItemsSource="{Binding RecepieNotification}" AutoGenerateColumns="False" Name="dataGrid"  Height="250" VerticalAlignment="Top">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Id" FontSize="18" Binding="{Binding Prescription.Drug.Nmae}" Width ="140" />
+                <DataGridTextColumn Header="DailyDose" FontSize="18" Binding="{Binding TriggerTime}" Width ="140" />
+                <DataGridTextColumn Header="TimeOfUse" FontSize="18" Binding="{Binding TimeOfUse}" Width ="140" />
+            </DataGrid.Columns>
+        </DataGrid>
+    </Grid>
+</Window>

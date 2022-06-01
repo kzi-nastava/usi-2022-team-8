@@ -39,6 +39,7 @@ namespace HealthInstitution.GUI.UserWindow
             InitializeComponent();
             this._loggedPatient = loggedPatient;
             ShowNotificationsDialog();
+            new RecepieNotificationDialog(loggedPatient.Username).ShowDialog();
         }
 
         private void ShowNotificationsDialog()

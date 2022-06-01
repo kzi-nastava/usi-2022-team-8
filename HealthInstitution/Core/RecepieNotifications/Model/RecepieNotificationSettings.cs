@@ -4,7 +4,7 @@ namespace HealthInstitution.Core.RecepieNotifications.Model;
 
 public class RecepieNotificationSettings
 {
-    public RecepieNotificationSettings(DateTime beforeAmmount, string patientUsername, Prescription prescription, DateTime lastUpdated, string id)
+    public RecepieNotificationSettings(DateTime beforeAmmount, string patientUsername, Prescription prescription, DateTime lastUpdated, int id)
     {
         BeforeAmmount = beforeAmmount;
         PatientUsername = patientUsername;
@@ -17,5 +17,5 @@ public class RecepieNotificationSettings
     public string PatientUsername { get; set; }
     public Prescription Prescription { get; set; }
     public DateTime LastUpdated { get; set; }
-    public string Id { get; set; }
+    public int Id { get; set; }
 }

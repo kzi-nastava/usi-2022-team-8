@@ -48,7 +48,7 @@ public class RecepieNotificationGenerator
         return lastDateTime;
     }
 
-    private void GenerateCronJobs(List<DateTime> dateTimes, RecepieNotificationSettings setting)
+    public void GenerateCronJobs(List<DateTime> dateTimes, RecepieNotificationSettings setting)
     {
         recepieNotificationCronJob recepieNotificationCronJob = new recepieNotificationCronJob();
         foreach (DateTime dateTime in dateTimes)
@@ -83,7 +83,7 @@ public class RecepieNotificationGenerator
         return dateTimes;
     }
 
-    private List<DateTime> GenerateDateTimes(RecepieNotificationSettings setting)
+    public List<DateTime> GenerateDateTimes(RecepieNotificationSettings setting)
     {
         double increment = CalculateIncrement(setting);
         List<DateTime> notificationTimes = new List<DateTime>();

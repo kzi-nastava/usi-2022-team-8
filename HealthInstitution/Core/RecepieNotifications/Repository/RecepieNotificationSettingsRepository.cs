@@ -14,7 +14,7 @@ public class RecepieNotificationSettingsRepository
 {
     private String _fileName;
     public List<RecepieNotificationSettings> Settings { get; set; }
-    public Dictionary<String, RecepieNotificationSettings> SettingsById { get; set; }
+    public Dictionary<int, RecepieNotificationSettings> SettingsById { get; set; }
 
     private JsonSerializerOptions _options = new JsonSerializerOptions
     {
@@ -26,7 +26,7 @@ public class RecepieNotificationSettingsRepository
     {
         this._fileName = fileName;
         this.Settings = new List<RecepieNotificationSettings>();
-        this.SettingsById = new Dictionary<String, RecepieNotificationSettings>();
+        this.SettingsById = new Dictionary<int, RecepieNotificationSettings>();
         this.LoadFromFile();
     }
 
@@ -59,7 +59,7 @@ public class RecepieNotificationSettingsRepository
         File.WriteAllText(this._fileName, allRatings);
     }
 
-    public RecepieNotificationSettings GetById(string id)
+    public RecepieNotificationSettings GetById(int id)
     {
         return this.SettingsById[id];
     }
@@ -71,7 +71,7 @@ public class RecepieNotificationSettingsRepository
         Save();
     }
 
-    public void Delete(string id)
+    public void Delete(int id)
     {
         RecepieNotificationSettings setting = SettingsById[id];
         if (setting != null)
@@ -82,12 +82,12 @@ public class RecepieNotificationSettingsRepository
         }
     }
 
-    public RecepieNotificationSettings GetRecepieNotificationSettings(string prescription)
-    {
-        foreach (var setting in this.Settings)
-        {
-            if (setting.Id == prescription) return setting;
-        }
-        return null;
-    }
+    /* public RecepieNotificationSettings GetRecepieNotificationSettings(string prescription)
+     {
+         foreach (var setting in this.Settings)
+         {
+             if (setting.Id == prescription) return setting;
+         }
+         return null;
+     }*/
 }

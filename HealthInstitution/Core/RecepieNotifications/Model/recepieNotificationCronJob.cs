@@ -12,8 +12,10 @@ public class recepieNotificationCronJob
 {
     public void GenerateJob(string loggedUser, RecepieNotificationSettings settings, DateTime dateTime)
     {
-        StdSchedulerFactory factory = new StdSchedulerFactory();
-        IScheduler scheduler = (IScheduler)factory.GetScheduler();
+        ISchedulerFactory schedFact = new StdSchedulerFactory();
+
+        // get a scheduler
+        IScheduler scheduler = StdSchedulerFactory.GetDefaultScheduler().Result;
         scheduler.Start();
 
         IJobDetail job = JobBuilder.Create<RecepieNotificationSender>()
@@ -24,11 +26,12 @@ public class recepieNotificationCronJob
 
         ITrigger trigger = TriggerBuilder.Create()
        .WithIdentity("trigger3", "group1")
-       .WithCronSchedule("0 " + dateTime.Minute + " " + dateTime.Hour + " * * *", x => x
+       .WithCronSchedule("0 0/1 * * * ?", x => x
            .InTimeZone(TimeZoneInfo.FindSystemTimeZoneById("Central America Standard Time")))
        .ForJob(job)
        .Build();
-
         scheduler.ScheduleJob(job, trigger);
+
+        //"0 " + dateTime.Minute + " " + dateTime.Hour + " * * ?"
     }
 }

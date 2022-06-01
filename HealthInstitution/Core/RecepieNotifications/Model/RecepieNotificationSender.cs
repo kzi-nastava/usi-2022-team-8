@@ -25,7 +25,7 @@ public class RecepieNotificationSender : IJob
         if (_loggedUsername == _settings.PatientUsername)
         {
             recepieNotification.ActiveForPatient = false;
-            //TODO GenerateWindow
+            MessageBox.Show("Take " + recepieNotification.Prescription.Drug.Name + " at " + recepieNotification.TriggerDateTime + " " + recepieNotification.Prescription.TimeOfUse);
         }
         RecepieNotificationRepository.GetInstance().Add(recepieNotification);
     }
