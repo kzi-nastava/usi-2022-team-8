@@ -13,4 +13,10 @@ public class RoomSeparation : Renovation
         this.FirstRoom = firstRoom;
         this.SecondRoom = secondRoom;
     }
+
+    public RoomSeparation(RoomSeparationDTO roomSeparationDTO) : base(roomSeparationDTO)
+    {
+        this.FirstRoom = roomSeparationDTO.FirstRoom;
+        this.SecondRoom = roomSeparationDTO.SecondRoom;
+    }
 }

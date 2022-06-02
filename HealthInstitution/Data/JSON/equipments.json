@@ -170,7 +170,7 @@
   },
   {
     "Id": 29,
-    "Quantity": 100,
+    "Quantity": 90,
     "Name": "paper",
     "Type": "AppointmentEquipment",
     "IsDynamic": true
@@ -186,6 +186,13 @@
     "Id": 31,
     "Quantity": 16,
     "Name": "hanzaplast",
+    "Type": "AppointmentEquipment",
+    "IsDynamic": true
+  },
+  {
+    "Id": 32,
+    "Quantity": 10,
+    "Name": "paper",
     "Type": "AppointmentEquipment",
     "IsDynamic": true
   }

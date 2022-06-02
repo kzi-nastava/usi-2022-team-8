@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.TrollCounters.Model;
@@ -12,6 +13,7 @@ public class TrollCounter
     public List<DateTime> CreateDates { get; set; }
     public List<DateTime> EditDeleteDates { get; set; }
 
+    [JsonConstructor]
     public TrollCounter(string username, List<DateTime> createDates, List<DateTime> editDeleteDates)
     {
         this.Username = username;

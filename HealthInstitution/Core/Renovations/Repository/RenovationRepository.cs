@@ -120,7 +120,7 @@ namespace HealthInstitution.Core.Renovations.Repository
                     type = "simple"
                 });
             }
-            else if (renovation.GetType() == typeof(RoomMerger))
+            else if (renovation.IsRoomMerger())
             {
                 RoomMerger roomMerger = (RoomMerger)renovation;
                 reducedRenovation.Add(new
@@ -168,77 +168,45 @@ namespace HealthInstitution.Core.Renovations.Repository
             return null;
         }
 
-        public void AddRenovation(RenovationDTO renovationDTO)
+        public void AddRenovation(Renovation renovation)
         {
             this._maxId++;
             int id = this._maxId;
-            Room room = renovationDTO.Room;
-            DateTime startDate = renovationDTO.StartDate;
-            DateTime endDate = renovationDTO.EndDate;
-            Renovation renovation = new Renovation(id, room, startDate, endDate);
+            renovation.Id = id;
+
             this.Renovations.Add(renovation);
             this.RenovationById.Add(renovation.Id, renovation);
             Save();
         }
 
-        public void AddRoomMerger(RoomMergerDTO roomMergerDTO)
-        {
-            this._maxId++;
-            int id = this._maxId;
-            Room initialRoom = roomMergerDTO.Room;
-            Room roomForMerge = roomMergerDTO.RoomForMerge;
-            Room mergedRoom = roomMergerDTO.MergedRoom;
-            DateTime startDate = roomMergerDTO.StartDate;
-            DateTime endDate = roomMergerDTO.EndDate;
-            Renovation renovation = new RoomMerger(id, initialRoom, roomForMerge, mergedRoom, startDate, endDate);
-            this.Renovations.Add(renovation);
-            this.RenovationById.Add(renovation.Id, renovation);
-            Save();
-        }
-
-        public void AddRoomSeparation(RoomSeparationDTO roomSeparationDTO)
-        {
-            this._maxId++;
-            int id = this._maxId;
-            Room initialRoom = roomSeparationDTO.Room;
-            Room firstRoom = roomSeparationDTO.FirstRoom;
-            Room secondRoom = roomSeparationDTO.SecondRoom;
-            DateTime startDate = roomSeparationDTO.StartDate;
-            DateTime endDate = roomSeparationDTO.EndDate;
-            Renovation renovation = new RoomSeparation(id, initialRoom, firstRoom, secondRoom, startDate, endDate);
-            this.Renovations.Add(renovation);
-            this.RenovationById.Add(renovation.Id, renovation);
-            Save();
-        }
-
-        public void UpdateRenovation(int id, RenovationDTO renovationDTO)
+        public void UpdateRenovation(int id, Renovation byRenovation)
         {
             Renovation renovation = GetById(id);
-            renovation.Room = renovationDTO.Room;
-            renovation.StartDate = renovationDTO.StartDate;
-            renovation.EndDate = renovationDTO.EndDate;
+            renovation.Room = byRenovation.Room;
+            renovation.StartDate = byRenovation.StartDate;
+            renovation.EndDate = byRenovation.EndDate;
             Save();
         }
 
-        public void UpdateRoomMerger(int id, RoomMergerDTO roomMergerDTO)
+        public void UpdateRoomMerger(int id, RoomMerger byRoomMerger)
         {
             RoomMerger renovation = (RoomMerger)GetById(id);
-            renovation.Room = roomMergerDTO.Room;
-            renovation.RoomForMerge = roomMergerDTO.RoomForMerge;
-            renovation.MergedRoom = roomMergerDTO.MergedRoom;
-            renovation.StartDate = roomMergerDTO.StartDate;
-            renovation.EndDate = roomMergerDTO.EndDate;
+            renovation.Room = byRoomMerger.Room;
+            renovation.RoomForMerge = byRoomMerger.RoomForMerge;
+            renovation.MergedRoom = byRoomMerger.MergedRoom;
+            renovation.StartDate = byRoomMerger.StartDate;
+            renovation.EndDate = byRoomMerger.EndDate;
             Save();
         }
 
-        public void UpdateRoomSeparation(int id, RoomSeparationDTO roomSeparationDTO)
+        public void UpdateRoomSeparation(int id, RoomSeparation byRoomSeparation)
         {
             RoomSeparation renovation = (RoomSeparation)GetById(id);
-            renovation.Room = roomSeparationDTO.Room;
-            renovation.FirstRoom = roomSeparationDTO.FirstRoom;
-            renovation.SecondRoom = roomSeparationDTO.SecondRoom;
-            renovation.StartDate = roomSeparationDTO.StartDate;
-            renovation.EndDate = roomSeparationDTO.EndDate;
+            renovation.Room = byRoomSeparation.Room;
+            renovation.FirstRoom = byRoomSeparation.FirstRoom;
+            renovation.SecondRoom = byRoomSeparation.SecondRoom;
+            renovation.StartDate = byRoomSeparation.StartDate;
+            renovation.EndDate = byRoomSeparation.EndDate;
             Save();
         }
 

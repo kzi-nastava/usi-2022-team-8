@@ -6,6 +6,9 @@ using HealthInstitution.Core.Referrals.Repository;
 using HealthInstitution.Core.ScheduleEditRequests.Model;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using HealthInstitution.Core.SystemUsers.Doctors.Repository;
+using HealthInstitution.Core.Examinations.Repository;
+using HealthInstitution.Core.Operations.Repository;
+using HealthInstitution.Core.Rooms.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +21,22 @@ namespace HealthInstitution.Core.Scheduling
     internal static class SchedulingService
     {
         //koristiti urgentService
+        private static ExaminationRepository s_examinationRepository = ExaminationRepository.GetInstance();
+        private static OperationRepository s_operationRepository = OperationRepository.GetInstance();
+
+        public static bool CheckOccurrenceOfRoom(Room room)
+        {
+            if (s_examinationRepository.Examinations.Find(examination => examination.Room == room) == null)
+            {
+                return false;
+            }
+
+            if (s_operationRepository.Operations.Find(operation => operation.Room == room) == null)
+            {
+                return false;
+            }
+            return true;
+        }
         public static void RedirectByType(Referral referral, DateTime appointment, MedicalRecord medicalRecord)
         {
             if (referral.Type == ReferralType.SpecificDoctor)
@@ -82,88 +101,3 @@ namespace HealthInstitution.Core.Scheduling
         }
     }
 }
-
-
-
-
-/*private ExaminationDTO? CreateExaminationDTOFromInputData(Doctor doctor)
-        {
-            DateTime appointment = (DateTime)datePicker.SelectedDate;
-            int minutes = int.Parse(minuteComboBox.Text);
-            int hours = int.Parse(hourComboBox.Text);
-            appointment = appointment.AddHours(hours);
-            appointment = appointment.AddMinutes(minutes);
-            ExaminationDTO examination = new ExaminationDTO(appointment, null, doctor, _medicalRecord);
-            if (examination.Appointment <= DateTime.Now)
-            {
-                System.Windows.MessageBox.Show("You have to change dates for upcoming ones!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                return null;
-            }
-            else
-                return examination;
-        }
-
-        private void ScheduleWithSpecificDoctor1()
-        {
-            try
-            {
-                ExaminationDTO? examination = CreateExaminationDTOFromInputData(_referral.ReferredDoctor);
-                if(examination!=null)
-                {
-                    ExaminationRepository.GetInstance().ReserveExamination(examination);
-                    System.Windows.MessageBox.Show("You have scheduled the examination!", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
-                    _referral.Active = false;
-                    ReferralRepository.GetInstance().Save(); //TODO
-                    Close();
-                }
-            }
-            catch (Exception ex)
-            {
-                System.Windows.MessageBox.Show(ex.Message, "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
-            }
-        }
-        private void ScheduleWithOrderedSpecialist1(Doctor doctor)
-        {
-            try
-            {
-                ExaminationDTO? examination = CreateExaminationDTOFromInputData(doctor);
-                if (examination!=null)
-                {
-                    ExaminationRepository.GetInstance().ReserveExamination(examination);
-                    System.Windows.MessageBox.Show("You have scheduled the examination! Doctor: " + doctor.Name + " " + doctor.Surname, "Info", MessageBoxButton.OK, MessageBoxImage.Information);
-                    _referral.Active = false;
-                    ReferralRepository.GetInstance().Save(); //TODO
-                    Close();
-                }
-            }
-            catch (Exception ex)
-            {
-                if (ex.Message == "That doctor is not available")
-                    throw new Exception("That doctor is not available");
-                else
-                    System.Windows.MessageBox.Show(ex.Message, "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
-            }
-        }
-        void ScheduleWithOrderedSpecialty1() 
-        {
-            List<Doctor> doctors = DoctorRepository.GetInstance().Doctors;
-            foreach (Doctor doctor in doctors)
-            {
-                if (doctor.Specialty == _referral.ReferredSpecialty)
-                {
-                    try
-                    {
-                        ScheduleWithOrderedSpecialist(doctor);
-                        break;
-                    }
-                    catch
-                    {
-                        continue;
-                    }
-
-                }
-            }
-        }*/
-
-
-
