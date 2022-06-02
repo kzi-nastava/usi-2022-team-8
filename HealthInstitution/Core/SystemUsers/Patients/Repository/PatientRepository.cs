@@ -115,8 +115,12 @@ namespace HealthInstitution.Core.SystemUsers.Patients.Repository
             Save();
         }
 
-        public void Update(Patient patient)
+        public void Update(Patient byPatient)
         {
+            Patient patient = GetByUsername(byPatient.Username);
+            patient.Password = byPatient.Password;
+            patient.Name = byPatient.Name;
+            patient.Surname = byPatient.Surname;
             this.PatientByUsername[patient.Username] = patient;
             Save();
         }

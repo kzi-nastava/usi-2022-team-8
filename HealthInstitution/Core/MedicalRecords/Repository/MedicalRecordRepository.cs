@@ -137,8 +137,15 @@ namespace HealthInstitution.Core.MedicalRecords.Repository
             Save();
         }
 
-        public void Update(MedicalRecord medicalRecord)
+        public void Update(MedicalRecord byMedicalRecord)
         {
+            MedicalRecord medicalRecord = GetByPatientUsername(byMedicalRecord.Patient);
+            medicalRecord.Height = byMedicalRecord.Height;
+            medicalRecord.Weight = byMedicalRecord.Weight;
+            medicalRecord.Prescriptions = byMedicalRecord.Prescriptions;
+            medicalRecord.Referrals = byMedicalRecord.Referrals;
+            medicalRecord.PreviousIllnesses = byMedicalRecord.PreviousIllnesses;
+            medicalRecord.Allergens = byMedicalRecord.Allergens;
             MedicalRecordByUsername[medicalRecord.Patient.Username] = medicalRecord;
             Save();
         }

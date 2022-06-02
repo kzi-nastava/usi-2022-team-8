@@ -24,11 +24,8 @@ namespace HealthInstitution.Core.Prescriptions
 
         public static void Update(int id, PrescriptionDTO prescriptionDTO)
         {
-            Prescription prescription = s_prescriptionRepository.GetById(id);
-            prescription.DailyDose = prescriptionDTO.DailyDose;
-            prescription.TimeOfUse = prescriptionDTO.TimeOfUse;
-            prescription.Drug = prescriptionDTO.Drug;
-            s_prescriptionRepository.Update(prescription);
+            Prescription prescription = new Prescription(prescriptionDTO);
+            s_prescriptionRepository.Update(id, prescription);
         }
 
         public static void Delete(int id)

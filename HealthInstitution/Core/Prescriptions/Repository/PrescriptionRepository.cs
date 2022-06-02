@@ -105,9 +105,13 @@ namespace HealthInstitution.Core.Prescriptions.Repository
             return prescription;
         }
 
-        public void Update(Prescription prescription)
+        public void Update(int id, Prescription byPrescription)
         {
-            PrescriptionById[prescription.Id] = prescription;
+            Prescription prescription = GetById(id);
+            prescription.DailyDose = byPrescription.DailyDose;
+            prescription.TimeOfUse = byPrescription.TimeOfUse;
+            prescription.Drug = byPrescription.Drug;
+            PrescriptionById[id] = prescription;
             Save();
         }
 

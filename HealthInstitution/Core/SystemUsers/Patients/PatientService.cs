@@ -36,10 +36,7 @@ namespace HealthInstitution.Core.SystemUsers.Patients
         //updateovati u useru
         public static void Update(UserDTO userDTO)
         {
-            Patient patient = s_patientRepository.GetByUsername(userDTO.Username);
-            patient.Password = userDTO.Password;
-            patient.Name = userDTO.Name;
-            patient.Surname = userDTO.Surname;
+            Patient patient = new Patient(userDTO);
             s_patientRepository.Update(patient);
         }
 

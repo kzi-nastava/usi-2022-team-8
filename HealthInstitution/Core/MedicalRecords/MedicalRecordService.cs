@@ -32,13 +32,7 @@ namespace HealthInstitution.Core.MedicalRecords
 
         public static void Update(MedicalRecordDTO medicalRecordDTO)
         {
-            MedicalRecord medicalRecord = GetByPatientUsername(medicalRecordDTO.Patient);
-            medicalRecord.Height = medicalRecordDTO.Height;
-            medicalRecord.Weight = medicalRecordDTO.Weight;
-            medicalRecord.Prescriptions = medicalRecordDTO.Prescriptions;
-            medicalRecord.Referrals = medicalRecordDTO.Referrals;
-            medicalRecord.PreviousIllnesses = medicalRecordDTO.PreviousIllnesses;
-            medicalRecord.Allergens = medicalRecordDTO.Allergens;
+            MedicalRecord medicalRecord = new MedicalRecord(medicalRecordDTO);
             s_medicalRecordRepository.Update(medicalRecord);
         }
 
