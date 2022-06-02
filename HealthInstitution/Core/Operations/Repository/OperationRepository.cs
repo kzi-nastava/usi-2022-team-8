@@ -110,6 +110,16 @@ namespace HealthInstitution.Core.Operations.Repository
             File.WriteAllText(this._fileName, allOperations);
         }
 
+        private void ChangeStatus()
+        {
+            foreach (var operation in this.Operations)
+            {
+                if ((operation.Status == ExaminationStatus.Scheduled) && (operation.Appointment <= DateTime.Now))
+                    operation.Status = ExaminationStatus.Completed;
+            }
+            Save();
+        }
+
         public List<Operation> GetAll()
         {
             return this.Operations;
@@ -123,16 +133,12 @@ namespace HealthInstitution.Core.Operations.Repository
             }
             return null;
         }
-        
 
-        private void ChangeStatus()
+        private void AddToCollections(Operation operation)
         {
-            foreach (var operation in this.Operations)
-            {
-                if ((operation.Status == ExaminationStatus.Scheduled) && (operation.Appointment <= DateTime.Now))
-                    operation.Status = ExaminationStatus.Completed;
-            }
-            Save();
+            operation.Doctor.Operations.Add(operation);
+            Operations.Add(operation);
+            OperationsById.Add(operation.Id, operation);
         }
 
         //greska ne sme pozivati ovaj save.
@@ -144,26 +150,17 @@ namespace HealthInstitution.Core.Operations.Repository
             Save();
             OperationDoctorRepository.GetInstance().Save();
         }
-        private void AddToCollections(Operation operation)
-        {
-            operation.Doctor.Operations.Add(operation);
-            Operations.Add(operation);
-            OperationsById.Add(operation.Id, operation);
-        }
 
-        public void Update(int id, OperationDTO operationDTO)
+        public void Update(int id, Operation operation)
         {
-            Operation operation = OperationsById[id];
-            
-            CheckIfDoctorIsAvailable(operationDTO, id);
-            CheckIfPatientIsAvailable(operationDTO, id);
-            operation.Appointment = operationDTO.Appointment;
-            operation.MedicalRecord = operationDTO.MedicalRecord;
-            operation.Duration = operationDTO.Duration;
+            operation.Appointment = operation.Appointment;
+            operation.MedicalRecord = operation.MedicalRecord;
+            operation.Duration = operation.Duration;
             this.OperationsById[id] = operation;
             Save();
         }
 
+        //ispraviti 
         public void Delete(int id)
         {
             Operation operation = OperationsById[id];
@@ -177,10 +174,8 @@ namespace HealthInstitution.Core.Operations.Repository
         {
             var oldOperation = this.OperationsById[operation.Id];
             this.Operations.Remove(oldOperation);
-            this.Operations.Add(operation);
-            operation.Doctor.Operations.Add(operation);
             oldOperation.Doctor.Operations.Remove(oldOperation);
-            this.OperationsById[operation.Id] = operation;
+            AddToCollections(operation);
             Save();
         }
     }

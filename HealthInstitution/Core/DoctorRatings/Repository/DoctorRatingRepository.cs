@@ -51,7 +51,7 @@ public class DoctorRatingRepository
         {
             this.Ratings.Add(doctorRating);
             this.RatingsById.Add(doctorRating.Username, doctorRating);
-            DoctorRepository.GetInstance().ChangeRating(doctorRating.Username, doctorRating.GetAverage());
+            //DoctorRepository.GetInstance().ChangeRating(doctorRating.Username, doctorRating.GetAverage());
         }
     }
 

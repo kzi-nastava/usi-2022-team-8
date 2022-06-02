@@ -55,13 +55,5 @@ namespace HealthInstitution.Core.SystemUsers.Patients
             //TrollCounterFileRepository.GetInstance().Delete(username);
             //userRepository.Delete(username);
         }
-        public static List<Operation> GetPatientOperations(Patient patient)
-        {
-            List<Operation> patientOperations = new List<Operation>();
-            foreach (var operation in OperationRepository.GetInstance().GetAll())
-                if (operation.MedicalRecord.Patient.Username == patient.Username)
-                    patientOperations.Add(operation);
-            return patientOperations;
-        }
     } 
 }

@@ -22,6 +22,7 @@ using HealthInstitution.Core.Notifications.Repository;
 using HealthInstitution.Core.RecommededDTO;
 using HealthInstitution.Core.Notifications.Model;
 using HealthInstitution.Core.MedicalRecords;
+using HealthInstitution.Core.Operations;
 
 namespace HealthInstitution.Core.Examinations.Repository;
 
@@ -262,7 +263,7 @@ internal class ExaminationRepository
     {
         var patient = examinationDTO.MedicalRecord.Patient;
         DateTime appointment = examinationDTO.Appointment;
-        var patientOperations = OperationRepository.GetInstance().GetPatientOperations(patient);
+        var patientOperations = OperationService.GetPatientOperations(patient);
 
         foreach (var operation in patientOperations)
         {

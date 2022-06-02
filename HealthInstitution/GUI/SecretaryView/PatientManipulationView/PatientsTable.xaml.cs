@@ -1,4 +1,5 @@
 ﻿using HealthInstitution.Core.Examinations.Repository;
+using HealthInstitution.Core.Operations;
 using HealthInstitution.Core.Operations.Repository;
 using HealthInstitution.Core.SystemUsers.Patients;
 using HealthInstitution.Core.SystemUsers.Patients.Model;
@@ -51,7 +52,7 @@ namespace HealthInstitution.GUI.UserWindow
         }
         private void TryDeletingPatient(Patient selectedPatient)
         {
-            if (_examinationRepository.GetPatientExaminations(selectedPatient).Count() == 0 && _operationRepository.GetPatientOperations(selectedPatient).Count() == 0)
+            if (_examinationRepository.GetPatientExaminations(selectedPatient).Count() == 0 && OperationService.GetPatientOperations(selectedPatient).Count() == 0)
             {
                 _patientRepository.Delete(selectedPatient.Username);
                 dataGrid.SelectedItem = null;

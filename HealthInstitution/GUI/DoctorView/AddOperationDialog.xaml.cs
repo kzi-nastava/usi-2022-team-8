@@ -3,6 +3,7 @@ using HealthInstitution.Core.MedicalRecords;
 using HealthInstitution.Core.MedicalRecords.Repository;
 using HealthInstitution.Core.Operations.Model;
 using HealthInstitution.Core.Operations.Repository;
+using HealthInstitution.Core.Scheduling;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using HealthInstitution.Core.SystemUsers.Patients.Model;
 using HealthInstitution.Core.SystemUsers.Patients.Repository;
@@ -76,7 +77,7 @@ namespace HealthInstitution.GUI.DoctorView
             {
                 OperationDTO operationDTO = CreateOperationDTOFromInputData();
                 operationDTO.Validate();
-                OperationRepository.GetInstance().ReserveOperation(operationDTO);
+                SchedulingService.ReserveOperation(operationDTO);
                 this.Close();
             }
             catch (Exception ex)

@@ -82,7 +82,7 @@ namespace HealthInstitution.GUI.SecretaryView
             try
             {
                 PickDataFromForm();
-                List<Tuple<int, int, DateTime>> examinationsAndOperationsForDelaying = OperationRepository.GetInstance().ReserveUrgentOperation(_selectedMedicalRecord.Patient.Username, _selectedSpecialtyType,15);
+                List<Tuple<int, int, DateTime>> examinationsAndOperationsForDelaying = UrgentService.ReserveUrgentOperation(_selectedMedicalRecord.Patient.Username, _selectedSpecialtyType,15);
                 if (examinationsAndOperationsForDelaying.Count()==1)
                     ShowReservedOperationWithoutDelaying(examinationsAndOperationsForDelaying);
                 else

@@ -1,6 +1,7 @@
 ﻿using HealthInstitution.Core.MedicalRecords;
 using HealthInstitution.Core.MedicalRecords.Model;
 using HealthInstitution.Core.MedicalRecords.Repository;
+using HealthInstitution.Core.Operations;
 using HealthInstitution.Core.Operations.Model;
 using HealthInstitution.Core.Operations.Repository;
 using HealthInstitution.Core.SystemUsers.Patients.Model;
@@ -88,7 +89,7 @@ namespace HealthInstitution.GUI.DoctorView
             {
                 OperationDTO operationDTO = CreateOperationDTOFromInputData();
                 operationDTO.Validate();
-                OperationRepository.GetInstance().Update(this._selectedOperation.Id, operationDTO);
+                OperationService.Update(this._selectedOperation.Id, operationDTO);
                 this.Close();
             }
             catch (Exception ex)

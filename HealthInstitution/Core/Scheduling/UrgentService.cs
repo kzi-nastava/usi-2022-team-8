@@ -4,6 +4,7 @@ using HealthInstitution.Core.MedicalRecords;
 using HealthInstitution.Core.MedicalRecords.Model;
 using HealthInstitution.Core.Notifications.Model;
 using HealthInstitution.Core.Notifications.Repository;
+using HealthInstitution.Core.Operations;
 using HealthInstitution.Core.Operations.Model;
 using HealthInstitution.Core.Operations.Repository;
 using HealthInstitution.Core.Rooms;
@@ -55,7 +56,7 @@ namespace HealthInstitution.Core.Scheduling
             OperationRepository.GetInstance().SwapOperationValue(selectedAppointment.NewOperation);
             SetOperationDetails(operation, selectedAppointment);
             OperationDTO operationDTO = new OperationDTO(operation.Appointment, operation.Duration, operation.Room, operation.Doctor, operation.MedicalRecord);
-            OperationRepository.GetInstance().Add(operationDTO);
+            OperationService.Add(operationDTO);
             SendNotificationsForOperation(operation, selectedAppointment);
         }
         private static void SendNotificationsForExamination(Examination examination, ScheduleEditRequest selectedAppointment)
@@ -110,7 +111,7 @@ namespace HealthInstitution.Core.Scheduling
             DoctorOperationAvailabilityService.CheckIfDoctorIsAvailable(operationDTO);
             PatientOperationAvailabilityService.CheckIfPatientIsAvailable(operationDTO);
             operationDTO.Room = RoomService.FindAvailableRoom(operationDTO);
-            SchedulingService.Add(operationDTO);
+            OperationService.Add(operationDTO);
             AppointmentNotificationDTO appointmentNotificationDTO = new AppointmentNotificationDTO(null, appointment, doctor, medicalRecord.Patient);
             AppointmentNotificationRepository.GetInstance().Add(appointmentNotificationDTO);
             priorityExaminationsAndOperations.Add(new Tuple<int, int, DateTime>(OperationRepository.GetInstance()._maxId, 2, appointment));

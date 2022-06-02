@@ -77,7 +77,7 @@ public partial class DoctorPickExamination : Window
         LoadRows();
     }
 
-    private void SpecialitySearch_Click(object sender, RoutedEventArgs e)
+    /*private void SpecialitySearch_Click(object sender, RoutedEventArgs e)
     {
         string speciality = SearchBox.Text;
         _currentDoctors = DoctorRepository.GetInstance().SearchDoctorBySpeciality(speciality);
@@ -96,7 +96,7 @@ public partial class DoctorPickExamination : Window
         string name = SearchBox.Text;
         _currentDoctors = DoctorRepository.GetInstance().SearchDoctorByName(name);
         LoadRows();
-    }
+    }*/
 
     private void seachParameter_GotFocus(object sender, RoutedEventArgs e)
     {
