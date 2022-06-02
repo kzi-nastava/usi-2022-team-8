@@ -1,5 +1,6 @@
 ﻿using HealthInstitution.Core.Examinations.Model;
 using HealthInstitution.Core.Examinations.Repository;
+using HealthInstitution.Core.MedicalRecords;
 using HealthInstitution.Core.MedicalRecords.Model;
 using HealthInstitution.Core.MedicalRecords.Repository;
 using HealthInstitution.Core.Notifications.Model;
@@ -138,6 +139,9 @@ namespace HealthInstitution.Core.Operations.Repository
                     operation.Status = ExaminationStatus.Completed;
             }
         }
+
+        //greska ne sme pozivati ovaj save.
+        public void Add(Operation operation)
         private void AddToCollections(Operation operation)
         {
             operation.Doctor.Operations.Add(operation);
@@ -152,6 +156,14 @@ namespace HealthInstitution.Core.Operations.Repository
         public void Add(OperationDTO operationDTO)
         {
             int id = ++this._maxId;
+            operation.Id = id;
+
+            operation.Doctor.Operations.Add(operation);
+            this.Operations.Add(operation);
+            this.OperationsById.Add(id, operation);
+
+            Save();
+            OperationDoctorRepository.GetInstance().Save();
             Operation operation = new Operation(id, operationDTO.Appointment, operationDTO.Duration, operationDTO.Room, operationDTO.Doctor, operationDTO.MedicalRecord);
             AddToCollections(operation);
             SaveAll();
@@ -326,7 +338,7 @@ namespace HealthInstitution.Core.Operations.Repository
         {
             List<Tuple<int, int, DateTime>> priorityExaminationsAndOperations = new List<Tuple<int, int, DateTime>>();
             Patient patient = PatientRepository.GetInstance().GetByUsername(patientUsername);
-            var medicalRecord = MedicalRecordRepository.GetInstance().GetByPatientUsername(patient);
+            var medicalRecord = MedicalRecordService.GetByPatientUsername(patient);
             List<DateTime> nextTwoHoursAppointments = ExaminationRepository.FindNextTwoHoursAppointments();
             foreach (DateTime appointment in nextTwoHoursAppointments)
             {

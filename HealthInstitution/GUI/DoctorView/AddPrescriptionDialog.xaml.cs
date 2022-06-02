@@ -1,8 +1,10 @@
 ﻿using HealthInstitution.Core.Drugs.Model;
 using HealthInstitution.Core.Drugs.Repository;
 using HealthInstitution.Core.Ingredients.Model;
+using HealthInstitution.Core.MedicalRecords;
 using HealthInstitution.Core.MedicalRecords.Model;
 using HealthInstitution.Core.MedicalRecords.Repository;
+using HealthInstitution.Core.Prescriptions;
 using HealthInstitution.Core.Prescriptions.Model;
 using HealthInstitution.Core.Prescriptions.Repository;
 using System;
@@ -86,8 +88,8 @@ namespace HealthInstitution.GUI.DoctorView
             try
             {
                 PrescriptionDTO prescriptionDTO = CreatePrescriptionDTOFromInputData();
-                Prescription prescription = _prescriptionRepository.Add(prescriptionDTO);
-                _medicalRecordRepository.AddPrescription(_medicalRecord.Patient, prescription);
+                Prescription prescription = PrescriptionService.Add(prescriptionDTO);
+                MedicalRecordService.AddPrescription(_medicalRecord.Patient, prescription);
                 System.Windows.MessageBox.Show("You have created the prescription!", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
                 this.Close();
             }

@@ -25,6 +25,15 @@ public class Operation
         this.Room = room;
         this.Doctor = doctor;
         this.MedicalRecord = medicalRecord;
-        this.EquipmentCosts = new List<EquipmentCost>();
+    }
+
+    public Operation(OperationDTO operationDTO)
+    {
+        this.Status = ExaminationStatus.Scheduled;
+        this.Appointment = operationDTO.Appointment;
+        this.Duration = operationDTO.Duration;
+        this.Room = operationDTO.Room;
+        this.Doctor = operationDTO.Doctor;
+        this.MedicalRecord = operationDTO.MedicalRecord;
     }
 }

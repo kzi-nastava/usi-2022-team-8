@@ -40,7 +40,7 @@ namespace HealthInstitution.GUI.ManagerView
         private void LoadRows()
         {
             dataGrid.Items.Clear();
-            List<Ingredient> ingredients = _ingredientRepository.GetAll();
+            List<Ingredient> ingredients = IngredientService.GetAll();
             foreach (Ingredient ingredient in ingredients)
             {
                 dataGrid.Items.Add(ingredient);
@@ -79,8 +79,8 @@ namespace HealthInstitution.GUI.ManagerView
 
             if (System.Windows.MessageBox.Show("Are you sure you want to delete selected ingredient", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
             {
-                dataGrid.Items.Remove(selectedIngredient);                
-                _ingredientRepository.Delete(selectedIngredient.Id);
+                dataGrid.Items.Remove(selectedIngredient);
+                IngredientService.Delete(selectedIngredient.Id);
 
             }
         }

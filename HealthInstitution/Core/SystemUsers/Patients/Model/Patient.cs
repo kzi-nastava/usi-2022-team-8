@@ -13,6 +13,12 @@ public class Patient : User
         this.Notifications= new List<AppointmentNotification>();
     }
 
+    public Patient(UserDTO userDTO) : base(userDTO)
+    {
+        this.Blocked = BlockState.NotBlocked;
+        this.Notifications = new List<AppointmentNotification>();
+    }
+
     public override string? ToString()
     {
         return this.Name+" "+this.Surname;

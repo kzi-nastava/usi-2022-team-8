@@ -6,7 +6,6 @@ using HealthInstitution.Core.Referrals.Repository;
 using HealthInstitution.Core.ScheduleEditRequests.Model;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using HealthInstitution.Core.SystemUsers.Doctors.Repository;
-using HealthInstitution.Core.Examinations.Repository;
 using HealthInstitution.Core.Operations.Repository;
 using HealthInstitution.Core.Rooms.Model;
 using System;
@@ -15,15 +14,35 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using HealthInstitution.Core.Operations.Model;
 
 namespace HealthInstitution.Core.Scheduling
 {
     internal static class SchedulingService
     {
-        //koristiti urgentService
-        private static ExaminationRepository s_examinationRepository = ExaminationRepository.GetInstance();
-        private static OperationRepository s_operationRepository = OperationRepository.GetInstance();
 
+        private static ExaminationRepository s_examinationRepository = ExaminationRepository.GetInstance();
+        static OperationRepository s_operationRepository = OperationRepository.GetInstance();
+        public static List<Operation> GetAll()
+        {
+            return s_operationRepository.GetAll();
+        }
+        public static Operation GetById(int id)
+        {
+            return s_operationRepository.GetById(id);
+        }
+
+        public static void Add(OperationDTO operationDTO)
+        {
+            Operation operation = new Operation(operationDTO);
+            s_operationRepository.Add(operation);
+        }
+
+        public static void Delete(int id)
+        {
+            s_operationRepository.Delete(id);
+        }
+    
         public static bool CheckOccurrenceOfRoom(Room room)
         {
             if (s_examinationRepository.Examinations.Find(examination => examination.Room == room) == null)
@@ -49,7 +68,6 @@ namespace HealthInstitution.Core.Scheduling
             ExaminationDTO examination = new ExaminationDTO(appointment, null, referral.ReferredDoctor, medicalRecord);
             ExaminationRepository.GetInstance().ReserveExamination(examination);
             System.Windows.MessageBox.Show("You have scheduled the examination!", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
-
 
             referral.Active = false;
             ReferralRepository.GetInstance().Save(); //TODO

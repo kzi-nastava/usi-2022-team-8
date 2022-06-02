@@ -9,6 +9,7 @@ using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using HealthInstitution.Core.TrollCounters;
+using HealthInstitution.Core.MedicalRecords;
 
 namespace HealthInstitution.Core.SystemUsers.Patients.Repository
 {
@@ -108,28 +109,21 @@ namespace HealthInstitution.Core.SystemUsers.Patients.Repository
             return null;
         }
 
-        public void Add(UserDTO userDTO, MedicalRecords.Model.MedicalRecordDTO medicalRecordDTO)
+        public void Add(Patient patient)
         {
-            Patient patient = new Patient(userDTO.Type, userDTO.Username, userDTO.Password, userDTO.Name, userDTO.Surname);
-            MedicalRecordRepository medicalRecordRepository = MedicalRecordRepository.GetInstance();
-
-            medicalRecordDTO.Patient = patient;
             this.Patients.Add(patient);
-            this.PatientByUsername[userDTO.Username] = patient;
-            medicalRecordRepository.Add(medicalRecordDTO);
+            this.PatientByUsername[patient.Username] = patient;
             Save();
         }
 
-        public void Update(UserDTO userDTO)
+        public void Update(Patient byPatient)
         {
-            Patient patient = this.GetByUsername(userDTO.Username);
-            patient.Password = userDTO.Password;
-            patient.Name = userDTO.Name;
-            patient.Surname = userDTO.Surname;
-
-            this.PatientByUsername[userDTO.Username] = patient;
+            Patient patient = GetByUsername(byPatient.Username);
+            patient.Password = byPatient.Password;
+            patient.Name = byPatient.Name;
+            patient.Surname = byPatient.Surname;
+            this.PatientByUsername[patient.Username] = patient;
             Save();
-            userRepository.Update(userDTO);
         }
 
         public void Delete(string username)

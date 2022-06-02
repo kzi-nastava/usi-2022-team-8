@@ -1,4 +1,5 @@
-﻿using HealthInstitution.Core.Ingredients.Model;
+﻿using HealthInstitution.Core.Ingredients;
+using HealthInstitution.Core.Ingredients.Model;
 using HealthInstitution.Core.Ingredients.Repository;
 using System;
 using System.Collections.Generic;
@@ -43,7 +44,7 @@ namespace HealthInstitution.GUI.ManagerView.IngredientView
                 return;
             }
 
-            _ingredientRepository.Update(_ingredient.Id, name);
+            IngredientService.Update(_ingredient.Id, name);
             System.Windows.MessageBox.Show("Ingredient edited!", "Ingredient edit", MessageBoxButton.OK, MessageBoxImage.Information);
 
             this.Close();

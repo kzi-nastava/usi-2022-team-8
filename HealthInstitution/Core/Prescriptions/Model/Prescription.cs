@@ -16,6 +16,13 @@ public class Prescription
         this.TimeOfUse = timeOfUse;
         this.Drug = drug;
     }
+
+    public Prescription(PrescriptionDTO prescriptionDTO)
+    {
+        this.DailyDose = prescriptionDTO.DailyDose;
+        this.TimeOfUse = prescriptionDTO.TimeOfUse;
+        this.Drug = prescriptionDTO.Drug;
+    }
 }
 
 public enum PrescriptionTime

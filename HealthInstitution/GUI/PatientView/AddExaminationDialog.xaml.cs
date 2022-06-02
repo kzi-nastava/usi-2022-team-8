@@ -1,5 +1,6 @@
 ﻿using HealthInstitution.Core.Examinations.Model;
 using HealthInstitution.Core.Examinations.Repository;
+using HealthInstitution.Core.MedicalRecords;
 using HealthInstitution.Core.MedicalRecords.Model;
 using HealthInstitution.Core.MedicalRecords.Repository;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
@@ -76,7 +77,7 @@ namespace HealthInstitution.GUI.PatientView
 
         private void CreateExamination(DateTime dateTime)
         {
-            MedicalRecord medicalRecord = MedicalRecordRepository.GetInstance().GetByPatientUsername(_loggedPatient);
+            MedicalRecord medicalRecord = MedicalRecordService.GetByPatientUsername(_loggedPatient);
             Doctor doctor = DoctorRepository.GetInstance().GetById(_doctorUsername);
             ExaminationDTO examination = new ExaminationDTO(dateTime, null, doctor, medicalRecord);
             ExaminationRepository.GetInstance().ReserveExamination(examination);

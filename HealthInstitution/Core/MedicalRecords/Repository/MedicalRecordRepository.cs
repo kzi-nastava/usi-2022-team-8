@@ -130,30 +130,23 @@ namespace HealthInstitution.Core.MedicalRecords.Repository
             return null;
         }
 
-        public void Add(MedicalRecordDTO medicalRecordDTO)
+        public void Add(MedicalRecord medicalRecord)
         {
-            double height = medicalRecordDTO.Height;
-            double weight = medicalRecordDTO.Weight;
-            List<String> previousIlnesses = medicalRecordDTO.PreviousIllnesses;
-            List<String> allergens = medicalRecordDTO.Allergens;
-            var patient = medicalRecordDTO.Patient;
-
-            MedicalRecord medicalRecord = new MedicalRecord(height, weight, previousIlnesses, allergens, patient);
             this.MedicalRecords.Add(medicalRecord);
-            this.MedicalRecordByUsername[patient.Username]=medicalRecord;
+            this.MedicalRecordByUsername[medicalRecord.Patient.Username]=medicalRecord;
             Save();
         }
 
-        public void Update(MedicalRecordDTO medicalRecordDTO)
+        public void Update(MedicalRecord byMedicalRecord)
         {
-            MedicalRecord medicalRecord = GetByPatientUsername(medicalRecordDTO.Patient);
-            medicalRecord.Height = medicalRecordDTO.Height;
-            medicalRecord.Weight = medicalRecordDTO.Weight;
-            medicalRecord.Prescriptions = medicalRecordDTO.Prescriptions;
-            medicalRecord.Referrals = medicalRecordDTO.Referrals;
-            medicalRecord.PreviousIllnesses = medicalRecordDTO.PreviousIllnesses;
-            medicalRecord.Allergens = medicalRecordDTO.Allergens;
-            MedicalRecordByUsername[medicalRecordDTO.Patient.Username] = medicalRecord;
+            MedicalRecord medicalRecord = GetByPatientUsername(byMedicalRecord.Patient);
+            medicalRecord.Height = byMedicalRecord.Height;
+            medicalRecord.Weight = byMedicalRecord.Weight;
+            medicalRecord.Prescriptions = byMedicalRecord.Prescriptions;
+            medicalRecord.Referrals = byMedicalRecord.Referrals;
+            medicalRecord.PreviousIllnesses = byMedicalRecord.PreviousIllnesses;
+            medicalRecord.Allergens = byMedicalRecord.Allergens;
+            MedicalRecordByUsername[medicalRecord.Patient.Username] = medicalRecord;
             Save();
         }
 

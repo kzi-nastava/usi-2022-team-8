@@ -1,4 +1,5 @@
 ﻿using System.Windows;
+using HealthInstitution.Core.MedicalRecords;
 using HealthInstitution.Core.MedicalRecords.Repository;
 using HealthInstitution.Core.Operations.Model;
 using HealthInstitution.Core.Operations.Repository;
@@ -65,7 +66,7 @@ namespace HealthInstitution.GUI.DoctorView
             appointment = appointment.AddMinutes(minutes);
             int duration = Int32.Parse(durationTextBox.Text);
             var patient = (Patient)patientComboBox.SelectedItem;
-            var medicalRecord = MedicalRecordRepository.GetInstance().GetByPatientUsername(patient);
+            var medicalRecord = MedicalRecordService.GetByPatientUsername(patient);
             return new OperationDTO(appointment, duration, null, _loggedDoctor, medicalRecord);
         }
 

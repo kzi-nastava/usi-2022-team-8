@@ -21,6 +21,7 @@ using HealthInstitution.Core.Operations.Model;
 using HealthInstitution.Core.Notifications.Repository;
 using HealthInstitution.Core.RecommededDTO;
 using HealthInstitution.Core.Notifications.Model;
+using HealthInstitution.Core.MedicalRecords;
 
 namespace HealthInstitution.Core.Examinations.Repository;
 
@@ -464,7 +465,7 @@ internal class ExaminationRepository
     {
         List<Tuple<int, int, DateTime>> priorityExaminationsAndOperations = new List<Tuple<int, int, DateTime>>();
         Patient patient = PatientRepository.GetInstance().GetByUsername(patientUsername);
-        var medicalRecord = MedicalRecordRepository.GetInstance().GetByPatientUsername(patient);
+        var medicalRecord = MedicalRecordService.GetByPatientUsername(patient);
         List<DateTime> nextTwoHoursAppointments = FindNextTwoHoursAppointments();
         foreach (DateTime appointment in nextTwoHoursAppointments)
         {
@@ -521,7 +522,7 @@ internal class ExaminationRepository
         DateTime fit = GenerateFitDateTime(firstFitDTO.minHour, firstFitDTO.minMinutes);
         Doctor doctor = DoctorRepository.GetInstance().GetById(firstFitDTO.doctorUsername);
         Patient patient = PatientRepository.GetInstance().GetByUsername(firstFitDTO.patientUsername);
-        var medicalRecord = MedicalRecordRepository.GetInstance().GetByPatientUsername(patient);
+        var medicalRecord = MedicalRecordService.GetByPatientUsername(patient);
         ExaminationDTO examinationDTO = new ExaminationDTO(fit, null, doctor, medicalRecord);
         FindFitDTO findFitDTO = new FindFitDTO(fit, firstFitDTO.end, firstFitDTO.minHour, firstFitDTO.minMinutes, firstFitDTO.maxHour, firstFitDTO.maxMinutes);
         ExaminationDTO firstFit = FindFit(examinationDTO, findFitDTO);
@@ -546,7 +547,7 @@ internal class ExaminationRepository
     {
         Doctor pickedDoctor = DoctorRepository.GetInstance().GetById(closestFitDTO.doctorUsername);
         Patient patient = PatientRepository.GetInstance().GetByUsername(closestFitDTO.patientUsername);
-        var medicalRecord = MedicalRecordRepository.GetInstance().GetByPatientUsername(patient);
+        var medicalRecord = MedicalRecordService.GetByPatientUsername(patient);
         List<Examination> suggestions = new List<Examination>();
         List<Doctor> viableDoctors = new List<Doctor>();
 

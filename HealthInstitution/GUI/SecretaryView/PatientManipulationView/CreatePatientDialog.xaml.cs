@@ -1,4 +1,6 @@
 ﻿using HealthInstitution.Core.MedicalRecords.Model;
+using HealthInstitution.Core.SystemUsers.Patients;
+using HealthInstitution.Core.SystemUsers.Patients.Model;
 using HealthInstitution.Core.SystemUsers.Patients.Repository;
 using HealthInstitution.Core.SystemUsers.Users.Model;
 using HealthInstitution.Core.SystemUsers.Users.Repository;
@@ -71,10 +73,10 @@ namespace HealthInstitution.GUI.UserWindow
             try {
                 UserDTO userDTO = CreateUserDTOFromInputData();
                 MedicalRecordDTO medicalRecordDTO = CreateMedicalRecordDTOFromInputData();
-                _patientRepository.Add(userDTO, medicalRecordDTO);
-                _userRepository.Add(userDTO);
-                TrollCounterService.Add(userDTO.Username);
-                Close();
+                PatientService.Add(userDTO, medicalRecordDTO);
+                userRepository.Add(userDTO);
+                TrollCounterFileRepository.GetInstance().Add(userDTO.Username);
+                this.Close();
             }
             catch
             {
