@@ -18,7 +18,11 @@ namespace HealthInstitution.GUI.SecretaryView
             InitializeComponent();
             LoadRows();
         }
-
+        private void ProcessDialog()
+        {
+            dataGrid.SelectedItem = null;
+            LoadRows();
+        }
         private void LoadRows()
         {
             List<dynamic> rows = EquipmentService.GetMissingEquipment();
@@ -35,9 +39,7 @@ namespace HealthInstitution.GUI.SecretaryView
             {
                 DynamicEquipmentTransferDialog dynamicEquipmentTransferDialog = new DynamicEquipmentTransferDialog(selectedEquipment.Room, selectedEquipment.Equipment);
                 dynamicEquipmentTransferDialog.ShowDialog();
-                dataGrid.SelectedItem = null;
-                LoadRows();
-
+                ProcessDialog();
             }
         }
     }

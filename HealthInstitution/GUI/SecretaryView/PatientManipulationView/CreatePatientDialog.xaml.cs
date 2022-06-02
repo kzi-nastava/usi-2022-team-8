@@ -14,8 +14,7 @@ namespace HealthInstitution.GUI.UserWindow
     public partial class CreatePatientDialog : Window
     {
         PatientRepository _patientRepository = PatientRepository.GetInstance();
-        UserRepository _userRepository=UserRepository.GetInstance();
-        TrollCounterFileRepository _trollCounterFileRepository=TrollCounterFileRepository.GetInstance();   
+        UserRepository _userRepository=UserRepository.GetInstance();   
         public CreatePatientDialog()
         {
             InitializeComponent();

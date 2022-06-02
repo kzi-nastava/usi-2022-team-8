@@ -70,7 +70,6 @@ namespace HealthInstitution.GUI.UserWindow
                 TryDeletingPatient(selectedPatient);
             }
         }
-
         private void BlockPatient_Click(object sender, RoutedEventArgs e)
         {
             Patient selectedPatient = (Patient)dataGrid.SelectedItem;

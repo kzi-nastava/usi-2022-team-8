@@ -29,7 +29,7 @@ namespace HealthInstitution.GUI.SecretaryView
             InitializeComponent();
             LoadRows();
         }
-        private void LoadRows() //Pitati
+        private void LoadRows()
         {
             dataGrid.Items.Clear();
             List<MedicalRecord> medicalRecords = MedicalRecordRepository.GetInstance().MedicalRecords;

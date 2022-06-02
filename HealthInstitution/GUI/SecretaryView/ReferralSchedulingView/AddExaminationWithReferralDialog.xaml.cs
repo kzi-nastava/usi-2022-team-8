@@ -3,6 +3,7 @@ using HealthInstitution.Core.Examinations.Repository;
 using HealthInstitution.Core.MedicalRecords.Model;
 using HealthInstitution.Core.Referrals.Model;
 using HealthInstitution.Core.Referrals.Repository;
+using HealthInstitution.Core.Scheduling;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using HealthInstitution.Core.SystemUsers.Doctors.Repository;
 using HealthInstitution.Core.SystemUsers.Patients.Model;
@@ -42,7 +43,7 @@ namespace HealthInstitution.GUI.SecretaryView
         private void HourComboBox_Loaded(object sender, RoutedEventArgs e)
         {
             var hourComboBox = sender as System.Windows.Controls.ComboBox;
-            List<String> hours = new List<String>();
+            List<string> hours = new List<String>();
             for (int i = 9; i < 22; i++)
             {
                 hours.Add(i.ToString());
@@ -50,7 +51,6 @@ namespace HealthInstitution.GUI.SecretaryView
             hourComboBox.ItemsSource = hours;
             hourComboBox.SelectedIndex = 0;
         }
-
         private void MinuteComboBox_Loaded(object sender, RoutedEventArgs e)
         {
             var minuteComboBox = sender as System.Windows.Controls.ComboBox;
@@ -62,93 +62,38 @@ namespace HealthInstitution.GUI.SecretaryView
             minuteComboBox.ItemsSource = minutes;
             minuteComboBox.SelectedIndex = 0;
         }
-        private ExaminationDTO? CreateExaminationDTOFromInputData(Doctor doctor)
+        private DateTime? GetAppointmentFromInputData()
         {
             DateTime appointment = (DateTime)datePicker.SelectedDate;
-            int minutes = Int32.Parse(minuteComboBox.Text);
-            int hours = Int32.Parse(hourComboBox.Text);
+            int minutes = int.Parse(minuteComboBox.Text);
+            int hours = int.Parse(hourComboBox.Text);
             appointment = appointment.AddHours(hours);
             appointment = appointment.AddMinutes(minutes);
-            ExaminationDTO examination = new ExaminationDTO(appointment, null, doctor, _medicalRecord);
-            if (examination.Appointment <= DateTime.Now)
+            if (appointment <= DateTime.Now)
             {
                 System.Windows.MessageBox.Show("You have to change dates for upcoming ones!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return null;
             }
             else
-                return examination;
-        }
-        private void ScheduleWithSpecificDoctor()
-        {
-            try
-            {
-                ExaminationDTO? examination = CreateExaminationDTOFromInputData(_referral.ReferredDoctor);
-                if(examination!=null)
-                {
-                    ExaminationRepository.GetInstance().ReserveExamination(examination);
-                    System.Windows.MessageBox.Show("You have scheduled the examination!", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
-                    _referral.Active = false;
-                    ReferralRepository.GetInstance().Save();
-                    Close();
-                }
-            }
-            catch (Exception ex)
-            {
-                System.Windows.MessageBox.Show(ex.Message, "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
-            }
-        }
-        private void ScheduleWithOrderedSpecialist(Doctor doctor)
-        {
-            try
-            {
-                ExaminationDTO? examination = CreateExaminationDTOFromInputData(doctor);
-                if (examination!=null)
-                {
-                    ExaminationRepository.GetInstance().ReserveExamination(examination);
-                    System.Windows.MessageBox.Show("You have scheduled the examination! Doctor: " + doctor.Name + " " + doctor.Surname, "Info", MessageBoxButton.OK, MessageBoxImage.Information);
-                    _referral.Active = false;
-                    ReferralRepository.GetInstance().Save();
-                    Close();
-                }
-            }
-            catch (Exception ex)
-            {
-                if (ex.Message == "That doctor is not available")
-                    throw new Exception("That doctor is not available");
-                else
-                    System.Windows.MessageBox.Show(ex.Message, "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
-            }
-        }
-        void ScheduleWithOrderedSpecialty() 
-        {
-            List<Doctor> doctors = DoctorRepository.GetInstance().Doctors;
-            foreach (Doctor doctor in doctors)
-            {
-                if (doctor.Specialty == _referral.ReferredSpecialty)
-                {
-                    try
-                    {
-                        ScheduleWithOrderedSpecialist(doctor);
-                        break;
-                    }
-                    catch
-                    {
-                        continue;
-                    }
-
-                }
-            }
+                return appointment;
         }
         private void Submit_Click(object sender, RoutedEventArgs e)
         {
-            if (_referral.Type == ReferralType.SpecificDoctor)
+            DateTime? appointmentFromForm=GetAppointmentFromInputData();
+            if(appointmentFromForm!=null)
             {
-                ScheduleWithSpecificDoctor();
+                try
+                {
+                    DateTime appointment = (DateTime)appointmentFromForm;
+                    SchedulingService.RedirectByType(_referral, appointment, _medicalRecord);
+                    Close();
+                }
+                catch(Exception ex)
+                {
+                    System.Windows.MessageBox.Show(ex.Message, "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+                }
             }
-            else
-            {
-                ScheduleWithOrderedSpecialty();
-            }
+            
         }
     }
 }

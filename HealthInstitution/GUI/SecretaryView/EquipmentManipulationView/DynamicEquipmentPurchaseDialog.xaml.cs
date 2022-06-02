@@ -20,6 +20,13 @@ namespace HealthInstitution.GUI.SecretaryView
         {
             InitializeComponent();
         }
+        private void ProcessDialog()
+        {
+            System.Windows.MessageBox.Show("Request for warehouse refill is created successfully", "Warehouse refill", MessageBoxButton.OK, MessageBoxImage.Information);
+            LoadEquipmentComboBox();
+            quantityBox.Clear();
+            equipmentComboBox.SelectedItem = null;
+        }
         private void Select_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -29,10 +36,7 @@ namespace HealthInstitution.GUI.SecretaryView
                 if (equipmentName != null)
                 {
                     EquipmentTransferService.ScheduleWarehouseRefill(equipmentName, quantity);
-                    System.Windows.MessageBox.Show("Request for warehouse refill is created successfully", "Warehouse refill", MessageBoxButton.OK, MessageBoxImage.Information);
-                    LoadEquipmentComboBox();
-                    quantityBox.Clear();
-                    equipmentComboBox.SelectedItem = null;
+                    ProcessDialog();
                 }
                 else
                 {

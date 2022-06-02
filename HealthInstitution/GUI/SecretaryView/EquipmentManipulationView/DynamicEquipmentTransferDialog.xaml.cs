@@ -23,6 +23,13 @@ namespace HealthInstitution.GUI.SecretaryView
             _equipmentName=equipmentName;
             InitializeComponent();
         }
+        private void ProcessDialog()
+        {
+            System.Windows.MessageBox.Show("Transfer is completed successfully", "Dynamic equipment transfer", MessageBoxButton.OK, MessageBoxImage.Information);
+            Close();
+            quantityBox.Clear();
+            roomComboBox.SelectedItem = null;
+        }
         private void RoomComboBox_Loaded(object sender, RoutedEventArgs e)
         {
             List<Room> rooms = _roomRepository.Rooms;
@@ -36,7 +43,6 @@ namespace HealthInstitution.GUI.SecretaryView
                 }
             }
         }
-
         private void Select_Click(object sender, RoutedEventArgs e)
         {
             try
@@ -45,11 +51,8 @@ namespace HealthInstitution.GUI.SecretaryView
                 Room? fromRoom = _roomRepository.GetRoomFromString(roomText);
                 if (fromRoom != null)
                 {
-                    int quantity = EquipmentService.GetQuantityFromForm(quantityBox.Text, fromRoom, _equipmentName);
-                    Equipment equipment = EquipmentService.GetEquipmentFromRoom(fromRoom, _equipmentName);
-                    TransferDynamicEquipment(quantity, equipment);
-                    quantityBox.Clear();
-                    roomComboBox.SelectedItem = null;
+                    TransferDynamicEquipment(fromRoom);
+                    ProcessDialog();
                 }
                 else
                 {
@@ -61,13 +64,12 @@ namespace HealthInstitution.GUI.SecretaryView
                 System.Windows.MessageBox.Show(ex.Message, "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             } 
         }
-        
-        
-        private void TransferDynamicEquipment(int quantity, Equipment equipment)
+        private void TransferDynamicEquipment(Room fromRoom)
         {
+            int quantity = EquipmentService.GetQuantityFromForm(quantityBox.Text, fromRoom, _equipmentName);
+            Equipment equipment = EquipmentService.GetEquipmentFromRoom(fromRoom, _equipmentName);
             EquipmentTransferChecker.Transfer(_toRoom, equipment, quantity);
-            System.Windows.MessageBox.Show("Transfer is completed successfully", "Dynamic equipment transfer", MessageBoxButton.OK, MessageBoxImage.Information);
-            Close();
+
         }
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
         {
