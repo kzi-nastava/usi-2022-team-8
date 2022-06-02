@@ -140,17 +140,13 @@ namespace HealthInstitution.Core.Operations.Repository
             }
         }
 
-        public void Add(OperationDTO operationDTO)
+        //greska ne sme pozivati ovaj save.
+        public void Add(Operation operation)
         {
             int id = ++this._maxId;
-            DateTime appointment = operationDTO.Appointment;
-            int duration = operationDTO.Duration;
-            Room room = operationDTO.Room;
-            Doctor doctor = operationDTO.Doctor;
-            MedicalRecord medicalRecord = operationDTO.MedicalRecord;
-            
-            Operation operation = new Operation(id, appointment, duration, room, doctor, medicalRecord);
-            doctor.Operations.Add(operation);
+            operation.Id = id;
+
+            operation.Doctor.Operations.Add(operation);
             this.Operations.Add(operation);
             this.OperationsById.Add(id, operation);
 
