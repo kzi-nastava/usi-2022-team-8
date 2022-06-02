@@ -8,6 +8,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using HealthInstitution.Core.Operations.Model;
+using HealthInstitution.Core.Operations.Repository;
 
 namespace HealthInstitution.Core.SystemUsers.Patients
 {
@@ -52,6 +54,14 @@ namespace HealthInstitution.Core.SystemUsers.Patients
             s_patientRepository.Delete(username);
             //TrollCounterFileRepository.GetInstance().Delete(username);
             //userRepository.Delete(username);
+        }
+        public static List<Operation> GetPatientOperations(Patient patient)
+        {
+            List<Operation> patientOperations = new List<Operation>();
+            foreach (var operation in OperationRepository.GetInstance().GetAll())
+                if (operation.MedicalRecord.Patient.Username == patient.Username)
+                    patientOperations.Add(operation);
+            return patientOperations;
         }
     } 
 }

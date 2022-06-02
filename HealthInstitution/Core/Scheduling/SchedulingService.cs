@@ -15,6 +15,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using HealthInstitution.Core.Operations.Model;
+using HealthInstitution.Core.Rooms;
 
 namespace HealthInstitution.Core.Scheduling
 {
@@ -116,6 +117,13 @@ namespace HealthInstitution.Core.Scheduling
                 }
             }
             if (!successfulScheduling) throw new Exception("It is not possible to find a doctor with this specialty");
+        }
+        public static void ReserveOperation(OperationDTO operationDTO, int id = 0)
+        {
+            operationDTO.Room = RoomService.FindAvailableRoom(operationDTO);
+            DoctorOperationAvailabilityService.CheckIfDoctorIsAvailable(operationDTO);
+            PatientOperationAvailabilityService.CheckIfPatientIsAvailable(operationDTO);
+            Add(operationDTO);
         }
     }
 }

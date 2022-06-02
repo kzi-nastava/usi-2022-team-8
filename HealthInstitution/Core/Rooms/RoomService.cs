@@ -2,6 +2,7 @@
 using HealthInstitution.Core.EquipmentTransfers;
 using HealthInstitution.Core.EquipmentTransfers.Repository;
 using HealthInstitution.Core.Examinations.Repository;
+using HealthInstitution.Core.Operations.Model;
 using HealthInstitution.Core.Operations.Repository;
 using HealthInstitution.Core.Renovations;
 using HealthInstitution.Core.Rooms.Model;
@@ -110,6 +111,38 @@ namespace HealthInstitution.Core.Rooms
                 }
             }
             return items;
+        }
+        public static Room FindAvailableRoom(OperationDTO operationDTO, int id = 0)
+        {
+            bool isAvailable;
+            List<Room> availableRooms = new List<Room>();
+            var rooms = RoomRepository.GetInstance().GetNotRenovating();
+            DateTime appointment = operationDTO.Appointment;
+            int duration = operationDTO.Duration;
+
+            foreach (var room in rooms)
+            {
+                if (room.Type != RoomType.OperatingRoom) continue;
+                isAvailable = true;
+                foreach (var operation in OperationRepository.GetInstance().GetAll())
+                {
+                    if (operation.Room.Id == room.Id && operation.Id != id)
+                    {
+                        if ((appointment < operation.Appointment.AddMinutes(operation.Duration)) && (appointment.AddMinutes(duration) > operation.Appointment))
+                        {
+                            isAvailable = false;
+                            break;
+                        }
+                    }
+                }
+                if (isAvailable)
+                    availableRooms.Add(room);
+            }
+
+            if (availableRooms.Count == 0) throw new Exception("There are no available rooms!");
+            Random random = new Random();
+            int index = random.Next(0, availableRooms.Count);
+            return availableRooms[index];
         }
     }
 }

@@ -84,6 +84,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="GUI\SecretaryView\ReferralSchedulingView\AddExaminationWithReferralDialog.xaml.cs">
+		<SubType>Code</SubType>
+	</Compile>
     <Compile Update="GUI\PatientView\RecepieNotificationDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -305,6 +307,8 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="GUI\SecretaryView\ReferralSchedulingView\AddExaminationWithReferralDialog.xaml">
+		<SubType>Designer</SubType>
+	</Page>
     <Page Update="GUI\PatientView\RecepieNotificationDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
