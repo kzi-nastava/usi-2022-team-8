@@ -13,6 +13,8 @@
                 <MenuItem Header="Examinations" Click="Examinations_Click"/>
                 <MenuItem Header="Operations" Click="Operations_Click"/>
             </MenuItem>
+            <MenuItem Header="Drugs" Click="ManageDrugs_Click" FontSize="14" Height="30" Width="111">
+            </MenuItem>
         </Menu>
         <Button Content="Schedule review" Click="ScheduleReview_Click" HorizontalAlignment="Center" Margin="0,212,0,0" VerticalAlignment="Top" FontSize="18" Width="152"/>
         <Button Content="Log out" Click="LogOut_Click" HorizontalAlignment="Center" Margin="0,269,0,0" VerticalAlignment="Top" FontSize="14" Width="60"/>

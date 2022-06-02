@@ -35,6 +35,10 @@ public class Room
     {
         return Type.ToString()+" "+Number;
     }
+    /*public string? ToString(int availableEquipment)
+    {
+        return Type.ToString() + " " + Number + " (has " + availableEquipment + ")";
+    }*/
 }
 
 public enum RoomType

@@ -11,11 +11,11 @@ namespace HealthInstitution.Core.EquipmentTransfers.Model
     public class EquipmentTransferDTO
     {
         public Equipment Equipment { get; set; }
-        public Room FromRoom { get; set; }
+        public Room? FromRoom { get; set; }
         public Room ToRoom { get; set; }
         public DateTime TransferTime { get; set; }
 
-        public EquipmentTransferDTO(Equipment equipment, Room fromRoom, Room toRoom, DateTime transferTime)
+        public EquipmentTransferDTO(Equipment equipment, Room? fromRoom, Room toRoom, DateTime transferTime)
         {
             this.Equipment = equipment;
             this.FromRoom = fromRoom;

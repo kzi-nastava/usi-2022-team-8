@@ -35,7 +35,7 @@ namespace HealthInstitution.GUI.DoctorView
         {
             ExaminationDoctorRepository.GetInstance();
             int activeNotifications = 0;
-            foreach (Notification notification in this._loggedDoctor.Notifications)
+            foreach (AppointmentNotification notification in this._loggedDoctor.Notifications)
             {
                 if (notification.ActiveForDoctor)
                     activeNotifications++;
@@ -70,6 +70,11 @@ namespace HealthInstitution.GUI.DoctorView
         private void ScheduleReview_Click(object sender, RoutedEventArgs e)
         {
             new ScheduledExaminationTable(this._loggedDoctor).ShowDialog();
+        }
+
+        private void ManageDrugs_Click(object sender, RoutedEventArgs e)
+        {
+            new DrugsVerificationTable().ShowDialog();
         }
     }
 

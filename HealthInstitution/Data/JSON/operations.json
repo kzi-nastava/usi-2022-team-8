@@ -1,1 +1,19 @@
-[{"id":1,"status":"Scheduled","room":2,"duration":15,"appointment":"2022-05-18T10:00:00","medicalRecord":"marko"}]
+[
+  
+  {
+    "id": 1,
+    "status": "Completed",
+    "room": 2,
+    "duration": 15,
+    "appointment": "2022-05-18T10:00:00",
+    "medicalRecord": "marko"
+  },
+  {
+    "id": 2,
+    "status": "Scheduled",
+    "room": 10,
+    "duration": 15,
+    "appointment": "2022-05-30T19:00:00",
+    "medicalRecord": "marko"
+  }
+]

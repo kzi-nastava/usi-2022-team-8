@@ -11,6 +11,12 @@
     <Compile Update="GUI\DoctorView\AddReferralDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="GUI\DoctorView\DrugsVerificationTable.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="GUI\DoctorView\RejectionReasonDialog.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="GUI\DoctorView\ConsumedEquipmentDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -62,6 +68,9 @@
     <Compile Update="GUI\PatientView\ClosestFit.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="GUI\PatientView\DoctorPickExamination.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="GUI\PatientView\EditExaminationDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -72,6 +81,12 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="GUI\PatientView\PatientScheduleWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="GUI\PatientView\RecepieNotificationDialog.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="GUI\PatientView\RecepieNotificationSettingsDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="GUI\SecretaryView\AddExaminationWithReferralDialog.xaml.cs">
@@ -90,6 +105,15 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="GUI\SecretaryView\DelayExaminationOperationDialog.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="GUI\SecretaryView\DynamicEquipmentPurchaseDialog.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="GUI\SecretaryView\DynamicEquipmentReviewDialog.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="GUI\SecretaryView\DynamicEquipmentTransferDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="GUI\SecretaryView\PatientReferralsDialog.xaml.cs">
@@ -195,6 +219,9 @@
     <Page Update="GUI\DoctorView\DoctorWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="GUI\DoctorView\DrugsVerificationTable.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="GUI\DoctorView\EditExaminationDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -211,6 +238,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="GUI\DoctorView\PerformExaminationDialog.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="GUI\DoctorView\RejectionReasonDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="GUI\DoctorView\ScheduledExaminationTable.xaml">
@@ -261,6 +291,9 @@
     <Page Update="GUI\PatientView\ClosestFit.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="GUI\PatientView\DoctorPickExamination.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="GUI\PatientView\EditExaminationDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -271,6 +304,12 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="GUI\PatientView\PatientScheduleWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="GUI\PatientView\RecepieNotificationDialog.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="GUI\PatientView\RecepieNotificationSettingsDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="GUI\SecretaryView\AddExaminationWithReferralDialog.xaml">
@@ -289,6 +328,15 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="GUI\SecretaryView\DelayExaminationOperationDialog.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="GUI\SecretaryView\DynamicEquipmentPurchaseDialog.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="GUI\SecretaryView\DynamicEquipmentReviewDialog.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="GUI\SecretaryView\DynamicEquipmentTransferDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="GUI\SecretaryView\PatientReferralsDialog.xaml">

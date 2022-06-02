@@ -12,7 +12,9 @@ public class Doctor : User
     public List<Examination> Examinations { get; set; }
     public List<Operation> Operations { get; set; }
     public List<RestRequest> RestRequests { get; set; }
+    public List<AppointmentNotification> Notifications { get; set; }
     public List<Notification> Notifications { get; set; }
+    public double AvgRating { get; set; }
 
     public Doctor(string username, string password, string name, string surname, SpecialtyType specialty) : base(UserType.Doctor, username, password, name, surname)
     {
@@ -20,8 +22,11 @@ public class Doctor : User
         this.Examinations = new List<Examination>();
         this.Operations = new List<Operation>();
         this.RestRequests = new List<RestRequest>();
+        this.Notifications = new List<AppointmentNotification>();
         this.Notifications = new List<Notification>();
+        AvgRating = 0;
     }
+
     public override string? ToString()
     {
         return this.Name + " " + this.Surname;

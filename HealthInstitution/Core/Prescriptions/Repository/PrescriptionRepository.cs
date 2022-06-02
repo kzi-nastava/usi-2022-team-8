@@ -2,6 +2,7 @@
 using HealthInstitution.Core.Drugs.Repository;
 using HealthInstitution.Core.Prescriptions.Model;
 using Newtonsoft.Json.Linq;
+using System.Globalization;
 using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
@@ -20,7 +21,8 @@ namespace HealthInstitution.Core.Prescriptions.Repository
             Converters = { new JsonStringEnumConverter() },
             PropertyNameCaseInsensitive = true
         };
-        private PrescriptionRepository(string fileName)
+
+        private PrescriptionRepository(string fileName) //singleton
         {
             this._maxId = 0;
             this._fileName = fileName;
@@ -28,7 +30,9 @@ namespace HealthInstitution.Core.Prescriptions.Repository
             this.PrescriptionById = new Dictionary<int, Prescription>();
             this.LoadFromFile();
         }
+
         private static PrescriptionRepository s_instance = null;
+
         public static PrescriptionRepository GetInstance()
         {
             {
@@ -45,9 +49,12 @@ namespace HealthInstitution.Core.Prescriptions.Repository
             Dictionary<int, Drug> drugById = DrugRepository.GetInstance().DrugById;
             PrescriptionTime prescriptionTime;
             Enum.TryParse<PrescriptionTime>((string)prescription["timeOfUse"], out prescriptionTime);
-
-            return new Prescription((int)prescription["id"], (int)prescription["dailyDose"], prescriptionTime, drugById[(int)prescription["drug"]]);
+            var dt = (string)prescription["dateTime"];
+            string format = "MM/dd/yyyy HH:mm:ss";
+            bool parse = DateTime.TryParseExact((string)prescription["dateTime"], format, null, DateTimeStyles.None, out var dateTime);
+            return new Prescription((int)prescription["id"], (int)prescription["dailyDose"], prescriptionTime, drugById[(int)prescription["drug"]], dateTime);
         }
+
         public void LoadFromFile()
         {
             var prescriptions = JArray.Parse(File.ReadAllText(_fileName));
@@ -63,6 +70,7 @@ namespace HealthInstitution.Core.Prescriptions.Repository
                 this.PrescriptionById[loadedPrescription.Id] = loadedPrescription;
             }
         }
+
         private List<dynamic> PrepareForSerialization()
         {
             List<dynamic> reducedPrescriptions = new List<dynamic>();
@@ -73,14 +81,14 @@ namespace HealthInstitution.Core.Prescriptions.Repository
                     id = prescription.Id,
                     dailyDose = prescription.DailyDose,
                     timeOfUse = prescription.TimeOfUse,
-                    drug=prescription.Drug.Id
-                }) ;
+                    drug = prescription.Drug.Id
+                });
             }
             return reducedPrescriptions;
         }
+
         public void Save()
         {
-
             var allPrescriptions = JsonSerializer.Serialize(PrepareForSerialization(), _options);
             File.WriteAllText(this._fileName, allPrescriptions);
         }
@@ -105,14 +113,14 @@ namespace HealthInstitution.Core.Prescriptions.Repository
             PrescriptionTime timeOfUse = prescriptionDTO.TimeOfUse;
             Drug drug = prescriptionDTO.Drug;
 
-            Prescription prescription = new Prescription(id, dailyDose, timeOfUse, drug);
+            Prescription prescription = new Prescription(id, dailyDose, timeOfUse, drug, prescriptionDTO.showTime);
             this.Prescriptions.Add(prescription);
             this.PrescriptionById[id] = prescription;
             Save();
             return prescription;
         }
 
-        public void Update(int id,  PrescriptionDTO prescriptionDTO)
+        public void Update(int id, PrescriptionDTO prescriptionDTO)
         {
             Prescription prescription = GetById(id);
             prescription.DailyDose = prescriptionDTO.DailyDose;
