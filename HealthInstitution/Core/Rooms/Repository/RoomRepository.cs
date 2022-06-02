@@ -223,6 +223,17 @@ namespace HealthInstitution.Core.Rooms.Repository
             }
             return availableRooms;
         }
+
+        public List<Equipment> GetDynamicEquipment(Room room)
+        {
+            List<Equipment> dynamicEquipment = new List<Equipment>();
+            foreach (var equipment in room.AvailableEquipment)
+            {
+                if (equipment.IsDynamic)
+                    dynamicEquipment.Add(equipment);
+            }
+            return dynamicEquipment;
+        }
         public Room? GetRoomFromString(string? roomFromForm)
         {
             if (roomFromForm != null)

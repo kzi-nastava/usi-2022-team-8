@@ -115,5 +115,20 @@ namespace HealthInstitution.GUI.PatientView
             var doctorComboBox = sender as System.Windows.Controls.ComboBox;
             this._doctorUsername = doctorComboBox.SelectedValue as string;
         }
+
+        public void SetSelectedDoctor(Doctor doctor)
+        {
+            int idx = DoctorComboBox.Items.Count;
+            for (int i = 0; i < DoctorComboBox.Items.Count; i++)
+            {
+                var str = DoctorComboBox.Items[i].ToString();
+                if (str == doctor.Username)
+                {
+                    idx = i;
+                    break;
+                }
+            }
+            DoctorComboBox.SelectedIndex = idx;
+        }
     }
 }

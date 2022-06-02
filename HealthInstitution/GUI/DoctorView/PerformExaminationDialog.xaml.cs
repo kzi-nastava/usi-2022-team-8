@@ -107,6 +107,8 @@ namespace HealthInstitution.GUI.DoctorView
                 UpdateExaminationFromInputData();
                 System.Windows.MessageBox.Show("You have finished the examination!", "Congrats", MessageBoxButton.OK, MessageBoxImage.Information);
                 this.Close();
+                new ConsumedEquipmentDialog(_selectedExamination.Room).ShowDialog();
+
             }
             catch
             {

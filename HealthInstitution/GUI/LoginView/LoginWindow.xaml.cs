@@ -15,6 +15,7 @@ using HealthInstitution.Core.Renovations.Functionality;
 using HealthInstitution.Core.Notifications.Repository;
 using HealthInstitution.Core.SystemUsers.Users;
 using HealthInstitution.Core.TrollCounters;
+using HealthInstitution.Core.RecepieNotifications.Model;
 
 namespace HealthInstitution.GUI.LoginView
 {
@@ -64,6 +65,7 @@ namespace HealthInstitution.GUI.LoginView
             }
             return false;
         }
+
         private void LoginButton_click(object sender, RoutedEventArgs e)
         {
             User user = GetUserFromInputData();
@@ -100,13 +102,16 @@ namespace HealthInstitution.GUI.LoginView
                 PatientRepository patientRepository = PatientRepository.GetInstance();
                 TrollCounterService.TrollCheck(foundUser.Username);
                 Patient loggedPatient = patientRepository.GetByUsername(_usernameInput);
+                new RecepieNotificationGenerator(loggedPatient.Username).GenerateAllSkippedNotifications();
                 new PatientWindow(loggedPatient).ShowDialog();
+
                 /*      }
                       catch (Exception ex)
                       {
                           System.Windows.MessageBox.Show(ex.Message, "Troll Alert", MessageBoxButton.OK, MessageBoxImage.Error);*/
             }
         }
+
         private void RedirectDoctor()
         {
             DoctorRepository doctorRepository = DoctorRepository.GetInstance();
@@ -140,6 +145,7 @@ namespace HealthInstitution.GUI.LoginView
         {
             EquipmentTransferChecker.UpdateByTransfer();
             RenovationChecker.UpdateByRenovation();
+
             LoginWindow window = new LoginWindow();
             window.ShowDialog();
         }

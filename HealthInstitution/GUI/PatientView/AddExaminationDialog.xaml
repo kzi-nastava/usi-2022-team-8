@@ -9,7 +9,9 @@
     <Grid>
         <DatePicker Name="datePicker" SelectedDate="{Binding Date, StringFormat='dd/MM/yyyy '}" Margin="120,-80,30,102" Height="50" />
 
-        <ComboBox HorizontalAlignment="Left"
+        <ComboBox
+                  Name="DoctorComboBox"
+                  HorizontalAlignment="Left"
                   Margin="120,152,0,0"
                   VerticalAlignment="Top"
                   Width="150"

@@ -135,7 +135,12 @@ namespace HealthInstitution.Core.Equipments.Repository
             }
             return equipmentType;
         }
-        
+        public void RemoveConsumed(Equipment equipment, int consumedQuantity)
+        {
+            equipment.Quantity -= consumedQuantity;
+            EquipmentById[equipment.Id] = equipment;
+            Save();
+        }
     }
 }
 

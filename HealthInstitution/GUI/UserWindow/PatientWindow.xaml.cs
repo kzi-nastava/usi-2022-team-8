@@ -39,6 +39,7 @@ namespace HealthInstitution.GUI.UserWindow
             InitializeComponent();
             this._loggedPatient = loggedPatient;
             ShowNotificationsDialog();
+            new RecepieNotificationDialog(loggedPatient.Username).ShowDialog();
         }
 
         private void ShowNotificationsDialog()
@@ -80,6 +81,11 @@ namespace HealthInstitution.GUI.UserWindow
         private void medicalRecordView_button_Click(object sender, RoutedEventArgs e)
         {
             new MedicalRecordView(_loggedPatient).ShowDialog();
+        }
+
+        private void pickDoctor_button_Click(object sender, RoutedEventArgs e)
+        {
+            new DoctorPickExamination(_loggedPatient).ShowDialog();
         }
     }
 }
