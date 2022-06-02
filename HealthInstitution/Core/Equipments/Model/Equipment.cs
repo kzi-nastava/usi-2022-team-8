@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace HealthInstitution.Core.Equipments.Model;
 
 public class Equipment
@@ -8,6 +10,7 @@ public class Equipment
     public EquipmentType Type { get; set; }
     public bool IsDynamic { get; set; }
 
+    [JsonConstructor]
     public Equipment(int id, int quantity, string name, EquipmentType type, bool isDynamic)
     {
         this.Id = id;

@@ -23,7 +23,7 @@ namespace HealthInstitution.Core.EquipmentTransfers.Functionality
         {
             List<int> equipmentTransfersToRemove = new List<int>();
             
-            foreach (EquipmentTransfer equipmentTransfer in s_equipmentTransferRepository.EquipmentTransfers)
+            foreach (EquipmentTransfer equipmentTransfer in EquipmentTransferRepository.GetInstance().GetAll())
             {
                 if(equipmentTransfer.ToRoom.Id==1 && equipmentTransfer.TransferTime<=DateTime.Now)
                 {
