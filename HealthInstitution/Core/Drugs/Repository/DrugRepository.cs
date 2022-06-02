@@ -169,21 +169,6 @@ public class DrugRepository
         Save();
     }
 
-    public void Accept(Drug drug)
-    {
-        drug.State = DrugState.Accepted;
-        DrugById[drug.Id] = drug;
-        Save();
-    }
-
-    public void Reject(Drug drug, string rejectionReason)
-    {
-        drug.State = DrugState.Rejected;
-        drug.RejectionReason = rejectionReason;   
-        DrugById[drug.Id] = drug;
-        Save();
-    }
-
     public void Delete(int id)
     {
         Drug drug = GetById(id);

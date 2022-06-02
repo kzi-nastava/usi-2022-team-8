@@ -1,4 +1,5 @@
-﻿using HealthInstitution.Core.Drugs.Model;
+﻿using HealthInstitution.Core.Drugs;
+using HealthInstitution.Core.Drugs.Model;
 using HealthInstitution.Core.Drugs.Repository;
 using System;
 using System.Collections.Generic;
@@ -23,6 +24,7 @@ namespace HealthInstitution.GUI.DoctorView
     {
         private Drug _selectedDrug;
         private DrugRepository _drugRepository = DrugRepository.GetInstance();
+        private DrugVerificationService _drugVerificationService = new DrugVerificationService();
         public RejectionReasonDialog(Drug drug)
         {
             this._selectedDrug = drug;
@@ -38,7 +40,7 @@ namespace HealthInstitution.GUI.DoctorView
             }
             else
             {
-                _drugRepository.Reject(_selectedDrug, rejectionReason);
+                _drugVerificationService.Reject(_selectedDrug, rejectionReason);
                 Close();
             }
         }
