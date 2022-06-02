@@ -121,6 +121,13 @@ namespace HealthInstitution.Core.Equipments.Repository
             equipment.Name = equipmentDTO.Name;
             equipment.Type = equipmentDTO.Type;
             equipment.IsDynamic = equipmentDTO.IsDynamic;
+            EquipmentById[id] = equipment;
+            Save();
+        }
+
+        public void RemoveConsumed(Equipment equipment, int consumedQuantity) {
+            equipment.Quantity -= consumedQuantity;
+            EquipmentById[equipment.Id] = equipment;
             Save();
         }
         public void Delete(int id)

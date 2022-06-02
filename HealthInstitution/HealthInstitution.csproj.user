@@ -17,6 +17,9 @@
     <Compile Update="GUI\DoctorView\RejectionReasonDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="GUI\DoctorView\ConsumedEquipmentDialog.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="GUI\ManagerView\DrugView\AddDrugDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -205,6 +208,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="GUI\DoctorView\AddReferralDialog.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="GUI\DoctorView\ConsumedEquipmentDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="GUI\DoctorView\DoctorNotificationsDialog.xaml">
