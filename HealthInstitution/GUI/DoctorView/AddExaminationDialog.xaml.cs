@@ -5,6 +5,7 @@ using HealthInstitution.Core.MedicalRecords.Model;
 using HealthInstitution.Core.MedicalRecords.Repository;
 using HealthInstitution.Core.Scheduling;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
+using HealthInstitution.Core.SystemUsers.Patients;
 using HealthInstitution.Core.SystemUsers.Patients.Model;
 using HealthInstitution.Core.SystemUsers.Patients.Repository;
 using HealthInstitution.Core.SystemUsers.Users.Model;
@@ -50,7 +51,7 @@ namespace HealthInstitution.GUI.DoctorView
         private void PatientComboBox_Loaded(object sender, RoutedEventArgs e)
         {
             patientComboBox.Items.Clear();
-            List<Patient> patients = PatientRepository.GetInstance().Patients;
+            List<Patient> patients = PatientService.GetAll();
             foreach (Patient patient in patients)
             {
                 patientComboBox.Items.Add(patient);
@@ -67,8 +68,8 @@ namespace HealthInstitution.GUI.DoctorView
             appointment = appointment.AddMinutes(minutes);
             Patient patient = (Patient)patientComboBox.SelectedItem;
             MedicalRecord medicalRecord = MedicalRecordService.GetByPatientUsername(patient);
-            ExaminationDTO examination = new ExaminationDTO(appointment, null, _loggedDoctor, medicalRecord);
-            return examination;
+            ExaminationDTO examinationDTO = new ExaminationDTO(appointment, null, _loggedDoctor, medicalRecord);
+            return examinationDTO;
         }
 
         private void Submit_Click(object sender, RoutedEventArgs e)
@@ -76,7 +77,6 @@ namespace HealthInstitution.GUI.DoctorView
             try
             {
                 ExaminationDTO examinationDTO = CreateExaminationDTOFromInputData();
-                examinationDTO.Validate();
                 SchedulingService.ReserveExamination(examinationDTO);
                 this.Close();
             }

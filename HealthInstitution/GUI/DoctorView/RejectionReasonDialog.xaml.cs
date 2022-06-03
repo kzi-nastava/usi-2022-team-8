@@ -23,7 +23,6 @@ namespace HealthInstitution.GUI.DoctorView
     public partial class RejectionReasonDialog : Window
     {
         private Drug _selectedDrug;
-        private DrugRepository _drugRepository = DrugRepository.GetInstance();
         public RejectionReasonDialog(Drug drug)
         {
             this._selectedDrug = drug;

@@ -93,6 +93,11 @@ namespace HealthInstitution.Core.Rooms
             return s_roomRepository.GetNotRenovating();
         }
 
+        public static List<Equipment> GetDynamicEquipment(Room room)
+        {
+            return s_roomRepository.GetDynamicEquipment(room);
+        }
+
         public static bool RoomNumberIsTaken(int number)
         {
             return s_roomRepository.RoomNumberIsTaken(number);
@@ -111,38 +116,6 @@ namespace HealthInstitution.Core.Rooms
                 }
             }
             return items;
-        }
-        public static Room FindAvailableRoom(OperationDTO operationDTO, int id = 0)
-        {
-            bool isAvailable;
-            List<Room> availableRooms = new List<Room>();
-            var rooms = RoomRepository.GetInstance().GetNotRenovating();
-            DateTime appointment = operationDTO.Appointment;
-            int duration = operationDTO.Duration;
-
-            foreach (var room in rooms)
-            {
-                if (room.Type != RoomType.OperatingRoom) continue;
-                isAvailable = true;
-                foreach (var operation in OperationRepository.GetInstance().GetAll())
-                {
-                    if (operation.Room.Id == room.Id && operation.Id != id)
-                    {
-                        if ((appointment < operation.Appointment.AddMinutes(operation.Duration)) && (appointment.AddMinutes(duration) > operation.Appointment))
-                        {
-                            isAvailable = false;
-                            break;
-                        }
-                    }
-                }
-                if (isAvailable)
-                    availableRooms.Add(room);
-            }
-
-            if (availableRooms.Count == 0) throw new Exception("There are no available rooms!");
-            Random random = new Random();
-            int index = random.Next(0, availableRooms.Count);
-            return availableRooms[index];
         }
     }
 }

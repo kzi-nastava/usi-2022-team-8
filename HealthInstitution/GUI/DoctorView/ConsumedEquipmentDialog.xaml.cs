@@ -1,5 +1,6 @@
 ﻿using HealthInstitution.Core.Equipments.Model;
 using HealthInstitution.Core.Equipments.Repository;
+using HealthInstitution.Core.Rooms;
 using HealthInstitution.Core.Rooms.Model;
 using HealthInstitution.Core.Rooms.Repository;
 using System;
@@ -25,8 +26,6 @@ namespace HealthInstitution.GUI.DoctorView
     {
         //Dictionary<String, int> equipmentQuantities;
         private Room _room;
-        private RoomRepository _roomRepository = RoomRepository.GetInstance();
-        private EquipmentRepository _equipmentRepository = EquipmentRepository.GetInstance();
         public ConsumedEquipmentDialog(Room room)
         {
             this._room = room;
@@ -36,7 +35,7 @@ namespace HealthInstitution.GUI.DoctorView
         private void EquipmentComboBox_Loaded(object sender, RoutedEventArgs e)
         {
             var equipmentComboBox = sender as System.Windows.Controls.ComboBox;
-            var dynamicEquipment = _roomRepository.GetDynamicEquipment(_room);
+            var dynamicEquipment = RoomService.GetDynamicEquipment(_room);
             foreach (var equipment in dynamicEquipment)
             {
                 equipmentComboBox.Items.Add(equipment);
@@ -46,7 +45,6 @@ namespace HealthInstitution.GUI.DoctorView
         private void EquipmentComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e) {
 
             var equipment = (Equipment)equipmentComboBox.SelectedItem;
-
             consumedQuantityComboBox.Items.Clear();
             if (equipment != null) {
                 for (int i = 0; i <= equipment.Quantity; i++)
@@ -60,7 +58,7 @@ namespace HealthInstitution.GUI.DoctorView
             {
                 var equipment = (Equipment)equipmentComboBox.SelectedItem;
                 var consumedQuantity = (int)consumedQuantityComboBox.SelectedItem;
-                _equipmentRepository.RemoveConsumed(equipment, consumedQuantity);
+                EquipmentService.RemoveConsumed(equipment, consumedQuantity);
                 System.Windows.MessageBox.Show("You have removed " + consumedQuantity + " " + equipment.Name + " from " + _room, "Info", MessageBoxButton.OK, MessageBoxImage.Information);
                 equipmentComboBox.Items.Remove(equipment);
                 consumedQuantityComboBox.Items.Clear();

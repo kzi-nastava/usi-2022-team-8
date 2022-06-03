@@ -25,6 +25,7 @@ namespace HealthInstitution.Core.Operations
 
         public static void Update(int id, OperationDTO operationDTO)
         {
+            operationDTO.Validate();
             Operation operation = new Operation(operationDTO);
             DoctorOperationAvailabilityService.CheckIfDoctorIsAvailable(operationDTO, id);
             PatientOperationAvailabilityService.CheckIfPatientIsAvailable(operationDTO, id);

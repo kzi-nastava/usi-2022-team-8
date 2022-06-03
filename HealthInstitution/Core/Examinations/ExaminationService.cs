@@ -30,6 +30,7 @@ namespace HealthInstitution.Core.Examinations
 
         public static void Update(int id, ExaminationDTO examinationDTO)
         {
+            examinationDTO.Validate();
             Examination examination = new Examination(examinationDTO);
             DoctorExaminationAvailabilityService.CheckIfDoctorIsAvailable(examinationDTO);
             PatientExaminationAvailabilityService.CheckIfPatientIsAvailable(examinationDTO);

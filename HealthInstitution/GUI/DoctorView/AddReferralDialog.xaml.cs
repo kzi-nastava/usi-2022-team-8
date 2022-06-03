@@ -20,6 +20,7 @@ using HealthInstitution.Core.MedicalRecords.Model;
 using HealthInstitution.Core.MedicalRecords.Repository;
 using HealthInstitution.Core.Referrals;
 using HealthInstitution.Core.MedicalRecords;
+using HealthInstitution.Core.SystemUsers.Doctors;
 
 namespace HealthInstitution.GUI.DoctorView
 {
@@ -30,9 +31,6 @@ namespace HealthInstitution.GUI.DoctorView
     {
         private Patient _patient;
         private Doctor _doctor;
-        private DoctorRepository _doctorRepository = DoctorRepository.GetInstance();
-        private MedicalRecordRepository _medicalRecordRepository = MedicalRecordRepository.GetInstance();
-        private ReferralRepository _referralRepository = ReferralRepository.GetInstance();  
         public AddReferralDialog(Doctor doctor, Patient patient)
         {
             _patient = patient;
@@ -62,7 +60,7 @@ namespace HealthInstitution.GUI.DoctorView
         private void DoctorComboBox_Loaded(object sender, RoutedEventArgs e)
         {
             var doctorComboBox = sender as System.Windows.Controls.ComboBox;
-            List<Doctor> doctors = _doctorRepository.GetAll();
+            List<Doctor> doctors = DoctorService.GetAll();
             foreach (Doctor doctor in doctors)
             {
                 if (_doctor.Username != doctor.Username)

@@ -1,4 +1,6 @@
-﻿using HealthInstitution.Core.Prescriptions.Model;
+﻿using HealthInstitution.Core.Ingredients.Model;
+using HealthInstitution.Core.MedicalRecords.Model;
+using HealthInstitution.Core.Prescriptions.Model;
 using HealthInstitution.Core.Prescriptions.Repository;
 using System;
 using System.Collections.Generic;
@@ -31,6 +33,17 @@ namespace HealthInstitution.Core.Prescriptions
         public static void Delete(int id)
         {
             s_prescriptionRepository.Delete(id);
+        }
+
+        private static bool IsPatientAlergic(MedicalRecord medicalRecord, List<Ingredient> ingredients)
+        {
+            /*foreach (var ingredient in ingredients)
+            {
+                if (medicalRecord.Allergens.Contains(ingredient.Name))
+                    return true;
+            }
+            return false;*/
+            return ingredients.Any(i => medicalRecord.Allergens.Contains(i.Name));
         }
     }
 }

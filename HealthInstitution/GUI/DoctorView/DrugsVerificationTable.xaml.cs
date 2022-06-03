@@ -22,8 +22,6 @@ namespace HealthInstitution.GUI.DoctorView
     /// </summary>
     public partial class DrugsVerificationTable : Window
     {
-
-        private DrugRepository _drugRepository = DrugRepository.GetInstance();
         public DrugsVerificationTable()
         {
             InitializeComponent();
@@ -38,6 +36,7 @@ namespace HealthInstitution.GUI.DoctorView
             {
                 dataGrid.Items.Add(drug);
             }
+            dataGrid.Items.Refresh();
         }
 
         private void AcceptButton_Click(object sender, RoutedEventArgs e)
@@ -53,10 +52,8 @@ namespace HealthInstitution.GUI.DoctorView
             Drug selectedDrug = (Drug)dataGrid.SelectedItem;
             RejectionReasonDialog rejectionReasonDialog = new RejectionReasonDialog(selectedDrug);
             rejectionReasonDialog.ShowDialog();
-            /*EditExaminationDialog editExaminationDialog = new EditExaminationDialog(selectedExamination);
-            editExaminationDialog.ShowDialog();*/
             LoadRows();
-            dataGrid.Items.Refresh();
+            //dataGrid.Items.Refresh();
         }
     }
 }
