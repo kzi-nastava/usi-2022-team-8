@@ -158,14 +158,14 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
             }
 
             string message;
-            bool firstRoomOccupied = RenovationService.CheckRoomTimetable(firstSelectedRoom, startDate, out message);
+            bool firstRoomOccupied = RoomTimetableService.CheckRoomTimetable(firstSelectedRoom, startDate, out message);
             if (firstRoomOccupied)
             {
                 System.Windows.MessageBox.Show(message, "Failed renovation", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
             }
 
-            bool secondRoomOccupied = RenovationService.CheckRoomTimetable(secondSelectedRoom, startDate, out message);
+            bool secondRoomOccupied = RoomTimetableService.CheckRoomTimetable(secondSelectedRoom, startDate, out message);
             if (secondRoomOccupied)
             {
                 System.Windows.MessageBox.Show(message, "Failed renovation", MessageBoxButton.OK, MessageBoxImage.Error);

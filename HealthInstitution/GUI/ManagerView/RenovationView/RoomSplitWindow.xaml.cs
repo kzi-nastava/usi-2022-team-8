@@ -245,7 +245,7 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
             }
 
             string message;
-            bool occupied = RenovationService.CheckRoomTimetable(selectedRoom, startDate, out message);
+            bool occupied = RoomTimetableService.CheckRoomTimetable(selectedRoom, startDate, out message);
             if (occupied)
             {
                 System.Windows.MessageBox.Show(message, "Failed renovation", MessageBoxButton.OK, MessageBoxImage.Error);
