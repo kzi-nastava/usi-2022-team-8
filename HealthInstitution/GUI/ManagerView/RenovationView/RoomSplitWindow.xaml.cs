@@ -1,14 +1,18 @@
-﻿using HealthInstitution.Core.Equipments.Model;
+﻿using HealthInstitution.Core.Equipments;
+using HealthInstitution.Core.Equipments.Model;
 using HealthInstitution.Core.Equipments.Repository;
+using HealthInstitution.Core.EquipmentTransfers;
 using HealthInstitution.Core.EquipmentTransfers.Model;
 using HealthInstitution.Core.EquipmentTransfers.Repository;
 using HealthInstitution.Core.Examinations.Model;
 using HealthInstitution.Core.Examinations.Repository;
 using HealthInstitution.Core.Operations.Model;
 using HealthInstitution.Core.Operations.Repository;
+using HealthInstitution.Core.Renovations;
 using HealthInstitution.Core.Renovations.Functionality;
 using HealthInstitution.Core.Renovations.Model;
 using HealthInstitution.Core.Renovations.Repository;
+using HealthInstitution.Core.Rooms;
 using HealthInstitution.Core.Rooms.Model;
 using HealthInstitution.Core.Rooms.Repository;
 using System;
@@ -72,7 +76,7 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
 
         private void SplittingRoomComboBox_Loaded(object sender, RoutedEventArgs e)
         {
-            List<Room> rooms = _roomRepository.GetActive();
+            List<Room> rooms = RoomService.GetActive();
 
             splitRoomComboBox.ItemsSource = rooms;
             splitRoomComboBox.SelectedItem = null;
@@ -118,7 +122,7 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
         {
             foreach(Equipment equipment in equipments)
             {
-                _equipmentRepository.Delete(equipment.Id);
+                EquipmentService.Delete(equipment.Id);
             }
             equipments.Clear();
         }
@@ -165,9 +169,9 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
             RoomType secondRoomType = (RoomType)secondRoomTypeComboBox.SelectedItem;
 
             RoomDTO firstRoomDTO = new RoomDTO(firstRoomType, firstRoomNumber, true, false);
-            Room firstRoom = _roomRepository.AddRoom(firstRoomDTO);
+            Room firstRoom = RoomService.AddRoom(firstRoomDTO);
             RoomDTO secondRoomDTO = new RoomDTO(secondRoomType, secondRoomNumber, true, false);
-            Room secondRoom = _roomRepository.AddRoom(secondRoomDTO);
+            Room secondRoom = RoomService.AddRoom(secondRoomDTO);
 
             if (IsEmpty(_firstRoomEquipmentFromArranging) && IsEmpty(_secondRoomEquipmentFromArranging))
             {
@@ -182,7 +186,7 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
             }
 
             RoomSeparationDTO roomSeparationDTO = new RoomSeparationDTO(selectedRoom, firstRoom, secondRoom, startDate, endDate);
-            _renovationRepository.AddRoomSeparation(roomSeparationDTO);
+            RenovationService.AddRoomSeparation(roomSeparationDTO);
             if (startDate == DateTime.Today)
             {
                 RenovationChecker.StartSeparation(selectedRoom, firstRoom, secondRoom);
@@ -286,7 +290,7 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
             foreach (Equipment equipment in availableEquipment)
             {
                 EquipmentDTO equipmentDTO = new EquipmentDTO(equipment.Quantity, equipment.Name, equipment.Type, equipment.IsDynamic);
-                Equipment newEquipment = _equipmentRepository.Add(equipmentDTO);
+                Equipment newEquipment = EquipmentService.Add(equipmentDTO);
                 equipments.Add(newEquipment);
             }
             return equipments;
@@ -296,7 +300,7 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
         {
             Room selectedRoom = (Room)splitRoomComboBox.SelectedItem;
 
-            foreach (EquipmentTransfer equipmentTransfer in _equipmentTransferRepository.GetAll())
+            foreach (EquipmentTransfer equipmentTransfer in EquipmentTransferService.GetAll())
             {
                 
                 if (equipmentTransfer.FromRoom == selectedRoom || equipmentTransfer.ToRoom == selectedRoom)
@@ -311,7 +315,7 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
         {
             Room selectedRoom = (Room)splitRoomComboBox.SelectedItem;
             
-            foreach (Renovation renovation in _renovationRepository.GetAll())
+            foreach (Renovation renovation in RenovationService.GetAll())
             {
                 if (renovation.Room == selectedRoom)
                 {

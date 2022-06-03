@@ -1,4 +1,5 @@
-﻿using HealthInstitution.Core.Ingredients.Repository;
+﻿using HealthInstitution.Core.Ingredients;
+using HealthInstitution.Core.Ingredients.Repository;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -34,7 +35,7 @@ namespace HealthInstitution.GUI.ManagerView.IngredientView
                 return;
             }
 
-            _ingredientRepository.Add(name);
+            IngredientService.Add(name);
             System.Windows.MessageBox.Show("Ingredient added!", "Ingredient creation", MessageBoxButton.OK, MessageBoxImage.Information);
 
             this.Close();

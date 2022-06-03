@@ -1,12 +1,15 @@
-﻿using HealthInstitution.Core.EquipmentTransfers.Model;
+﻿using HealthInstitution.Core.EquipmentTransfers;
+using HealthInstitution.Core.EquipmentTransfers.Model;
 using HealthInstitution.Core.EquipmentTransfers.Repository;
 using HealthInstitution.Core.Examinations.Model;
 using HealthInstitution.Core.Examinations.Repository;
 using HealthInstitution.Core.Operations.Model;
 using HealthInstitution.Core.Operations.Repository;
+using HealthInstitution.Core.Renovations;
 using HealthInstitution.Core.Renovations.Functionality;
 using HealthInstitution.Core.Renovations.Model;
 using HealthInstitution.Core.Renovations.Repository;
+using HealthInstitution.Core.Rooms;
 using HealthInstitution.Core.Rooms.Model;
 using HealthInstitution.Core.Rooms.Repository;
 using System;
@@ -56,7 +59,7 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
 
         private void RoomComboBox_Loaded(object sender, RoutedEventArgs e)
         {     
-            List<Room> rooms = _roomRepository.GetActive();
+            List<Room> rooms = RoomService.GetActive();
             
             roomComboBox.ItemsSource = rooms;
             roomComboBox.SelectedItem = null;
@@ -92,7 +95,7 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
             Room selectedRoom = (Room)roomComboBox.SelectedItem;
 
             RenovationDTO renovationDTO = new RenovationDTO(selectedRoom, startDate, endDate);
-            _renovationRepository.AddRenovation(renovationDTO);
+            RenovationService.AddRenovation(renovationDTO);
             if (startDate == DateTime.Today)
             {
                 RenovationChecker.StartRenovation(selectedRoom);
@@ -107,7 +110,7 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
         private bool ValidateSelectedRoom()
         {
             Room selectedRoom = (Room)roomComboBox.SelectedItem;
-            if (selectedRoom.Type == RoomType.Warehouse)
+            if (selectedRoom.IsWarehouse())
             {
                 System.Windows.MessageBox.Show("Warehouse cant be renovated!", "Failed renovation", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
@@ -163,7 +166,7 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
             Room selectedRoom = (Room)roomComboBox.SelectedItem;
             DateTime startDate = (DateTime)startDatePicker.SelectedDate;
 
-            foreach (EquipmentTransfer equipmentTransfer in _equipmentTransferRepository.GetAll())
+            foreach (EquipmentTransfer equipmentTransfer in EquipmentTransferService.GetAll())
             {
                 if (equipmentTransfer.TransferTime < startDate)
                 {
@@ -181,7 +184,7 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
         private bool CheckIfRoomHasScheduledRenovation()
         {
             Room selectedRoom = (Room)roomComboBox.SelectedItem;
-            foreach (Renovation renovation in _renovationRepository.GetAll())
+            foreach (Renovation renovation in RenovationService.GetAll())
             {
                 if (renovation.Room == selectedRoom)
                 {
@@ -223,12 +226,6 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
             return false;
         }
 
-        //private bool CheckIfDateIsInSpan(DateTime checkingDate, DateTime startDate, DateTime endDate)
-        //{
-        //    if (checkingDate >= startDate && checkingDate <= endDate)
-        //        return true;
-        //    return false;
-        //}
 
         private bool CheckCompleteness()
         {

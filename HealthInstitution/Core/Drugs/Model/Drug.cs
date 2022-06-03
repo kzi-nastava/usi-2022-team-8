@@ -18,11 +18,18 @@ public class Drug
         this.Ingredients = ingredients;
         this.RejectionReason = rejectionReason;
     }
-
+    public Drug(DrugDTO drugDTO)
+    {
+        this.Name = drugDTO.Name;
+        this.State = drugDTO.State;
+        this.Ingredients = drugDTO.Ingredients;
+        this.RejectionReason = drugDTO.RejectionReason;
+    }
     public override string ToString()
     {
         return this.Name;
     }
+
 
     public bool ContainsIngredient(Ingredient ingredient)
     {

@@ -1,5 +1,7 @@
-﻿using HealthInstitution.Core.Drugs.Model;
+﻿using HealthInstitution.Core.Drugs;
+using HealthInstitution.Core.Drugs.Model;
 using HealthInstitution.Core.Drugs.Repository;
+using HealthInstitution.Core.Ingredients;
 using HealthInstitution.Core.Ingredients.Model;
 using HealthInstitution.Core.Ingredients.Repository;
 using System;
@@ -47,8 +49,7 @@ namespace HealthInstitution.GUI.ManagerView.DrugView
         }
         private void IngredientsComboBox_Loaded(object sender, RoutedEventArgs e)
         {
-            IngredientRepository ingredientRepository = IngredientRepository.GetInstance();
-            List<Ingredient> ingredients = ingredientRepository.GetAll();
+            List<Ingredient> ingredients = IngredientService.GetAll();
             ingredientsComboBox.ItemsSource = ingredients;
             ingredientsComboBox.SelectedItem = null;
         }
@@ -105,7 +106,7 @@ namespace HealthInstitution.GUI.ManagerView.DrugView
             }
 
             DrugDTO drugDTO = new DrugDTO(name, DrugState.Created, _ingredientsForDrug);
-            _drugRepository.Update(_drug.Id, drugDTO);
+            DrugService.Update(_drug.Id, drugDTO);
             System.Windows.MessageBox.Show("Drug revised and waiting on verification!", "Ingredient creation", MessageBoxButton.OK, MessageBoxImage.Information);
 
             this.Close();

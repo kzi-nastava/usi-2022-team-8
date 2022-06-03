@@ -1,10 +1,12 @@
 ﻿using HealthInstitution.Core.Examinations.Model;
 using HealthInstitution.Core.Examinations.Repository;
+using HealthInstitution.Core.MedicalRecords;
 using HealthInstitution.Core.MedicalRecords.Model;
 using HealthInstitution.Core.MedicalRecords.Repository;
 using HealthInstitution.Core.Operations.Model;
 using HealthInstitution.Core.Operations.Repository;
 using HealthInstitution.Core.ScheduleEditRequests.Model;
+using HealthInstitution.Core.Scheduling;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using HealthInstitution.Core.SystemUsers.Patients.Model;
 using HealthInstitution.Core.SystemUsers.Patients.Repository;
@@ -29,6 +31,8 @@ namespace HealthInstitution.GUI.SecretaryView
     /// </summary>
     public partial class AddUrgentOperationDialog : Window
     {
+        MedicalRecord _selectedMedicalRecord;
+        SpecialtyType _selectedSpecialtyType;
         public AddUrgentOperationDialog()
         {
             InitializeComponent();
@@ -59,47 +63,31 @@ namespace HealthInstitution.GUI.SecretaryView
             UrgentOperationDialog urgentOperationDialog = new UrgentOperationDialog(urgentOperation);
             urgentOperationDialog.ShowDialog();
         }
-        private List<ScheduleEditRequest> PrepareDataForDelaying(List<Tuple<int, int, DateTime>> examinationsAndOperationsForDelaying)
+        private void ShowDelayingAppointmentSelectionDialog(List<Tuple<int, int, DateTime>> examinationsAndOperationsForDelaying, MedicalRecord medicalRecord)
         {
-            List<ScheduleEditRequest> delayedAppointments = new List<ScheduleEditRequest>();
-            foreach (Tuple<int, int, DateTime> tuple in examinationsAndOperationsForDelaying)
-            {
-                if (tuple.Item2 == 1)
-                {
-                    Examination currentExamination = ExaminationRepository.GetInstance().GetById(tuple.Item1);
-                    Examination newExamination = new Examination(currentExamination.Id, ExaminationStatus.Scheduled, tuple.Item3, currentExamination.Room, currentExamination.Doctor, currentExamination.MedicalRecord, "");
-                    delayedAppointments.Add(new ScheduleEditRequest(0, currentExamination, newExamination, Core.RestRequests.Model.RestRequestState.OnHold));
-
-                }
-                if (tuple.Item2 == 0)
-                {
-                    Operation currentOperation = OperationRepository.GetInstance().GetById(tuple.Item1);
-                    Operation newOperation = new Operation(currentOperation.Id, tuple.Item3, currentOperation.Duration, currentOperation.Room, currentOperation.Doctor, currentOperation.MedicalRecord);
-                    delayedAppointments.Add(new ScheduleEditRequest(0, currentOperation, newOperation, Core.RestRequests.Model.RestRequestState.OnHold));
-                }
-            }
-            return delayedAppointments;
+            System.Windows.MessageBox.Show("There are no free appointments in next two hours. Please select examination or operation to be delayed.");
+            List<ScheduleEditRequest> delayedAppointments = UrgentService.PrepareDataForDelaying(examinationsAndOperationsForDelaying);
+            Operation urgentOperation = new Operation(examinationsAndOperationsForDelaying[0].Item1, new DateTime(1, 1, 1), 15, null, null, medicalRecord);
+            DelayExaminationOperationDialog delayExaminationOperationDialog = new DelayExaminationOperationDialog(delayedAppointments, null, urgentOperation);
+            delayExaminationOperationDialog.ShowDialog();
+        }
+        private void PickDataFromForm()
+        {
+            _selectedSpecialtyType = (SpecialtyType)specialtyTypeComboBox.SelectedItem;
+            Patient patient = (Patient)patientComboBox.SelectedItem;
+            _selectedMedicalRecord = MedicalRecordRepository.GetInstance().GetByPatientUsername(patient);
         }
         private void Create_Click(object sender, RoutedEventArgs e)
         {
             try
             {
-                SpecialtyType specialtyType = (SpecialtyType)specialtyTypeComboBox.SelectedItem;
-                Patient patient = (Patient)patientComboBox.SelectedItem;
-                MedicalRecord medicalRecord = MedicalRecordRepository.GetInstance().GetByPatientUsername(patient);
-                List<Tuple<int, int, DateTime>> examinationsAndOperationsForDelaying = OperationRepository.GetInstance().ReserveUrgentOperation(patient.Username, specialtyType,15);
-
+                PickDataFromForm();
+                List<Tuple<int, int, DateTime>> examinationsAndOperationsForDelaying = UrgentService.ReserveUrgentOperation(_selectedMedicalRecord.Patient.Username, _selectedSpecialtyType,15);
                 if (examinationsAndOperationsForDelaying.Count()==1)
                     ShowReservedOperationWithoutDelaying(examinationsAndOperationsForDelaying);
                 else
-                {
-                    System.Windows.MessageBox.Show("There are no free appointments in next two hours. Please select examination or operation to be delayed.");
-                    List<ScheduleEditRequest> delayedAppointments = PrepareDataForDelaying(examinationsAndOperationsForDelaying);
-                    Operation urgentOperation = new Operation(examinationsAndOperationsForDelaying[0].Item1, new DateTime(1, 1, 1), 15, null, null, medicalRecord);
-                    DelayExaminationOperationDialog delayExaminationOperationDialog = new DelayExaminationOperationDialog(delayedAppointments,null,urgentOperation);
-                    delayExaminationOperationDialog.ShowDialog();
-                }
-                this.Close();
+                    ShowDelayingAppointmentSelectionDialog(examinationsAndOperationsForDelaying, _selectedMedicalRecord);
+                Close();
             }
             catch (Exception ex)
             {

@@ -35,7 +35,7 @@ namespace HealthInstitution.GUI.DoctorView
         private void LoadRows()
         {
             dataGrid.Items.Clear();
-            List<Drug> drugs = _drugRepository.GetAllCreated();
+            List<Drug> drugs = DrugService.GetAllCreated();
             foreach (Drug drug in drugs)
             {
                 dataGrid.Items.Add(drug);
@@ -46,7 +46,7 @@ namespace HealthInstitution.GUI.DoctorView
         {
             Drug selectedDrug = (Drug)dataGrid.SelectedItem;
             System.Windows.MessageBox.Show("You have accepted a new drug!", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
-            _drugVerificationService.Accept(selectedDrug);
+            DrugService.Accept(selectedDrug);
             dataGrid.Items.Remove(selectedDrug);
         }
 

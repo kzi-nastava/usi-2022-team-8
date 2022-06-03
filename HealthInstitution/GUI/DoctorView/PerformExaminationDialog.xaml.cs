@@ -1,5 +1,6 @@
 ﻿using HealthInstitution.Core.Examinations.Model;
 using HealthInstitution.Core.Examinations.Repository;
+using HealthInstitution.Core.MedicalRecords;
 using HealthInstitution.Core.MedicalRecords.Model;
 using HealthInstitution.Core.MedicalRecords.Repository;
 using HealthInstitution.Core.Prescriptions.Model;
@@ -102,10 +103,12 @@ namespace HealthInstitution.GUI.DoctorView
             try
             {
                 MedicalRecordDTO medicalRecordDTO = CreateMedicalRecordDTOFromInputData();
-                MedicalRecordRepository.GetInstance().Update(medicalRecordDTO);
+                MedicalRecordService.Update(medicalRecordDTO);
                 UpdateExaminationFromInputData();
                 System.Windows.MessageBox.Show("You have finished the examination!", "Congrats", MessageBoxButton.OK, MessageBoxImage.Information);
                 this.Close();
+                new ConsumedEquipmentDialog(_selectedExamination.Room).ShowDialog();
+
             }
             catch
             {

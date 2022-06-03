@@ -98,17 +98,17 @@ internal class DoctorRepository
         return null;
     }
 
-    public void DeleteExamination(Doctor doctor, Examination examination)
-    {
-        doctor.Examinations.Remove(examination);
-        Save();
-    }
+        public void DeleteExamination(Examination examination)
+        {
+            examination.Doctor.Examinations.Remove(examination);
+            Save();
+        }
 
-    public void DeleteOperation(Doctor doctor, Operation operation)
-    {
-        doctor.Operations.Remove(operation);
-        Save();
-    }
+        public void DeleteOperation(Operation operation)
+        {
+            operation.Doctor.Operations.Remove(operation);
+            Save();
+        }
 
     public List<Examination> GetScheduledExaminations(Doctor doctor)
     {
@@ -180,10 +180,9 @@ internal class DoctorRepository
         return operationsForDate;
     }
 
-        public void DeleteNotification(Doctor doctor, AppointmentNotification notification)
-        {
-            doctor.Notifications.Remove(notification);
-            Save();
-        }
+    public void DeleteNotification(Doctor doctor, AppointmentNotification notification)
+    {
+        doctor.Notifications.Remove(notification);
+        Save();
     }
 }

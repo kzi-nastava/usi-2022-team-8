@@ -1,5 +1,4 @@
-﻿using HealthInstitution.Core.Drugs.Model;
-using HealthInstitution.Core.Prescriptions.Model;
+﻿using HealthInstitution.Core.Prescriptions.Model;
 using HealthInstitution.Core.Prescriptions.Repository;
 using System;
 using System.Collections.Generic;
@@ -9,40 +8,29 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.Prescriptions
 {
-    class PrescriptionService
+    static class PrescriptionService
     {
-        private PrescriptionRepository _prescriptionRepository = PrescriptionRepository.GetInstance();
-        public Prescription Add(PrescriptionDTO prescriptionDTO)
+        static PrescriptionRepository s_prescriptionRepository = PrescriptionRepository.GetInstance();
+        public static List<Prescription> GetAll()
         {
-            _prescriptionRepository.maxId++;
-            int id = _prescriptionRepository.maxId;
-            int dailyDose = prescriptionDTO.DailyDose;
-            PrescriptionTime timeOfUse = prescriptionDTO.TimeOfUse;
-            Drug drug = prescriptionDTO.Drug;
-
-            Prescription prescription = new Prescription(id, dailyDose, timeOfUse, drug);
-            _prescriptionRepository.Prescriptions.Add(prescription);
-            _prescriptionRepository.PrescriptionById[id] = prescription;
-            _prescriptionRepository.Save();
-            return prescription;
+            return s_prescriptionRepository.GetAll();
         }
 
-        public void Update(int id, PrescriptionDTO prescriptionDTO)
+        public static Prescription Add(PrescriptionDTO prescriptionDTO)
         {
-            Prescription prescription = _prescriptionRepository.GetById(id);
-            prescription.DailyDose = prescriptionDTO.DailyDose;
-            prescription.TimeOfUse = prescriptionDTO.TimeOfUse;
-            prescription.Drug = prescriptionDTO.Drug;
-            _prescriptionRepository.PrescriptionById[id] = prescription;
-            _prescriptionRepository.Save();
+            Prescription prescription = new Prescription(prescriptionDTO);
+            return s_prescriptionRepository.Add(prescription);
         }
 
-        public void Delete(int id)
+        public static void Update(int id, PrescriptionDTO prescriptionDTO)
         {
-            Prescription prescription = _prescriptionRepository.GetById(id);
-            _prescriptionRepository.Prescriptions.Remove(prescription);
-            _prescriptionRepository.PrescriptionById.Remove(id);
-            _prescriptionRepository.Save();
+            Prescription prescription = new Prescription(prescriptionDTO);
+            s_prescriptionRepository.Update(id, prescription);
+        }
+
+        public static void Delete(int id)
+        {
+            s_prescriptionRepository.Delete(id);
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using HealthInstitution.Core.Drugs.Model;
+﻿using HealthInstitution.Core.Drugs;
+using HealthInstitution.Core.Drugs.Model;
 using HealthInstitution.Core.Drugs.Repository;
 using HealthInstitution.Core.Ingredients.Model;
 using System;
@@ -34,7 +35,7 @@ namespace HealthInstitution.GUI.ManagerView.DrugView
         private void LoadRows()
         {
             drugsDataGrid.Items.Clear();
-            List<Drug> drugs = _drugRepository.GetAllCreated();
+            List<Drug> drugs = DrugService.GetAllCreated();
             foreach (Drug drug in drugs)
             {
                 drugsDataGrid.Items.Add(drug);
@@ -91,7 +92,7 @@ namespace HealthInstitution.GUI.ManagerView.DrugView
             if (System.Windows.MessageBox.Show("Are you sure you want to delete selected drug", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
             {
                 drugsDataGrid.Items.Remove(selectedDrug);
-                _drugRepository.Delete(selectedDrug.Id);
+                DrugService.Delete(selectedDrug.Id);
 
             }
         }

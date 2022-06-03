@@ -104,5 +104,32 @@ namespace HealthInstitution.Core.Prescriptions.Repository
                 return PrescriptionById[id];
             return null;
         }
+
+        public Prescription Add(Prescription prescription)
+        {
+            prescription.Id = ++_maxId;
+            this.Prescriptions.Add(prescription);
+            this.PrescriptionById[prescription.Id] = prescription;
+            Save();
+            return prescription;
+        }
+
+        public void Update(int id, Prescription byPrescription)
+        {
+            Prescription prescription = GetById(id);
+            prescription.DailyDose = byPrescription.DailyDose;
+            prescription.TimeOfUse = byPrescription.TimeOfUse;
+            prescription.Drug = byPrescription.Drug;
+            PrescriptionById[id] = prescription;
+            Save();
+        }
+
+        public void Delete(int id)
+        {
+            Prescription prescription = GetById(id);
+            this.Prescriptions.Remove(prescription);
+            this.PrescriptionById.Remove(id);
+            Save();
+        }
     }
 }

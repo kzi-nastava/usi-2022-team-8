@@ -1,8 +1,10 @@
 ﻿using HealthInstitution.Core.Drugs.Model;
 using HealthInstitution.Core.Drugs.Repository;
 using HealthInstitution.Core.Ingredients.Model;
+using HealthInstitution.Core.MedicalRecords;
 using HealthInstitution.Core.MedicalRecords.Model;
 using HealthInstitution.Core.MedicalRecords.Repository;
+using HealthInstitution.Core.Prescriptions;
 using HealthInstitution.Core.Prescriptions.Model;
 using HealthInstitution.Core.Prescriptions.Repository;
 using System;
@@ -27,7 +29,7 @@ namespace HealthInstitution.GUI.DoctorView
     public partial class AddPrescriptionDialog : Window
     {
         private MedicalRecord _medicalRecord;
-        private DrugRepository _drugRepository = DrugRepository.GetInstance();
+        private DrugRepository DrugSerivce = DrugRepository.GetInstance();
         private PrescriptionRepository _prescriptionRepository = PrescriptionRepository.GetInstance();
         private MedicalRecordRepository _medicalRecordRepository = MedicalRecordRepository.GetInstance();
         public AddPrescriptionDialog(MedicalRecord medicalRecord)
@@ -50,7 +52,7 @@ namespace HealthInstitution.GUI.DoctorView
         private void DrugComboBox_Loaded(object sender, RoutedEventArgs e)
         {
             var drugComboBox = sender as System.Windows.Controls.ComboBox;
-            List<Drug> drugs = _drugRepository.GetAll();
+            List<Drug> drugs = DrugSerivce.GetAll();
             foreach (Drug drug in drugs)
             {
                 drugComboBox.Items.Add(drug);
@@ -86,8 +88,8 @@ namespace HealthInstitution.GUI.DoctorView
             try
             {
                 PrescriptionDTO prescriptionDTO = CreatePrescriptionDTOFromInputData();
-                Prescription prescription = _prescriptionRepository.Add(prescriptionDTO);
-                _medicalRecordRepository.AddPrescription(_medicalRecord.Patient, prescription);
+                Prescription prescription = PrescriptionService.Add(prescriptionDTO);
+                MedicalRecordService.AddPrescription(_medicalRecord.Patient, prescription);
                 System.Windows.MessageBox.Show("You have created the prescription!", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
                 this.Close();
             }

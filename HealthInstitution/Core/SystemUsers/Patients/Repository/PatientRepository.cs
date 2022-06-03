@@ -8,6 +8,8 @@ using HealthInstitution.Core.TrollCounters.Repository;
 using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using HealthInstitution.Core.TrollCounters;
+using HealthInstitution.Core.MedicalRecords;
 
 namespace HealthInstitution.Core.SystemUsers.Patients.Repository
 {
@@ -107,34 +109,27 @@ namespace HealthInstitution.Core.SystemUsers.Patients.Repository
             return null;
         }
 
-        public void Add(UserDTO userDTO, MedicalRecords.Model.MedicalRecordDTO medicalRecordDTO)
+        public void Add(Patient patient)
         {
-            Patient patient = new Patient(userDTO.Type, userDTO.Username, userDTO.Password, userDTO.Name, userDTO.Surname);
-            MedicalRecordRepository medicalRecordRepository = MedicalRecordRepository.GetInstance();
-
-            medicalRecordDTO.Patient = patient;
             this.Patients.Add(patient);
-            this.PatientByUsername[userDTO.Username] = patient;
-            medicalRecordRepository.Add(medicalRecordDTO);
+            this.PatientByUsername[patient.Username] = patient;
             Save();
         }
 
-        public void Update(UserDTO userDTO)
+        public void Update(Patient byPatient)
         {
-            Patient patient = this.GetByUsername(userDTO.Username);
-            patient.Password = userDTO.Password;
-            patient.Name = userDTO.Name;
-            patient.Surname = userDTO.Surname;
-
-            this.PatientByUsername[userDTO.Username] = patient;
+            Patient patient = GetByUsername(byPatient.Username);
+            patient.Password = byPatient.Password;
+            patient.Name = byPatient.Name;
+            patient.Surname = byPatient.Surname;
+            this.PatientByUsername[patient.Username] = patient;
             Save();
-            userRepository.Update(userDTO);
         }
 
         public void Delete(string username)
         {
             Patient patient = GetByUsername(username);
-            TrollCounterFileRepository.GetInstance().Delete(username);
+            TrollCounterService.Delete(username);
             MedicalRecordRepository.GetInstance().Delete(patient);
             this.Patients.Remove(patient);
             this.PatientByUsername.Remove(username);
@@ -142,22 +137,13 @@ namespace HealthInstitution.Core.SystemUsers.Patients.Repository
             Save();
         }
 
-        public void ChangeBlockedStatus(string username)
+        public void ChangeBlockedStatus(Patient patient)
         {
-            Patient patient = this.GetByUsername(username);
-            User user = userRepository.GetByUsername(username);
-            if (patient.Blocked == Users.Model.BlockState.NotBlocked)
-            {
-                patient.Blocked = Users.Model.BlockState.BlockedBySecretary;
-                user.Blocked = Users.Model.BlockState.BlockedBySecretary;
-            }
+            if (patient.Blocked == BlockState.NotBlocked)
+                patient.Blocked = BlockState.BlockedBySecretary;
             else
-            {
-                patient.Blocked = Users.Model.BlockState.NotBlocked;
-                user.Blocked = Users.Model.BlockState.NotBlocked;
-            }
+                patient.Blocked = BlockState.NotBlocked;
             Save();
-            userRepository.Save();
         }
 
         public void DeleteNotification(Patient patient, AppointmentNotification notification)

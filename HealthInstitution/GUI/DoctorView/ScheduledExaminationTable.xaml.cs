@@ -1,4 +1,5 @@
-﻿using HealthInstitution.Core.Examinations.Model;
+﻿using HealthInstitution.Core;
+using HealthInstitution.Core.Examinations.Model;
 using HealthInstitution.Core.MedicalRecords.Model;
 using HealthInstitution.Core.Operations.Model;
 using HealthInstitution.Core.Operations.Repository;
@@ -38,16 +39,16 @@ namespace HealthInstitution.GUI.DoctorView
         private void LoadOperationRows()
         {
             dataGrid.Items.Clear();
-            List<Operation> scheduledOperations = _doctorRepository.GetScheduledOperations(_loggedDoctor);
+            List<Operation> scheduledOperations = TimetableService.GetScheduledOperations(_loggedDoctor);
             List<Operation> selectedOperations = new List<Operation>();
             if (upcomingDaysRadioButton.IsChecked == true)
             {
-                selectedOperations = _doctorRepository.GetOperationsInThreeDays(scheduledOperations);
+                selectedOperations = TimetableService.GetOperationsInThreeDays(scheduledOperations);
             }
             else
             {
                 DateTime date = datePicker.SelectedDate.Value.Date;
-                selectedOperations = _doctorRepository.GetOperationsByDate(scheduledOperations, date);
+                selectedOperations = TimetableService.GetOperationsByDate(scheduledOperations, date);
             }
             foreach (Operation operation in selectedOperations)
             {
@@ -58,15 +59,15 @@ namespace HealthInstitution.GUI.DoctorView
         public void LoadExaminationRows()
         {
             dataGrid.Items.Clear();
-            List<Examination> scheduledExaminations = _doctorRepository.GetScheduledExaminations(_loggedDoctor);
+            List<Examination> scheduledExaminations = TimetableService.GetScheduledExaminations(_loggedDoctor);
             List<Examination> selectedExaminations = new List<Examination>();
             if ((bool)upcomingDaysRadioButton.IsChecked)
             {
-                selectedExaminations = _doctorRepository.GetExaminationsInThreeDays(scheduledExaminations);
+                selectedExaminations = TimetableService.GetExaminationsInThreeDays(scheduledExaminations);
             } else
             {
                 DateTime date = datePicker.SelectedDate.Value.Date;
-                selectedExaminations = _doctorRepository.GetExaminationsByDate(scheduledExaminations, date);
+                selectedExaminations = TimetableService.GetExaminationsByDate(scheduledExaminations, date);
             }
             foreach (var examination in selectedExaminations)
             {

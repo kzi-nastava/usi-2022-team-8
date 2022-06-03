@@ -1,4 +1,5 @@
-﻿using HealthInstitution.Core.Rooms.Model;
+﻿using HealthInstitution.Core.Rooms;
+using HealthInstitution.Core.Rooms.Model;
 using HealthInstitution.Core.Rooms.Repository;
 using System;
 using System.Collections.Generic;
@@ -37,14 +38,13 @@ namespace HealthInstitution.GUI.ManagerView
         }
 
         private void RoomTypeComboBox_Loaded(object sender, RoutedEventArgs e)
-        {
-            var roomTypeComboBox = sender as System.Windows.Controls.ComboBox;
+        {   
             List<RoomType> types = new List<RoomType>();
             types.Add(RoomType.ExaminationRoom);
             types.Add(RoomType.OperatingRoom);
             types.Add(RoomType.RestRoom);
-            roomTypeComboBox.ItemsSource = types;
-            roomTypeComboBox.SelectedItem = _room.Type;
+            typeComboBox.ItemsSource = types;
+            typeComboBox.SelectedItem = _room.Type;
         }
 
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
@@ -59,17 +59,18 @@ namespace HealthInstitution.GUI.ManagerView
             {
                 return;
             }
-            string numberInput = numberBox.Text;
-            int number = Int32.Parse(numberInput);
-
+            
             if (!ValidateRoomType())
             {
                 return;
             }
+
+            string numberInput = numberBox.Text;
+            int number = Int32.Parse(numberInput);
             RoomType type = (RoomType)typeComboBox.SelectedItem;
 
             RoomDTO roomDTO = new RoomDTO(type, number, _room.IsRenovating);
-            _roomRepository.Update(_room.Id, roomDTO);
+            RoomService.Update(_room.Id, roomDTO);
             System.Windows.MessageBox.Show("Room edited!", "Room edit", MessageBoxButton.OK, MessageBoxImage.Information);
 
             this.Close();
@@ -96,15 +97,12 @@ namespace HealthInstitution.GUI.ManagerView
             }
             int number = Int32.Parse(numberInput);
 
-            int idx = _roomRepository.Rooms.FindIndex(room => room.Number == number);
-            if (idx >= 0)
+            if (RoomService.ExistsChangedRoomNumber(number, _room))
             {
-                if (_roomRepository.Rooms[idx] != _room)
-                {
-                    System.Windows.MessageBox.Show("This room number already exist!", "Create error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    return false;
-                }
+                System.Windows.MessageBox.Show("This room number already exist!", "Create error", MessageBoxButton.OK, MessageBoxImage.Error);
+                return false;
             }
+
             return true;
         }
     }

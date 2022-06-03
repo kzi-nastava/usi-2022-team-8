@@ -1,5 +1,6 @@
 ﻿using HealthInstitution.Core.Examinations.Model;
 using HealthInstitution.Core.Examinations.Repository;
+using HealthInstitution.Core.MedicalRecords;
 using HealthInstitution.Core.MedicalRecords.Model;
 using HealthInstitution.Core.MedicalRecords.Repository;
 using HealthInstitution.Core.SystemUsers.Patients.Model;
@@ -77,7 +78,7 @@ namespace HealthInstitution.GUI.DoctorView
             appointment = appointment.AddHours(hours);
             appointment = appointment.AddMinutes(minutes);
             Patient patient = (Patient)patientComboBox.SelectedItem;
-            MedicalRecord medicalRecord = MedicalRecordRepository.GetInstance().GetByPatientUsername(patient);
+            MedicalRecord medicalRecord = MedicalRecordService.GetByPatientUsername(patient);
             var doctor = _selectedExamination.Doctor;
             ExaminationDTO examination = new ExaminationDTO(appointment, null, doctor, medicalRecord);
             return examination;

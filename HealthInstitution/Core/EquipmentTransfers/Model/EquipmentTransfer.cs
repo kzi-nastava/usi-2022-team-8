@@ -19,4 +19,12 @@ public class EquipmentTransfer
         this.ToRoom = toRoom;
         this.TransferTime = transferTime;
     }
+
+    public EquipmentTransfer(EquipmentTransferDTO equipmentTransferDTO)
+    {
+        this.Equipment = equipmentTransferDTO.Equipment;
+        this.FromRoom = equipmentTransferDTO.FromRoom;
+        this.ToRoom = equipmentTransferDTO.ToRoom;
+        this.TransferTime = equipmentTransferDTO.TransferTime;
+    }
 }

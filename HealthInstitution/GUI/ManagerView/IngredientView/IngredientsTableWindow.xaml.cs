@@ -1,4 +1,6 @@
-﻿using HealthInstitution.Core.Drugs.Repository;
+﻿using HealthInstitution.Core.Drugs;
+using HealthInstitution.Core.Drugs.Repository;
+using HealthInstitution.Core.Ingredients;
 using HealthInstitution.Core.Ingredients.Model;
 using HealthInstitution.Core.Ingredients.Repository;
 using HealthInstitution.GUI.ManagerView.IngredientView;
@@ -38,7 +40,7 @@ namespace HealthInstitution.GUI.ManagerView
         private void LoadRows()
         {
             dataGrid.Items.Clear();
-            List<Ingredient> ingredients = _ingredientRepository.GetAll();
+            List<Ingredient> ingredients = IngredientService.GetAll();
             foreach (Ingredient ingredient in ingredients)
             {
                 dataGrid.Items.Add(ingredient);
@@ -68,7 +70,7 @@ namespace HealthInstitution.GUI.ManagerView
         {
             Ingredient selectedIngredient = (Ingredient)dataGrid.SelectedItem;
             
-            if (CheckOccurrenceOfIngredient(selectedIngredient))
+            if (IngredientService.CheckOccurrenceOfIngredient(selectedIngredient))
             {
                 System.Windows.MessageBox.Show("You cant delete ingredient because it's part of the drug!", "Delete error", MessageBoxButton.OK, MessageBoxImage.Error);
                 dataGrid.SelectedItem = null;
@@ -77,16 +79,12 @@ namespace HealthInstitution.GUI.ManagerView
 
             if (System.Windows.MessageBox.Show("Are you sure you want to delete selected ingredient", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
             {
-                dataGrid.Items.Remove(selectedIngredient);                
-                _ingredientRepository.Delete(selectedIngredient.Id);
+                dataGrid.Items.Remove(selectedIngredient);
+                IngredientService.Delete(selectedIngredient.Id);
 
             }
         }
 
-        private bool CheckOccurrenceOfIngredient(Ingredient ingredient)
-        {
-            DrugRepository drugRepository = DrugRepository.GetInstance();
-            return drugRepository.ContainsDrugWithIngredient(ingredient); 
-        }
+        
     }
 }

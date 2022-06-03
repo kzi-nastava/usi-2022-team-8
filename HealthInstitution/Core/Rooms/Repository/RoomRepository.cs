@@ -2,6 +2,7 @@
 using HealthInstitution.Core.Equipments.Repository;
 using HealthInstitution.Core.Examinations.Repository;
 using HealthInstitution.Core.Rooms.Model;
+using HealthInstitution.GUI.ManagerView;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
@@ -132,31 +133,24 @@ namespace HealthInstitution.Core.Rooms.Repository
             return null;
         }
 
-        public Room AddRoom(RoomDTO roomDTO)
+        public Room AddRoom(Room room)
         {
-
             this._maxId++;
             int id = this._maxId;
-            List<Equipment> availableEquipment = new List<Equipment>();
-            RoomType type = roomDTO.Type;
-            int number = roomDTO.Number;
-            bool isRenovating = roomDTO.IsRenovating;
-            bool isActive = roomDTO.IsActive;
-
-            Room room = new Room(id, type, number, isRenovating, availableEquipment, isActive);
+            room.Id = id;
             this.Rooms.Add(room);
             this.RoomById.Add(room.Id, room);
             Save();
             return room;
         }
 
-        public void Update(int id, RoomDTO roomDTO)
+        public void Update(int id, Room byRoom)
         {
             Room room = GetById(id);
-            room.Type = roomDTO.Type;
-            room.Number = roomDTO.Number;
-            room.IsRenovating = roomDTO.IsRenovating;
-            room.IsActive = roomDTO.IsActive;
+            room.Type = byRoom.Type;
+            room.Number = byRoom.Number;
+            room.IsRenovating = byRoom.IsRenovating;
+            room.IsActive = byRoom.IsActive;
             Save();
         }
 
@@ -229,5 +223,41 @@ namespace HealthInstitution.Core.Rooms.Repository
             }
             return availableRooms;
         }
+
+        public List<Equipment> GetDynamicEquipment(Room room)
+        {
+            List<Equipment> dynamicEquipment = new List<Equipment>();
+            foreach (var equipment in room.AvailableEquipment)
+            {
+                if (equipment.IsDynamic)
+                    dynamicEquipment.Add(equipment);
+            }
+            return dynamicEquipment;
+        }
+        public Room? GetRoomFromString(string? roomFromForm)
+        {
+            if (roomFromForm != null)
+            {
+                string[] tokens = roomFromForm.Split(' ');
+                string type = tokens[0], number = tokens[1];
+                foreach (Room room in Rooms)
+                {
+                    if (room.Type.ToString() == type && room.Number.ToString() == number)
+                        return room;
+                }
+            }
+            return null;
+        }
+
+        public bool RoomNumberIsTaken(int number)
+        {
+            return this.Rooms.Any(room => room.Number == number);
+        }
+
+        public int FindIndexWithRoomNumber(int number)
+        {
+            return this.Rooms.FindIndex(room => room.Number == number);
+        }
+
     }
 }

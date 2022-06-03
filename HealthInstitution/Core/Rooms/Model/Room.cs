@@ -31,6 +31,16 @@ public class Room
         this.IsActive = isActive;
     }
 
+    public Room(RoomDTO roomDTO)
+    {
+        this.AvailableEquipment = new List<Equipment>();
+        this.Type = roomDTO.Type;
+        this.Number = roomDTO.Number;
+        this.IsRenovating = roomDTO.IsRenovating;
+        this.IsActive = roomDTO.IsActive;
+
+    }
+
     public override string? ToString()
     {
         return Type.ToString()+" "+Number;
@@ -39,6 +49,16 @@ public class Room
     {
         return Type.ToString() + " " + Number + " (has " + availableEquipment + ")";
     }*/
+
+    public bool IsWarehouse()
+    {
+        return this.Type == RoomType.Warehouse;
+    }
+
+    public bool HasRoomType(RoomType roomType)
+    {
+        return roomType == this.Type;
+    }
 }
 
 public enum RoomType

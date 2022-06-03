@@ -1,5 +1,6 @@
 ﻿using HealthInstitution.Core.Operations.Model;
 using HealthInstitution.Core.Operations.Repository;
+using HealthInstitution.Core.SystemUsers.Doctors;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using HealthInstitution.Core.SystemUsers.Doctors.Repository;
 using System.Windows;
@@ -54,7 +55,7 @@ namespace HealthInstitution.GUI.DoctorView
                 Operation selectedOperation = (Operation)dataGrid.SelectedItem;
                 dataGrid.Items.Remove(selectedOperation);
                 _operationRepository.Delete(selectedOperation.Id);
-                _doctorRepository.DeleteOperation(_loggedDoctor, selectedOperation);
+                DoctorService.DeleteOperation(selectedOperation);
             }
         }
     }

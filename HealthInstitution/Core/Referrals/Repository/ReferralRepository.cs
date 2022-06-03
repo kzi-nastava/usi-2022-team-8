@@ -114,5 +114,35 @@ namespace HealthInstitution.Core.Referrals.Repository
                 return ReferralById[id];
             return null;
         }
+
+        public Referral Add(Referral referral)
+        {
+            this._maxId++;
+            int id = this._maxId;
+            referral.Id = id;
+            this.Referrals.Add(referral);
+            this.ReferralById[id] = referral;
+            Save();
+
+            return referral;
+        }
+
+        public void Update(int id, Referral referralTemp)
+        {
+            Referral referral = GetById(id);
+            referral.PrescribedBy = referralTemp.PrescribedBy;
+            referral.ReferredDoctor = referralTemp.ReferredDoctor;
+            referral.ReferredSpecialty = referralTemp.ReferredSpecialty;
+            ReferralById[id] = referral;
+            Save();
+        }
+
+        public void Delete(int id)
+        {
+            Referral referral = GetById(id);
+            this.Referrals.Remove(referral);
+            this.ReferralById.Remove(referral.Id);
+            Save();
+        }
     }
 }

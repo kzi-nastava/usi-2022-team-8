@@ -96,31 +96,26 @@ namespace HealthInstitution.Core.Equipments.Repository
             return null;
         }
 
-        public Equipment Add(EquipmentDTO equipmentDTO)
+        public Equipment Add(Equipment equipment)
         {
-
             this._maxId++;
             int id = this._maxId;
-            int quantity = equipmentDTO.Quantity;
-            string name = equipmentDTO.Name;
-            EquipmentType type = equipmentDTO.Type;
-            bool isDynamic = equipmentDTO.IsDynamic;
+            equipment.Id = id;
 
-            Equipment equipment = new Equipment(id, quantity, name, type, isDynamic);
             this.Equipments.Add(equipment);
-            this.EquipmentPerQuantity[name] += quantity;
+            this.EquipmentPerQuantity[equipment.Name] += equipment.Quantity;
             this.EquipmentById.Add(equipment.Id, equipment);
             Save();
             return equipment;
         }
 
-        public void Update(int id, EquipmentDTO equipmentDTO)
+        public void Update(int id, Equipment byEquipment)
         {
             Equipment equipment = GetById(id);
-            equipment.Quantity = equipmentDTO.Quantity;
-            equipment.Name = equipmentDTO.Name;
-            equipment.Type = equipmentDTO.Type;
-            equipment.IsDynamic = equipmentDTO.IsDynamic;
+            equipment.Quantity = byEquipment.Quantity;
+            equipment.Name = byEquipment.Name;
+            equipment.Type = byEquipment.Type;
+            equipment.IsDynamic = byEquipment.IsDynamic;
             Save();
         }
         public void Delete(int id)
@@ -128,6 +123,22 @@ namespace HealthInstitution.Core.Equipments.Repository
             Equipment equipment = GetById(id);
             this.Equipments.Remove(equipment);
             this.EquipmentById.Remove(id);
+            Save();
+        }
+        public EquipmentType GetEquipmentType(string equipmentName)
+        {
+            EquipmentType equipmentType = EquipmentType.AppointmentEquipment;
+            foreach (Equipment equipment in Equipments)
+            {
+                if (equipment.Name == equipmentName)
+                    equipmentType = equipment.Type;
+            }
+            return equipmentType;
+        }
+        public void RemoveConsumed(Equipment equipment, int consumedQuantity)
+        {
+            equipment.Quantity -= consumedQuantity;
+            EquipmentById[equipment.Id] = equipment;
             Save();
         }
     }

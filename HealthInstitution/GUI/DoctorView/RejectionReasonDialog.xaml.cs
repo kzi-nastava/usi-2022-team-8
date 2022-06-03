@@ -40,7 +40,7 @@ namespace HealthInstitution.GUI.DoctorView
             }
             else
             {
-                _drugVerificationService.Reject(_selectedDrug, rejectionReason);
+                DrugService.Reject(_selectedDrug, rejectionReason);
                 Close();
             }
         }
