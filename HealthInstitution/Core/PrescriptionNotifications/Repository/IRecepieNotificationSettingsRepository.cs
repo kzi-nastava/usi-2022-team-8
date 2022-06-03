@@ -1,11 +1,11 @@
-﻿using HealthInstitution.Core.RecepieNotifications.Model;
+﻿using HealthInstitution.Core.PrescriptionNotifications.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HealthInstitution.Core.RecepieNotifications.Repository
+namespace HealthInstitution.Core.PrescriptionNotifications.Repository
 {
     public interface IRecepieNotificationSettingsRepository : IRepository<RecepieNotificationSettings>
     {

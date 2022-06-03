@@ -1,9 +1,9 @@
-﻿using HealthInstitution.Core.RecepieNotifications.Model;
+﻿using HealthInstitution.Core.PrescriptionNotifications.Model;
 using System.IO;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 
-namespace HealthInstitution.Core.RecepieNotifications.Repository;
+namespace HealthInstitution.Core.PrescriptionNotifications.Repository;
 
 public class PrescriptionNotificationRepository
 {

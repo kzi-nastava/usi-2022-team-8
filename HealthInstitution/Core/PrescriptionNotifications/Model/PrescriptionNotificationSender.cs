@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using HealthInstitution.Core.Prescriptions.Repository;
-using HealthInstitution.Core.RecepieNotifications.Repository;
+using HealthInstitution.Core.PrescriptionNotifications.Repository;
 
-namespace HealthInstitution.Core.RecepieNotifications.Model;
+namespace HealthInstitution.Core.PrescriptionNotifications.Model;
 
 public class PrescriptionNotificationSender : IJob
 {

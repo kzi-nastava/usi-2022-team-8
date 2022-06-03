@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using HealthInstitution.Core.RecepieNotifications.Model;
-using HealthInstitution.Core.RecepieNotifications.Repository;
+using HealthInstitution.Core.PrescriptionNotifications.Model;
+using HealthInstitution.Core.PrescriptionNotifications.Repository;
 using Quartz;
 using Quartz.Impl;
 
-namespace HealthInstitution.Core.RecepieNotifications.Service;
+namespace HealthInstitution.Core.PrescriptionNotifications.Service;
 
 public class PrescriptionNotificationCronJobService
 {

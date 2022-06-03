@@ -1,8 +1,8 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using HealthInstitution.Core.Prescriptions.Model;
-using HealthInstitution.Core.RecepieNotifications.Model;
-using HealthInstitution.Core.RecepieNotifications.Service;
+using HealthInstitution.Core.PrescriptionNotifications.Model;
+using HealthInstitution.Core.PrescriptionNotifications.Service;
 using HealthInstitution.Core.MedicalRecords;
 using HealthInstitution.Core.SystemUsers.Patients;
 

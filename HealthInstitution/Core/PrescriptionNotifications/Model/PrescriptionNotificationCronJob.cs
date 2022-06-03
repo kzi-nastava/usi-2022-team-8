@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HealthInstitution.Core.RecepieNotifications.Model;
+namespace HealthInstitution.Core.PrescriptionNotifications.Model;
 
 public class PrescriptionNotificationCronJob
 {

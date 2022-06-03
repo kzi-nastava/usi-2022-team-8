@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using HealthInstitution.Core.RecepieNotifications.Repository;
+using HealthInstitution.Core.PrescriptionNotifications.Repository;
 using HealthInstitution.Core.Prescriptions.Repository;
-using HealthInstitution.Core.RecepieNotifications.Model;
+using HealthInstitution.Core.PrescriptionNotifications.Model;
 
-namespace HealthInstitution.Core.RecepieNotifications.Service;
+namespace HealthInstitution.Core.PrescriptionNotifications.Service;
 
 public class PrescriptionNotificationService
 {

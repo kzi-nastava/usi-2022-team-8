@@ -11,8 +11,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
-using HealthInstitution.Core.RecepieNotifications.Model;
-using HealthInstitution.Core.RecepieNotifications.Service;
+using HealthInstitution.Core.PrescriptionNotifications.Model;
+using HealthInstitution.Core.PrescriptionNotifications.Service;
 
 namespace HealthInstitution.GUI.PatientView;
 

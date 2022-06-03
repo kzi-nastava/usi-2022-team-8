@@ -1,6 +1,6 @@
 ﻿using HealthInstitution.Core.Prescriptions.Model;
 
-namespace HealthInstitution.Core.RecepieNotifications.Model;
+namespace HealthInstitution.Core.PrescriptionNotifications.Model;
 
 public class PrescriptionNotificationSettings
 {
