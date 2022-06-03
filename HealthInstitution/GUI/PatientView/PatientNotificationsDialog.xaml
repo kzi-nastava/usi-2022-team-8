@@ -13,13 +13,13 @@
                     <DataGridTextColumn.Binding>
                         <MultiBinding StringFormat="{}{0} {1}">
                             <Binding Path="Doctor.Name" />
-                            <Binding Path="Doctor.Surname"/>
+                            <Binding Path="Doctor.Surname" />
                         </MultiBinding>
                     </DataGridTextColumn.Binding>
                 </DataGridTextColumn>
 
-                <DataGridTextColumn Header="Old appointment" FontSize="18" Binding="{Binding OldAppointment}" Width =" 180"/>
-                <DataGridTextColumn Header="New appointment" FontSize="18" Binding="{Binding NewAppointment}" Width =" 180"/>
+                <DataGridTextColumn Header="Old appointment" FontSize="18" Binding="{Binding OldAppointment}" Width =" 180" />
+                <DataGridTextColumn Header="New appointment" FontSize="18" Binding="{Binding NewAppointment}" Width =" 180" />
             </DataGrid.Columns>
         </DataGrid>
         </Grid>

@@ -1,28 +1,18 @@
 ﻿using HealthInstitution.Core.Examinations.Model;
+using HealthInstitution.Core.MedicalRecords;
 using HealthInstitution.Core.MedicalRecords.Model;
 using HealthInstitution.Core.MedicalRecords.Repository;
+using HealthInstitution.Core.RecommededDTO;
 using HealthInstitution.Core.Rooms.Model;
 using HealthInstitution.Core.Rooms.Repository;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using HealthInstitution.Core.SystemUsers.Doctors.Repository;
-using HealthInstitution.Core.SystemUsers.Patients.Repository;
 using HealthInstitution.Core.SystemUsers.Patients.Model;
+using HealthInstitution.Core.SystemUsers.Patients.Repository;
 using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
-using HealthInstitution.Core.Operations.Repository;
-using HealthInstitution.Core.Operations.Model;
-using HealthInstitution.Core.Notifications.Repository;
-using HealthInstitution.Core.RecommededDTO;
-using HealthInstitution.Core.Notifications.Model;
-using HealthInstitution.Core.MedicalRecords;
-using HealthInstitution.Core.Operations;
 
 namespace HealthInstitution.Core.Examinations.Repository;
 
@@ -139,21 +129,18 @@ internal class ExaminationRepository
         Examinations.Add(examination);
         ExaminationsById.Add(examination.Id, examination);
     }
+
     private void SaveAll()
     {
         Save();
         ExaminationDoctorRepository.GetInstance().Save();
     }
+
     public void Add(Examination examination)
     {
         examination.Id = ++_maxId;
         AddToCollections(examination);
         SaveAll();
-    }
-
-    private ExaminationDTO ParseExaminationToExaminationDTO(Examination examination)
-    {
-        return new ExaminationDTO(examination.Appointment, examination.Room, examination.Doctor, examination.MedicalRecord);
     }
 
     public void Update(int id, Examination byExamination)
@@ -171,8 +158,9 @@ internal class ExaminationRepository
         Examination examination = ExaminationsById[id];
         ExaminationsById.Remove(examination.Id);
         Examinations.Remove(examination);
-        SaveAll();  
+        SaveAll();
     }
+
     public List<Examination> GetByPatient(string username)
     {
         List<Examination> patientExaminations = new List<Examination>();
@@ -209,6 +197,7 @@ internal class ExaminationRepository
 
         return resault;
     }
+
     public void SwapExaminationValue(Examination examination)
     {
         var oldExamination = ExaminationsById[examination.Id];
@@ -220,30 +209,6 @@ internal class ExaminationRepository
         Save();
     }
 
-    public Examination GenerateRequestExamination(Examination examination, string doctorUsername, DateTime dateTime)
-    {
-        Doctor doctor = DoctorRepository.GetInstance().GetById(doctorUsername);
-        var examinatioDTO = ParseExaminationToExaminationDTO(examination);
-        examinatioDTO.Appointment = dateTime;
-        CheckIfDoctorIsAvailable(examinatioDTO);
-        CheckIfPatientIsAvailable(examinatioDTO);
-        var room = RoomRepository.GetInstance().FindAvailableRoom(dateTime);
-        Examination e = new Examination(examination.Id, examination.Status, dateTime, room, doctor, examination.MedicalRecord, "");
-        return e;
-    }
-
-    public void EditExamination(Examination examination, string doctorUsername, DateTime dateTime)
-    {
-        Doctor doctor = DoctorRepository.GetInstance().GetById(doctorUsername);
-        var examinatioDTO = ParseExaminationToExaminationDTO(examination);
-        examinatioDTO.Appointment = dateTime;
-        CheckIfDoctorIsAvailable(examinatioDTO);
-        CheckIfPatientIsAvailable(examinatioDTO);
-        var room = RoomRepository.GetInstance().FindAvailableRoom(dateTime);
-        Examination e = new Examination(examination.Id, examination.Status, dateTime, room, doctor, examination.MedicalRecord, "");
-        SwapExaminationValue(e);
-    }
-    
     private ExaminationDTO FindFit(ExaminationDTO examinationDTO, FindFitDTO findFitDTO)
     {
         bool found = false;

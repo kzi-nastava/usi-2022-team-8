@@ -1,11 +1,8 @@
 ﻿using HealthInstitution.Core.Examinations.Model;
 using HealthInstitution.Core.Examinations.Repository;
 using HealthInstitution.Core.ScheduleEditRequests;
-using HealthInstitution.Core.ScheduleEditRequests.Repository;
 using HealthInstitution.Core.SystemUsers.Patients.Model;
-using HealthInstitution.Core.SystemUsers.Users.Model;
 using HealthInstitution.Core.TrollCounters;
-using HealthInstitution.Core.TrollCounters.Repository;
 using HealthInstitution.GUI.PatientView;
 using System.Windows;
 
@@ -37,7 +34,7 @@ public partial class PatientScheduleWindow : Window
         TrollCounterService.TrollCheck(_loggedPatient.Username);
         new AddExaminationDialog(_loggedPatient).ShowDialog();
         GridRefresh();
-        TrollCounterService.AppendCreateDates(_loggedPatient.Username); 
+        TrollCounterService.AppendCreateDates(_loggedPatient.Username);
     }
 
     private void EditButton_click(object sender, RoutedEventArgs e)
