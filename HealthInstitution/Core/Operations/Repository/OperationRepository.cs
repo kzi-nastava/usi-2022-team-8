@@ -101,8 +101,6 @@ namespace HealthInstitution.Core.Operations.Repository
             }
             return reducedOperations;
         }
-
-
         public void Save()
         {
             List<dynamic> reducedOperations = PrepareForSerialization();

@@ -11,7 +11,10 @@ namespace HealthInstitution.Core.SystemUsers.Users
     internal static class UserService
     {
         static UserRepository s_userRepository = UserRepository.GetInstance();
-
+        public static bool IsUsernameExist(string username)
+        {
+            return s_userRepository.GetByUsername(username) != null;
+        }
         public static void Add(UserDTO userDTO)
         {
             User user = new User(userDTO);

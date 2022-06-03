@@ -30,7 +30,7 @@ namespace HealthInstitution.GUI.UserWindow
         private void LoadRows()
         {
             dataGrid.Items.Clear();
-            List<ScheduleEditRequest> scheduleEditRequests = ScheduleEditRequestFileRepository.GetInstance().Requests;
+            List<ScheduleEditRequest> scheduleEditRequests = ScheduleEditRequestService.GetAll();
             foreach (ScheduleEditRequest scheduleEditRequest in scheduleEditRequests)
             {
                 dataGrid.Items.Add(scheduleEditRequest);

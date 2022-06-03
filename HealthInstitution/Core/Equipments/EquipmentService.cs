@@ -20,7 +20,6 @@ namespace HealthInstitution.Core.Equipments
     {
         private static EquipmentRepository s_equipmentRepository = EquipmentRepository.GetInstance();
         private static RoomRepository s_roomRepository = RoomRepository.GetInstance();
-
         public static List<Equipment> GetAll()
         {
             return s_equipmentRepository.GetAll();
@@ -43,12 +42,12 @@ namespace HealthInstitution.Core.Equipments
         }
 
         public static List<TableItemEquipment> FilterEquipment(EquipmentFilterDTO equipmentFilter)
-        {           
+        {
             List<TableItemEquipment> items = new List<TableItemEquipment>();
             List<Room> rooms = s_roomRepository.GetActive();
             foreach (Room room in rooms)
             {
-                if (!MatchRoomTypeFilter(room,equipmentFilter))
+                if (!MatchRoomTypeFilter(room, equipmentFilter))
                     continue;
                 foreach (Equipment equipment in room.AvailableEquipment)
                 {
@@ -64,13 +63,18 @@ namespace HealthInstitution.Core.Equipments
             return items;
         }
 
+        public static Dictionary<string, int> EquipmentPerQuantity()
+        {
+            return s_equipmentRepository.EquipmentPerQuantity;
+        }
+
         private static bool MatchQuantityFilter(Equipment equipment, EquipmentFilterDTO equipmentFilter)
         {
             if (!equipmentFilter.ApplyQuantityFilter)
             {
                 return true;
             }
-            
+
             switch (equipmentFilter.QuantityFilter)
             {
                 case 0:
@@ -138,7 +142,7 @@ namespace HealthInstitution.Core.Equipments
                     return equipment;
             return null;
         }
-        public static int GetQuantityFromForm(string quantityFromForm, Room room, string equipmentName)
+        public static int GetQuantityForTransferFromForm(string quantityFromForm, Room room, string equipmentName)
         {
             int quantity;
             string exceptionMessage = "Quantity must be filled";
@@ -158,7 +162,7 @@ namespace HealthInstitution.Core.Equipments
                 throw new Exception(exceptionMessage);
             }
         }
-        private static dynamic MakePair(Room room, Equipment equipment, int quantityInRoom)
+        private static dynamic FormMissingEquipmentRoomPair(Room room, Equipment equipment, int quantityInRoom)
         {
             dynamic obj = new ExpandoObject();
             obj.Room = room;
@@ -184,7 +188,7 @@ namespace HealthInstitution.Core.Equipments
                 int quantityInRoom = GetQuantityOfEquipmentInRoom(room, equipment);
                 if (room.Id != 1 && quantityInRoom < 5)
                 {
-                    pairs.Add(MakePair(room, equipment, quantityInRoom));
+                    pairs.Add(FormMissingEquipmentRoomPair(room, equipment, quantityInRoom));
                 }
             }
         }
@@ -204,9 +208,9 @@ namespace HealthInstitution.Core.Equipments
             }
             return pairs;
         }
-
         public static void RemoveConsumed(Equipment equipment, int consumedQuantity)
         {
-            s_equipmentRepository
+
         }
+    }  
 }

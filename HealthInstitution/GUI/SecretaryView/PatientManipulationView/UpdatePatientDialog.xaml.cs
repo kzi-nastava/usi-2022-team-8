@@ -40,11 +40,8 @@ namespace HealthInstitution.GUI.SecretaryView
         {
             try 
             {
-                UserRepository userRepository = UserRepository.GetInstance();
-                PatientRepository patientRepository = PatientRepository.GetInstance();
                 UserDTO userDTO = CreateUserDTOFromInputData();
                 PatientService.Update(userDTO);
-                userRepository.Update(userDTO);
                 Close();
             }
             catch

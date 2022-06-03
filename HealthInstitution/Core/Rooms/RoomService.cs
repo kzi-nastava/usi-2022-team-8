@@ -44,12 +44,12 @@ namespace HealthInstitution.Core.Rooms
         }
 
         public static bool CheckImportantOccurrenceOfRoom(Room room)
-        {            
+        {
             if (EquipmentTransferService.CheckOccurrenceOfRoom(room))
             {
                 return true;
             }
-            
+
             if (SchedulingService.CheckOccurrenceOfRoom(room))
             {
                 return true;
@@ -72,7 +72,7 @@ namespace HealthInstitution.Core.Rooms
             if (idx >= 0)
             {
                 if (s_roomRepository.GetAll()[idx] != oldRoom)
-                {                    
+                {
                     return true;
                 }
             }
@@ -116,6 +116,10 @@ namespace HealthInstitution.Core.Rooms
                 }
             }
             return items;
+        }
+        public static Room? GetRoomFromString(string? roomFromForm)
+        {
+            return s_roomRepository.GetRoomFromString(roomFromForm);
         }
     }
 }

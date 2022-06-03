@@ -102,4 +102,19 @@ public partial class DoctorPickExamination : Window
     {
         SearchBox.Clear();
     }
+
+    private void NameSearch_Click(object sender, RoutedEventArgs e)
+    {
+
+    }
+
+    private void SurnameSearch_Click(object sender, RoutedEventArgs e)
+    {
+
+    }
+
+    private void SpecialitySearch_Click(object sender, RoutedEventArgs e)
+    {
+
+    }
 }

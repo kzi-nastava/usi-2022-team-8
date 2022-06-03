@@ -3,6 +3,7 @@ using HealthInstitution.Core.Examinations.Model;
 using HealthInstitution.Core.Examinations.Repository;
 using HealthInstitution.Core.MedicalRecords;
 using HealthInstitution.Core.MedicalRecords.Model;
+using HealthInstitution.Core.Notifications;
 using HealthInstitution.Core.Notifications.Model;
 using HealthInstitution.Core.Notifications.Repository;
 using HealthInstitution.Core.Operations;
@@ -20,58 +21,7 @@ namespace HealthInstitution.Core.Scheduling
 {
     internal static class UrgentService
     {
-        public static List<ScheduleEditRequest> PrepareDataForDelaying(List<Tuple<int, int, DateTime>> examinationsAndOperationsForDelaying)
-        {
-            List<ScheduleEditRequest> delayedAppointments = new List<ScheduleEditRequest>();
-            foreach (Tuple<int, int, DateTime> tuple in examinationsAndOperationsForDelaying)
-            {
-                if (tuple.Item2 == 1)
-                {
-                    Examination currentExamination = ExaminationRepository.GetInstance().GetById(tuple.Item1);
-                    Examination newExamination = new Examination(currentExamination.Id, ExaminationStatus.Scheduled, tuple.Item3, currentExamination.Room, currentExamination.Doctor, currentExamination.MedicalRecord, "");
-                    delayedAppointments.Add(new ScheduleEditRequest(0, currentExamination, newExamination, Core.RestRequests.Model.RestRequestState.OnHold));
-                }
-                if (tuple.Item2 == 0)
-                {
-                    Operation currentOperation = OperationRepository.GetInstance().GetById(tuple.Item1);
-                    Operation newOperation = new Operation(currentOperation.Id, tuple.Item3, currentOperation.Duration, currentOperation.Room, currentOperation.Doctor, currentOperation.MedicalRecord);
-                    delayedAppointments.Add(new ScheduleEditRequest(0, currentOperation, newOperation, Core.RestRequests.Model.RestRequestState.OnHold));
-                }
-            }
-            return delayedAppointments;
-        }
-        public static void DelayExamination(ScheduleEditRequest selectedAppointment, Examination examination)
-        {
-            ExaminationRepository.GetInstance().SwapExaminationValue(selectedAppointment.NewExamination);
-            SetExaminationDetails(examination, selectedAppointment);
-            ExaminationDTO examinationDTO = new ExaminationDTO(examination.Appointment, examination.Room, examination.Doctor, examination.MedicalRecord);
-            ExaminationService.Add(examinationDTO);
-            SendNotificationsForExamination(examination, selectedAppointment);
-        }
-        public static void DelayOperation(ScheduleEditRequest selectedAppointment, Operation operation)
-        {
-            OperationRepository.GetInstance().SwapOperationValue(selectedAppointment.NewOperation);
-            SetOperationDetails(operation, selectedAppointment);
-            OperationDTO operationDTO = new OperationDTO(operation.Appointment, operation.Duration, operation.Room, operation.Doctor, operation.MedicalRecord);
-            OperationService.Add(operationDTO);
-            SendNotificationsForOperation(operation, selectedAppointment);
-        }
-        private static void SendNotificationsForExamination(Examination examination, ScheduleEditRequest selectedAppointment)
-        {
-            AppointmentNotificationDTO appointmentNotificationDto = new AppointmentNotificationDTO(selectedAppointment.CurrentExamination.Appointment, selectedAppointment.NewExamination.Appointment, selectedAppointment.NewExamination.Doctor, selectedAppointment.NewExamination.MedicalRecord.Patient);
-            AppointmentNotificationRepository.GetInstance().Add(appointmentNotificationDto);
-            appointmentNotificationDto = new AppointmentNotificationDTO(null, examination.Appointment, examination.Doctor, examination.MedicalRecord.Patient);
-            AppointmentNotificationRepository.GetInstance().Add(appointmentNotificationDto);
-        }
-        private static void SendNotificationsForOperation(Operation operation, ScheduleEditRequest selectedAppointment)
-        {
-            AppointmentNotificationDTO appointmentNotificationDto = new AppointmentNotificationDTO(selectedAppointment.CurrentOperation.Appointment, selectedAppointment.NewOperation.Appointment, selectedAppointment.NewOperation.Doctor, selectedAppointment.NewOperation.MedicalRecord.Patient);
-            AppointmentNotificationRepository.GetInstance().Add(appointmentNotificationDto);
-            appointmentNotificationDto = new AppointmentNotificationDTO(null, operation.Appointment, operation.Doctor, operation.MedicalRecord.Patient);
-            AppointmentNotificationRepository.GetInstance().Add(appointmentNotificationDto);
-        }
-        
-        private static void SetExaminationDetails(Examination examination, ScheduleEditRequest selectedAppointment)
+        public static void SetExaminationDetails(Examination examination, ScheduleEditRequest selectedAppointment)
         {
             if (selectedAppointment.CurrentExamination == null)
             {
@@ -86,7 +36,7 @@ namespace HealthInstitution.Core.Scheduling
                 examination.Doctor = selectedAppointment.CurrentExamination.Doctor;
             }
         }
-        private static void SetOperationDetails(Operation operation, ScheduleEditRequest selectedAppointment)
+        public static void SetOperationDetails(Operation operation, ScheduleEditRequest selectedAppointment)
         {
             if (selectedAppointment.CurrentExamination == null)
             {
@@ -101,24 +51,41 @@ namespace HealthInstitution.Core.Scheduling
                 operation.Doctor = selectedAppointment.CurrentExamination.Doctor;
             }
         }
+        private static List<DateTime> FindNextTwoHoursAppointments()
+        {
+            List<DateTime> possibleAppointments = new List<DateTime>();
+            DateTime current = DateTime.Now;
+            DateTime firstAppointment = current;
 
+            if (current.Minute > 0) firstAppointment = new DateTime(current.Year, current.Month, current.Day, current.Hour, 15, 0);
+            if (current.Minute > 15) firstAppointment = new DateTime(current.Year, current.Month, current.Day, current.Hour, 30, 0);
+            if (current.Minute > 30) firstAppointment = new DateTime(current.Year, current.Month, current.Day, current.Hour, 45, 0);
+            if (current.Minute > 45) firstAppointment = new DateTime(current.Year, current.Month, current.Day, current.Hour + 1, 0, 0);
+
+            for (int i = 0; i <= 7; i++)
+            {
+                TimeSpan ts = new TimeSpan(0, 15, 0);
+                possibleAppointments.Add(firstAppointment + i * ts);
+            }
+            return possibleAppointments;
+        }
         private static void TrySchedulingUrgentOperation(DateTime appointment, int duration, Doctor doctor, MedicalRecord medicalRecord, List<Tuple<int, int, DateTime>> priorityExaminationsAndOperations)
         {
             OperationDTO operationDTO = new OperationDTO(appointment, duration, null, doctor, medicalRecord);
             DoctorOperationAvailabilityService.CheckIfDoctorIsAvailable(operationDTO);
             PatientOperationAvailabilityService.CheckIfPatientIsAvailable(operationDTO);
-            operationDTO.Room = RoomService.FindAvailableRoom(operationDTO);
-            OperationService.Add(operationDTO);
-            AppointmentNotificationDTO appointmentNotificationDTO = new AppointmentNotificationDTO(null, appointment, doctor, medicalRecord.Patient);
-            AppointmentNotificationRepository.GetInstance().Add(appointmentNotificationDTO);
-            priorityExaminationsAndOperations.Add(new Tuple<int, int, DateTime>(OperationRepository.GetInstance()._maxId, 2, appointment));
+            operationDTO.Room = SchedulingService.FindAvailableOperationRoom(operationDTO);
+            Operation operation=OperationService.Add(operationDTO);
+            AppointmentNotificationService.SendNotificationForNewOperation(operation);
+            int id = OperationRepository.GetInstance()._maxId;
+            priorityExaminationsAndOperations.Add(new Tuple<int, int, DateTime>(id, 2, appointment));
         }
         public static List<Tuple<int, int, DateTime>> ReserveUrgentOperation(string patientUsername, SpecialtyType specialtyType, int duration)
         {
             List<Tuple<int, int, DateTime>> priorityExaminationsAndOperations = new List<Tuple<int, int, DateTime>>();
             Patient patient = PatientService.GetByUsername(patientUsername);
             var medicalRecord = MedicalRecordService.GetByPatientUsername(patient);
-            List<DateTime> nextTwoHoursAppointments = AppointmentDelayingService.FindNextTwoHoursAppointments();
+            List<DateTime> nextTwoHoursAppointments = FindNextTwoHoursAppointments();
             foreach (DateTime appointment in nextTwoHoursAppointments)
             {
                 foreach (Doctor doctor in DoctorService.GetAll())
@@ -138,16 +105,26 @@ namespace HealthInstitution.Core.Scheduling
                 }
             }
             priorityExaminationsAndOperations.Add(new Tuple<int, int, DateTime>(OperationRepository.GetInstance()._maxId + 1, 2, new DateTime(1, 1, 1)));
-            priorityExaminationsAndOperations.AddRange(AppointmentDelayingService.FindClosest(nextTwoHoursAppointments, specialtyType));
+            priorityExaminationsAndOperations.AddRange(AppointmentDelayingService.FindClosest(nextTwoHoursAppointments, specialtyType, Rooms.Model.RoomType.OperatingRoom));
             return priorityExaminationsAndOperations;
         }
-
+        private static void TrySchedulingUrgentExamination(DateTime appointment, Doctor doctor, MedicalRecord medicalRecord, List<Tuple<int, int, DateTime>> priorityExaminationsAndOperations)
+        {
+            ExaminationDTO examinationDTO = new ExaminationDTO(appointment, null, doctor, medicalRecord);
+            DoctorExaminationAvailabilityService.CheckIfDoctorIsAvailable(examinationDTO);
+            PatientExaminationAvailabilityService.CheckIfPatientIsAvailable(examinationDTO);
+            examinationDTO.Room = SchedulingService.FindAvailableExaminationRoom(appointment);
+            Examination examination=ExaminationService.Add(examinationDTO);
+            AppointmentNotificationService.SendNotificationForNewExamination(examination);
+            int id = ExaminationRepository.GetInstance()._maxId;
+            priorityExaminationsAndOperations.Add(new Tuple<int, int, DateTime>(id, 2, appointment));
+        }
         public static List<Tuple<int, int, DateTime>> ReserveUrgentExamination(string patientUsername, SpecialtyType specialtyType)
         {
             List<Tuple<int, int, DateTime>> priorityExaminationsAndOperations = new List<Tuple<int, int, DateTime>>();
             Patient patient = PatientService.GetByUsername(patientUsername);
             var medicalRecord = MedicalRecordService.GetByPatientUsername(patient);
-            List<DateTime> nextTwoHoursAppointments = AppointmentDelayingService.FindNextTwoHoursAppointments();
+            List<DateTime> nextTwoHoursAppointments = FindNextTwoHoursAppointments();
             foreach (DateTime appointment in nextTwoHoursAppointments)
             {
                 foreach (Doctor doctor in DoctorService.GetAll())
@@ -168,21 +145,8 @@ namespace HealthInstitution.Core.Scheduling
             }
             int id = ExaminationRepository.GetInstance()._maxId;
             priorityExaminationsAndOperations.Add(new Tuple<int, int, DateTime>(id + 1, 2, new DateTime(1, 1, 1)));
-            priorityExaminationsAndOperations.AddRange(AppointmentDelayingService.FindClosest(nextTwoHoursAppointments, specialtyType));
+            priorityExaminationsAndOperations.AddRange(AppointmentDelayingService.FindClosest(nextTwoHoursAppointments, specialtyType, Rooms.Model.RoomType.ExaminationRoom));
             return priorityExaminationsAndOperations;
-        }
-
-        private static void TrySchedulingUrgentExamination(DateTime appointment, Doctor doctor, MedicalRecord medicalRecord, List<Tuple<int, int, DateTime>> priorityExaminationsAndOperations)
-        {
-            ExaminationDTO examinationDTO = new ExaminationDTO(appointment, null, doctor, medicalRecord);
-            DoctorExaminationAvailabilityService.CheckIfDoctorIsAvailable(examinationDTO);
-            PatientExaminationAvailabilityService.CheckIfPatientIsAvailable(examinationDTO);
-            examinationDTO.Room = RoomService.FindAvailableRoom(appointment);
-            ExaminationService.Add(examinationDTO);
-            AppointmentNotificationDTO appointmentNotificationDTO = new AppointmentNotificationDTO(null, appointment, doctor, medicalRecord.Patient);
-            AppointmentNotificationRepository.GetInstance().Add(appointmentNotificationDTO);
-            int id = ExaminationRepository.GetInstance()._maxId;
-            priorityExaminationsAndOperations.Add(new Tuple<int, int, DateTime>(id, 2, appointment));
         }
     }
 }

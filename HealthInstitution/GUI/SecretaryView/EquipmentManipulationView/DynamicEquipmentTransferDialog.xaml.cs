@@ -1,6 +1,7 @@
 ﻿using HealthInstitution.Core.Equipments;
 using HealthInstitution.Core.Equipments.Model;
 using HealthInstitution.Core.EquipmentTransfers.Functionality;
+using HealthInstitution.Core.Rooms;
 using HealthInstitution.Core.Rooms.Model;
 using HealthInstitution.Core.Rooms.Repository;
 using System.Text.RegularExpressions;
@@ -16,7 +17,6 @@ namespace HealthInstitution.GUI.SecretaryView
     {
         Room _toRoom;
         string _equipmentName;
-        static RoomRepository _roomRepository=RoomRepository.GetInstance();
         public DynamicEquipmentTransferDialog(Room toRoom, string equipmentName)
         {
             _toRoom=toRoom;
@@ -32,7 +32,7 @@ namespace HealthInstitution.GUI.SecretaryView
         }
         private void RoomComboBox_Loaded(object sender, RoutedEventArgs e)
         {
-            List<Room> rooms = _roomRepository.Rooms;
+            List<Room> rooms = RoomService.GetAll();
 
             foreach (Room fromRoom in rooms)
             {
@@ -48,7 +48,7 @@ namespace HealthInstitution.GUI.SecretaryView
             try
             {
                 string? roomText = (string)roomComboBox.SelectedItem;
-                Room? fromRoom = _roomRepository.GetRoomFromString(roomText);
+                Room? fromRoom = RoomService.GetRoomFromString(roomText);
                 if (fromRoom != null)
                 {
                     TransferDynamicEquipment(fromRoom);
@@ -66,7 +66,7 @@ namespace HealthInstitution.GUI.SecretaryView
         }
         private void TransferDynamicEquipment(Room fromRoom)
         {
-            int quantity = EquipmentService.GetQuantityFromForm(quantityBox.Text, fromRoom, _equipmentName);
+            int quantity = EquipmentService.GetQuantityForTransferFromForm(quantityBox.Text, fromRoom, _equipmentName);
             Equipment equipment = EquipmentService.GetEquipmentFromRoom(fromRoom, _equipmentName);
             EquipmentTransferChecker.Transfer(_toRoom, equipment, quantity);
 

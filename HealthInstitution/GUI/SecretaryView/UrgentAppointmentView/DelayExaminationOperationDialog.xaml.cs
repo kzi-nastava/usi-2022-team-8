@@ -51,18 +51,13 @@ namespace HealthInstitution.GUI.SecretaryView
         }
         private void Accept_Click(object sender, RoutedEventArgs e)
         {
-            
             ScheduleEditRequest selectedAppointment = (ScheduleEditRequest)dataGrid.SelectedItem;
             if (selectedAppointment != null)
             {
                 if (_examination != null)
-                {
-                    UrgentService.DelayExamination(selectedAppointment,_examination);
-                }
-                else if (_operation != null)
-                {
-                    UrgentService.DelayOperation(selectedAppointment, _operation);
-                }
+                    AppointmentDelayingService.DelayExamination(selectedAppointment,_examination);
+                else if(_operation != null)
+                    AppointmentDelayingService.DelayOperation(selectedAppointment, _operation);
             }
         }
     }

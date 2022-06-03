@@ -22,17 +22,13 @@ namespace HealthInstitution.Core.Scheduling
         static OperationRepository s_operationRepository = OperationRepository.GetInstance();
         
         //hm da li ova treba u schedule service
+        //mmmmm :D> moguce
         public static bool CheckOccurrenceOfRoom(Room room)
         {
             if (s_examinationRepository.Examinations.Find(examination => examination.Room == room) == null)
-            {
                 return false;
-            }
-
             if (s_operationRepository.Operations.Find(operation => operation.Room == room) == null)
-            {
                 return false;
-            }
             return true;
         }
         public static void RedirectByType(Referral referral, DateTime appointment, MedicalRecord medicalRecord)
@@ -99,21 +95,19 @@ namespace HealthInstitution.Core.Scheduling
         public static void ReserveOperation(OperationDTO operationDTO, int id = 0)
         {
             operationDTO.Validate();
-            operationDTO.Room = RoomService.FindAvailableRoom(operationDTO);
+            operationDTO.Room = FindAvailableOperationRoom(operationDTO);
             DoctorOperationAvailabilityService.CheckIfDoctorIsAvailable(operationDTO);
             PatientOperationAvailabilityService.CheckIfPatientIsAvailable(operationDTO);
             OperationService.Add(operationDTO);
         }
-
         public static void ReserveExamination(ExaminationDTO examinationDTO)
         {
             examinationDTO.Validate();
-            examinationDTO.Room = FindAvailableRoom(examinationDTO);
+            examinationDTO.Room = FindAvailableExaminationRoom(examinationDTO.Appointment);
             DoctorExaminationAvailabilityService.CheckIfDoctorIsAvailable(examinationDTO);
             PatientExaminationAvailabilityService.CheckIfPatientIsAvailable(examinationDTO);
             ExaminationService.Add(examinationDTO);
         }
-
         public static Room FindAvailableOperationRoom(OperationDTO operationDTO, int id = 0)
         {
             bool isAvailable;
@@ -146,9 +140,6 @@ namespace HealthInstitution.Core.Scheduling
             int index = random.Next(0, availableRooms.Count);
             return availableRooms[index];
         }
-
-
-
         public static Room FindAvailableExaminationRoom(DateTime appointment)
         {
             List<Room> availableRooms = FindAllAvailableRooms(RoomType.ExaminationRoom, appointment);
@@ -159,7 +150,6 @@ namespace HealthInstitution.Core.Scheduling
             int index = random.Next(0, availableRooms.Count);
             return availableRooms[index];
         }
-
         public static List<Room> FindAllAvailableRooms(RoomType roomType, DateTime appointment)
         {
             bool isAvailable;

@@ -17,10 +17,11 @@ namespace HealthInstitution.Core.Operations
             return s_operationRepository.GetById(id);
         }
 
-        public static void Add(OperationDTO operationDTO)
+        public static Operation Add(OperationDTO operationDTO)
         {
             Operation operation = new Operation(operationDTO);
             s_operationRepository.Add(operation);
+            return operation;
         }
 
         public static void Update(int id, OperationDTO operationDTO)

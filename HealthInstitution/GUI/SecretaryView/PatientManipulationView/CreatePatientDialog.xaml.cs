@@ -15,9 +15,7 @@ namespace HealthInstitution.GUI.UserWindow
     /// Interaction logic for CreatePatientDialog.xaml
     /// </summary>
     public partial class CreatePatientDialog : Window
-    {
-        PatientRepository _patientRepository = PatientRepository.GetInstance();
-        UserRepository _userRepository=UserRepository.GetInstance();   
+    { 
         public CreatePatientDialog()
         {
             InitializeComponent();
@@ -34,7 +32,7 @@ namespace HealthInstitution.GUI.UserWindow
                 System.Windows.MessageBox.Show("All fields excluding Allergens and Previous ilnesses must be filled!", "Create patient error", MessageBoxButton.OK, MessageBoxImage.Error);
                 throw new Exception();
             }
-            else if (_userRepository.UsersByUsername.ContainsKey(username))
+            else if (UserService.IsUsernameExist(username))
             {
                 System.Windows.MessageBox.Show("This username is already used!", "Create patient error", MessageBoxButton.OK, MessageBoxImage.Error);
                 throw new Exception();
@@ -75,7 +73,6 @@ namespace HealthInstitution.GUI.UserWindow
                 UserDTO userDTO = CreateUserDTOFromInputData();
                 MedicalRecordDTO medicalRecordDTO = CreateMedicalRecordDTOFromInputData();
                 PatientService.Add(userDTO, medicalRecordDTO);
-                /*TrollCounterService.Add(userDTO.Username);*/
                 this.Close();
             }
             catch

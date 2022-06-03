@@ -22,10 +22,11 @@ namespace HealthInstitution.Core.Examinations
             return s_examinationRepository.GetById(id);
         }
 
-        public static void Add(ExaminationDTO examinationDTO)
+        public static Examination Add(ExaminationDTO examinationDTO)
         {
             Examination examination = new Examination(examinationDTO);
             s_examinationRepository.Add(examination);
+            return examination;
         }
 
         public static void Update(int id, ExaminationDTO examinationDTO)

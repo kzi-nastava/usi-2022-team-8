@@ -1,4 +1,5 @@
-﻿using HealthInstitution.Core.MedicalRecords.Model;
+﻿using HealthInstitution.Core.MedicalRecords;
+using HealthInstitution.Core.MedicalRecords.Model;
 using HealthInstitution.Core.MedicalRecords.Repository;
 using HealthInstitution.Core.SystemUsers.Patients.Model;
 using HealthInstitution.Core.SystemUsers.Patients.Repository;
@@ -32,7 +33,7 @@ namespace HealthInstitution.GUI.SecretaryView
         private void LoadRows()
         {
             dataGrid.Items.Clear();
-            List<MedicalRecord> medicalRecords = MedicalRecordRepository.GetInstance().MedicalRecords;
+            List<MedicalRecord> medicalRecords = MedicalRecordService.GetAll();
             foreach (MedicalRecord medicalRecord in medicalRecords)
             {
                 if(medicalRecord.Patient.Blocked==BlockState.NotBlocked)

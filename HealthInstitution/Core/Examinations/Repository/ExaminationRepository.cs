@@ -23,6 +23,7 @@ using HealthInstitution.Core.RecommededDTO;
 using HealthInstitution.Core.Notifications.Model;
 using HealthInstitution.Core.MedicalRecords;
 using HealthInstitution.Core.Operations;
+using HealthInstitution.Core.Scheduling;
 
 namespace HealthInstitution.Core.Examinations.Repository;
 
@@ -225,9 +226,9 @@ internal class ExaminationRepository
         Doctor doctor = DoctorRepository.GetInstance().GetById(doctorUsername);
         var examinatioDTO = ParseExaminationToExaminationDTO(examination);
         examinatioDTO.Appointment = dateTime;
-        CheckIfDoctorIsAvailable(examinatioDTO);
-        CheckIfPatientIsAvailable(examinatioDTO);
-        var room = RoomRepository.GetInstance().FindAvailableRoom(dateTime);
+        DoctorExaminationAvailabilityService.CheckIfDoctorIsAvailable(examinatioDTO);
+        PatientExaminationAvailabilityService.CheckIfPatientIsAvailable(examinatioDTO);
+        var room = SchedulingService.FindAvailableExaminationRoom(dateTime);
         Examination e = new Examination(examination.Id, examination.Status, dateTime, room, doctor, examination.MedicalRecord, "");
         return e;
     }
@@ -237,9 +238,9 @@ internal class ExaminationRepository
         Doctor doctor = DoctorRepository.GetInstance().GetById(doctorUsername);
         var examinatioDTO = ParseExaminationToExaminationDTO(examination);
         examinatioDTO.Appointment = dateTime;
-        CheckIfDoctorIsAvailable(examinatioDTO);
-        CheckIfPatientIsAvailable(examinatioDTO);
-        var room = RoomRepository.GetInstance().FindAvailableRoom(dateTime);
+        DoctorExaminationAvailabilityService.CheckIfDoctorIsAvailable(examinatioDTO);
+        PatientExaminationAvailabilityService.CheckIfPatientIsAvailable(examinatioDTO);
+        var room = SchedulingService.FindAvailableExaminationRoom(dateTime);
         Examination e = new Examination(examination.Id, examination.Status, dateTime, room, doctor, examination.MedicalRecord, "");
         SwapExaminationValue(e);
     }
@@ -251,11 +252,11 @@ internal class ExaminationRepository
         {
             try
             {
-                Room room = RoomRepository.GetInstance().FindAvailableRoom(findFitDTO.fit);
+                Room room = SchedulingService.FindAvailableExaminationRoom(findFitDTO.fit);
                 examinationDTO.Appointment = findFitDTO.fit;
                 examinationDTO.Room = room;
-                CheckIfPatientIsAvailable(examinationDTO);
-                CheckIfDoctorIsAvailable(examinationDTO);
+                DoctorExaminationAvailabilityService.CheckIfDoctorIsAvailable(examinationDTO);
+                PatientExaminationAvailabilityService.CheckIfPatientIsAvailable(examinationDTO);
                 found = true;
                 break;
             }

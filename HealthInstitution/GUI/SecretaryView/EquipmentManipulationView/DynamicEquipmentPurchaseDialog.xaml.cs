@@ -59,7 +59,7 @@ namespace HealthInstitution.GUI.SecretaryView
         private void LoadEquipmentComboBox()
         {
             equipmentComboBox.Items.Clear();
-            Dictionary<string, int> equipmentPerQuantity = EquipmentRepository.GetInstance().EquipmentPerQuantity;
+            Dictionary<string, int> equipmentPerQuantity = EquipmentService.EquipmentPerQuantity();
             foreach (var equipment in equipmentPerQuantity)
             {
                 if (equipment.Value == 0)

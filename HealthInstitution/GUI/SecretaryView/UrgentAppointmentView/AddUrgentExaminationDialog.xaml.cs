@@ -8,6 +8,7 @@ using HealthInstitution.Core.Operations.Repository;
 using HealthInstitution.Core.ScheduleEditRequests.Model;
 using HealthInstitution.Core.Scheduling;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
+using HealthInstitution.Core.SystemUsers.Patients;
 using HealthInstitution.Core.SystemUsers.Patients.Model;
 using HealthInstitution.Core.SystemUsers.Patients.Repository;
 using System;
@@ -47,7 +48,7 @@ namespace HealthInstitution.GUI.SecretaryView
         private void PatientComboBox_Loaded(object sender, RoutedEventArgs e)
         {
             patientComboBox.Items.Clear();
-            List<Patient> patients = PatientRepository.GetInstance().Patients;
+            List<Patient> patients = PatientService.GetAll();
             foreach (Patient patient in patients)
                 if (patient.Blocked==Core.SystemUsers.Users.Model.BlockState.NotBlocked)
                     patientComboBox.Items.Add(patient);
@@ -56,7 +57,6 @@ namespace HealthInstitution.GUI.SecretaryView
         private void ShowReservedExaminationWithoutDelaying(List<Tuple<int, int, DateTime>> examinationsAndOperationsForDelaying)
         {
             Examination urgentExamination = ExaminationRepository.GetInstance().GetById(examinationsAndOperationsForDelaying[0].Item1);
-            ExaminationDoctorRepository.GetInstance().Save();
             System.Windows.MessageBox.Show("Urgent examination has ordered successfully.");
             UrgentExaminationDialog urgentExaminationDialog = new UrgentExaminationDialog(urgentExamination);
             urgentExaminationDialog.ShowDialog();
@@ -64,7 +64,7 @@ namespace HealthInstitution.GUI.SecretaryView
         private void ShowDelayingAppointmentSelectionDialog(List<Tuple<int, int, DateTime>> examinationsAndOperationsForDelaying, MedicalRecord medicalRecord)
         {
             System.Windows.MessageBox.Show("There are no free appointments in next two hours. Please select examination or operation to be delayed.");
-            List<ScheduleEditRequest> delayedAppointments = UrgentService.PrepareDataForDelaying(examinationsAndOperationsForDelaying);
+            List<ScheduleEditRequest> delayedAppointments = AppointmentDelayingService.PrepareDataForDelaying(examinationsAndOperationsForDelaying);
             Operation urgentOperation = new Operation(examinationsAndOperationsForDelaying[0].Item1, new DateTime(1, 1, 1), 15, null, null, medicalRecord);
             DelayExaminationOperationDialog delayExaminationOperationDialog = new DelayExaminationOperationDialog(delayedAppointments, null, urgentOperation);
             delayExaminationOperationDialog.ShowDialog();
@@ -73,7 +73,7 @@ namespace HealthInstitution.GUI.SecretaryView
         {
             _selectedSpecialtyType = (SpecialtyType)specialtyTypeComboBox.SelectedItem;
             Patient patient = (Patient)patientComboBox.SelectedItem;
-            _selectedMedicalRecord = MedicalRecordRepository.GetInstance().GetByPatientUsername(patient);
+            _selectedMedicalRecord = MedicalRecordService.GetByPatientUsername(patient);
         }
         private void Create_Click(object sender, RoutedEventArgs e)
         {

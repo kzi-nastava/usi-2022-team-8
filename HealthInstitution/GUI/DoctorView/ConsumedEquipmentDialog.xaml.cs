@@ -1,4 +1,5 @@
-﻿using HealthInstitution.Core.Equipments.Model;
+﻿using HealthInstitution.Core.Equipments;
+using HealthInstitution.Core.Equipments.Model;
 using HealthInstitution.Core.Equipments.Repository;
 using HealthInstitution.Core.Rooms;
 using HealthInstitution.Core.Rooms.Model;

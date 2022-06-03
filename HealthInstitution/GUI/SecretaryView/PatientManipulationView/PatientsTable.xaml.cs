@@ -1,4 +1,5 @@
-﻿using HealthInstitution.Core.Examinations.Repository;
+﻿using HealthInstitution.Core.Examinations;
+using HealthInstitution.Core.Examinations.Repository;
 using HealthInstitution.Core.Operations;
 using HealthInstitution.Core.Operations.Repository;
 using HealthInstitution.Core.SystemUsers.Patients;
@@ -14,9 +15,6 @@ namespace HealthInstitution.GUI.UserWindow
     /// </summary>
     public partial class PatientsTable : Window
     {
-        ExaminationRepository _examinationRepository = ExaminationRepository.GetInstance();
-        OperationRepository _operationRepository = OperationRepository.GetInstance();
-        PatientRepository _patientRepository = PatientRepository.GetInstance();
         public PatientsTable()
         {
             InitializeComponent();
@@ -25,7 +23,7 @@ namespace HealthInstitution.GUI.UserWindow
         private void LoadRows()
         {
             dataGrid.Items.Clear();
-            List<Patient> patients = _patientRepository.Patients;
+            List<Patient> patients = PatientService.GetAll();
             foreach (Patient patient in patients)
             {
                 dataGrid.Items.Add(patient);
@@ -52,9 +50,9 @@ namespace HealthInstitution.GUI.UserWindow
         }
         private void TryDeletingPatient(Patient selectedPatient)
         {
-            if (_examinationRepository.GetByPatient(selectedPatient.Username).Count() == 0 && OperationService.GetPatientOperations(selectedPatient).Count() == 0)
+            if (ExaminationService.GetByPatient(selectedPatient.Username).Count() == 0 && OperationService.GetByPatient(selectedPatient.Username).Count() == 0)
             {
-                _patientRepository.Delete(selectedPatient.Username);
+                PatientService.Delete(selectedPatient.Username);
                 dataGrid.SelectedItem = null;
                 LoadRows();
             }
@@ -76,7 +74,6 @@ namespace HealthInstitution.GUI.UserWindow
             Patient selectedPatient = (Patient)dataGrid.SelectedItem;
             if (selectedPatient != null)
             {
-                PatientRepository patientRepository = PatientRepository.GetInstance();
                 PatientService.ChangeBlockedStatus(selectedPatient.Username);
                 dataGrid.SelectedItem = null;
                 LoadRows();
