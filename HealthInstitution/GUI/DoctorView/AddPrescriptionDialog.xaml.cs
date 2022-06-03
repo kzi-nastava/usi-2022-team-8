@@ -30,8 +30,6 @@ namespace HealthInstitution.GUI.DoctorView
     {
         private MedicalRecord _medicalRecord;
         private DrugRepository DrugSerivce = DrugRepository.GetInstance();
-        private PrescriptionRepository _prescriptionRepository = PrescriptionRepository.GetInstance();
-        private MedicalRecordRepository _medicalRecordRepository = MedicalRecordRepository.GetInstance();
         public AddPrescriptionDialog(MedicalRecord medicalRecord)
         {
             InitializeComponent();
@@ -62,20 +60,10 @@ namespace HealthInstitution.GUI.DoctorView
             drugComboBox.Items.Refresh();
         }
 
-        private bool IsPatientAlergic(List<Ingredient> ingredients)
-        {
-            foreach (var ingredient in ingredients)
-            {
-                if (_medicalRecord.Allergens.Contains(ingredient.Name))
-                    return true;
-            }
-            return false;
-        }
-
         private PrescriptionDTO CreatePrescriptionDTOFromInputData()
         {
             Drug drug = (Drug)drugComboBox.SelectedItem;
-            if (IsPatientAlergic(drug.Ingredients))
+            if (PrescriptionService.IsPatientAlergic(_medicalRecord,drug.Ingredients))
                 throw new Exception("Patient is alergic to drug ingredients");
             PrescriptionTime timeOfUse = (PrescriptionTime)timeComboBox.SelectedIndex;
             int dailyDose = Int32.Parse(doseTextBox.Text);

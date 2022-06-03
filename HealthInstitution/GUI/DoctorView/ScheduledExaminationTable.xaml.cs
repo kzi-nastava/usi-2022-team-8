@@ -27,7 +27,6 @@ namespace HealthInstitution.GUI.DoctorView
     public partial class ScheduledExaminationTable : Window
     {
         private Doctor _loggedDoctor;
-        private DoctorRepository _doctorRepository = DoctorRepository.GetInstance();
         public ScheduledExaminationTable(Doctor doctor)
         {
             this._loggedDoctor = doctor;   
@@ -40,7 +39,7 @@ namespace HealthInstitution.GUI.DoctorView
         {
             dataGrid.Items.Clear();
             List<Operation> scheduledOperations = TimetableService.GetScheduledOperations(_loggedDoctor);
-            List<Operation> selectedOperations = new List<Operation>();
+            List<Operation> selectedOperations;
             if (upcomingDaysRadioButton.IsChecked == true)
             {
                 selectedOperations = TimetableService.GetOperationsInThreeDays(scheduledOperations);
@@ -60,7 +59,7 @@ namespace HealthInstitution.GUI.DoctorView
         {
             dataGrid.Items.Clear();
             List<Examination> scheduledExaminations = TimetableService.GetScheduledExaminations(_loggedDoctor);
-            List<Examination> selectedExaminations = new List<Examination>();
+            List<Examination> selectedExaminations;
             if ((bool)upcomingDaysRadioButton.IsChecked)
             {
                 selectedExaminations = TimetableService.GetExaminationsInThreeDays(scheduledExaminations);

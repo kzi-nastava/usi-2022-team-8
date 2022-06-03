@@ -11,6 +11,7 @@ using System.Windows;
 using HealthInstitution.Core.Operations.Model;
 using HealthInstitution.Core.Rooms;
 using HealthInstitution.Core.Operations;
+using HealthInstitution.Core.Examinations;
 
 namespace HealthInstitution.Core.Scheduling
 {
@@ -44,7 +45,7 @@ namespace HealthInstitution.Core.Scheduling
         private static void ScheduleWithSpecificDoctor(DateTime appointment, Referral referral, MedicalRecord medicalRecord)
         {
             ExaminationDTO examination = new ExaminationDTO(appointment, null, referral.ReferredDoctor, medicalRecord);
-            ExaminationRepository.GetInstance().ReserveExamination(examination);
+            ReserveExamination(examination);
             System.Windows.MessageBox.Show("You have scheduled the examination!", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
 
             referral.Active = false;
@@ -55,7 +56,7 @@ namespace HealthInstitution.Core.Scheduling
         {
             try
             {
-                ExaminationRepository.GetInstance().ReserveExamination(examination);
+                ReserveExamination(examination);
                 System.Windows.MessageBox.Show("You have scheduled the examination! Doctor: " + examination.Doctor.Name + " " + examination.Doctor.Surname, "Info", MessageBoxButton.OK, MessageBoxImage.Information);
                 referral.Active = false;
                 ReferralRepository.GetInstance().Save(); //TODO
@@ -97,10 +98,88 @@ namespace HealthInstitution.Core.Scheduling
         }
         public static void ReserveOperation(OperationDTO operationDTO, int id = 0)
         {
+            operationDTO.Validate();
             operationDTO.Room = RoomService.FindAvailableRoom(operationDTO);
             DoctorOperationAvailabilityService.CheckIfDoctorIsAvailable(operationDTO);
             PatientOperationAvailabilityService.CheckIfPatientIsAvailable(operationDTO);
             OperationService.Add(operationDTO);
+        }
+
+        public static void ReserveExamination(ExaminationDTO examinationDTO)
+        {
+            examinationDTO.Validate();
+            examinationDTO.Room = FindAvailableRoom(examinationDTO);
+            DoctorExaminationAvailabilityService.CheckIfDoctorIsAvailable(examinationDTO);
+            PatientExaminationAvailabilityService.CheckIfPatientIsAvailable(examinationDTO);
+            ExaminationService.Add(examinationDTO);
+        }
+
+        public static Room FindAvailableOperationRoom(OperationDTO operationDTO, int id = 0)
+        {
+            bool isAvailable;
+            List<Room> availableRooms = new List<Room>();
+            var rooms = RoomService.GetNotRenovating();
+            DateTime appointment = operationDTO.Appointment;
+            int duration = operationDTO.Duration;
+
+            foreach (var room in rooms)
+            {
+                if (room.Type != RoomType.OperatingRoom) continue;
+                isAvailable = true;
+                foreach (var operation in OperationRepository.GetInstance().GetAll())
+                {
+                    if (operation.Room.Id == room.Id && operation.Id != id)
+                    {
+                        if ((appointment < operation.Appointment.AddMinutes(operation.Duration)) && (appointment.AddMinutes(duration) > operation.Appointment))
+                        {
+                            isAvailable = false;
+                            break;
+                        }
+                    }
+                }
+                if (isAvailable)
+                    availableRooms.Add(room);
+            }
+
+            if (availableRooms.Count == 0) throw new Exception("There are no available rooms!");
+            Random random = new Random();
+            int index = random.Next(0, availableRooms.Count);
+            return availableRooms[index];
+        }
+
+
+
+        public static Room FindAvailableExaminationRoom(DateTime appointment)
+        {
+            List<Room> availableRooms = FindAllAvailableRooms(RoomType.ExaminationRoom, appointment);
+
+            if (availableRooms.Count == 0) throw new Exception("There are no available rooms!");
+
+            Random random = new Random();
+            int index = random.Next(0, availableRooms.Count);
+            return availableRooms[index];
+        }
+
+        public static List<Room> FindAllAvailableRooms(RoomType roomType, DateTime appointment)
+        {
+            bool isAvailable;
+            List<Room> availableRooms = new List<Room>();
+            foreach (var room in RoomService.GetNotRenovating())
+            {
+                if (room.Type != roomType) continue;
+                isAvailable = true;
+                foreach (var examination in ExaminationRepository.GetInstance().Examinations)
+                {
+                    if (examination.Appointment == appointment && examination.Room.Id == room.Id)
+                    {
+                        isAvailable = false;
+                        break;
+                    }
+                }
+                if (isAvailable)
+                    availableRooms.Add(room);
+            }
+            return availableRooms;
         }
     }
 }

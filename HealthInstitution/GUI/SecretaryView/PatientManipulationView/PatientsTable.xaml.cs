@@ -52,7 +52,7 @@ namespace HealthInstitution.GUI.UserWindow
         }
         private void TryDeletingPatient(Patient selectedPatient)
         {
-            if (_examinationRepository.GetPatientExaminations(selectedPatient).Count() == 0 && OperationService.GetPatientOperations(selectedPatient).Count() == 0)
+            if (_examinationRepository.GetByPatient(selectedPatient.Username).Count() == 0 && OperationService.GetPatientOperations(selectedPatient).Count() == 0)
             {
                 _patientRepository.Delete(selectedPatient.Username);
                 dataGrid.SelectedItem = null;

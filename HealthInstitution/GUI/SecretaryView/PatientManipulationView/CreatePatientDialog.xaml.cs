@@ -75,8 +75,7 @@ namespace HealthInstitution.GUI.UserWindow
                 UserDTO userDTO = CreateUserDTOFromInputData();
                 MedicalRecordDTO medicalRecordDTO = CreateMedicalRecordDTOFromInputData();
                 PatientService.Add(userDTO, medicalRecordDTO);
-                UserService.Add(userDTO);
-                TrollCounterService.Add(userDTO.Username);
+                /*TrollCounterService.Add(userDTO.Username);*/
                 this.Close();
             }
             catch

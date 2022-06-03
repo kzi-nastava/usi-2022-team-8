@@ -204,5 +204,9 @@ namespace HealthInstitution.Core.Equipments
             }
             return pairs;
         }
-    }
+
+        public static void RemoveConsumed(Equipment equipment, int consumedQuantity)
+        {
+            s_equipmentRepository
+        }
 }

@@ -1,4 +1,5 @@
-﻿using HealthInstitution.Core.Examinations.Model;
+﻿using HealthInstitution.Core.Examinations;
+using HealthInstitution.Core.Examinations.Model;
 using HealthInstitution.Core.Examinations.Repository;
 using HealthInstitution.Core.SystemUsers.Doctors;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
@@ -24,9 +25,6 @@ namespace HealthInstitution.GUI.DoctorView
     /// </summary>
     public partial class ExaminationTable : Window
     {
-        private ExaminationRepository _examinationRepository = ExaminationRepository.GetInstance();
-        private DoctorRepository _doctorRepository = DoctorRepository.GetInstance();
-        private ExaminationDoctorRepository _examinationDoctorRepository = ExaminationDoctorRepository.GetInstance();
         private Doctor _loggedDoctor;
         public ExaminationTable(Doctor doctor)
         {
@@ -43,12 +41,13 @@ namespace HealthInstitution.GUI.DoctorView
             {
                 dataGrid.Items.Add(examination);
             }
+            dataGrid.Items.Refresh();
         }
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
             new AddExaminationDialog(this._loggedDoctor).ShowDialog();
             LoadRows();
-            dataGrid.Items.Refresh();
+            /*dataGrid.Items.Refresh();*/
         }
 
         private void EditButton_Click(object sender, RoutedEventArgs e)
@@ -57,7 +56,7 @@ namespace HealthInstitution.GUI.DoctorView
             EditExaminationDialog editExaminationDialog = new EditExaminationDialog(selectedExamination);
             editExaminationDialog.ShowDialog();
             LoadRows();
-            dataGrid.Items.Refresh();
+            //dataGrid.Items.Refresh();
         }
 
         private void DeleteButton_Click(object sender, RoutedEventArgs e)
@@ -67,7 +66,7 @@ namespace HealthInstitution.GUI.DoctorView
             {
                 Examination selectedExamination = (Examination)dataGrid.SelectedItem;
                 dataGrid.Items.Remove(selectedExamination);
-                _examinationRepository.Delete(selectedExamination.Id);
+                ExaminationService.Delete(selectedExamination.Id);
                 DoctorService.DeleteExamination(selectedExamination);
             }
         }

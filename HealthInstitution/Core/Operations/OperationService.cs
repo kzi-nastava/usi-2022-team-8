@@ -25,6 +25,7 @@ namespace HealthInstitution.Core.Operations
 
         public static void Update(int id, OperationDTO operationDTO)
         {
+            operationDTO.Validate();
             Operation operation = new Operation(operationDTO);
             DoctorOperationAvailabilityService.CheckIfDoctorIsAvailable(operationDTO, id);
             PatientOperationAvailabilityService.CheckIfPatientIsAvailable(operationDTO, id);
@@ -36,13 +37,9 @@ namespace HealthInstitution.Core.Operations
             s_operationRepository.Delete(id);
         }
 
-        public static List<Operation> GetPatientOperations(Patient patient)
+        public static List<Operation> GetByPatient(String username)
         {
-            List<Operation> patientOperations = new List<Operation>();
-            foreach (var operation in s_operationRepository.GetAll())
-                if (operation.MedicalRecord.Patient.Username == patient.Username)
-                    patientOperations.Add(operation);
-            return patientOperations;
+            return s_operationRepository.GetByPatient(username);
         }
     }
 }

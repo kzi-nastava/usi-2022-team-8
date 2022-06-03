@@ -1,4 +1,5 @@
-﻿using HealthInstitution.Core.Operations.Model;
+﻿using HealthInstitution.Core.Operations;
+using HealthInstitution.Core.Operations.Model;
 using HealthInstitution.Core.Operations.Repository;
 using HealthInstitution.Core.SystemUsers.Doctors;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
@@ -12,9 +13,6 @@ namespace HealthInstitution.GUI.DoctorView
     /// </summary>
     public partial class OperationTable : Window
     {
-        private OperationRepository _operationRepository = OperationRepository.GetInstance();
-        private DoctorRepository _doctorRepository = DoctorRepository.GetInstance();
-        private OperationDoctorRepository _operationDoctorRepository = OperationDoctorRepository.GetInstance();  
         private Doctor _loggedDoctor;
         public OperationTable(Doctor doctor)
         {
@@ -54,7 +52,7 @@ namespace HealthInstitution.GUI.DoctorView
             {
                 Operation selectedOperation = (Operation)dataGrid.SelectedItem;
                 dataGrid.Items.Remove(selectedOperation);
-                _operationRepository.Delete(selectedOperation.Id);
+                OperationService.Delete(selectedOperation.Id);
                 DoctorService.DeleteOperation(selectedOperation);
             }
         }

@@ -151,11 +151,12 @@ namespace HealthInstitution.Core.Operations.Repository
             OperationDoctorRepository.GetInstance().Save();
         }
 
-        public void Update(int id, Operation operation)
+        public void Update(int id, Operation byOperation)
         {
-            operation.Appointment = operation.Appointment;
-            operation.MedicalRecord = operation.MedicalRecord;
-            operation.Duration = operation.Duration;
+            Operation operation = GetById(id);
+            operation.Appointment = byOperation.Appointment;
+            operation.MedicalRecord = byOperation.MedicalRecord;
+            operation.Duration = byOperation.Duration;
             this.OperationsById[id] = operation;
             Save();
         }
@@ -177,6 +178,15 @@ namespace HealthInstitution.Core.Operations.Repository
             oldOperation.Doctor.Operations.Remove(oldOperation);
             AddToCollections(operation);
             Save();
+        }
+
+        public List<Operation> GetByPatient(String username)
+        {
+            List<Operation> patientOperations = new List<Operation>();
+            foreach (var operation in this.GetAll())
+                if (operation.MedicalRecord.Patient.Username == username)
+                    patientOperations.Add(operation);
+            return patientOperations;
         }
     }
 }

@@ -3,6 +3,7 @@ using HealthInstitution.Core.Examinations.Repository;
 using HealthInstitution.Core.MedicalRecords;
 using HealthInstitution.Core.MedicalRecords.Model;
 using HealthInstitution.Core.MedicalRecords.Repository;
+using HealthInstitution.Core.Scheduling;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using HealthInstitution.Core.SystemUsers.Doctors.Repository;
 using HealthInstitution.Core.SystemUsers.Patients.Model;
@@ -80,7 +81,7 @@ namespace HealthInstitution.GUI.PatientView
             MedicalRecord medicalRecord = MedicalRecordService.GetByPatientUsername(_loggedPatient);
             Doctor doctor = DoctorRepository.GetInstance().GetById(_doctorUsername);
             ExaminationDTO examination = new ExaminationDTO(dateTime, null, doctor, medicalRecord);
-            ExaminationRepository.GetInstance().ReserveExamination(examination);
+            SchedulingService.ReserveExamination(examination);
             ExaminationDoctorRepository.GetInstance().Save();
         }
 

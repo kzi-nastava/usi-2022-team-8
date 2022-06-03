@@ -63,27 +63,20 @@ public class UserRepository
         return null;
     }
 
-    public void Add(UserDTO userDTO)
+    public void Add(User user)
     {
-        UserType type = userDTO.Type;
-        String username = userDTO.Username;
-        String password = userDTO.Password;
-        String name = userDTO.Name;
-        String surname = userDTO.Surname;
-
-        User user = new User(type, username, password, name, surname);
         this.Users.Add(user);
-        this.UsersByUsername[username] = user;
+        this.UsersByUsername[user.Username] = user;
         Save();
     }
 
-    public void Update(UserDTO userDTO)
+    public void Update(User byUser)
     {
-        User user = GetByUsername(userDTO.Username);
-        user.Password = userDTO.Password;
-        user.Name = userDTO.Name;
-        user.Surname = userDTO.Surname;
-        this.UsersByUsername[userDTO.Username]=user;
+        User user = GetByUsername(byUser.Username);
+        user.Password = byUser.Password;
+        user.Name = byUser.Name;
+        user.Surname = byUser.Surname;
+        this.UsersByUsername[byUser.Username]=user;
         Save();
     }
 
