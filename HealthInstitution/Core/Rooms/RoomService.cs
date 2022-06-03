@@ -44,6 +44,10 @@ namespace HealthInstitution.Core.Rooms
             s_roomRepository.Delete(id);
         }
 
+        public static void WriteIn()
+        {
+            s_roomRepository.Save();
+        }
         public static bool CheckImportantOccurrenceOfRoom(Room room)
         {            
             if (EquipmentTransferService.CheckOccurrenceOfRoom(room))
@@ -97,6 +101,11 @@ namespace HealthInstitution.Core.Rooms
         public static bool RoomNumberIsTaken(int number)
         {
             return s_roomRepository.RoomNumberIsTaken(number);
+        }
+
+        public static List<Equipment> GetAvailableEquipment(Room room)
+        {
+            return room.AvailableEquipment;
         }
 
         public static List<TableItemEquipment> GetTableItemEquipments()

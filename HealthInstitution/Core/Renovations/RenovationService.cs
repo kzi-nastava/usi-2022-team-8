@@ -226,7 +226,7 @@ namespace HealthInstitution.Core.Renovations
                 {
                     return true;
                 }
-                if (renovation.GetType() == typeof(RoomMerger) && ((RoomMerger)renovation).RoomForMerge == selectedRoom)
+                if (renovation.IsRoomMerger() && ((RoomMerger)renovation).RoomForMerge == selectedRoom)
                 {
                     return true;
                 }
