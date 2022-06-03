@@ -3,6 +3,7 @@ using System.Windows.Controls;
 using HealthInstitution.Core.Prescriptions.Model;
 using HealthInstitution.Core.Prescriptions.Repository;
 using HealthInstitution.Core.RecepieNotifications.Model;
+using HealthInstitution.Core.RecepieNotifications.Service;
 
 namespace HealthInstitution.GUI.PatientView;
 
@@ -67,9 +68,8 @@ public partial class RecepieNotificationSettingsDialog : Window
         DateTime before = DateTime.Today;
         before = before.AddMinutes(_minutes).AddHours(_hours);
         RecepieNotificationSettings recepieNotificationSettings = new RecepieNotificationSettings(before, _loggedPatinet, prescription, DateTime.Now, prescription.Id);
-        RecepieNotificationGenerator recepieNotificationGenerator = new RecepieNotificationGenerator(_loggedPatinet);
-        List<DateTime> dateTimes = recepieNotificationGenerator.GenerateDateTimes(recepieNotificationSettings);
-        recepieNotificationGenerator.GenerateCronJobs(dateTimes, recepieNotificationSettings);
+        List<DateTime> dateTimes = RecepieNotificationService.GenerateDateTimes(recepieNotificationSettings);
+        RecepieNotificationService.GenerateCronJobs(dateTimes, recepieNotificationSettings, _loggedPatinet);
     }
 
     private void LoadRows()

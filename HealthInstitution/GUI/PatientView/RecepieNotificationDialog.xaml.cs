@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using HealthInstitution.Core.RecepieNotifications.Model;
-using HealthInstitution.Core.RecepieNotifications.Repository;
+using HealthInstitution.Core.RecepieNotifications.Service;
 
 namespace HealthInstitution.GUI.PatientView
 {
@@ -25,7 +25,7 @@ namespace HealthInstitution.GUI.PatientView
         {
             InitializeComponent();
 
-            LoadRows(RecepieNotificationRepository.GetInstance().GetPatientActiveNotification(_loggedPatient));
+            LoadRows(RecepieNotificationService.GetPatientActiveNotification(_loggedPatient));
         }
 
         private void LoadRows(List<RecepieNotification> recepieNotifications)
@@ -35,8 +35,6 @@ namespace HealthInstitution.GUI.PatientView
             foreach (RecepieNotification notification in recepieNotifications)
             {
                 dataGrid.Items.Add(notification);
-                notification.ActiveForPatient = false;
-                RecepieNotificationRepository.GetInstance().Save();
                 //_notificationRepository.Delete(notification.Id);
                 //_doctorRepository.DeleteNotification(_loggedDoctor, notification);
             }

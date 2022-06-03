@@ -92,8 +92,13 @@ public class RecepieNotificationRepository
         List<RecepieNotification> ownNotifications = new List<RecepieNotification>();
         foreach (var notification in this.Notifications)
         {
-            if (notification.Patient == username && notification.ActiveForPatient) ownNotifications.Add(notification);
+            if (notification.Patient == username && notification.ActiveForPatient)
+            {
+                ownNotifications.Add(notification);
+                notification.ActiveForPatient = false;
+            }
         }
+        Save();
         return ownNotifications;
     }
 }

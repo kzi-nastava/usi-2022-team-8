@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.RecepieNotifications.Model;
 
-public class recepieNotificationCronJob
+public class RecepieNotificationCronJob
 {
     public void GenerateJob(string loggedUser, RecepieNotificationSettings settings, DateTime dateTime)
     {
@@ -25,13 +25,14 @@ public class recepieNotificationCronJob
         job.JobDataMap.Put("settings", settings);
 
         ITrigger trigger = TriggerBuilder.Create()
-       .WithIdentity("trigger3", "group1")
-       .WithCronSchedule("0 0/1 * * * ?", x => x
+       .WithIdentity("trigger" + settings.Id + dateTime, "group1")
+       .WithCronSchedule("0 " + dateTime.Minute + " " + dateTime.Hour + " * * ?", x => x
            .InTimeZone(TimeZoneInfo.FindSystemTimeZoneById("Central America Standard Time")))
        .ForJob(job)
        .Build();
         scheduler.ScheduleJob(job, trigger);
 
         //"0 " + dateTime.Minute + " " + dateTime.Hour + " * * ?"
+        //0 0/1 * * * ?
     }
 }
