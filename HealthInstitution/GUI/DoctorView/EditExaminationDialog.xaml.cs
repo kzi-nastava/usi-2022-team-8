@@ -1,4 +1,5 @@
-﻿using HealthInstitution.Core.Examinations.Model;
+﻿using HealthInstitution.Core.Examinations;
+using HealthInstitution.Core.Examinations.Model;
 using HealthInstitution.Core.Examinations.Repository;
 using HealthInstitution.Core.MedicalRecords;
 using HealthInstitution.Core.MedicalRecords.Model;
@@ -89,7 +90,7 @@ namespace HealthInstitution.GUI.DoctorView
                 {
                 ExaminationDTO examinationDTO = CreateExaminationDTOFromInputData();
                 examinationDTO.Validate();
-                ExaminationRepository.GetInstance().Update(_selectedExamination.Id, examinationDTO);
+                ExaminationService.Update(_selectedExamination.Id, examinationDTO);
                 this.Close();
             }
             catch (Exception ex)

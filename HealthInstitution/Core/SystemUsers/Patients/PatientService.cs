@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading.Tasks;
 using HealthInstitution.Core.Operations.Model;
 using HealthInstitution.Core.Operations.Repository;
+using HealthInstitution.Core.TrollCounters;
 
 namespace HealthInstitution.Core.SystemUsers.Patients
 {
@@ -37,23 +38,21 @@ namespace HealthInstitution.Core.SystemUsers.Patients
             Patient patient = new Patient(userDTO);
             medicalRecordDTO.Patient = patient;
             MedicalRecordService.Add(medicalRecordDTO);
+            UserService.Add(userDTO);
+            TrollCounterService.Add(userDTO.Username);
             s_patientRepository.Add(patient);
         }
-
-        //updateovati u useru
         public static void Update(UserDTO userDTO)
         {
             Patient patient = new Patient(userDTO);
             s_patientRepository.Update(patient);
+            UserService.Update(userDTO);
         }
-
-        //ispravi delete
-
         public static void Delete(string username)
         {
             s_patientRepository.Delete(username);
-            //TrollCounterFileRepository.GetInstance().Delete(username);
-            //userRepository.Delete(username);
+            TrollCounterService.Delete(username);
+            UserService.Delete(username);
         }
     } 
 }

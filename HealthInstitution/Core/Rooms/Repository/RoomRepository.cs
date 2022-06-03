@@ -186,7 +186,7 @@ namespace HealthInstitution.Core.Rooms.Repository
             List<Room> availableRooms = new List<Room>();
             foreach (var room in RoomRepository.GetInstance().GetNotRenovating())
             {
-                if (room.Type != RoomType.ExaminationRoom) continue;
+                if (room.Type != RoomType.ExaminationRoom && room.Type != RoomType.OperatingRoom) continue;
                 isAvailable = true;
                 foreach (var examination in ExaminationRepository.GetInstance().Examinations)
                 {

@@ -145,13 +145,13 @@ public class DrugRepository
         Save();
     }
 
-    public void Update(int id, Drug drugTemp)
+    public void Update(int id, Drug byDrug)
     {
         Drug drug = GetById(id);
-        drug.Name = drugTemp.Name;
-        drug.State = drugTemp.State;
-        drug.Ingredients = drugTemp.Ingredients;
-        drug.RejectionReason = drugTemp.RejectionReason;
+        drug.Name = byDrug.Name;
+        drug.State = byDrug.State;
+        drug.Ingredients = byDrug.Ingredients;
+        drug.RejectionReason = byDrug.RejectionReason;
         DrugById[drug.Id] = drug;
         Save();
     }

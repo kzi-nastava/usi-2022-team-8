@@ -24,6 +24,16 @@ public class Examination
         this.MedicalRecord = medicalRecord;
         this.Anamnesis = anamnesis;
     }
+
+    public Examination(ExaminationDTO examinationDTO)
+    {
+        this.Status = ExaminationStatus.Scheduled;
+        this.Appointment = examinationDTO.Appointment;
+        this.Room = examinationDTO.Room;
+        this.Doctor = examinationDTO.Doctor;
+        this.MedicalRecord = examinationDTO.MedicalRecord;
+        this.Anamnesis = "";
+    }
 }
 
 public enum ExaminationStatus

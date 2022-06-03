@@ -1,4 +1,6 @@
-﻿using HealthInstitution.Core.Examinations.Repository;
+﻿using HealthInstitution.Core.Examinations;
+using HealthInstitution.Core.Examinations.Repository;
+using HealthInstitution.Core.Operations;
 using HealthInstitution.Core.Operations.Model;
 using HealthInstitution.Core.SystemUsers.Patients;
 using HealthInstitution.Core.SystemUsers.Patients.Model;
@@ -17,7 +19,7 @@ namespace HealthInstitution.Core.Scheduling
             Patient patient = operationDTO.MedicalRecord.Patient;
             DateTime appointment = operationDTO.Appointment;
             int duration = operationDTO.Duration;
-            var patientExaminations = ExaminationRepository.GetInstance().GetPatientExaminations(patient);
+            var patientExaminations = ExaminationService.GetByPatient(patient.Username);
 
             foreach (var examination in patientExaminations)
             {
@@ -35,7 +37,7 @@ namespace HealthInstitution.Core.Scheduling
             Patient patient = operationDTO.MedicalRecord.Patient;
             DateTime appointment = operationDTO.Appointment;
             int duration = operationDTO.Duration;
-            var patientOperations = PatientService.GetPatientOperations(patient);
+            var patientOperations = OperationService.GetByPatient(patient.Username);
 
             foreach (var operation in patientOperations)
             {

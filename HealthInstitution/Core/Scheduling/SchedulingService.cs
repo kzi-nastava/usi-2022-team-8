@@ -11,6 +11,7 @@ using System.Windows;
 using HealthInstitution.Core.Operations.Model;
 using HealthInstitution.Core.Rooms;
 using HealthInstitution.Core.Operations;
+using HealthInstitution.Core.Examinations;
 
 namespace HealthInstitution.Core.Scheduling
 {
@@ -44,7 +45,7 @@ namespace HealthInstitution.Core.Scheduling
         private static void ScheduleWithSpecificDoctor(DateTime appointment, Referral referral, MedicalRecord medicalRecord)
         {
             ExaminationDTO examination = new ExaminationDTO(appointment, null, referral.ReferredDoctor, medicalRecord);
-            ExaminationRepository.GetInstance().ReserveExamination(examination);
+            ReserveExamination(examination);
             System.Windows.MessageBox.Show("You have scheduled the examination!", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
 
             referral.Active = false;
@@ -55,7 +56,7 @@ namespace HealthInstitution.Core.Scheduling
         {
             try
             {
-                ExaminationRepository.GetInstance().ReserveExamination(examination);
+                ReserveExamination(examination);
                 System.Windows.MessageBox.Show("You have scheduled the examination! Doctor: " + examination.Doctor.Name + " " + examination.Doctor.Surname, "Info", MessageBoxButton.OK, MessageBoxImage.Information);
                 referral.Active = false;
                 ReferralRepository.GetInstance().Save(); //TODO
@@ -101,6 +102,14 @@ namespace HealthInstitution.Core.Scheduling
             DoctorOperationAvailabilityService.CheckIfDoctorIsAvailable(operationDTO);
             PatientOperationAvailabilityService.CheckIfPatientIsAvailable(operationDTO);
             OperationService.Add(operationDTO);
+        }
+
+        public static void ReserveExamination(ExaminationDTO examinationDTO)
+        {
+            examinationDTO.Room = RoomService.FindAvailableRoom(examinationDTO);
+            DoctorExaminationAvailabilityService.CheckIfDoctorIsAvailable(examinationDTO);
+            PatientExaminationAvailabilityService.CheckIfPatientIsAvailable(examinationDTO);
+            ExaminationService.Add(examinationDTO);
         }
     }
 }

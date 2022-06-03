@@ -42,7 +42,7 @@ namespace HealthInstitution.Core.Drugs
 
         public static void Update(int id, DrugDTO drugDTO)
         {
-            Drug drug=new Drug(drugDTO);
+            Drug drug = new Drug(drugDTO);
             s_drugRepository.Update(id, drug);
         }
 

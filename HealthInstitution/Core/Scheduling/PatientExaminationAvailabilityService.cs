@@ -1,4 +1,7 @@
-﻿using System;
+﻿using HealthInstitution.Core.Examinations;
+using HealthInstitution.Core.Examinations.Model;
+using HealthInstitution.Core.Operations;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,7 +9,42 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.Scheduling
 {
-    internal class PatientExaminationAvailabilityService
+    internal static class PatientExaminationAvailabilityService
     {
+        private static void CheckIfPatientHasExaminations(ExaminationDTO examinationDTO)
+        {
+            var patient = examinationDTO.MedicalRecord.Patient;
+            DateTime appointment = examinationDTO.Appointment;
+            var patientExaminations = ExaminationService.GetByPatient(patient.Username);
+
+            foreach (var examination in patientExaminations)
+            {
+                if (examination.Appointment == appointment)
+                {
+                    throw new Exception("That patient is not available");
+                }
+            }
+        }
+
+        private static void CheckIfPatientHasOperations(ExaminationDTO examinationDTO)
+        {
+            var patient = examinationDTO.MedicalRecord.Patient;
+            DateTime appointment = examinationDTO.Appointment;
+            var patientOperations = OperationService.GetPatientOperations(patient);
+
+            foreach (var operation in patientOperations)
+            {
+                if ((appointment < operation.Appointment.AddMinutes(operation.Duration)) && (appointment.AddMinutes(15) > operation.Appointment))
+                {
+                    throw new Exception("That patient is not available");
+                }
+            }
+        }
+
+        public static void CheckIfPatientIsAvailable(ExaminationDTO examinationDTO)
+        {
+            CheckIfPatientHasExaminations(examinationDTO);
+            CheckIfPatientHasOperations(examinationDTO);
+        }
     }
 }

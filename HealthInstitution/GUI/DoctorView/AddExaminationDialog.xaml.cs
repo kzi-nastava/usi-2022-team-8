@@ -3,6 +3,7 @@ using HealthInstitution.Core.Examinations.Repository;
 using HealthInstitution.Core.MedicalRecords;
 using HealthInstitution.Core.MedicalRecords.Model;
 using HealthInstitution.Core.MedicalRecords.Repository;
+using HealthInstitution.Core.Scheduling;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using HealthInstitution.Core.SystemUsers.Patients.Model;
 using HealthInstitution.Core.SystemUsers.Patients.Repository;
@@ -76,7 +77,7 @@ namespace HealthInstitution.GUI.DoctorView
             {
                 ExaminationDTO examinationDTO = CreateExaminationDTOFromInputData();
                 examinationDTO.Validate();
-                ExaminationRepository.GetInstance().ReserveExamination(examinationDTO);
+                SchedulingService.ReserveExamination(examinationDTO);
                 this.Close();
             }
             catch (Exception ex)
