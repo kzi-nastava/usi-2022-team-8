@@ -16,12 +16,8 @@
     <ItemGroup>
       <Folder Include="Controllers" />
       <Folder Include="Core\Equipments\Repository" />
-      <Folder Include="Core\EquipmentTransfers\Repository" />
-      <Folder Include="Core\MedicalRecords\Repository" />
       <Folder Include="Core\Polls\Repository\" />
       <Folder Include="Core\RestRequests\Repository" />
-      <Folder Include="Core\SystemUsers\Doctors\Repository" />
-      <Folder Include="Core\Rooms\Repository" />
       <Folder Include="Core\SystemUsers\Secretaries\Model" />
       <Folder Include="Core\SystemUsers\Secretaries\Repository" />
     </ItemGroup>

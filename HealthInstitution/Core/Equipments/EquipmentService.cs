@@ -3,16 +3,7 @@ using HealthInstitution.Core.Equipments.Repository;
 using HealthInstitution.Core.Rooms.Model;
 using HealthInstitution.Core.Rooms.Repository;
 using HealthInstitution.GUI.ManagerView;
-using HealthInstitution.Core.Equipments.Model;
-using HealthInstitution.Core.Equipments.Repository;
-using HealthInstitution.Core.Rooms.Model;
-using HealthInstitution.Core.Rooms.Repository;
-using System;
-using System.Collections.Generic;
 using System.Dynamic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.Equipments
 {
@@ -135,6 +126,9 @@ namespace HealthInstitution.Core.Equipments
                 return true;
             return false;
         }
+
+        
+
         public static Equipment GetEquipmentFromRoom(Room room, string equipmentName)
         {
             foreach (Equipment equipment in room.AvailableEquipment)
@@ -142,7 +136,38 @@ namespace HealthInstitution.Core.Equipments
                     return equipment;
             return null;
         }
-        public static int GetQuantityForTransferFromForm(string quantityFromForm, Room room, string equipmentName)
+
+        public static void RemoveEquipmentFrom(List<Equipment> equipments)
+        {
+            foreach (Equipment equipment in equipments)
+            {
+                EquipmentService.Delete(equipment.Id);
+            }
+            equipments.Clear();
+        }
+
+        public static List<Equipment> CopyEquipments(List<Equipment> availableEquipment)
+        {
+            List<Equipment> equipments = new List<Equipment>();
+            foreach (Equipment equipment in availableEquipment)
+            {
+                EquipmentDTO equipmentDTO = new EquipmentDTO(equipment.Quantity, equipment.Name, equipment.Type, equipment.IsDynamic);
+                Equipment newEquipment = EquipmentService.Add(equipmentDTO);
+                equipments.Add(newEquipment);
+            }
+            return equipments;
+        }
+
+        public static bool IsEmpty(List<Equipment> list)
+        {
+            if (list == null)
+            {
+                return true;
+            }
+
+            return !list.Any();
+        }
+        public static int GetQuantityFromForm(string quantityFromForm, Room room, string equipmentName)
         {
             int quantity;
             string exceptionMessage = "Quantity must be filled";
@@ -194,8 +219,8 @@ namespace HealthInstitution.Core.Equipments
         }
         public static List<dynamic> GetMissingEquipment()
         {
-            List<Equipment> equipments = EquipmentRepository.GetInstance().Equipments;
-            List<Room> rooms = RoomRepository.GetInstance().Rooms;
+            List<Equipment> equipments = s_equipmentRepository.Equipments;
+            List<Room> rooms = s_roomRepository.Rooms;
             List<dynamic> pairs = new();
             HashSet<string> distinctEquipments;
             foreach (Room room in rooms)

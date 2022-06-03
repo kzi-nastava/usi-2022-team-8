@@ -23,7 +23,6 @@ namespace HealthInstitution.GUI.ManagerView.IngredientView
     public partial class EditIngredientDialog : Window
     {
         private Ingredient _ingredient;
-        private IngredientRepository _ingredientRepository = IngredientRepository.GetInstance();
         public EditIngredientDialog(Ingredient ingredient)
         {
             InitializeComponent();
@@ -58,7 +57,7 @@ namespace HealthInstitution.GUI.ManagerView.IngredientView
                 return false;
             }
 
-            if (_ingredientRepository.Contains(name))
+            if (IngredientService.Contains(name))
             {
                 System.Windows.MessageBox.Show("This ingredient name already exist!", "Create error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;

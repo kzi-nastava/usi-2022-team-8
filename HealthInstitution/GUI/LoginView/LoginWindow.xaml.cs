@@ -95,28 +95,18 @@ namespace HealthInstitution.GUI.LoginView
 
         private void RedirectPatient(User foundUser)
         {
-            /*    try*/
-            {
-                AppointmentNotificationDoctorRepository.GetInstance();
-                AppointmentNotificationPatientRepository.GetInstance();
-                PatientRepository patientRepository = PatientRepository.GetInstance();
-                TrollCounterService.TrollCheck(foundUser.Username);
-                Patient loggedPatient = patientRepository.GetByUsername(_usernameInput);
-                new RecepieNotificationGenerator(loggedPatient.Username).GenerateAllSkippedNotifications();
-                new PatientWindow(loggedPatient).ShowDialog();
-
-                /*      }
-                      catch (Exception ex)
-                      {
-                          System.Windows.MessageBox.Show(ex.Message, "Troll Alert", MessageBoxButton.OK, MessageBoxImage.Error);*/
-            }
+            AppointmentNotificationDoctorRepository.GetInstance();
+            AppointmentNotificationPatientRepository.GetInstance();
+            PatientRepository patientRepository = PatientRepository.GetInstance();
+            TrollCounterService.TrollCheck(foundUser.Username);
+            Patient loggedPatient = patientRepository.GetByUsername(_usernameInput);
+            new RecepieNotificationGenerator(loggedPatient.Username).GenerateAllSkippedNotifications();
+            new PatientWindow(loggedPatient).ShowDialog();
         }
 
         private void RedirectDoctor()
         {
             DoctorRepository doctorRepository = DoctorRepository.GetInstance();
-            /*ExaminationRepository.GetInstance();
-            ExaminationDoctorRepository.GetInstance();*/
             AppointmentNotificationDoctorRepository.GetInstance();
             AppointmentNotificationPatientRepository.GetInstance();
             OperationDoctorRepository.GetInstance();
@@ -143,8 +133,8 @@ namespace HealthInstitution.GUI.LoginView
         [STAThread]
         private static void Main(string[] args)
         {
-            EquipmentTransferChecker.UpdateByTransfer();
-            RenovationChecker.UpdateByRenovation();
+            EquipmentTransferRefreshingService.UpdateByTransfer();
+            RenovationRefreshingService.UpdateByRenovation();
 
             LoginWindow window = new LoginWindow();
             window.ShowDialog();

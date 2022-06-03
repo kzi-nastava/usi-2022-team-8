@@ -195,5 +195,12 @@
     "Name": "paper",
     "Type": "AppointmentEquipment",
     "IsDynamic": true
+  },
+  {
+    "Id": 33,
+    "Quantity": 30,
+    "Name": "gauze",
+    "Type": "AppointmentEquipment",
+    "IsDynamic": true
   }
 ]

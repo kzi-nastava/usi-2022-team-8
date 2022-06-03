@@ -84,8 +84,8 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="GUI\SecretaryView\ReferralSchedulingView\AddExaminationWithReferralDialog.xaml.cs">
-		<SubType>Code</SubType>
-	</Compile>
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="GUI\PatientView\RecepieNotificationDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -127,10 +127,10 @@
     </Compile>
     <Compile Update="GUI\SecretaryView\PatientManipulationView\UpdatePatientDialog.xaml.cs">
     </Compile>
-    <Compile Update="GUI\ManagerView\AddRoomDialog.xaml.cs">
+    <Compile Update="GUI\ManagerView\RoomView\AddRoomDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="GUI\ManagerView\EditRoomDialog.xaml.cs">
+    <Compile Update="GUI\ManagerView\RoomView\EditRoomDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="GUI\ManagerView\EquipmentInspectionDialog.xaml.cs">
@@ -142,7 +142,7 @@
     <Compile Update="GUI\ManagerView\EquipmentTransferDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="GUI\ManagerView\RoomsTableWindow.xaml.cs">
+    <Compile Update="GUI\ManagerView\RoomView\RoomsTableWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="GUI\SecretaryView\PatientManipulationView\CreatePatientDialog.xaml.cs">
@@ -307,8 +307,8 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="GUI\SecretaryView\ReferralSchedulingView\AddExaminationWithReferralDialog.xaml">
-		<SubType>Designer</SubType>
-	</Page>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="GUI\PatientView\RecepieNotificationDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -350,10 +350,10 @@
     </Page>
     <Page Update="GUI\SecretaryView\PatientManipulationView\UpdatePatientDialog.xaml">
     </Page>
-    <Page Update="GUI\ManagerView\AddRoomDialog.xaml">
+    <Page Update="GUI\ManagerView\RoomView\AddRoomDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="GUI\ManagerView\EditRoomDialog.xaml">
+    <Page Update="GUI\ManagerView\RoomView\EditRoomDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="GUI\ManagerView\EquipmentInspectionDialog.xaml">
@@ -365,7 +365,7 @@
     <Page Update="GUI\ManagerView\EquipmentTransferDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="GUI\ManagerView\RoomsTableWindow.xaml">
+    <Page Update="GUI\ManagerView\RoomView\RoomsTableWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="GUI\SecretaryView\PatientManipulationView\CreatePatientDialog.xaml">

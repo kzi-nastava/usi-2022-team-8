@@ -25,8 +25,6 @@ namespace HealthInstitution.GUI.ManagerView
     /// </summary>
     public partial class EquipmentInspectionDialog : Window
     {
-
-        private RoomRepository _roomRepository = RoomRepository.GetInstance();
         public EquipmentInspectionDialog()
         {
             InitializeComponent();
@@ -129,27 +127,10 @@ namespace HealthInstitution.GUI.ManagerView
         private EquipmentFilterDTO FormEquipmentFilterDTO()
         {
             bool applyRoomTypeFilter = (bool)roomTypeCheckBox.IsChecked;
-            RoomType roomTypeFilter;
-            if (applyRoomTypeFilter)
-            {
-                roomTypeFilter = (RoomType)roomTypeComboBox.SelectedItem;
-            }
-            else
-            {
-                roomTypeFilter = (RoomType)0;
-            }
-
+            RoomType roomTypeFilter = applyRoomTypeFilter ? (RoomType)roomTypeComboBox.SelectedItem : (RoomType)0;
 
             bool applyEquipmentTypeFilter = (bool)equipmentTypeCheckBox.IsChecked;
-            EquipmentType equipmentTypeFilter;
-            if (applyEquipmentTypeFilter)
-            {
-                equipmentTypeFilter = (EquipmentType)equipmentTypeComboBox.SelectedItem;
-            }
-            else
-            {
-                equipmentTypeFilter = (EquipmentType)0;
-            }
+            EquipmentType equipmentTypeFilter = applyEquipmentTypeFilter ? (EquipmentType)equipmentTypeComboBox.SelectedItem : (EquipmentType)0;
 
             bool applyQuantityFilter = (bool)quantityCheckBox.IsChecked;
             int quantityFilter = quantityComboBox.SelectedIndex;

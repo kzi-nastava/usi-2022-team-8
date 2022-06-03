@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HealthInstitution.Core.Drugs
+namespace HealthInstitution.Core
 {
-    internal class DrugVerificationService
-    {
+    public interface IService<T> where T : class {/*
+        Task<IEnumerable<T>> GetAll();*/
     }
 }
