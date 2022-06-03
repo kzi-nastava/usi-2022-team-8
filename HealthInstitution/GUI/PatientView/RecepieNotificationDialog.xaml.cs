@@ -25,14 +25,14 @@ public partial class RecepieNotificationDialog : Window
     {
         InitializeComponent();
 
-        LoadRows(RecepieNotificationService.GetPatientActiveNotification(_loggedPatient));
+        LoadRows(PrescriptionNotificationService.GetPatientActiveNotification(_loggedPatient));
     }
 
-    private void LoadRows(List<RecepieNotification> recepieNotifications)
+    private void LoadRows(List<PrescriptionNotification> recepieNotifications)
     {
         dataGrid.Items.Clear();
         //List<Notification> doctorsNotificationsCopy = doctorsNotifications.ConvertAll(notification => new Notification(notification.Id,notification.OldAppointment,notification.NewAppointment,notification.Doctor,notification.Patient,notification.ActiveForDoctor,notification.ActiveForPatient));
-        foreach (RecepieNotification notification in recepieNotifications)
+        foreach (PrescriptionNotification notification in recepieNotifications)
         {
             dataGrid.Items.Add(notification);
         }

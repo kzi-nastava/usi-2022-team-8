@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HealthInstitution.Core.RecommededDTO;
+namespace HealthInstitution.Core.Scheduling;
 
-public class FirstFitDTO
+public class RecommendedSchedulingDTOs
 {
     public int MinHour { get; set; }
     public int MinMinutes { get; set; }
@@ -17,7 +17,7 @@ public class FirstFitDTO
     public string PatientUsername { get; set; }
     public string DoctorUsername { get; set; }
 
-    public FirstFitDTO(int minHour,
+    public RecommendedSchedulingDTOs(int minHour,
     int minMinutes,
      DateTime end,
      int maxHour,
@@ -26,16 +26,16 @@ public class FirstFitDTO
     string patientUsername,
     string doctorUsername)
     {
-        this.MinHour = minHour;
-        this.MinMinutes = minMinutes;
-        this.End = end;
-        this.MaxHour = maxHour;
-        this.MaxMinutes = maxMinutes;
-        this.MaxWorkingHour = maxWorkingHour;
-        this.PatientUsername = patientUsername;
-        this.DoctorUsername = doctorUsername;
-        this.End = this.End.AddMinutes(maxMinutes);
-        this.End = this.End.AddHours(maxHour);
+        MinHour = minHour;
+        MinMinutes = minMinutes;
+        End = end;
+        MaxHour = maxHour;
+        MaxMinutes = maxMinutes;
+        MaxWorkingHour = maxWorkingHour;
+        PatientUsername = patientUsername;
+        DoctorUsername = doctorUsername;
+        End = End.AddMinutes(maxMinutes);
+        End = End.AddHours(maxHour);
     }
 }
 
@@ -54,12 +54,12 @@ public class FindFitDTO
      int minMinutes, int maxHour,
     int maxMinutes)
     {
-        this.Fit = fit;
-        this.End = end;
-        this.MinHour = minHour;
-        this.MinMinutes = minMinutes;
-        this.MaxHour = maxHour;
-        this.MaxMinutes = maxMinutes;
+        Fit = fit;
+        End = end;
+        MinHour = minHour;
+        MinMinutes = minMinutes;
+        MaxHour = maxHour;
+        MaxMinutes = maxMinutes;
     }
 }
 
@@ -67,17 +67,17 @@ public class ClosestFitDTO
 {
     public ClosestFitDTO(int minHour, int minMinutes, DateTime end, int maxHour, int maxMinutes, int maxWorkingHour, string patientUsername, string doctorUsername, bool doctorPriority)
     {
-        this.MinHour = minHour;
-        this.MinMinutes = minMinutes;
-        this.End = end;
-        this.MaxHour = maxHour;
-        this.MaxMinutes = maxMinutes;
-        this.MaxWorkingHour = maxWorkingHour;
-        this.PatientUsername = patientUsername;
-        this.DoctorUsername = doctorUsername;
-        this.DoctorPriority = doctorPriority;
-        this.End = this.End.AddMinutes(maxMinutes);
-        this.End = this.End.AddHours(maxHour);
+        MinHour = minHour;
+        MinMinutes = minMinutes;
+        End = end;
+        MaxHour = maxHour;
+        MaxMinutes = maxMinutes;
+        MaxWorkingHour = maxWorkingHour;
+        PatientUsername = patientUsername;
+        DoctorUsername = doctorUsername;
+        DoctorPriority = doctorPriority;
+        End = End.AddMinutes(maxMinutes);
+        End = End.AddHours(maxHour);
     }
 
     public int MinHour { get; set; }

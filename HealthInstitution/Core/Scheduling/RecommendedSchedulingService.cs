@@ -6,7 +6,6 @@ using System.Threading.Tasks;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using HealthInstitution.Core.SystemUsers.Patients.Model;
 using HealthInstitution.Core.Examinations.Model;
-using HealthInstitution.Core.RecommededDTO;
 using HealthInstitution.Core.Examinations;
 using HealthInstitution.Core.MedicalRecords;
 using HealthInstitution.Core.SystemUsers.Patients.Repository;
@@ -44,7 +43,7 @@ public class RecommendedSchedulingService
             return null;
     }
 
-    public static bool FindFirstFit(FirstFitDTO firstFitDTO)
+    public static bool FindFirstFit(RecommendedSchedulingDTOs firstFitDTO)
     {
         bool found = false;
         DateTime fit = GenerateFitDateTime(firstFitDTO.MinHour, firstFitDTO.MinMinutes);

@@ -102,7 +102,7 @@ namespace HealthInstitution.GUI.LoginView
                 PatientRepository patientRepository = PatientRepository.GetInstance();
                 TrollCounterService.TrollCheck(foundUser.Username);
                 Patient loggedPatient = patientRepository.GetByUsername(_usernameInput);
-                RecepieNotificationService.GenerateAllSkippedNotifications(loggedPatient.Username);
+                PrescriptionNotificationService.GenerateAllSkippedNotifications(loggedPatient.Username);
                 new PatientWindow(loggedPatient).ShowDialog();
 
                 /*      }

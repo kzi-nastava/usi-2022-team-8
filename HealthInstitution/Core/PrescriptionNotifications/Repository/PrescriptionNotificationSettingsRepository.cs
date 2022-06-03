@@ -10,11 +10,11 @@ using System.Text.Json.Serialization;
 
 namespace HealthInstitution.Core.RecepieNotifications.Repository;
 
-public class RecepieNotificationSettingsRepository
+public class PrescriptionNotificationSettingsRepository
 {
     private String _fileName;
-    public List<RecepieNotificationSettings> Settings { get; set; }
-    public Dictionary<int, RecepieNotificationSettings> SettingsById { get; set; }
+    public List<PrescriptionNotificationSettings> Settings { get; set; }
+    public Dictionary<int, PrescriptionNotificationSettings> SettingsById { get; set; }
 
     private JsonSerializerOptions _options = new JsonSerializerOptions
     {
@@ -22,22 +22,22 @@ public class RecepieNotificationSettingsRepository
         PropertyNameCaseInsensitive = true
     };
 
-    private RecepieNotificationSettingsRepository(String fileName)
+    private PrescriptionNotificationSettingsRepository(String fileName)
     {
         this._fileName = fileName;
-        this.Settings = new List<RecepieNotificationSettings>();
-        this.SettingsById = new Dictionary<int, RecepieNotificationSettings>();
+        this.Settings = new List<PrescriptionNotificationSettings>();
+        this.SettingsById = new Dictionary<int, PrescriptionNotificationSettings>();
         this.LoadFromFile();
     }
 
-    private static RecepieNotificationSettingsRepository s_instance = null;
+    private static PrescriptionNotificationSettingsRepository s_instance = null;
 
-    public static RecepieNotificationSettingsRepository GetInstance()
+    public static PrescriptionNotificationSettingsRepository GetInstance()
     {
         {
             if (s_instance == null)
             {
-                s_instance = new RecepieNotificationSettingsRepository(@"..\..\..\Data\JSON\recepieNotificationSettings.json");
+                s_instance = new PrescriptionNotificationSettingsRepository(@"..\..\..\Data\JSON\recepieNotificationSettings.json");
             }
             return s_instance;
         }
@@ -45,8 +45,8 @@ public class RecepieNotificationSettingsRepository
 
     public void LoadFromFile()
     {
-        var settings = JsonSerializer.Deserialize<List<RecepieNotificationSettings>>(File.ReadAllText(@"..\..\..\Data\JSON\recepieNotificationSettings.json"), _options);
-        foreach (RecepieNotificationSettings setting in settings)
+        var settings = JsonSerializer.Deserialize<List<PrescriptionNotificationSettings>>(File.ReadAllText(@"..\..\..\Data\JSON\recepieNotificationSettings.json"), _options);
+        foreach (PrescriptionNotificationSettings setting in settings)
         {
             this.Settings.Add(setting);
             this.SettingsById.Add(setting.Id, setting);
@@ -59,12 +59,12 @@ public class RecepieNotificationSettingsRepository
         File.WriteAllText(this._fileName, allRatings);
     }
 
-    public RecepieNotificationSettings GetById(int id)
+    public PrescriptionNotificationSettings GetById(int id)
     {
         return this.SettingsById[id];
     }
 
-    public void Add(RecepieNotificationSettings recepieNotificationSettings)
+    public void Add(PrescriptionNotificationSettings recepieNotificationSettings)
     {
         this.Settings.Add(recepieNotificationSettings);
         this.SettingsById.Add(recepieNotificationSettings.Id, recepieNotificationSettings);
@@ -73,7 +73,7 @@ public class RecepieNotificationSettingsRepository
 
     public void Delete(int id)
     {
-        RecepieNotificationSettings setting = SettingsById[id];
+        PrescriptionNotificationSettings setting = SettingsById[id];
         if (setting != null)
         {
             this.SettingsById.Remove(setting.Id);

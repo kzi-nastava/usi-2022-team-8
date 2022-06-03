@@ -2,7 +2,7 @@
 using HealthInstitution.Core.MedicalRecords;
 using HealthInstitution.Core.MedicalRecords.Model;
 using HealthInstitution.Core.MedicalRecords.Repository;
-using HealthInstitution.Core.RecommededDTO;
+using HealthInstitution.Core.Scheduling;
 using HealthInstitution.Core.Rooms.Model;
 using HealthInstitution.Core.Rooms.Repository;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;

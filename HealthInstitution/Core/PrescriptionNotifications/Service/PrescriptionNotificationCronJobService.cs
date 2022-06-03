@@ -10,7 +10,7 @@ using Quartz.Impl;
 
 namespace HealthInstitution.Core.RecepieNotifications.Service;
 
-public class RecepieNotificationCronJobService
+public class PrescriptionNotificationCronJobService
 {
     private static Dictionary<int, List<JobKey>> _jobKeysbyId = new();
     private static IScheduler _scheduler;
@@ -24,7 +24,7 @@ public class RecepieNotificationCronJobService
         scheduler.Start();
     }
 
-    public static void GenerateJob(string loggedUser, RecepieNotificationSettings settings, DateTime dateTime)
+    public static void GenerateJob(string loggedUser, PrescriptionNotificationSettings settings, DateTime dateTime)
     {
         IJobDetail job = GenerateJob(settings, dateTime);
         job.JobDataMap.Put("loggedUser", loggedUser);
@@ -47,7 +47,7 @@ public class RecepieNotificationCronJobService
         _jobKeysbyId[id].Add(jobKey);
     }
 
-    private static ITrigger GenerateTrigger(RecepieNotificationSettings settings, DateTime dateTime, IJobDetail job)
+    private static ITrigger GenerateTrigger(PrescriptionNotificationSettings settings, DateTime dateTime, IJobDetail job)
     {
         return TriggerBuilder.Create()
       .WithIdentity("trigger" + settings.Id + dateTime, "group1")
@@ -57,9 +57,9 @@ public class RecepieNotificationCronJobService
       .Build();
     }
 
-    private static IJobDetail GenerateJob(RecepieNotificationSettings settings, DateTime dateTime)
+    private static IJobDetail GenerateJob(PrescriptionNotificationSettings settings, DateTime dateTime)
     {
-        return JobBuilder.Create<RecepieNotificationSender>()
+        return JobBuilder.Create<PrescriptionNotificationSender>()
        .WithIdentity("myJob" + settings.Id + dateTime, "group1") // name "myJob", group "group1"
        .Build();
     }

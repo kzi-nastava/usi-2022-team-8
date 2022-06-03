@@ -8,9 +8,9 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.RecepieNotifications.Model;
 
-public class RecepieNotificationCronJob
+public class PrescriptionNotificationCronJob
 {
-    public void GenerateJob(string loggedUser, RecepieNotificationSettings settings, DateTime dateTime)
+    public void GenerateJob(string loggedUser, PrescriptionNotificationSettings settings, DateTime dateTime)
     {
         ISchedulerFactory schedFact = new StdSchedulerFactory();
 
@@ -18,7 +18,7 @@ public class RecepieNotificationCronJob
         IScheduler scheduler = StdSchedulerFactory.GetDefaultScheduler().Result;
         scheduler.Start();
 
-        IJobDetail job = JobBuilder.Create<RecepieNotificationSender>()
+        IJobDetail job = JobBuilder.Create<PrescriptionNotificationSender>()
         .WithIdentity("myJob" + settings.Id + dateTime, "group1") // name "myJob", group "group1"
         .Build();
         job.JobDataMap.Put("loggedUser", loggedUser);

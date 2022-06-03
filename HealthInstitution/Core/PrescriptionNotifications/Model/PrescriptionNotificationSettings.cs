@@ -2,9 +2,9 @@
 
 namespace HealthInstitution.Core.RecepieNotifications.Model;
 
-public class RecepieNotificationSettings
+public class PrescriptionNotificationSettings
 {
-    public RecepieNotificationSettings(DateTime beforeAmmount, string patientUsername, Prescription prescription, DateTime lastUpdated, int id)
+    public PrescriptionNotificationSettings(DateTime beforeAmmount, string patientUsername, Prescription prescription, DateTime lastUpdated, int id)
     {
         BeforeAmmount = beforeAmmount;
         PatientUsername = patientUsername;

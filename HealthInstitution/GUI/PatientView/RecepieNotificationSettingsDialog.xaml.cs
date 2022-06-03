@@ -69,9 +69,9 @@ public partial class RecepieNotificationSettingsDialog : Window
         Prescription prescription = _prescriptions[dataGrid.SelectedIndex];
         DateTime before = DateTime.Today;
         before = before.AddMinutes(_minutes).AddHours(_hours);
-        RecepieNotificationSettings recepieNotificationSettings = new RecepieNotificationSettings(before, _loggedPatinet, prescription, DateTime.Now, prescription.Id);
-        List<DateTime> dateTimes = RecepieNotificationService.GenerateDateTimes(recepieNotificationSettings);
-        RecepieNotificationService.GenerateCronJobs(dateTimes, recepieNotificationSettings, _loggedPatinet);
+        PrescriptionNotificationSettings recepieNotificationSettings = new PrescriptionNotificationSettings(before, _loggedPatinet, prescription, DateTime.Now, prescription.Id);
+        List<DateTime> dateTimes = PrescriptionNotificationService.GenerateDateTimes(recepieNotificationSettings);
+        PrescriptionNotificationService.GenerateCronJobs(dateTimes, recepieNotificationSettings, _loggedPatinet);
     }
 
     private void LoadRows()

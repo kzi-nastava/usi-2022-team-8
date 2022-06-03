@@ -9,17 +9,17 @@ using HealthInstitution.Core.RecepieNotifications.Repository;
 
 namespace HealthInstitution.Core.RecepieNotifications.Model;
 
-public class RecepieNotificationSender : IJob
+public class PrescriptionNotificationSender : IJob
 {
     public string _loggedUsername { get; set; }
-    public RecepieNotificationSettings _settings { get; set; }
+    public PrescriptionNotificationSettings _settings { get; set; }
 
     public async Task Execute(IJobExecutionContext context)
     {
         _loggedUsername = (string)context.MergedJobDataMap["loggedUser"];
-        _settings = (RecepieNotificationSettings)context.MergedJobDataMap["settings"];
+        _settings = (PrescriptionNotificationSettings)context.MergedJobDataMap["settings"];
         Int32 unixTimestamp = (int)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
-        RecepieNotification recepieNotification = new RecepieNotification(unixTimestamp, _settings.PatientUsername, _settings.Prescription, true);
+        PrescriptionNotification recepieNotification = new PrescriptionNotification(unixTimestamp, _settings.PatientUsername, _settings.Prescription, true);
         recepieNotification.TriggerDateTime = DateTime.Now;
 
         if (_loggedUsername == _settings.PatientUsername)
@@ -27,6 +27,6 @@ public class RecepieNotificationSender : IJob
             recepieNotification.ActiveForPatient = false;
             MessageBox.Show("Take " + recepieNotification.Prescription.Drug.Name + " at " + recepieNotification.TriggerDateTime + " " + recepieNotification.Prescription.TimeOfUse);
         }
-        RecepieNotificationRepository.GetInstance().Add(recepieNotification);
+        PrescriptionNotificationRepository.GetInstance().Add(recepieNotification);
     }
 }

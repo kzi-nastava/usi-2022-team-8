@@ -16,7 +16,6 @@ using HealthInstitution.Core.SystemUsers.Users.Model;
 using HealthInstitution.Core.SystemUsers.Doctors;
 using HealthInstitution.Core.Examinations.Model;
 using HealthInstitution.Core.Examinations;
-using HealthInstitution.Core.RecommededDTO;
 using HealthInstitution.Core.Scheduling;
 
 namespace HealthInstitution.GUI.PatientView
@@ -109,9 +108,9 @@ namespace HealthInstitution.GUI.PatientView
             this._startHours = hourComboBox.SelectedIndex + 9;
         }
 
-        private FirstFitDTO GenerateFirstFitDTO(DateTime dateTime)
+        private RecommendedSchedulingDTOs GenerateFirstFitDTO(DateTime dateTime)
         {
-            return new FirstFitDTO(_startHours, _startMinutes, dateTime, _endHours, _endMinutes, 23, _loggedPatient.Username, _doctorUsername);
+            return new RecommendedSchedulingDTOs(_startHours, _startMinutes, dateTime, _endHours, _endMinutes, 23, _loggedPatient.Username, _doctorUsername);
         }
 
         private ClosestFitDTO GenerateClosestFitDTO(DateTime dateTime, bool doctorPriority)
