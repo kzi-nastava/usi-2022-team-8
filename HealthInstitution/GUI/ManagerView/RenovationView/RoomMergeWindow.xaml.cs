@@ -34,11 +34,6 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
     /// </summary>
     public partial class RoomMergeWindow : Window
     {
-        private RoomRepository _roomRepository = RoomRepository.GetInstance();
-        private ExaminationRepository _examinationRepository = ExaminationRepository.GetInstance();
-        private OperationRepository _operationRepository = OperationRepository.GetInstance();
-        private RenovationRepository _renovationRepository = RenovationRepository.GetInstance();
-        private EquipmentTransferRepository _equipmentTransferRepository = EquipmentTransferRepository.GetInstance();
         public RoomMergeWindow()
         {
             InitializeComponent();
@@ -135,7 +130,7 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
             RenovationService.AddRoomMerger(roomMergerDTO);
             if (startDate == DateTime.Today)
             {
-                RenovationChecker.StartMerge(firstSelectedRoom, secondSelectedRoom, mergedRoom);
+                RenovationService.StartMerge(firstSelectedRoom, secondSelectedRoom, mergedRoom);
                 System.Windows.MessageBox.Show("Renovation scheduled!", "Room renovation", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             else
@@ -148,7 +143,9 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
         {
             Room firstSelectedRoom = (Room)firstRoomComboBox.SelectedItem;
             Room secondSelectedRoom = (Room)secondRoomComboBox.SelectedItem;
-            if (firstSelectedRoom.Type == RoomType.Warehouse || secondSelectedRoom.Type == RoomType.Warehouse)
+            DateTime startDate = (DateTime)startDatePicker.SelectedDate;
+
+            if (firstSelectedRoom.IsWarehouse() || secondSelectedRoom.IsWarehouse())
             {
                 System.Windows.MessageBox.Show("Warehouse cant be renovated!", "Failed renovation", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
@@ -160,27 +157,18 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
                 return false;
             }
 
-            if (CheckIfRoomsHaveScheduledExamination())
+            string message;
+            bool firstRoomOccupied = RoomTimetableService.CheckRoomTimetable(firstSelectedRoom, startDate, out message);
+            if (firstRoomOccupied)
             {
-                System.Windows.MessageBox.Show("Room has scheduled examination!", "Failed renovation", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.MessageBox.Show(message, "Failed renovation", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
             }
 
-            if (CheckIfRoomsHaveScheduledOperation())
+            bool secondRoomOccupied = RoomTimetableService.CheckRoomTimetable(secondSelectedRoom, startDate, out message);
+            if (secondRoomOccupied)
             {
-                System.Windows.MessageBox.Show("Room has scheduled operation!", "Failed renovation", MessageBoxButton.OK, MessageBoxImage.Error);
-                return false;
-            }
-
-            if (CheckIfRoomsHaveScheduledRenovation())
-            {
-                System.Windows.MessageBox.Show("Room is already scheduled for renovation!", "Failed renovation", MessageBoxButton.OK, MessageBoxImage.Error);
-                return false;
-            }
-
-            if (CheckIfRoomsHaveScheduledEquipmentTransfer())
-            {
-                System.Windows.MessageBox.Show("Room has equipment transfer in that date span!", "Failed renovation", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.MessageBox.Show(message, "Failed renovation", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
             }
             return true;
@@ -197,7 +185,7 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
             }
             int number = Int32.Parse(numberInput);
 
-            if (_roomRepository.Rooms.Any(room => room.Number == number))
+            if (RoomService.RoomNumberIsTaken(number))
             {
                 System.Windows.MessageBox.Show("This room number already exist!", "Failed renovation", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
@@ -229,85 +217,6 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
             }
             return true;
         }
-
-        private bool CheckIfRoomsHaveScheduledEquipmentTransfer()
-        {
-            Room firstSelectedRoom = (Room)firstRoomComboBox.SelectedItem;
-            Room secondSelectedRoom = (Room)secondRoomComboBox.SelectedItem;
-            DateTime startDate = (DateTime)startDatePicker.SelectedDate;
-
-            foreach (EquipmentTransfer equipmentTransfer in EquipmentTransferService.GetAll())
-            {
-                if (equipmentTransfer.TransferTime < startDate)
-                {
-                    continue;
-                }
-                if (equipmentTransfer.FromRoom == firstSelectedRoom || equipmentTransfer.ToRoom == firstSelectedRoom)
-                {
-                    return true;
-                }
-                if (equipmentTransfer.FromRoom == secondSelectedRoom || equipmentTransfer.ToRoom == secondSelectedRoom)
-                {
-                    return true;
-                }
-
-            }
-            return false;
-        }
-        private bool CheckIfRoomsHaveScheduledRenovation()
-        {
-            Room firstSelectedRoom = (Room)firstRoomComboBox.SelectedItem;
-            Room secondSelectedRoom = (Room)secondRoomComboBox.SelectedItem;
-
-            foreach (Renovation renovation in RenovationService.GetAll())
-            {
-                if (renovation.Room == firstSelectedRoom || renovation.Room == secondSelectedRoom)
-                {
-                    return true;
-                }
-
-                if (renovation.GetType() == typeof(RoomMerger))
-                {
-                    RoomMerger merger = (RoomMerger)renovation;
-                    if (merger.RoomForMerge == firstSelectedRoom || merger.RoomForMerge == secondSelectedRoom)
-                    {
-                        return true;
-                    }
-                }
-                
-            }
-            return false;
-        }
-
-        private bool CheckIfRoomsHaveScheduledOperation()
-        {
-            Room firstSelectedRoom = (Room)firstRoomComboBox.SelectedItem;
-            Room secondSelectedRoom = (Room)secondRoomComboBox.SelectedItem;
-
-            foreach (Operation operation in _operationRepository.GetAll())
-            {
-                if (operation.Room == firstSelectedRoom || operation.Room == secondSelectedRoom)
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        private bool CheckIfRoomsHaveScheduledExamination()
-        {
-            Room firstSelectedRoom = (Room)firstRoomComboBox.SelectedItem;
-            Room secondSelectedRoom = (Room)secondRoomComboBox.SelectedItem;
-            foreach (Examination examination in _examinationRepository.GetAll())
-            {
-                if (examination.Room == firstSelectedRoom || examination.Room == secondSelectedRoom)
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-
 
         private bool CheckCompleteness()
         {

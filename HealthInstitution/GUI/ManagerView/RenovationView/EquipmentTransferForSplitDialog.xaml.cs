@@ -1,4 +1,5 @@
 ﻿using HealthInstitution.Core.Equipments.Model;
+using HealthInstitution.Core.EquipmentTransfers;
 using HealthInstitution.Core.EquipmentTransfers.Functionality;
 using System;
 using System.Collections.Generic;
@@ -58,7 +59,7 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
                 return;
             }
  
-            EquipmentTransferChecker.Transfer(_secondRoomEquipments, equipment, quantity);
+            EquipmentTransferService.Transfer(_secondRoomEquipments, equipment, quantity);
             System.Windows.MessageBox.Show("Equipment transfer completed!", "Equipment transfer", MessageBoxButton.OK, MessageBoxImage.Information);
             
             this.Close();

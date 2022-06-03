@@ -25,6 +25,11 @@ public class Renovation
         this.EndDate = renovationDTO.EndDate;
     }
 
+    public bool IsSimpleRenovation()
+    {
+        return this.GetType() == typeof(Renovation);
+    }
+
     public bool IsRoomMerger()
     {
         return this.GetType() == typeof(RoomMerger);

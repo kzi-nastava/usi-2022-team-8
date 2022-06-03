@@ -25,7 +25,6 @@ namespace HealthInstitution.GUI.ManagerView.DrugView
     /// </summary>
     public partial class AddDrugDialog : Window
     {
-        private DrugRepository _drugRepository = DrugRepository.GetInstance();
         private List<Ingredient> _ingredientsForDrug;
         public AddDrugDialog()
         {
@@ -106,7 +105,7 @@ namespace HealthInstitution.GUI.ManagerView.DrugView
                 return false;
             }
 
-            if (_drugRepository.Contains(name))
+            if (DrugService.Contains(name))
             {
                 System.Windows.MessageBox.Show("This drug name already exist!", "Create error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;

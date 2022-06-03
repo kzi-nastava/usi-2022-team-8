@@ -56,8 +56,22 @@ namespace HealthInstitution.Core.Drugs
         }
         public static bool ContainsIngredient(Ingredient ingredient)
         {
-            DrugRepository drugRepository = DrugRepository.GetInstance();
-            return drugRepository.ContainsIngredient(ingredient);
+            return s_drugRepository.ContainsIngredient(ingredient);
+        }
+
+        public static List<Ingredient> GetIngredients(Drug drug)
+        {
+            return drug.Ingredients;
+        }
+
+        public static bool Contains(string name)
+        {
+            return s_drugRepository.Contains(name);
+        }
+
+        public static string ReasonForRejection(Drug drug)
+        {
+            return drug.RejectionReason;
         }
     }
 }

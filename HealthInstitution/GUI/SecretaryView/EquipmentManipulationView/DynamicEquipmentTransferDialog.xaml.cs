@@ -1,5 +1,6 @@
 ﻿using HealthInstitution.Core.Equipments;
 using HealthInstitution.Core.Equipments.Model;
+using HealthInstitution.Core.EquipmentTransfers;
 using HealthInstitution.Core.EquipmentTransfers.Functionality;
 using HealthInstitution.Core.Rooms.Model;
 using HealthInstitution.Core.Rooms.Repository;
@@ -68,7 +69,7 @@ namespace HealthInstitution.GUI.SecretaryView
         {
             int quantity = EquipmentService.GetQuantityFromForm(quantityBox.Text, fromRoom, _equipmentName);
             Equipment equipment = EquipmentService.GetEquipmentFromRoom(fromRoom, _equipmentName);
-            EquipmentTransferChecker.Transfer(_toRoom, equipment, quantity);
+            EquipmentTransferService.Transfer(_toRoom, equipment, quantity);
 
         }
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
