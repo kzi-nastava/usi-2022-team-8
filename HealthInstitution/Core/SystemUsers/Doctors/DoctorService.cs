@@ -63,4 +63,10 @@ internal static class DoctorService
     {
         return examinations.OrderBy(o => o.AvgRating).ToList();
     }
+
+    public static void AssignScorebyId(string username, double avgRating)
+    {
+        GetById(username).AvgRating = avgRating;
+        s_doctorRepository.Save();
+    }
 }

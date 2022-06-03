@@ -33,18 +33,19 @@ namespace HealthInstitution.Core.Equipments
             Equipment equipment = new Equipment(equipmentDTO);
             s_equipmentRepository.Update(id, equipment);
         }
+
         public static void Delete(int id)
         {
             s_equipmentRepository.Delete(id);
         }
 
         public static List<TableItemEquipment> FilterEquipment(EquipmentFilterDTO equipmentFilter)
-        {           
+        {
             List<TableItemEquipment> items = new List<TableItemEquipment>();
             List<Room> rooms = s_roomRepository.GetActive();
             foreach (Room room in rooms)
             {
-                if (!MatchRoomTypeFilter(room,equipmentFilter))
+                if (!MatchRoomTypeFilter(room, equipmentFilter))
                     continue;
                 foreach (Equipment equipment in room.AvailableEquipment)
                 {
@@ -66,17 +67,19 @@ namespace HealthInstitution.Core.Equipments
             {
                 return true;
             }
-            
+
             switch (equipmentFilter.QuantityFilter)
             {
                 case 0:
                     if (equipment.Quantity != 0)
                         return false;
                     break;
+
                 case 1:
                     if (equipment.Quantity > 10)
                         return false;
                     break;
+
                 case 2:
                     if (equipment.Quantity < 10)
                         return false;
@@ -89,7 +92,6 @@ namespace HealthInstitution.Core.Equipments
         {
             return !equipmentFilter.ApplyEquipmentTypeFilter || equipment.HasEquipmentType(equipmentFilter.EquipmentTypeFilter);
         }
-
 
         private static bool MatchRoomTypeFilter(Room room, EquipmentFilterDTO equipmentFilter)
         {
@@ -127,8 +129,6 @@ namespace HealthInstitution.Core.Equipments
                 return true;
             return false;
         }
-
-        
 
         public static Equipment GetEquipmentFromRoom(Room room, string equipmentName)
         {
@@ -168,6 +168,7 @@ namespace HealthInstitution.Core.Equipments
 
             return !list.Any();
         }
+
         public static int GetQuantityFromForm(string quantityFromForm, Room room, string equipmentName)
         {
             int quantity;
@@ -188,6 +189,7 @@ namespace HealthInstitution.Core.Equipments
                 throw new Exception(exceptionMessage);
             }
         }
+
         private static dynamic MakePair(Room room, Equipment equipment, int quantityInRoom)
         {
             dynamic obj = new ExpandoObject();
@@ -196,6 +198,7 @@ namespace HealthInstitution.Core.Equipments
             obj.Quantity = quantityInRoom;
             return obj;
         }
+
         private static int GetQuantityOfEquipmentInRoom(Room room, Equipment equipment)
         {
             int quantity = 0;
@@ -206,6 +209,7 @@ namespace HealthInstitution.Core.Equipments
             }
             return quantity;
         }
+
         private static void CheckRoomEquipmentPair(Room room, Equipment equipment, HashSet<String> distinctEquipments, List<dynamic> pairs)
         {
             if (equipment.IsDynamic && !distinctEquipments.Contains(equipment.Name))
@@ -218,6 +222,7 @@ namespace HealthInstitution.Core.Equipments
                 }
             }
         }
+
         public static List<dynamic> GetMissingEquipment()
         {
             List<Equipment> equipments = s_equipmentRepository.Equipments;
@@ -235,8 +240,8 @@ namespace HealthInstitution.Core.Equipments
             return pairs;
         }
 
-        public static void RemoveConsumed(Equipment equipment, int consumedQuantity)
-        {
-            s_equipmentRepository
-        }
+        /* public static void RemoveConsumed(Equipment equipment, int consumedQuantity)
+         {
+             s_equipmentRepository*/
+    }
 }
