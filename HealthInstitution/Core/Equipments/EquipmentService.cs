@@ -3,16 +3,7 @@ using HealthInstitution.Core.Equipments.Repository;
 using HealthInstitution.Core.Rooms.Model;
 using HealthInstitution.Core.Rooms.Repository;
 using HealthInstitution.GUI.ManagerView;
-using HealthInstitution.Core.Equipments.Model;
-using HealthInstitution.Core.Equipments.Repository;
-using HealthInstitution.Core.Rooms.Model;
-using HealthInstitution.Core.Rooms.Repository;
-using System;
-using System.Collections.Generic;
 using System.Dynamic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.Equipments
 {
