@@ -19,24 +19,31 @@ using System.Windows.Shapes;
 namespace HealthInstitution.GUI.ManagerView
 {
     /// <summary>
-    /// Interaction logic for AddRoomDialog.xaml
+    /// Interaction logic for EditRoomDialog.xaml
     /// </summary>
-    public partial class AddRoomDialog : Window
+    public partial class EditRoomDialog : Window
     {
-        private RoomRepository _roomRepository = RoomRepository.GetInstance();
-        public AddRoomDialog()
+        private Room _room;
+        public EditRoomDialog(Room room)
         {
             InitializeComponent();
+            this._room = room;
+            SetRoomData();
+        }
+
+        private void SetRoomData()
+        {
+            numberBox.Text = _room.Number.ToString();
         }
 
         private void RoomTypeComboBox_Loaded(object sender, RoutedEventArgs e)
-        {
+        {   
             List<RoomType> types = new List<RoomType>();
             types.Add(RoomType.ExaminationRoom);
             types.Add(RoomType.OperatingRoom);
             types.Add(RoomType.RestRoom);
             typeComboBox.ItemsSource = types;
-            typeComboBox.SelectedItem = null;
+            typeComboBox.SelectedItem = _room.Type;
         }
 
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
@@ -45,7 +52,7 @@ namespace HealthInstitution.GUI.ManagerView
             e.Handled = regex.IsMatch(e.Text);
         }
 
-        private void Create_Click(object sender, RoutedEventArgs e)
+        private void Edit_Click(object sender, RoutedEventArgs e)
         {
             if (!ValidateRoomNumber())
             {
@@ -61,10 +68,10 @@ namespace HealthInstitution.GUI.ManagerView
             int number = Int32.Parse(numberInput);
             RoomType type = (RoomType)typeComboBox.SelectedItem;
 
-            RoomDTO roomDTO = new RoomDTO(type, number);
-            RoomService.AddRoom(roomDTO);
-            System.Windows.MessageBox.Show("Room added!", "Room creation", MessageBoxButton.OK, MessageBoxImage.Information);
-            
+            RoomDTO roomDTO = new RoomDTO(type, number, _room.IsRenovating);
+            RoomService.Update(_room.Id, roomDTO);
+            System.Windows.MessageBox.Show("Room edited!", "Room edit", MessageBoxButton.OK, MessageBoxImage.Information);
+
             this.Close();
         }
 
@@ -89,18 +96,12 @@ namespace HealthInstitution.GUI.ManagerView
             }
             int number = Int32.Parse(numberInput);
 
-            if (RoomService.RoomNumberIsTaken(number))
+            if (RoomService.ExistsChangedRoomNumber(number, _room))
             {
                 System.Windows.MessageBox.Show("This room number already exist!", "Create error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
             }
 
-            if (number > 9999)
-            {
-                System.Windows.MessageBox.Show("This room number is too high!", "Create error", MessageBoxButton.OK, MessageBoxImage.Error);
-                return false;
-            }
-            
             return true;
         }
     }

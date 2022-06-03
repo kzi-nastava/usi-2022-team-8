@@ -3,10 +3,6 @@ using HealthInstitution.Core.Equipments.Repository;
 using HealthInstitution.Core.Rooms.Model;
 using HealthInstitution.Core.Rooms.Repository;
 using HealthInstitution.GUI.ManagerView;
-using HealthInstitution.Core.Equipments.Model;
-using HealthInstitution.Core.Equipments.Repository;
-using HealthInstitution.Core.Rooms.Model;
-using HealthInstitution.Core.Rooms.Repository;
 using System;
 using System.Collections.Generic;
 using System.Dynamic;
@@ -190,8 +186,8 @@ namespace HealthInstitution.Core.Equipments
         }
         public static List<dynamic> GetMissingEquipment()
         {
-            List<Equipment> equipments = EquipmentRepository.GetInstance().Equipments;
-            List<Room> rooms = RoomRepository.GetInstance().Rooms;
+            List<Equipment> equipments = s_equipmentRepository.Equipments;
+            List<Room> rooms = s_roomRepository.Rooms;
             List<dynamic> pairs = new();
             HashSet<string> distinctEquipments;
             foreach (Room room in rooms)

@@ -189,7 +189,7 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
             RenovationService.AddRoomSeparation(roomSeparationDTO);
             if (startDate == DateTime.Today)
             {
-                RenovationChecker.StartSeparation(selectedRoom, firstRoom, secondRoom);
+                RenovationService.StartSeparation(selectedRoom, firstRoom, secondRoom);
                 System.Windows.MessageBox.Show("Renovation scheduled!", "Room renovation", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             else

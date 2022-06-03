@@ -32,12 +32,7 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
     /// Interaction logic for SimpleRenovationWindow.xaml
     /// </summary>
     public partial class SimpleRenovationWindow : Window
-    {
-        private RoomRepository _roomRepository = RoomRepository.GetInstance();
-        private ExaminationRepository _examinationRepository = ExaminationRepository.GetInstance();
-        private OperationRepository _operationRepository = OperationRepository.GetInstance();
-        private RenovationRepository _renovationRepository = RenovationRepository.GetInstance();
-        private EquipmentTransferRepository _equipmentTransferRepository = EquipmentTransferRepository.GetInstance();
+    {       
         public SimpleRenovationWindow()
         {
             InitializeComponent();
@@ -98,7 +93,7 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
             RenovationService.AddRenovation(renovationDTO);
             if (startDate == DateTime.Today)
             {
-                RenovationChecker.StartRenovation(selectedRoom);
+                RenovationService.StartRenovation(selectedRoom);
                 System.Windows.MessageBox.Show("Renovation scheduled!", "Room renovation", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             else
@@ -110,33 +105,19 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
         private bool ValidateSelectedRoom()
         {
             Room selectedRoom = (Room)roomComboBox.SelectedItem;
+            DateTime startDate = (DateTime)startDatePicker.SelectedDate;
+
             if (selectedRoom.IsWarehouse())
             {
                 System.Windows.MessageBox.Show("Warehouse cant be renovated!", "Failed renovation", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
             }
-
-            if (CheckIfRoomHasScheduledExamination())
+      
+            string message;
+            bool occupied = RenovationService.CheckRoomTimetable(selectedRoom, startDate, out message);
+            if (occupied)
             {
-                System.Windows.MessageBox.Show("Room has scheduled examination!", "Failed renovation", MessageBoxButton.OK, MessageBoxImage.Error);
-                return false;
-            }
-
-            if (CheckIfRoomHasScheduledOperation())
-            {
-                System.Windows.MessageBox.Show("Room has scheduled operation!", "Failed renovation", MessageBoxButton.OK, MessageBoxImage.Error);
-                return false;
-            }
-
-            if (CheckIfRoomHasScheduledRenovation())
-            {
-                System.Windows.MessageBox.Show("Room is already scheduled for renovation!", "Failed renovation", MessageBoxButton.OK, MessageBoxImage.Error);
-                return false;
-            }
-
-            if (CheckIfRoomHasScheduledEquipmentTransfer())
-            {
-                System.Windows.MessageBox.Show("Room has equipment transfer in that date span!", "Failed renovation", MessageBoxButton.OK, MessageBoxImage.Error);
+                System.Windows.MessageBox.Show(message, "Failed renovation", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
             }
             return true;
@@ -160,72 +141,6 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
             }
             return true;
         }
-
-        private bool CheckIfRoomHasScheduledEquipmentTransfer()
-        {
-            Room selectedRoom = (Room)roomComboBox.SelectedItem;
-            DateTime startDate = (DateTime)startDatePicker.SelectedDate;
-
-            foreach (EquipmentTransfer equipmentTransfer in EquipmentTransferService.GetAll())
-            {
-                if (equipmentTransfer.TransferTime < startDate)
-                {
-                    continue;
-                }
-                if (equipmentTransfer.FromRoom == selectedRoom || equipmentTransfer.ToRoom == selectedRoom)
-                {
-                    return true;
-                }
-                
-            }
-            return false;
-        }
-
-        private bool CheckIfRoomHasScheduledRenovation()
-        {
-            Room selectedRoom = (Room)roomComboBox.SelectedItem;
-            foreach (Renovation renovation in RenovationService.GetAll())
-            {
-                if (renovation.Room == selectedRoom)
-                {
-                    return true;
-                }
-                if (renovation.GetType() == typeof(RoomMerger) && ((RoomMerger)renovation).RoomForMerge == selectedRoom)
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        private bool CheckIfRoomHasScheduledOperation()
-        {
-            Room selectedRoom = (Room)roomComboBox.SelectedItem;
-            
-            foreach (Operation operation in _operationRepository.GetAll())
-            {
-                if (operation.Room == selectedRoom)
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        private bool CheckIfRoomHasScheduledExamination()
-        {
-            Room selectedRoom = (Room)roomComboBox.SelectedItem;
-           
-            foreach (Examination examination in _examinationRepository.GetAll())
-            {
-                if (examination.Room == selectedRoom)
-                {
-                    return true;
-                }                   
-            }
-            return false;
-        }
-
 
         private bool CheckCompleteness()
         {

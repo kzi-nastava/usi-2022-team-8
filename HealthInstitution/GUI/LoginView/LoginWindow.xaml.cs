@@ -143,8 +143,8 @@ namespace HealthInstitution.GUI.LoginView
         [STAThread]
         private static void Main(string[] args)
         {
-            EquipmentTransferChecker.UpdateByTransfer();
-            RenovationChecker.UpdateByRenovation();
+            EquipmentTransferRefreshingService.UpdateByTransfer();
+            RenovationRefreshingService.UpdateByRenovation();
 
             LoginWindow window = new LoginWindow();
             window.ShowDialog();

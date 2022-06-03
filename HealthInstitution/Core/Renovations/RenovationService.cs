@@ -1,5 +1,13 @@
-﻿using HealthInstitution.Core.Renovations.Model;
+﻿using HealthInstitution.Core.Equipments.Model;
+using HealthInstitution.Core.EquipmentTransfers;
+using HealthInstitution.Core.EquipmentTransfers.Model;
+using HealthInstitution.Core.Examinations.Model;
+using HealthInstitution.Core.Examinations.Repository;
+using HealthInstitution.Core.Operations.Model;
+using HealthInstitution.Core.Operations.Repository;
+using HealthInstitution.Core.Renovations.Model;
 using HealthInstitution.Core.Renovations.Repository;
+using HealthInstitution.Core.Rooms;
 using HealthInstitution.Core.Rooms.Model;
 using System;
 using System.Collections.Generic;
@@ -12,7 +20,8 @@ namespace HealthInstitution.Core.Renovations
     public static class RenovationService
     {
         private static RenovationRepository s_renovationRepository = RenovationRepository.GetInstance();
-        
+        private static OperationRepository s_operationRepository = OperationRepository.GetInstance();
+        private static ExaminationRepository s_examinationRepository = ExaminationRepository.GetInstance();
         public static List<Renovation> GetAll()
         {
             return s_renovationRepository.GetAll();
@@ -55,11 +64,70 @@ namespace HealthInstitution.Core.Renovations
             s_renovationRepository.Delete(id);
         }
 
+        public static void StartRenovation(Room room)
+        {
+            RoomDTO roomDTO = new RoomDTO(room.Type, room.Number, true);
+            RoomService.Update(room.Id, roomDTO);
+        }
+
+        public static void EndRenovation(Room room)
+        {
+            RoomDTO roomDTO = new RoomDTO(room.Type, room.Number, false);
+            RoomService.Update(room.Id, roomDTO);
+        }
+
+        public static void StartMerge(Room firstRoom, Room secondRoom, Room mergedRoom)
+        {
+            RoomDTO firstRoomDTO = new RoomDTO(firstRoom.Type, firstRoom.Number, true);
+            RoomDTO secondRoomDTO = new RoomDTO(secondRoom.Type, secondRoom.Number, true);
+            RoomService.Update(firstRoom.Id, firstRoomDTO);
+            RoomService.Update(secondRoom.Id, secondRoomDTO);
+        }
+
+        public static void EndMerge(Room firstRoom, Room secondRoom, Room mergedRoom)
+        {
+            foreach (Equipment equipment in firstRoom.AvailableEquipment)
+            {
+                mergedRoom.AvailableEquipment.Add(equipment);
+            }
+            firstRoom.AvailableEquipment.Clear();
+
+            foreach (Equipment equipment in secondRoom.AvailableEquipment)
+            {
+                RoomService.UpdateEquipmentQuantity(mergedRoom, equipment);
+            }
+            secondRoom.AvailableEquipment.Clear();
+
+            RoomDTO mergedRoomDTO = new RoomDTO(mergedRoom.Type, mergedRoom.Number, false, true);
+            RoomService.Update(mergedRoom.Id, mergedRoomDTO);
+            RoomDTO firstRoomDTO = new RoomDTO(firstRoom.Type, firstRoom.Number, false, false);
+            RoomService.Update(firstRoom.Id, firstRoomDTO);
+            RoomDTO secondRoomDTO = new RoomDTO(secondRoom.Type, secondRoom.Number, false, false);
+            RoomService.Update(secondRoom.Id, secondRoomDTO);
+        }
+
+        public static void StartSeparation(Room separationRoom, Room firstRoom, Room secondRoom)
+        {
+            RoomDTO separationRoomDTO = new RoomDTO(separationRoom.Type, separationRoom.Number, true);
+            RoomService.Update(separationRoom.Id, separationRoomDTO);
+        }
+
+        public static void EndSeparation(Room separationRoom, Room firstRoom, Room secondRoom)
+        {
+            RoomService.RemoveEquipmentFrom(separationRoom);
+
+            RoomDTO separationRoomDTO = new RoomDTO(separationRoom.Type, separationRoom.Number, false, false);
+            RoomService.Update(separationRoom.Id, separationRoomDTO);
+            RoomDTO firstRoomDTO = new RoomDTO(firstRoom.Type, firstRoom.Number, false, true);
+            RoomService.Update(firstRoom.Id, firstRoomDTO);
+            RoomDTO secondRoomDTO = new RoomDTO(secondRoom.Type, secondRoom.Number, false, true);
+            RoomService.Update(secondRoom.Id, secondRoomDTO);
+        }
+
 
         public static bool CheckRenovationStatusForHistoryDelete(Room room)
         {
-            RenovationRepository renovationRepository = RenovationRepository.GetInstance();
-            foreach (Renovation renovation in renovationRepository.Renovations)
+            foreach (Renovation renovation in s_renovationRepository.Renovations)
             {
                 if (renovation.Room == room)
                 {
@@ -81,8 +149,7 @@ namespace HealthInstitution.Core.Renovations
 
         public static bool CheckRenovationStatusForRoom(Room room, DateTime date)
         {
-            RenovationRepository renovationRepository = RenovationRepository.GetInstance();
-            foreach (Renovation renovation in renovationRepository.Renovations)
+            foreach (Renovation renovation in s_renovationRepository.Renovations)
             {
                 if (renovation.StartDate > date && renovation.IsRoomSeparation())
                 {
@@ -104,7 +171,94 @@ namespace HealthInstitution.Core.Renovations
             }
             return true;
         }
+
+        public static bool CheckRoomTimetable(Room selectedRoom, DateTime startDate, out string message)
+        {
+            if (CheckIfRoomHasScheduledExamination(selectedRoom))
+            {
+                message = "Room has scheduled examination!";
+                return true;
+            }
+
+            if (CheckIfRoomHasScheduledOperation(selectedRoom))
+            {
+                message = "Room has scheduled operation!";
+                return true;
+            }
+
+            if (CheckIfRoomHasScheduledRenovation(selectedRoom))
+            {
+                message = "Room is already scheduled for renovation!";
+                return true;
+            }
+
+            if (CheckIfRoomHasScheduledEquipmentTransfer(selectedRoom, startDate))
+            {
+                message = "Room has equipment transfer in that date span!";
+                return true;
+            }
+            message = "";
+            return false;
+        }
+
+        private static bool CheckIfRoomHasScheduledEquipmentTransfer(Room selectedRoom, DateTime startDate)
+        {            
+            foreach (EquipmentTransfer equipmentTransfer in EquipmentTransferService.GetAll())
+            {
+                if (equipmentTransfer.TransferTime < startDate)
+                {
+                    continue;
+                }
+                if (equipmentTransfer.FromRoom == selectedRoom || equipmentTransfer.ToRoom == selectedRoom)
+                {
+                    return true;
+                }
+
+            }
+            return false;
+        }
+
+        private static bool CheckIfRoomHasScheduledRenovation(Room selectedRoom)
+        {
+            foreach (Renovation renovation in RenovationService.GetAll())
+            {
+                if (renovation.Room == selectedRoom)
+                {
+                    return true;
+                }
+                if (renovation.GetType() == typeof(RoomMerger) && ((RoomMerger)renovation).RoomForMerge == selectedRoom)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private static bool CheckIfRoomHasScheduledOperation(Room selectedRoom)
+        {
+            foreach (Operation operation in s_operationRepository.GetAll())
+            {
+                if (operation.Room == selectedRoom)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private static bool CheckIfRoomHasScheduledExamination(Room selectedRoom)
+        {
+            foreach (Examination examination in s_examinationRepository.GetAll())
+            {
+                if (examination.Room == selectedRoom)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
     }
 
-    
+
 }

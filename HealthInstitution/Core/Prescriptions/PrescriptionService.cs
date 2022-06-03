@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.Prescriptions
 {
-    static class PrescriptionService
+    public static class PrescriptionService
     {
         static PrescriptionRepository s_prescriptionRepository = PrescriptionRepository.GetInstance();
         public static List<Prescription> GetAll()

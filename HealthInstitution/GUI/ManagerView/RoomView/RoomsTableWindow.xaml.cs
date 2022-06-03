@@ -28,7 +28,6 @@ namespace HealthInstitution.GUI.ManagerView
     /// </summary>
     public partial class RoomsTableWindow : Window
     {
-        private RoomRepository _roomRepository = RoomRepository.GetInstance();
         public RoomsTableWindow()
         {
             InitializeComponent();

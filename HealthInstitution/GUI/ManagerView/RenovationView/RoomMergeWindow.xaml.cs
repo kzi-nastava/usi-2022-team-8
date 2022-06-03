@@ -37,8 +37,7 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
         private RoomRepository _roomRepository = RoomRepository.GetInstance();
         private ExaminationRepository _examinationRepository = ExaminationRepository.GetInstance();
         private OperationRepository _operationRepository = OperationRepository.GetInstance();
-        private RenovationRepository _renovationRepository = RenovationRepository.GetInstance();
-        private EquipmentTransferRepository _equipmentTransferRepository = EquipmentTransferRepository.GetInstance();
+        
         public RoomMergeWindow()
         {
             InitializeComponent();
@@ -135,7 +134,7 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
             RenovationService.AddRoomMerger(roomMergerDTO);
             if (startDate == DateTime.Today)
             {
-                RenovationChecker.StartMerge(firstSelectedRoom, secondSelectedRoom, mergedRoom);
+                RenovationService.StartMerge(firstSelectedRoom, secondSelectedRoom, mergedRoom);
                 System.Windows.MessageBox.Show("Renovation scheduled!", "Room renovation", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             else

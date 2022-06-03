@@ -1,4 +1,5 @@
-﻿using HealthInstitution.Core.Equipments.Model;
+﻿using HealthInstitution.Core.Equipments;
+using HealthInstitution.Core.Equipments.Model;
 using HealthInstitution.Core.EquipmentTransfers;
 using HealthInstitution.Core.EquipmentTransfers.Repository;
 using HealthInstitution.Core.Examinations.Repository;
@@ -112,11 +113,26 @@ namespace HealthInstitution.Core.Rooms
             }
             return items;
         }
+
+        public static void UpdateEquipmentQuantity(Room room, Equipment equipment)
+        { 
+            int index = room.AvailableEquipment.FindIndex(eq => eq.Name == equipment.Name && eq.Type == equipment.Type);
+            if (index >= 0)
+            {
+                room.AvailableEquipment[index].Quantity += equipment.Quantity;
+                EquipmentService.Delete(equipment.Id);
+            }
+            else
+            {
+                room.AvailableEquipment.Add(equipment);
+            }          
+        }
+
         public static Room FindAvailableRoom(OperationDTO operationDTO, int id = 0)
         {
             bool isAvailable;
             List<Room> availableRooms = new List<Room>();
-            var rooms = RoomRepository.GetInstance().GetNotRenovating();
+            var rooms = s_roomRepository.GetNotRenovating();
             DateTime appointment = operationDTO.Appointment;
             int duration = operationDTO.Duration;
 
@@ -143,6 +159,16 @@ namespace HealthInstitution.Core.Rooms
             Random random = new Random();
             int index = random.Next(0, availableRooms.Count);
             return availableRooms[index];
+        }
+
+        public static void RemoveEquipmentFrom(Room room)
+        {
+            List<Equipment> equipments = room.AvailableEquipment;
+            foreach (Equipment equipment in equipments)
+            {
+                EquipmentService.Delete(equipment.Id);
+            }
+            equipments.Clear();
         }
     }
 }
