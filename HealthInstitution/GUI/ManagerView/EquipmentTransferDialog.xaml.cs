@@ -33,10 +33,6 @@ namespace HealthInstitution.GUI.ManagerView
     /// </summary>
     public partial class EquipmentTransferDialog : Window
     {
-        private RoomRepository _roomRepository = RoomRepository.GetInstance();
-        private EquipmentRepository _equipmentRepository = EquipmentRepository.GetInstance(); 
-        private EquipmentTransferRepository _equipmentTransferRepository = EquipmentTransferRepository.GetInstance();
-        private RenovationRepository _renovationRepository = RenovationRepository.GetInstance();
         public EquipmentTransferDialog()
         {
             InitializeComponent();
@@ -110,7 +106,7 @@ namespace HealthInstitution.GUI.ManagerView
 
             if (date == DateTime.Today)
             {
-                EquipmentTransferChecker.Transfer(toRoom, equipment, quantity);
+                EquipmentTransferService.Transfer(toRoom, equipment, quantity);
                 System.Windows.MessageBox.Show("Equipment transfer completed!", "Equipment transfer", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             else

@@ -37,5 +37,10 @@ namespace HealthInstitution.Core.Ingredients
         {
             s_ingredientRepository.Delete(id);
         }
+
+        public static bool Contains(string name)
+        {
+            return s_ingredientRepository.Contains(name);
+        }
     }
 }

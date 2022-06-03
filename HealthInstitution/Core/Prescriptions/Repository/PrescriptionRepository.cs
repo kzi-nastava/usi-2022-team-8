@@ -9,7 +9,7 @@ using System.Text.Json.Serialization;
 
 namespace HealthInstitution.Core.Prescriptions.Repository
 {
-    internal class PrescriptionRepository
+    public class PrescriptionRepository
     {
         public int maxId;
         private String _fileName;

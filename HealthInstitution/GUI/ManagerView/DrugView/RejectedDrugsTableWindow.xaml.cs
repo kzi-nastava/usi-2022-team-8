@@ -23,7 +23,6 @@ namespace HealthInstitution.GUI.ManagerView.DrugView
     /// </summary>
     public partial class RejectedDrugsTableWindow : Window
     {
-        private DrugRepository _drugRepository = DrugRepository.GetInstance();
         public RejectedDrugsTableWindow()
         {
             InitializeComponent();
@@ -56,7 +55,7 @@ namespace HealthInstitution.GUI.ManagerView.DrugView
 
                 ingredientsDataGrid.Items.Clear();
                 Drug selectedDrug = (Drug)drugsDataGrid.SelectedItem;
-                List<Ingredient> ingredients = selectedDrug.Ingredients;
+                List<Ingredient> ingredients = DrugService.GetIngredients(selectedDrug);
                 foreach (Ingredient ingredient in ingredients)
                 {
                     ingredientsDataGrid.Items.Add(ingredient);
@@ -78,7 +77,7 @@ namespace HealthInstitution.GUI.ManagerView.DrugView
         {
             Drug selectedDrug = (Drug)drugsDataGrid.SelectedItem;
 
-            reasonLabel.Content = "Reject reason: " + selectedDrug.RejectionReason;
+            reasonLabel.Content = "Reject reason: " + DrugService.ReasonForRejection(selectedDrug);
         }
 
         private void ReviseButton_Click(object sender, RoutedEventArgs e)

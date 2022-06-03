@@ -25,7 +25,6 @@ namespace HealthInstitution.GUI.ManagerView
     /// </summary>
     public partial class IngredientsTableWindow : Window
     {
-        private IngredientRepository _ingredientRepository = IngredientRepository.GetInstance();
         public IngredientsTableWindow()
         {
             InitializeComponent();

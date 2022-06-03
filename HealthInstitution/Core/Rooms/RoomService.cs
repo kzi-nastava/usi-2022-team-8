@@ -1,4 +1,5 @@
-﻿using HealthInstitution.Core.Equipments.Model;
+﻿using HealthInstitution.Core.Equipments;
+using HealthInstitution.Core.Equipments.Model;
 using HealthInstitution.Core.EquipmentTransfers;
 using HealthInstitution.Core.EquipmentTransfers.Repository;
 using HealthInstitution.Core.Examinations.Repository;
@@ -43,6 +44,10 @@ namespace HealthInstitution.Core.Rooms
             s_roomRepository.Delete(id);
         }
 
+        public static void WriteIn()
+        {
+            s_roomRepository.Save();
+        }
         public static bool CheckImportantOccurrenceOfRoom(Room room)
         {            
             if (EquipmentTransferService.CheckOccurrenceOfRoom(room))
@@ -103,6 +108,11 @@ namespace HealthInstitution.Core.Rooms
             return s_roomRepository.RoomNumberIsTaken(number);
         }
 
+        public static List<Equipment> GetAvailableEquipment(Room room)
+        {
+            return room.AvailableEquipment;
+        }
+
         public static List<TableItemEquipment> GetTableItemEquipments()
         {
             List<TableItemEquipment> items = new List<TableItemEquipment>();
@@ -116,6 +126,63 @@ namespace HealthInstitution.Core.Rooms
                 }
             }
             return items;
+        }
+
+        public static void UpdateEquipmentQuantity(Room room, Equipment equipment)
+        { 
+            int index = room.AvailableEquipment.FindIndex(eq => eq.Name == equipment.Name && eq.Type == equipment.Type);
+            if (index >= 0)
+            {
+                room.AvailableEquipment[index].Quantity += equipment.Quantity;
+                EquipmentService.Delete(equipment.Id);
+            }
+            else
+            {
+                room.AvailableEquipment.Add(equipment);
+            }          
+        }
+
+        public static Room FindAvailableRoom(OperationDTO operationDTO, int id = 0)
+        {
+            bool isAvailable;
+            List<Room> availableRooms = new List<Room>();
+            var rooms = s_roomRepository.GetNotRenovating();
+            DateTime appointment = operationDTO.Appointment;
+            int duration = operationDTO.Duration;
+
+            foreach (var room in rooms)
+            {
+                if (room.Type != RoomType.OperatingRoom) continue;
+                isAvailable = true;
+                foreach (var operation in OperationRepository.GetInstance().GetAll())
+                {
+                    if (operation.Room.Id == room.Id && operation.Id != id)
+                    {
+                        if ((appointment < operation.Appointment.AddMinutes(operation.Duration)) && (appointment.AddMinutes(duration) > operation.Appointment))
+                        {
+                            isAvailable = false;
+                            break;
+                        }
+                    }
+                }
+                if (isAvailable)
+                    availableRooms.Add(room);
+            }
+
+            if (availableRooms.Count == 0) throw new Exception("There are no available rooms!");
+            Random random = new Random();
+            int index = random.Next(0, availableRooms.Count);
+            return availableRooms[index];
+        }
+
+        public static void RemoveEquipmentFrom(Room room)
+        {
+            List<Equipment> equipments = room.AvailableEquipment;
+            foreach (Equipment equipment in equipments)
+            {
+                EquipmentService.Delete(equipment.Id);
+            }
+            equipments.Clear();
         }
     }
 }
