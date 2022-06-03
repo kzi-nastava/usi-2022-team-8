@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HealthInstitution.Core.Examinations.Repository
+namespace HealthInstitution.Core.Notifications.Repository
 {
-    public interface IExaminationDoctorRepository : ILinkerRepository
-    {
-        public ExaminationDoctorRepository GetInstance();
+    public interface IAppointmentNotificationPatientRepository : ILinkerRepository
+    { 
         public void LoadFromFile();
         public void Save();
     }

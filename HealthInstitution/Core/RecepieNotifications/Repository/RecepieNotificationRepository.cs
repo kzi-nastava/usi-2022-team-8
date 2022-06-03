@@ -53,7 +53,6 @@ public class RecepieNotificationRepository
         var allRatings = JsonSerializer.Serialize(this.Notifications, _options);
         File.WriteAllText(this._fileName, allRatings);
     }
-
     public RecepieNotification GetById(int id)
     {
         return this.NotificationsById[id];
