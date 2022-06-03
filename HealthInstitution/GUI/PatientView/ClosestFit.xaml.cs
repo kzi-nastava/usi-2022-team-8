@@ -12,7 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using HealthInstitution.Core.Examinations.Model;
-using HealthInstitution.Core.Examinations.Repository;
+using HealthInstitution.Core.Examinations;
 
 namespace HealthInstitution.GUI.PatientView
 {
@@ -32,11 +32,10 @@ namespace HealthInstitution.GUI.PatientView
 
         private void addButton_click(object sender, RoutedEventArgs e)
         {
-            var examinationRepository = ExaminationRepository.GetInstance();
             Examination selectedExamination = _suggestions[0];
             if (secondRadioButton.IsChecked == true) selectedExamination = _suggestions[1];
             if (thirdRadioButton.IsChecked == true) selectedExamination = _suggestions[2];
-            examinationRepository.Add(selectedExamination);
+            ExaminationService.Add(ExaminationService.ParseExaminationToExaminationDTO(selectedExamination));
             this.Close();
         }
 

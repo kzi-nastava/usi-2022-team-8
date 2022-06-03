@@ -11,8 +11,9 @@
         <Image HorizontalAlignment="Center" Height="100" Margin="0,65,0,0" VerticalAlignment="Top" Width="100" Source="/Data/Images/Hospital.png" />
         <Button x:Name="logout_button" Content="Logout" HorizontalAlignment="Left" Height="30" Margin="437,266,0,0" VerticalAlignment="Top" Width="108" Click="LogOut_Click" />
         <Button x:Name="manuallSchedule_button" Content="Manually Schedule" HorizontalAlignment="Left" Height="40" Margin="34,167,0,0" VerticalAlignment="Top" Width="150" Click="manuallSchedule_Click" RenderTransformOrigin="0.511,0.598" />
-        <Button x:Name="recommendedSchedule_button" Content="Recommended Schedule" HorizontalAlignment="Center" Height="40" Margin="0,215,0,0" VerticalAlignment="Top" Width="150" Click="recommendedSchedule_Click" />
+        <Button x:Name="recommendedSchedule_button" Content="Recommended Schedule" HorizontalAlignment="Center" Height="40" Margin="0,187,0,0" VerticalAlignment="Top" Width="150" Click="recommendedSchedule_Click" />
         <Button x:Name="medicalRecordView_button" Content="View Medical Record" HorizontalAlignment="Left" Height="40" Margin="416,167,0,0" VerticalAlignment="Top" Width="150" Click="medicalRecordView_button_Click" />
         <Button x:Name="pickDoctor_button" Content="Pick Doctor" HorizontalAlignment="Left" Height="40" Margin="34,266,0,0" VerticalAlignment="Top" Width="150" RenderTransformOrigin="0.511,0.598" Click="pickDoctor_button_Click" />
+        <Button x:Name="recepieNotificationSettings_button" Content="RecepieNotificationSettings" HorizontalAlignment="Center" Height="40" Margin="0,266,0,0" VerticalAlignment="Top" Width="150" Click="recepieNotificationSettings_button_Click" />
     </Grid>
 </Window>
