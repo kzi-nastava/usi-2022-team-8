@@ -81,13 +81,4 @@ public class RecepieNotificationSettingsRepository
             Save();
         }
     }
-
-    /* public RecepieNotificationSettings GetRecepieNotificationSettings(string prescription)
-     {
-         foreach (var setting in this.Settings)
-         {
-             if (setting.Id == prescription) return setting;
-         }
-         return null;
-     }*/
 }
