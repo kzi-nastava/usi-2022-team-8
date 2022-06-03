@@ -107,7 +107,7 @@ namespace HealthInstitution.Core.Prescriptions.Repository
 
         public Prescription Add(Prescription prescription)
         {
-            prescription.Id = ++_maxId;
+            prescription.Id = ++maxId;
             this.Prescriptions.Add(prescription);
             this.PrescriptionById[prescription.Id] = prescription;
             Save();

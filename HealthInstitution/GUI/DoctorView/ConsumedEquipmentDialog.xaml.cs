@@ -1,4 +1,5 @@
-﻿using HealthInstitution.Core.Equipments.Model;
+﻿using HealthInstitution.Core.Equipments;
+using HealthInstitution.Core.Equipments.Model;
 using HealthInstitution.Core.Equipments.Repository;
 using HealthInstitution.Core.Rooms;
 using HealthInstitution.Core.Rooms.Model;
@@ -26,12 +27,14 @@ namespace HealthInstitution.GUI.DoctorView
     {
         //Dictionary<String, int> equipmentQuantities;
         private Room _room;
+
         public ConsumedEquipmentDialog(Room room)
         {
             this._room = room;
             InitializeComponent();
             roomLabel.Content = _room;
         }
+
         private void EquipmentComboBox_Loaded(object sender, RoutedEventArgs e)
         {
             var equipmentComboBox = sender as System.Windows.Controls.ComboBox;
@@ -42,11 +45,12 @@ namespace HealthInstitution.GUI.DoctorView
             }
         }
 
-        private void EquipmentComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e) {
-
+        private void EquipmentComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
             var equipment = (Equipment)equipmentComboBox.SelectedItem;
             consumedQuantityComboBox.Items.Clear();
-            if (equipment != null) {
+            if (equipment != null)
+            {
                 for (int i = 0; i <= equipment.Quantity; i++)
                     consumedQuantityComboBox.Items.Add(i);
             }

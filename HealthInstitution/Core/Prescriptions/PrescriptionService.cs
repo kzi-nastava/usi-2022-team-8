@@ -12,7 +12,8 @@ namespace HealthInstitution.Core.Prescriptions
 {
     public static class PrescriptionService
     {
-        static PrescriptionRepository s_prescriptionRepository = PrescriptionRepository.GetInstance();
+        private static PrescriptionRepository s_prescriptionRepository = PrescriptionRepository.GetInstance();
+
         public static List<Prescription> GetAll()
         {
             return s_prescriptionRepository.GetAll();
@@ -35,7 +36,7 @@ namespace HealthInstitution.Core.Prescriptions
             s_prescriptionRepository.Delete(id);
         }
 
-        private static bool IsPatientAlergic(MedicalRecord medicalRecord, List<Ingredient> ingredients)
+        public static bool IsPatientAlergic(MedicalRecord medicalRecord, List<Ingredient> ingredients)
         {
             /*foreach (var ingredient in ingredients)
             {

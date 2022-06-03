@@ -20,6 +20,7 @@ namespace HealthInstitution.Core.Referrals.Repository
             Converters = { new JsonStringEnumConverter() },
             PropertyNameCaseInsensitive = true
         };
+
         private ReferralRepository(string fileName)
         {
             this.maxId = 0;
@@ -28,7 +29,9 @@ namespace HealthInstitution.Core.Referrals.Repository
             this.ReferralById = new Dictionary<int, Referral>();
             this.LoadFromFile();
         }
+
         private static ReferralRepository s_instance = null;
+
         public static ReferralRepository GetInstance()
         {
             {
@@ -46,7 +49,7 @@ namespace HealthInstitution.Core.Referrals.Repository
             ReferralType referralType;
             Enum.TryParse(referral["type"].ToString(), out referralType);
             SpecialtyType specialtyTypeTemp;
-            SpecialtyType? specialtyType=null;
+            SpecialtyType? specialtyType = null;
             Doctor referredDoctor;
             bool active = (bool)referral["active"];
             try
@@ -58,13 +61,14 @@ namespace HealthInstitution.Core.Referrals.Repository
                 referredDoctor = null;
             }
             if (Enum.TryParse(referral["referredSpecialty"].ToString(), out specialtyTypeTemp))
-                specialtyType=specialtyTypeTemp;
+                specialtyType = specialtyTypeTemp;
             return new Referral((int)referral["id"],
                                       referralType,
                                         doctorByUsername[(string)referral["prescribedBy"]],
                                           referredDoctor,
                                             specialtyType, active);
         }
+
         public void LoadFromFile()
         {
             var referrals = JArray.Parse(File.ReadAllText(_fileName));
@@ -80,6 +84,7 @@ namespace HealthInstitution.Core.Referrals.Repository
                 this.ReferralById[loadedReferral.Id] = loadedReferral;
             }
         }
+
         private List<dynamic> PrepareForSerialization()
         {
             List<dynamic> reducedReferrals = new List<dynamic>();
@@ -90,13 +95,14 @@ namespace HealthInstitution.Core.Referrals.Repository
                     id = referral.Id,
                     type = referral.Type,
                     prescribedBy = referral.PrescribedBy.Username,
-                    referredDoctor = (referral.ReferredDoctor==null) ? null : referral.ReferredDoctor.Username,
+                    referredDoctor = (referral.ReferredDoctor == null) ? null : referral.ReferredDoctor.Username,
                     referredSpecialty = referral.ReferredSpecialty,
                     active = referral.Active
-                }) ;
+                });
             }
             return reducedReferrals;
         }
+
         public void Save()
         {
             var allReferrals = JsonSerializer.Serialize(PrepareForSerialization(), _options);
@@ -117,8 +123,8 @@ namespace HealthInstitution.Core.Referrals.Repository
 
         public Referral Add(Referral referral)
         {
-            this._maxId++;
-            int id = this._maxId;
+            this.maxId++;
+            int id = this.maxId;
             referral.Id = id;
             this.Referrals.Add(referral);
             this.ReferralById[id] = referral;

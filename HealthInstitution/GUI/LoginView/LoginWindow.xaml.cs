@@ -15,7 +15,7 @@ using HealthInstitution.Core.Renovations.Functionality;
 using HealthInstitution.Core.Notifications.Repository;
 using HealthInstitution.Core.SystemUsers.Users;
 using HealthInstitution.Core.TrollCounters;
-using HealthInstitution.Core.RecepieNotifications.Service;
+using HealthInstitution.Core.PrescriptionNotifications.Service;
 
 namespace HealthInstitution.GUI.LoginView
 {
@@ -100,7 +100,8 @@ namespace HealthInstitution.GUI.LoginView
             PatientRepository patientRepository = PatientRepository.GetInstance();
             TrollCounterService.TrollCheck(foundUser.Username);
             Patient loggedPatient = patientRepository.GetByUsername(_usernameInput);
-            new RecepieNotificationGenerator(loggedPatient.Username).GenerateAllSkippedNotifications();
+
+            PrescriptionNotificationService.GenerateAllSkippedNotifications(loggedPatient.Username);
             new PatientWindow(loggedPatient).ShowDialog();
         }
 

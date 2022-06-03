@@ -7,7 +7,7 @@ using System.Dynamic;
 
 namespace HealthInstitution.Core.Equipments
 {
-    internal static class EquipmentService
+    public class EquipmentService
     {
         private static EquipmentRepository s_equipmentRepository = EquipmentRepository.GetInstance();
         private static RoomRepository s_roomRepository = RoomRepository.GetInstance();
