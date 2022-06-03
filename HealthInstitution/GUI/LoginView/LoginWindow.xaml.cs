@@ -15,7 +15,7 @@ using HealthInstitution.Core.Renovations.Functionality;
 using HealthInstitution.Core.Notifications.Repository;
 using HealthInstitution.Core.SystemUsers.Users;
 using HealthInstitution.Core.TrollCounters;
-using HealthInstitution.Core.RecepieNotifications.Model;
+using HealthInstitution.Core.RecepieNotifications.Service;
 
 namespace HealthInstitution.GUI.LoginView
 {

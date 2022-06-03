@@ -5,11 +5,11 @@ using System.Text.Json.Serialization;
 
 namespace HealthInstitution.Core.RecepieNotifications.Repository;
 
-public class RecepieNotificationRepository
+public class PrescriptionNotificationRepository
 {
     private String _fileName;
-    public List<RecepieNotification> Notifications { get; set; }
-    public Dictionary<int, RecepieNotification> NotificationsById { get; set; }
+    public List<PrescriptionNotification> Notifications { get; set; }
+    public Dictionary<int, PrescriptionNotification> NotificationsById { get; set; }
 
     private JsonSerializerOptions _options = new JsonSerializerOptions
     {
@@ -17,22 +17,22 @@ public class RecepieNotificationRepository
         PropertyNameCaseInsensitive = true
     };
 
-    private RecepieNotificationRepository(String fileName)
+    private PrescriptionNotificationRepository(String fileName)
     {
         this._fileName = fileName;
-        this.Notifications = new List<RecepieNotification>();
-        this.NotificationsById = new Dictionary<int, RecepieNotification>();
+        this.Notifications = new List<PrescriptionNotification>();
+        this.NotificationsById = new Dictionary<int, PrescriptionNotification>();
         this.LoadFromFile();
     }
 
-    private static RecepieNotificationRepository s_instance = null;
+    private static PrescriptionNotificationRepository s_instance = null;
 
-    public static RecepieNotificationRepository GetInstance()
+    public static PrescriptionNotificationRepository GetInstance()
     {
         {
             if (s_instance == null)
             {
-                s_instance = new RecepieNotificationRepository(@"..\..\..\Data\JSON\recepieNotifications.json");
+                s_instance = new PrescriptionNotificationRepository(@"..\..\..\Data\JSON\recepieNotifications.json");
             }
             return s_instance;
         }
@@ -40,8 +40,8 @@ public class RecepieNotificationRepository
 
     public void LoadFromFile()
     {
-        var notifications = JsonSerializer.Deserialize<List<RecepieNotification>>(File.ReadAllText(@"..\..\..\Data\JSON\recepieNotifications.json"), _options);
-        foreach (RecepieNotification notification in notifications)
+        var notifications = JsonSerializer.Deserialize<List<PrescriptionNotification>>(File.ReadAllText(@"..\..\..\Data\JSON\recepieNotifications.json"), _options);
+        foreach (PrescriptionNotification notification in notifications)
         {
             this.Notifications.Add(notification);
             this.NotificationsById.Add(notification.Id, notification);
@@ -53,12 +53,13 @@ public class RecepieNotificationRepository
         var allRatings = JsonSerializer.Serialize(this.Notifications, _options);
         File.WriteAllText(this._fileName, allRatings);
     }
-    public RecepieNotification GetById(int id)
+
+    public PrescriptionNotification GetById(int id)
     {
         return this.NotificationsById[id];
     }
 
-    public void Add(RecepieNotification recepieNotification)
+    public void Add(PrescriptionNotification recepieNotification)
     {
         this.Notifications.Add(recepieNotification);
         this.NotificationsById.Add(recepieNotification.Id, recepieNotification);
@@ -67,7 +68,7 @@ public class RecepieNotificationRepository
 
     public void Delete(int id)
     {
-        RecepieNotification notification = NotificationsById[id];
+        PrescriptionNotification notification = NotificationsById[id];
         if (notification != null)
         {
             this.NotificationsById.Remove(notification.Id);
@@ -76,9 +77,9 @@ public class RecepieNotificationRepository
         }
     }
 
-    public List<RecepieNotification> GetPatientPresctiptionNotification(string username, int prescription)
+    public List<PrescriptionNotification> GetPatientPresctiptionNotification(string username, int prescription)
     {
-        List<RecepieNotification> ownNotifications = new List<RecepieNotification>();
+        List<PrescriptionNotification> ownNotifications = new List<PrescriptionNotification>();
         foreach (var notification in this.Notifications)
         {
             if (notification.Patient == username && notification.Prescription.Id == prescription) ownNotifications.Add(notification);
@@ -86,13 +87,18 @@ public class RecepieNotificationRepository
         return ownNotifications;
     }
 
-    public List<RecepieNotification> GetPatientActiveNotification(string username)
+    public List<PrescriptionNotification> GetPatientActiveNotification(string username)
     {
-        List<RecepieNotification> ownNotifications = new List<RecepieNotification>();
+        List<PrescriptionNotification> ownNotifications = new List<PrescriptionNotification>();
         foreach (var notification in this.Notifications)
         {
-            if (notification.Patient == username && notification.ActiveForPatient) ownNotifications.Add(notification);
+            if (notification.Patient == username && notification.ActiveForPatient)
+            {
+                ownNotifications.Add(notification);
+                notification.ActiveForPatient = false;
+            }
         }
+        Save();
         return ownNotifications;
     }
 }

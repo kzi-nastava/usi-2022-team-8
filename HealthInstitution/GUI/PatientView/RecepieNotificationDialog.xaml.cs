@@ -12,35 +12,30 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using HealthInstitution.Core.RecepieNotifications.Model;
-using HealthInstitution.Core.RecepieNotifications.Repository;
+using HealthInstitution.Core.RecepieNotifications.Service;
 
-namespace HealthInstitution.GUI.PatientView
+namespace HealthInstitution.GUI.PatientView;
+
+/// <summary>
+/// Interaction logic for RecepieNotificationDialog.xaml
+/// </summary>
+public partial class RecepieNotificationDialog : Window
 {
-    /// <summary>
-    /// Interaction logic for RecepieNotificationDialog.xaml
-    /// </summary>
-    public partial class RecepieNotificationDialog : Window
+    public RecepieNotificationDialog(string _loggedPatient)
     {
-        public RecepieNotificationDialog(string _loggedPatient)
-        {
-            InitializeComponent();
+        InitializeComponent();
 
-            LoadRows(RecepieNotificationRepository.GetInstance().GetPatientActiveNotification(_loggedPatient));
-        }
+        LoadRows(PrescriptionNotificationService.GetPatientActiveNotification(_loggedPatient));
+    }
 
-        private void LoadRows(List<RecepieNotification> recepieNotifications)
+    private void LoadRows(List<PrescriptionNotification> recepieNotifications)
+    {
+        dataGrid.Items.Clear();
+        //List<Notification> doctorsNotificationsCopy = doctorsNotifications.ConvertAll(notification => new Notification(notification.Id,notification.OldAppointment,notification.NewAppointment,notification.Doctor,notification.Patient,notification.ActiveForDoctor,notification.ActiveForPatient));
+        foreach (PrescriptionNotification notification in recepieNotifications)
         {
-            dataGrid.Items.Clear();
-            //List<Notification> doctorsNotificationsCopy = doctorsNotifications.ConvertAll(notification => new Notification(notification.Id,notification.OldAppointment,notification.NewAppointment,notification.Doctor,notification.Patient,notification.ActiveForDoctor,notification.ActiveForPatient));
-            foreach (RecepieNotification notification in recepieNotifications)
-            {
-                dataGrid.Items.Add(notification);
-                notification.ActiveForPatient = false;
-                RecepieNotificationRepository.GetInstance().Save();
-                //_notificationRepository.Delete(notification.Id);
-                //_doctorRepository.DeleteNotification(_loggedDoctor, notification);
-            }
-            dataGrid.Items.Refresh();
+            dataGrid.Items.Add(notification);
         }
+        dataGrid.Items.Refresh();
     }
 }

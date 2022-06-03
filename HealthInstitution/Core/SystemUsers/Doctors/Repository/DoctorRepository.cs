@@ -98,17 +98,17 @@ internal class DoctorRepository
         return null;
     }
 
-        public void DeleteExamination(Examination examination)
-        {
-            examination.Doctor.Examinations.Remove(examination);
-            Save();
-        }
+    public void DeleteExamination(Examination examination)
+    {
+        examination.Doctor.Examinations.Remove(examination);
+        Save();
+    }
 
-        public void DeleteOperation(Operation operation)
-        {
-            operation.Doctor.Operations.Remove(operation);
-            Save();
-        }
+    public void DeleteOperation(Operation operation)
+    {
+        operation.Doctor.Operations.Remove(operation);
+        Save();
+    }
 
     public List<Examination> GetScheduledExaminations(Doctor doctor)
     {
@@ -184,5 +184,44 @@ internal class DoctorRepository
     {
         doctor.Notifications.Remove(notification);
         Save();
+    }
+
+    public List<Doctor> GetSearchName(string keyword)
+    {
+        keyword = keyword.Trim();
+        List<Doctor> found = new List<Doctor>();
+
+        foreach (Doctor doctor in DoctorsByUsername.Values)
+        {
+            if (doctor.Name.ToLower().Contains(keyword)) found.Add(doctor);
+        }
+
+        return found;
+    }
+
+    public List<Doctor> GetSearchSurname(string keyword)
+    {
+        keyword = keyword.Trim();
+        List<Doctor> found = new List<Doctor>();
+
+        foreach (Doctor doctor in DoctorsByUsername.Values)
+        {
+            if (doctor.Surname.ToLower().Contains(keyword)) found.Add(doctor);
+        }
+
+        return found;
+    }
+
+    public List<Doctor> GetSearchSpeciality(string keyword)
+    {
+        keyword = keyword.Trim();
+        List<Doctor> found = new List<Doctor>();
+
+        foreach (Doctor doctor in DoctorsByUsername.Values)
+        {
+            if (doctor.Specialty.ToString().ToLower().Contains(keyword)) found.Add(doctor);
+        }
+
+        return found;
     }
 }
