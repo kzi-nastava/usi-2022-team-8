@@ -35,7 +35,7 @@ namespace HealthInstitution.Core.Prescriptions
             s_prescriptionRepository.Delete(id);
         }
 
-        private static bool IsPatientAlergic(MedicalRecord medicalRecord, List<Ingredient> ingredients)
+        public static bool IsPatientAlergic(MedicalRecord medicalRecord, List<Ingredient> ingredients)
         {
             /*foreach (var ingredient in ingredients)
             {

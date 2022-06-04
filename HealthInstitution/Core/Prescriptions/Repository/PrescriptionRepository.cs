@@ -120,6 +120,7 @@ namespace HealthInstitution.Core.Prescriptions.Repository
             prescription.DailyDose = byPrescription.DailyDose;
             prescription.TimeOfUse = byPrescription.TimeOfUse;
             prescription.Drug = byPrescription.Drug;
+            prescription.HourlyRate = byPrescription.HourlyRate;
             PrescriptionById[id] = prescription;
             Save();
         }

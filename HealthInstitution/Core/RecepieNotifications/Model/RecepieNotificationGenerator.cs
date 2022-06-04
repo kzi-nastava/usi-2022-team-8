@@ -42,7 +42,7 @@ public class RecepieNotificationGenerator
     private DateTime CalculateFirstDatetime(RecepieNotificationSettings setting)
     {
         DateTime lastDateTime = GetLastDateTime(setting);
-        var firstDate = setting.Prescription.dateTime.AddHours(-setting.BeforeAmmount.Hour).AddMinutes(-setting.BeforeAmmount.Minute);
+        var firstDate = setting.Prescription.HourlyRate.AddHours(-setting.BeforeAmmount.Hour).AddMinutes(-setting.BeforeAmmount.Minute);
         lastDateTime = lastDateTime.AddMinutes(firstDate.Minute);
         lastDateTime = lastDateTime.AddHours(firstDate.Hour);
         return lastDateTime;
