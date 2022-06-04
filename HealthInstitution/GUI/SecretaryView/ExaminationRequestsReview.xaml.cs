@@ -1,4 +1,5 @@
-﻿using HealthInstitution.Core.ScheduleEditRequests.Model;
+﻿using HealthInstitution.Core.ScheduleEditRequests;
+using HealthInstitution.Core.ScheduleEditRequests.Model;
 using HealthInstitution.Core.ScheduleEditRequests.Repository;
 using System;
 using System.Collections.Generic;
@@ -29,7 +30,7 @@ namespace HealthInstitution.GUI.UserWindow
         private void LoadRows()
         {
             dataGrid.Items.Clear();
-            List<ScheduleEditRequest> scheduleEditRequests = ScheduleEditRequestFileRepository.GetInstance().Requests;
+            List<ScheduleEditRequest> scheduleEditRequests = ScheduleEditRequestService.GetAll();
             foreach (ScheduleEditRequest scheduleEditRequest in scheduleEditRequests)
             {
                 dataGrid.Items.Add(scheduleEditRequest);
@@ -42,8 +43,7 @@ namespace HealthInstitution.GUI.UserWindow
             ScheduleEditRequest selectedRequest = (ScheduleEditRequest)dataGrid.SelectedItem;  
             if(selectedRequest!=null)
             {
-                ScheduleEditRequestFileRepository scheduleEditRequestRepository = ScheduleEditRequestFileRepository.GetInstance();
-                scheduleEditRequestRepository.AcceptScheduleEditRequests(selectedRequest.Id);
+                ScheduleEditRequestService.AcceptScheduleEditRequests(selectedRequest.Id);
             }
             LoadRows();
         }
@@ -53,8 +53,7 @@ namespace HealthInstitution.GUI.UserWindow
             ScheduleEditRequest selectedRequest = (ScheduleEditRequest)dataGrid.SelectedItem;
             if (selectedRequest != null)
             {
-                ScheduleEditRequestFileRepository scheduleEditRequestRepository = ScheduleEditRequestFileRepository.GetInstance();
-                scheduleEditRequestRepository.RejectScheduleEditRequests(selectedRequest.Id);
+                ScheduleEditRequestService.RejectScheduleEditRequests(selectedRequest.Id);
             }
             LoadRows();
         }

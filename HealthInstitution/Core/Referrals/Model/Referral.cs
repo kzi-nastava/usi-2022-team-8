@@ -21,6 +21,15 @@ public class Referral
         this.Active= active;
         this.ReferredSpecialty = referredSpecialty;
     }
+
+    public Referral(ReferralDTO referralDTO)
+    {
+        this.Type = referralDTO.Type;
+        this.PrescribedBy = referralDTO.PrescribedBy;
+        this.ReferredDoctor = referralDTO.ReferredDoctor;
+        this.ReferredSpecialty = referralDTO.ReferredSpecialty;
+        this.Active = true;
+    }
 }
 
 public enum ReferralType

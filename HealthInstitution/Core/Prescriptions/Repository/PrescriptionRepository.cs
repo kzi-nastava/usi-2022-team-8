@@ -9,9 +9,9 @@ using System.Text.Json.Serialization;
 
 namespace HealthInstitution.Core.Prescriptions.Repository
 {
-    internal class PrescriptionRepository
+    public class PrescriptionRepository : IPrescriptionRepository
     {
-        private int _maxId;
+        public int maxId;
         private String _fileName;
         public List<Prescription> Prescriptions { get; set; }
         public Dictionary<int, Prescription> PrescriptionById { get; set; }
@@ -24,7 +24,7 @@ namespace HealthInstitution.Core.Prescriptions.Repository
 
         private PrescriptionRepository(string fileName) //singleton
         {
-            this._maxId = 0;
+            this.maxId = 0;
             this._fileName = fileName;
             this.Prescriptions = new List<Prescription>();
             this.PrescriptionById = new Dictionary<int, Prescription>();
@@ -49,9 +49,9 @@ namespace HealthInstitution.Core.Prescriptions.Repository
             Dictionary<int, Drug> drugById = DrugRepository.GetInstance().DrugById;
             PrescriptionTime prescriptionTime;
             Enum.TryParse<PrescriptionTime>((string)prescription["timeOfUse"], out prescriptionTime);
-            var dt = (string)prescription["dateTime"];
+            var dt = (string)prescription["hourlyRate"];
             string format = "MM/dd/yyyy HH:mm:ss";
-            bool parse = DateTime.TryParseExact((string)prescription["dateTime"], format, null, DateTimeStyles.None, out var dateTime);
+            bool parse = DateTime.TryParseExact((string)prescription["hourlyRate"], format, null, DateTimeStyles.None, out var dateTime);
             return new Prescription((int)prescription["id"], (int)prescription["dailyDose"], prescriptionTime, drugById[(int)prescription["drug"]], dateTime);
         }
 
@@ -62,9 +62,9 @@ namespace HealthInstitution.Core.Prescriptions.Repository
             foreach (var prescription in prescriptions)
             {
                 Prescription loadedPrescription = Parse(prescription);
-                if (loadedPrescription.Id > _maxId)
+                if (loadedPrescription.Id > maxId)
                 {
-                    _maxId = loadedPrescription.Id;
+                    maxId = loadedPrescription.Id;
                 }
                 this.Prescriptions.Add(loadedPrescription);
                 this.PrescriptionById[loadedPrescription.Id] = loadedPrescription;
@@ -105,27 +105,22 @@ namespace HealthInstitution.Core.Prescriptions.Repository
             return null;
         }
 
-        public Prescription Add(PrescriptionDTO prescriptionDTO)
+        public Prescription Add(Prescription prescription)
         {
-            this._maxId++;
-            int id = this._maxId;
-            int dailyDose = prescriptionDTO.DailyDose;
-            PrescriptionTime timeOfUse = prescriptionDTO.TimeOfUse;
-            Drug drug = prescriptionDTO.Drug;
-
-            Prescription prescription = new Prescription(id, dailyDose, timeOfUse, drug, prescriptionDTO.showTime);
+            prescription.Id = ++maxId;
             this.Prescriptions.Add(prescription);
-            this.PrescriptionById[id] = prescription;
+            this.PrescriptionById[prescription.Id] = prescription;
             Save();
             return prescription;
         }
 
-        public void Update(int id, PrescriptionDTO prescriptionDTO)
+        public void Update(int id, Prescription byPrescription)
         {
             Prescription prescription = GetById(id);
-            prescription.DailyDose = prescriptionDTO.DailyDose;
-            prescription.TimeOfUse = prescriptionDTO.TimeOfUse;
-            prescription.Drug = prescriptionDTO.Drug;
+            prescription.DailyDose = byPrescription.DailyDose;
+            prescription.TimeOfUse = byPrescription.TimeOfUse;
+            prescription.Drug = byPrescription.Drug;
+            prescription.HourlyRate = byPrescription.HourlyRate;
             PrescriptionById[id] = prescription;
             Save();
         }

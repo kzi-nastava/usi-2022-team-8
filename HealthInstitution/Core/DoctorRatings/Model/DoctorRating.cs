@@ -17,11 +17,11 @@ public class DoctorRating
         return Scores.Average();
     }
 
-    public void AddToScore(int score)
+    /*public void AddToScore(int score)
     {
         Scores.Add(score);
         DoctorRepository.GetInstance().ChangeRating(Username, GetAverage());
-    }
+    }*/
 
     public DoctorRating(string username)
     {

@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.Operations.Repository
 {
-    internal class OperationDoctorRepository
+    public class OperationDoctorRepository : IOperationDoctorRepository
     {
         private String _fileName;
         private OperationDoctorRepository(String fileName)
@@ -34,34 +34,34 @@ namespace HealthInstitution.Core.Operations.Repository
             }
         }
 
-    public void LoadFromFile()
-    {
-        var doctorsByUsername = DoctorRepository.GetInstance().DoctorsByUsername;
-        var operationsById = OperationRepository.GetInstance().OperationsById;
-        var operationIdsDoctorUsernames = JArray.Parse(File.ReadAllText(this._fileName));
-        foreach (var pair in operationIdsDoctorUsernames)
+        public void LoadFromFile()
         {
-            int id = (int)pair["id"];
-            String username = (String)pair["username"];
-            Doctor doctor = doctorsByUsername[username];
-            Operation operation = operationsById[id];
-            doctor.Operations.Add(operation);
-            operation.Doctor = doctor;
+            var doctorsByUsername = DoctorRepository.GetInstance().DoctorsByUsername;
+            var operationsById = OperationRepository.GetInstance().OperationsById;
+            var operationIdsDoctorUsernames = JArray.Parse(File.ReadAllText(this._fileName));
+            foreach (var pair in operationIdsDoctorUsernames)
+            {
+                int id = (int)pair["id"];
+                String username = (String)pair["username"];
+                Doctor doctor = doctorsByUsername[username];
+                Operation operation = operationsById[id];
+                doctor.Operations.Add(operation);
+                operation.Doctor = doctor;
+            }
         }
-    }
 
-    public void Save()
-    {
-        List<dynamic> operationIdsDoctorUsernames = new List<dynamic>();
-        var operations = OperationRepository.GetInstance().Operations;
-        foreach (var operation in operations)
+        public void Save()
         {
-            Doctor doctor = operation.Doctor;
-            operationIdsDoctorUsernames.Add(new { id = operation.Id, username = doctor.Username });
-        }
+            List<dynamic> operationIdsDoctorUsernames = new List<dynamic>();
+            var operations = OperationRepository.GetInstance().Operations;
+            foreach (var operation in operations)
+            {
+                Doctor doctor = operation.Doctor;
+                operationIdsDoctorUsernames.Add(new { id = operation.Id, username = doctor.Username });
+            }
             var allPairs = JsonSerializer.Serialize(operationIdsDoctorUsernames);
             File.WriteAllText(this._fileName, allPairs);
         }
-}
+    }
 }
 

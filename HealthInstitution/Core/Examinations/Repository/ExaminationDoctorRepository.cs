@@ -12,9 +12,10 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.Examinations.Repository
 {
-    internal class ExaminationDoctorRepository
+    public class ExaminationDoctorRepository : IExaminationDoctorRepository
     {
         private String _fileName;
+
         private ExaminationDoctorRepository(String fileName)
         {
             this._fileName = fileName;

@@ -1,7 +1,10 @@
-﻿using HealthInstitution.Core.MedicalRecords.Model;
+﻿using HealthInstitution.Core.MedicalRecords;
+using HealthInstitution.Core.MedicalRecords.Model;
 using HealthInstitution.Core.MedicalRecords.Repository;
+using HealthInstitution.Core.Operations;
 using HealthInstitution.Core.Operations.Model;
 using HealthInstitution.Core.Operations.Repository;
+using HealthInstitution.Core.SystemUsers.Patients;
 using HealthInstitution.Core.SystemUsers.Patients.Model;
 using HealthInstitution.Core.SystemUsers.Patients.Repository;
 using HealthInstitution.Core.SystemUsers.Users.Model;
@@ -32,7 +35,7 @@ namespace HealthInstitution.GUI.DoctorView
         private void PatientComboBox_Loaded(object sender, RoutedEventArgs e)
         {
             var patientComboBox = sender as System.Windows.Controls.ComboBox;
-            List<Patient> patients = PatientRepository.GetInstance().Patients;
+            List<Patient> patients = PatientService.GetAll();
             foreach (Patient patient in patients)
             {
                 patientComboBox.Items.Add(patient);
@@ -78,7 +81,7 @@ namespace HealthInstitution.GUI.DoctorView
             appointment = appointment.AddMinutes(minutes);
             int duration = Int32.Parse(durationTextBox.Text);
             Patient patient = (Patient)patientComboBox.SelectedItem;
-            MedicalRecord medicalRecord = MedicalRecordRepository.GetInstance().GetByPatientUsername(patient);
+            MedicalRecord medicalRecord = MedicalRecordService.GetByPatientUsername(patient);
             return new OperationDTO(appointment, duration, null, _selectedOperation.Doctor, medicalRecord);
         }
         private void Submit_Click(object sender, RoutedEventArgs e)
@@ -86,8 +89,7 @@ namespace HealthInstitution.GUI.DoctorView
             try
             {
                 OperationDTO operationDTO = CreateOperationDTOFromInputData();
-                operationDTO.Validate();
-                OperationRepository.GetInstance().Update(this._selectedOperation.Id, operationDTO);
+                OperationService.Update(this._selectedOperation.Id, operationDTO);
                 this.Close();
             }
             catch (Exception ex)

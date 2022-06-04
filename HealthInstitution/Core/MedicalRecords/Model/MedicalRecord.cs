@@ -1,6 +1,7 @@
 using HealthInstitution.Core.Prescriptions.Model;
 using HealthInstitution.Core.Referrals.Model;
 using HealthInstitution.Core.SystemUsers.Patients.Model;
+
 namespace HealthInstitution.Core.MedicalRecords.Model;
 
 public class MedicalRecord
@@ -20,6 +21,17 @@ public class MedicalRecord
         this.PreviousIllnesses = previousIllnesses;
         this.Allergens = allergens;
         this.Patient = patient;
+        this.Prescriptions = new List<Prescription>();
+        this.Referrals = new List<Referral>();
+    }
+
+    public MedicalRecord(MedicalRecordDTO medicalRecordDTO)
+    {
+        this.Height = medicalRecordDTO.Height;
+        this.Weight = medicalRecordDTO.Weight;
+        this.PreviousIllnesses = medicalRecordDTO.PreviousIllnesses;
+        this.Allergens = medicalRecordDTO.Allergens;
+        this.Patient = medicalRecordDTO.Patient;
         this.Prescriptions = new List<Prescription>();
         this.Referrals = new List<Referral>();
     }

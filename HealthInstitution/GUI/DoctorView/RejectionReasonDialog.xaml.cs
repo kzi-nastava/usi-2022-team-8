@@ -1,4 +1,5 @@
-﻿using HealthInstitution.Core.Drugs.Model;
+﻿using HealthInstitution.Core.Drugs;
+using HealthInstitution.Core.Drugs.Model;
 using HealthInstitution.Core.Drugs.Repository;
 using System;
 using System.Collections.Generic;
@@ -22,7 +23,6 @@ namespace HealthInstitution.GUI.DoctorView
     public partial class RejectionReasonDialog : Window
     {
         private Drug _selectedDrug;
-        private DrugRepository _drugRepository = DrugRepository.GetInstance();
         public RejectionReasonDialog(Drug drug)
         {
             this._selectedDrug = drug;
@@ -38,7 +38,8 @@ namespace HealthInstitution.GUI.DoctorView
             }
             else
             {
-                _drugRepository.Reject(_selectedDrug, rejectionReason);
+                DrugVerificationService.Reject(_selectedDrug, rejectionReason);
+                System.Windows.MessageBox.Show("Successfull rejection!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 Close();
             }
         }

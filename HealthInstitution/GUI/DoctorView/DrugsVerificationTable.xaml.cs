@@ -1,4 +1,5 @@
-﻿using HealthInstitution.Core.Drugs.Model;
+﻿using HealthInstitution.Core.Drugs;
+using HealthInstitution.Core.Drugs.Model;
 using HealthInstitution.Core.Drugs.Repository;
 using System;
 using System.Collections.Generic;
@@ -21,8 +22,6 @@ namespace HealthInstitution.GUI.DoctorView
     /// </summary>
     public partial class DrugsVerificationTable : Window
     {
-
-        private DrugRepository _drugRepository = DrugRepository.GetInstance();
         public DrugsVerificationTable()
         {
             InitializeComponent();
@@ -32,7 +31,7 @@ namespace HealthInstitution.GUI.DoctorView
         private void LoadRows()
         {
             dataGrid.Items.Clear();
-            List<Drug> drugs = _drugRepository.GetAllCreated();
+            List<Drug> drugs = DrugService.GetAllCreated();
             foreach (Drug drug in drugs)
             {
                 dataGrid.Items.Add(drug);
@@ -43,7 +42,7 @@ namespace HealthInstitution.GUI.DoctorView
         {
             Drug selectedDrug = (Drug)dataGrid.SelectedItem;
             System.Windows.MessageBox.Show("You have accepted a new drug!", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
-            _drugRepository.Accept(selectedDrug);
+            DrugVerificationService.Accept(selectedDrug);
             dataGrid.Items.Remove(selectedDrug);
         }
 
@@ -52,8 +51,6 @@ namespace HealthInstitution.GUI.DoctorView
             Drug selectedDrug = (Drug)dataGrid.SelectedItem;
             RejectionReasonDialog rejectionReasonDialog = new RejectionReasonDialog(selectedDrug);
             rejectionReasonDialog.ShowDialog();
-            /*EditExaminationDialog editExaminationDialog = new EditExaminationDialog(selectedExamination);
-            editExaminationDialog.ShowDialog();*/
             LoadRows();
             dataGrid.Items.Refresh();
         }

@@ -7,7 +7,7 @@ using HealthInstitution.Core.SystemUsers.Patients.Model;
 
 namespace HealthInstitution.Core.Polls.Model
 {
-    internal class Grade
+    public class Grade
     {
         public String Comment { get; set; }
         public int Rate { get; set; }

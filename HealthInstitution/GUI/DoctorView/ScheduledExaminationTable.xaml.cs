@@ -1,4 +1,6 @@
-﻿using HealthInstitution.Core.Examinations.Model;
+﻿using HealthInstitution.Core;
+using HealthInstitution.Core.Examinations;
+using HealthInstitution.Core.Examinations.Model;
 using HealthInstitution.Core.MedicalRecords.Model;
 using HealthInstitution.Core.Operations.Model;
 using HealthInstitution.Core.Operations.Repository;
@@ -26,7 +28,6 @@ namespace HealthInstitution.GUI.DoctorView
     public partial class ScheduledExaminationTable : Window
     {
         private Doctor _loggedDoctor;
-        private DoctorRepository _doctorRepository = DoctorRepository.GetInstance();
         public ScheduledExaminationTable(Doctor doctor)
         {
             this._loggedDoctor = doctor;   
@@ -38,16 +39,16 @@ namespace HealthInstitution.GUI.DoctorView
         private void LoadOperationRows()
         {
             dataGrid.Items.Clear();
-            List<Operation> scheduledOperations = _doctorRepository.GetScheduledOperations(_loggedDoctor);
-            List<Operation> selectedOperations = new List<Operation>();
+            List<Operation> scheduledOperations = TimetableService.GetScheduledOperations(_loggedDoctor);
+            List<Operation> selectedOperations;
             if (upcomingDaysRadioButton.IsChecked == true)
             {
-                selectedOperations = _doctorRepository.GetOperationsInThreeDays(scheduledOperations);
+                selectedOperations = TimetableService.GetOperationsInThreeDays(scheduledOperations);
             }
             else
             {
                 DateTime date = datePicker.SelectedDate.Value.Date;
-                selectedOperations = _doctorRepository.GetOperationsByDate(scheduledOperations, date);
+                selectedOperations = TimetableService.GetOperationsByDate(scheduledOperations, date);
             }
             foreach (Operation operation in selectedOperations)
             {
@@ -58,15 +59,15 @@ namespace HealthInstitution.GUI.DoctorView
         public void LoadExaminationRows()
         {
             dataGrid.Items.Clear();
-            List<Examination> scheduledExaminations = _doctorRepository.GetScheduledExaminations(_loggedDoctor);
-            List<Examination> selectedExaminations = new List<Examination>();
+            List<Examination> scheduledExaminations = TimetableService.GetScheduledExaminations(_loggedDoctor);
+            List<Examination> selectedExaminations;
             if ((bool)upcomingDaysRadioButton.IsChecked)
             {
-                selectedExaminations = _doctorRepository.GetExaminationsInThreeDays(scheduledExaminations);
+                selectedExaminations = TimetableService.GetExaminationsInThreeDays(scheduledExaminations);
             } else
             {
                 DateTime date = datePicker.SelectedDate.Value.Date;
-                selectedExaminations = _doctorRepository.GetExaminationsByDate(scheduledExaminations, date);
+                selectedExaminations = TimetableService.GetExaminationsByDate(scheduledExaminations, date);
             }
             foreach (var examination in selectedExaminations)
             {
@@ -116,23 +117,15 @@ namespace HealthInstitution.GUI.DoctorView
             return true;
         }
 
-        private bool IsExaminationReadyForPerforming(Examination selectedExamination)
-        {
-            if (!(selectedExamination.Appointment <= DateTime.Now))
-            {
-                System.Windows.MessageBox.Show("Date of examination didn't pass!", "Error", MessageBoxButton.OKCancel, MessageBoxImage.Error);
-                return false;
-            }
-            return true;
-        }
         private void StartExamination_Click(object sender, RoutedEventArgs e)
         {
-            bool isSelected = IsExaminationSelected();
-            if (isSelected)
+            if (IsExaminationSelected())
             { 
                 Examination selectedExamination = (Examination)dataGrid.SelectedItem;
-                if (IsExaminationReadyForPerforming(selectedExamination))
+                if (ExaminationService.IsReadyForPerforming(selectedExamination))
                     new PerformExaminationDialog(selectedExamination).ShowDialog();
+                else
+                    System.Windows.MessageBox.Show("Date of examination didn't pass!", "Error", MessageBoxButton.OKCancel, MessageBoxImage.Error);
             }
             dataGrid.Items.Refresh();
         }

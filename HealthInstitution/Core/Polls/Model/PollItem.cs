@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.Polls.Model
 {
-    internal class PollItem
+    public class PollItem
     {
         public String Name { get; set; }
         public List<Grade> Grades { get; set; }

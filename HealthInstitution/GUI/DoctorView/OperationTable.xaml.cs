@@ -1,5 +1,7 @@
-﻿using HealthInstitution.Core.Operations.Model;
+﻿using HealthInstitution.Core.Operations;
+using HealthInstitution.Core.Operations.Model;
 using HealthInstitution.Core.Operations.Repository;
+using HealthInstitution.Core.SystemUsers.Doctors;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using HealthInstitution.Core.SystemUsers.Doctors.Repository;
 using System.Windows;
@@ -11,9 +13,6 @@ namespace HealthInstitution.GUI.DoctorView
     /// </summary>
     public partial class OperationTable : Window
     {
-        private OperationRepository _operationRepository = OperationRepository.GetInstance();
-        private DoctorRepository _doctorRepository = DoctorRepository.GetInstance();
-        private OperationDoctorRepository _operationDoctorRepository = OperationDoctorRepository.GetInstance();  
         private Doctor _loggedDoctor;
         public OperationTable(Doctor doctor)
         {
@@ -24,7 +23,7 @@ namespace HealthInstitution.GUI.DoctorView
         private void LoadRows()
         {
             dataGrid.Items.Clear();
-            List<Operation> doctorOperations = this._loggedDoctor.Operations;
+            List<Operation> doctorOperations = OperationService.GetByDoctor(_loggedDoctor.Username);
             foreach (Operation operation in doctorOperations)
             {
                 dataGrid.Items.Add(operation);
@@ -48,13 +47,13 @@ namespace HealthInstitution.GUI.DoctorView
 
         private void DeleteButton_Click(object sender, RoutedEventArgs e)
         {
-            var answer = System.Windows.MessageBox.Show("Are you sure you want to delete selected examination", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+            var answer = System.Windows.MessageBox.Show("Are you sure you want to delete selected operation?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning);
             if (answer == MessageBoxResult.Yes)
             {
                 Operation selectedOperation = (Operation)dataGrid.SelectedItem;
                 dataGrid.Items.Remove(selectedOperation);
-                _operationRepository.Delete(selectedOperation.Id);
-                _doctorRepository.DeleteOperation(_loggedDoctor, selectedOperation);
+                OperationService.Delete(selectedOperation.Id);
+                DoctorService.DeleteOperation(selectedOperation);
             }
         }
     }

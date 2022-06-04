@@ -1,8 +1,10 @@
 ﻿using System.Windows;
 using System.Windows.Controls;
 using HealthInstitution.Core.Prescriptions.Model;
-using HealthInstitution.Core.Prescriptions.Repository;
-using HealthInstitution.Core.RecepieNotifications.Model;
+using HealthInstitution.Core.PrescriptionNotifications.Model;
+using HealthInstitution.Core.PrescriptionNotifications.Service;
+using HealthInstitution.Core.MedicalRecords;
+using HealthInstitution.Core.SystemUsers.Patients;
 
 namespace HealthInstitution.GUI.PatientView;
 
@@ -20,7 +22,8 @@ public partial class RecepieNotificationSettingsDialog : Window
     {
         InitializeComponent();
         _loggedPatinet = loggedPatient;
-        _prescriptions = PrescriptionRepository.GetInstance().Prescriptions;
+        _prescriptions = MedicalRecordService.GetByPatientUsername(PatientService.GetByUsername(loggedPatient)).Prescriptions;
+        LoadRows();
     }
 
     private void HourComboBox_Loaded(object sender, RoutedEventArgs e)
@@ -66,10 +69,10 @@ public partial class RecepieNotificationSettingsDialog : Window
         Prescription prescription = _prescriptions[dataGrid.SelectedIndex];
         DateTime before = DateTime.Today;
         before = before.AddMinutes(_minutes).AddHours(_hours);
-        RecepieNotificationSettings recepieNotificationSettings = new RecepieNotificationSettings(before, _loggedPatinet, prescription, DateTime.Now, prescription.Id);
-        RecepieNotificationGenerator recepieNotificationGenerator = new RecepieNotificationGenerator(_loggedPatinet);
-        List<DateTime> dateTimes = recepieNotificationGenerator.GenerateDateTimes(recepieNotificationSettings);
-        recepieNotificationGenerator.GenerateCronJobs(dateTimes, recepieNotificationSettings);
+        PrescriptionNotificationSettings recepieNotificationSettings = new PrescriptionNotificationSettings(before, _loggedPatinet, prescription, DateTime.Now, prescription.Id);
+        PrescriptionNotificationService.UpdateSettings(recepieNotificationSettings.Id, recepieNotificationSettings);
+        List<DateTime> dateTimes = PrescriptionNotificationService.GenerateDateTimes(recepieNotificationSettings);
+        PrescriptionNotificationService.GenerateCronJobs(dateTimes, recepieNotificationSettings, _loggedPatinet);
     }
 
     private void LoadRows()

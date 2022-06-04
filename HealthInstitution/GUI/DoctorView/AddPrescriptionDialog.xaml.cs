@@ -1,8 +1,11 @@
-﻿using HealthInstitution.Core.Drugs.Model;
+﻿using HealthInstitution.Core.Drugs;
+using HealthInstitution.Core.Drugs.Model;
 using HealthInstitution.Core.Drugs.Repository;
 using HealthInstitution.Core.Ingredients.Model;
+using HealthInstitution.Core.MedicalRecords;
 using HealthInstitution.Core.MedicalRecords.Model;
 using HealthInstitution.Core.MedicalRecords.Repository;
+using HealthInstitution.Core.Prescriptions;
 using HealthInstitution.Core.Prescriptions.Model;
 using HealthInstitution.Core.Prescriptions.Repository;
 using System;
@@ -27,13 +30,32 @@ namespace HealthInstitution.GUI.DoctorView
     public partial class AddPrescriptionDialog : Window
     {
         private MedicalRecord _medicalRecord;
-        private DrugRepository _drugRepository = DrugRepository.GetInstance();
-        private PrescriptionRepository _prescriptionRepository = PrescriptionRepository.GetInstance();
-        private MedicalRecordRepository _medicalRecordRepository = MedicalRecordRepository.GetInstance();
         public AddPrescriptionDialog(MedicalRecord medicalRecord)
         {
             InitializeComponent();
             this._medicalRecord = medicalRecord;
+        }
+
+        private void HourComboBox_Loaded(object sender, RoutedEventArgs e)
+        {
+            var hourComboBox = sender as System.Windows.Controls.ComboBox;
+            List<String> hours = new List<String>();
+            for (int i = 8; i <= 12; i++)
+            {
+                hours.Add(i.ToString());
+            }
+            hourComboBox.ItemsSource = hours;
+            hourComboBox.SelectedIndex = 0;
+        }
+
+        private void MinuteComboBox_Loaded(object sender, RoutedEventArgs e)
+        {
+            var minuteComboBox = sender as System.Windows.Controls.ComboBox;
+            List<String> minutes = new List<String>();
+            minutes.Add("00");
+            minutes.Add("30");
+            minuteComboBox.ItemsSource = minutes;
+            minuteComboBox.SelectedIndex = 0;
         }
 
         private void TimeComboBox_Loaded(object sender, RoutedEventArgs e)
@@ -50,34 +72,26 @@ namespace HealthInstitution.GUI.DoctorView
         private void DrugComboBox_Loaded(object sender, RoutedEventArgs e)
         {
             var drugComboBox = sender as System.Windows.Controls.ComboBox;
-            List<Drug> drugs = _drugRepository.GetAll();
+            List<Drug> drugs = DrugService.GetAll();
             foreach (Drug drug in drugs)
             {
                 drugComboBox.Items.Add(drug);
             }
-            /*drugComboBox.ItemsSource = drugs;*/
             drugComboBox.SelectedIndex = 0;
             drugComboBox.Items.Refresh();
-        }
-
-        private bool IsPatientAlergic(List<Ingredient> ingredients)
-        {
-            foreach (var ingredient in ingredients)
-            {
-                if (_medicalRecord.Allergens.Contains(ingredient.Name))
-                    return true;
-            }
-            return false;
         }
 
         private PrescriptionDTO CreatePrescriptionDTOFromInputData()
         {
             Drug drug = (Drug)drugComboBox.SelectedItem;
-            if (IsPatientAlergic(drug.Ingredients))
+            if (PrescriptionService.IsPatientAlergic(_medicalRecord,drug.Ingredients))
                 throw new Exception("Patient is alergic to drug ingredients");
+            int minutes = Int32.Parse(minuteComboBox.Text);
+            int hours = Int32.Parse(hourComboBox.Text);
+            DateTime hourlyRate = DateTime.Now.AddHours(hours).AddMinutes(minutes);
             PrescriptionTime timeOfUse = (PrescriptionTime)timeComboBox.SelectedIndex;
             int dailyDose = Int32.Parse(doseTextBox.Text);
-            PrescriptionDTO prescription = new PrescriptionDTO(dailyDose, timeOfUse, drug);
+            PrescriptionDTO prescription = new PrescriptionDTO(dailyDose, timeOfUse, drug, hourlyRate);
             return prescription;
         }
 
@@ -86,8 +100,8 @@ namespace HealthInstitution.GUI.DoctorView
             try
             {
                 PrescriptionDTO prescriptionDTO = CreatePrescriptionDTOFromInputData();
-                Prescription prescription = _prescriptionRepository.Add(prescriptionDTO);
-                _medicalRecordRepository.AddPrescription(_medicalRecord.Patient, prescription);
+                Prescription prescription = PrescriptionService.Add(prescriptionDTO);
+                MedicalRecordService.AddPrescription(_medicalRecord.Patient, prescription);
                 System.Windows.MessageBox.Show("You have created the prescription!", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
                 this.Close();
             }

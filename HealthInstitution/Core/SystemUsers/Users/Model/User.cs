@@ -1,4 +1,6 @@
 using System.Text.Json;
+using System.Text.Json.Serialization;
+
 namespace HealthInstitution.Core.SystemUsers.Users.Model;
 
 public class User
@@ -10,6 +12,7 @@ public class User
     public String Surname { get; set; }
     public BlockState Blocked { get; set; }
 
+    [JsonConstructor]
     public User(UserType type, String username, String password, String name, String surname)
     {
         this.Type = type;
@@ -17,6 +20,16 @@ public class User
         this.Password = password;
         this.Name = name;
         this.Surname = surname;
+        this.Blocked = BlockState.NotBlocked;
+    }
+
+    public User(UserDTO userDTO)
+    {
+        this.Type = userDTO.Type;
+        this.Username = userDTO.Username;
+        this.Password = userDTO.Password;
+        this.Name = userDTO.Name;
+        this.Surname = userDTO.Surname;
         this.Blocked = BlockState.NotBlocked;
     }
 }

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.RestRequests
 {
-    internal class RestRequestService
+    public class RestRequestService
     {
     }
 }

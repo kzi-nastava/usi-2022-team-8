@@ -10,7 +10,7 @@ using System.Windows;
 
 namespace HealthInstitution.Core.TrollCounters.Repository;
 
-public class TrollCounterFileRepository
+public class TrollCounterFileRepository : ITrollCounterFileRepository
 {
     private String _fileName;
     public List<TrollCounter> Counters { get; set; }
@@ -59,75 +59,47 @@ public class TrollCounterFileRepository
         File.WriteAllText(this._fileName, allTrollCounters);
     }
 
+    public List<TrollCounter> GetAll()
+    {
+        return this.Counters;
+    }
+
     public TrollCounter GetById(string id)
     {
         return this.CountersById[id];
     }
 
-    public void Add(string username)
+    public void Add(TrollCounter trollCounter)
     {
-        TrollCounter trollCounter = new TrollCounter(username);
-        this.Counters.Add(trollCounter);
-        this.CountersById.Add(username, trollCounter);
+        Counters.Add(trollCounter);
+        CountersById.Add(trollCounter.Username, trollCounter);
         Save();
     }
 
-    public void Delete(string id)
+    public void Delete(TrollCounter trollCounter)
     {
-        TrollCounter trollCounter = CountersById[id];
-        if (trollCounter != null)
-        {
-            this.CountersById.Remove(trollCounter.Username);
-            this.Counters.Remove(trollCounter);
-            Save();
-        }
-    }
-
-    public void TrollCheck(string username)
-    {
-        try
-        {
-            CheckCreateTroll(username);
-            CheckEditDeleteTroll(username);
-        }
-        catch (Exception ex)
-        {
-            System.Windows.MessageBox.Show(ex.Message, "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
-            BlockUser(username);
-            Environment.Exit(0);
-        }
-    }
-
-    private void BlockUser(string username)
-    {
-        BlockUserUser(username);
-        BlocUserPatient(username);
-    }
-
-    private void BlockUserUser(string username)
-    {
-        var userRepository = UserRepository.GetInstance();
-        var user = userRepository.GetByUsername(username);
-        user.Blocked = BlockState.BlockedBySystem;
-        userRepository.Save();
-    }
-
-    private void BlocUserPatient(string username)
-    {
-        var patientRepository = PatientRepository.GetInstance();
-        var patient = patientRepository.GetByUsername(username);
-        patient.Blocked = BlockState.BlockedBySystem;
-
-        patientRepository.Save();
+        this.CountersById.Remove(trollCounter.Username);
+        this.Counters.Remove(trollCounter);
+        Save();
     }
 
     public void CheckCreateTroll(string username)
     {
-        if (this.CountersById[username].CreateDates.Count() > 8) throw new Exception("Created too many examinations");
+        if (CountersById[username].CreateDates.Count() > 8) throw new Exception("Created too many examinations");
     }
 
     public void CheckEditDeleteTroll(string username)
     {
-        if (this.CountersById[username].EditDeleteDates.Count() >= 5) throw new Exception("Edited too many examinations");
+        if (CountersById[username].EditDeleteDates.Count() >= 5) throw new Exception("Edited too many examinations");
+    }
+    public void AppendEditDeleteDates(string username)
+    {
+        GetById(username).AppendEditDeleteDates(DateTime.Today);
+        Save();
+    }
+    public void AppendCreateDates(string username)
+    {
+        GetById(username).AppendCreateDates(DateTime.Today);
+        Save();
     }
 }

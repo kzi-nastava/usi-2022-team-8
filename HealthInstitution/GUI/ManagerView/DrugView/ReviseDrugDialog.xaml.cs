@@ -1,5 +1,7 @@
-﻿using HealthInstitution.Core.Drugs.Model;
+﻿using HealthInstitution.Core.Drugs;
+using HealthInstitution.Core.Drugs.Model;
 using HealthInstitution.Core.Drugs.Repository;
+using HealthInstitution.Core.Ingredients;
 using HealthInstitution.Core.Ingredients.Model;
 using HealthInstitution.Core.Ingredients.Repository;
 using System;
@@ -23,7 +25,6 @@ namespace HealthInstitution.GUI.ManagerView.DrugView
     /// </summary>
     public partial class ReviseDrugDialog : Window
     {
-        private DrugRepository _drugRepository = DrugRepository.GetInstance();
         private List<Ingredient> _ingredientsForDrug;
         private Drug _drug;
         public ReviseDrugDialog(Drug drug)
@@ -39,7 +40,7 @@ namespace HealthInstitution.GUI.ManagerView.DrugView
         {
             nameBox.Text = _drug.Name;
 
-            foreach (Ingredient ingredient in _drug.Ingredients)
+            foreach (Ingredient ingredient in DrugService.GetIngredients(_drug))
             {
                 _ingredientsForDrug.Add(ingredient);
             }
@@ -47,8 +48,7 @@ namespace HealthInstitution.GUI.ManagerView.DrugView
         }
         private void IngredientsComboBox_Loaded(object sender, RoutedEventArgs e)
         {
-            IngredientRepository ingredientRepository = IngredientRepository.GetInstance();
-            List<Ingredient> ingredients = ingredientRepository.GetAll();
+            List<Ingredient> ingredients = IngredientService.GetAll();
             ingredientsComboBox.ItemsSource = ingredients;
             ingredientsComboBox.SelectedItem = null;
         }
@@ -105,7 +105,7 @@ namespace HealthInstitution.GUI.ManagerView.DrugView
             }
 
             DrugDTO drugDTO = new DrugDTO(name, DrugState.Created, _ingredientsForDrug);
-            _drugRepository.Update(_drug.Id, drugDTO);
+            DrugService.Update(_drug.Id, drugDTO);
             System.Windows.MessageBox.Show("Drug revised and waiting on verification!", "Ingredient creation", MessageBoxButton.OK, MessageBoxImage.Information);
 
             this.Close();
@@ -119,7 +119,7 @@ namespace HealthInstitution.GUI.ManagerView.DrugView
                 return false;
             }
 
-            if (_drug.Name != name && _drugRepository.Contains(name))
+            if (_drug.Name != name && DrugService.Contains(name))
             {
                 System.Windows.MessageBox.Show("This drug name already exist!", "Create error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;

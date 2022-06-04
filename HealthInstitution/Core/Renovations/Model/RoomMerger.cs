@@ -11,5 +11,11 @@ public class RoomMerger : Renovation
         this.RoomForMerge = roomForMerge;
         this.MergedRoom = mergedRoom;
     }
+
+    public RoomMerger(RoomMergerDTO roomMergerDTO) : base(roomMergerDTO)
+    {
+        this.RoomForMerge = roomMergerDTO.RoomForMerge;
+        this.MergedRoom = roomMergerDTO.MergedRoom;
+    }
     
 }

@@ -1,29 +1,10 @@
-﻿using HealthInstitution.Core.Examinations.Repository;
-using HealthInstitution.Core.SystemUsers.Users.Model;
-using HealthInstitution.GUI.PatientWindows;
+﻿using HealthInstitution.GUI.PatientWindows;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-
-using HealthInstitution.GUI.PatientWindows;
-using HealthInstitution.Core.SystemUsers.Users.Model;
-
-using HealthInstitution.Core.TrollCounters.Repository;
-using HealthInstitution.Core.TrollCounters.Model;
-
-using HealthInstitution.Core.Examinations.Repository;
 
 using HealthInstitution.GUI.LoginView;
 using HealthInstitution.GUI.PatientView;
 using HealthInstitution.Core.SystemUsers.Patients.Model;
 using HealthInstitution.Core.Notifications.Model;
-
-using HealthInstitution.Core.SystemUsers.Patients.Model;
 
 namespace HealthInstitution.GUI.UserWindow
 {
@@ -44,7 +25,6 @@ namespace HealthInstitution.GUI.UserWindow
 
         private void ShowNotificationsDialog()
         {
-            ExaminationDoctorRepository.GetInstance();
             int activeNotifications = 0;
             foreach (AppointmentNotification notification in this._loggedPatient.Notifications)
             {
@@ -68,24 +48,29 @@ namespace HealthInstitution.GUI.UserWindow
             }
         }
 
-        private void manuallSchedule_Click(object sender, RoutedEventArgs e)
+        private void ManuallSchedule_Click(object sender, RoutedEventArgs e)
         {
             new PatientScheduleWindow(this._loggedPatient).ShowDialog();
         }
 
-        private void recommendedSchedule_Click(object sender, RoutedEventArgs e)
+        private void RecommendedSchedule_Click(object sender, RoutedEventArgs e)
         {
             new RecommendedWindow(this._loggedPatient).ShowDialog();
         }
 
-        private void medicalRecordView_button_Click(object sender, RoutedEventArgs e)
+        private void MedicalRecordView_button_Click(object sender, RoutedEventArgs e)
         {
             new MedicalRecordView(_loggedPatient).ShowDialog();
         }
 
-        private void pickDoctor_button_Click(object sender, RoutedEventArgs e)
+        private void PickDoctor_button_Click(object sender, RoutedEventArgs e)
         {
             new DoctorPickExamination(_loggedPatient).ShowDialog();
+        }
+
+        private void RecepieNotificationSettings_button_Click(object sender, RoutedEventArgs e)
+        {
+            new RecepieNotificationSettingsDialog(_loggedPatient.Username).ShowDialog();
         }
     }
 }

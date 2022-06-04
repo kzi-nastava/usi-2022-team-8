@@ -1,5 +1,7 @@
-﻿using HealthInstitution.Core.Examinations.Model;
+﻿using HealthInstitution.Core.Examinations;
+using HealthInstitution.Core.Examinations.Model;
 using HealthInstitution.Core.Examinations.Repository;
+using HealthInstitution.Core.SystemUsers.Doctors;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using HealthInstitution.Core.SystemUsers.Doctors.Repository;
 using System;
@@ -23,9 +25,6 @@ namespace HealthInstitution.GUI.DoctorView
     /// </summary>
     public partial class ExaminationTable : Window
     {
-        private ExaminationRepository _examinationRepository = ExaminationRepository.GetInstance();
-        private DoctorRepository _doctorRepository = DoctorRepository.GetInstance();
-        private ExaminationDoctorRepository _examinationDoctorRepository = ExaminationDoctorRepository.GetInstance();
         private Doctor _loggedDoctor;
         public ExaminationTable(Doctor doctor)
         {
@@ -37,7 +36,7 @@ namespace HealthInstitution.GUI.DoctorView
         private void LoadRows()
         {
             dataGrid.Items.Clear();
-            List<Examination> doctorExaminations = this._loggedDoctor.Examinations;
+            List<Examination> doctorExaminations = ExaminationService.GetByDoctor(_loggedDoctor.Username);
             foreach (Examination examination in doctorExaminations)
             {
                 dataGrid.Items.Add(examination);
@@ -53,21 +52,20 @@ namespace HealthInstitution.GUI.DoctorView
         private void EditButton_Click(object sender, RoutedEventArgs e)
         {
             Examination selectedExamination = (Examination)dataGrid.SelectedItem;
-            EditExaminationDialog editExaminationDialog = new EditExaminationDialog(selectedExamination);
-            editExaminationDialog.ShowDialog();
+            new EditExaminationDialog(selectedExamination).ShowDialog();
             LoadRows();
             dataGrid.Items.Refresh();
         }
 
         private void DeleteButton_Click(object sender, RoutedEventArgs e)
         {
-            var answer = System.Windows.MessageBox.Show("Are you sure you want to delete selected examination", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+            var answer = System.Windows.MessageBox.Show("Are you sure you want to delete selected examination?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning);
             if (answer == MessageBoxResult.Yes)
             {
                 Examination selectedExamination = (Examination)dataGrid.SelectedItem;
                 dataGrid.Items.Remove(selectedExamination);
-                _examinationRepository.Delete(selectedExamination.Id);
-                _doctorRepository.DeleteExamination(_loggedDoctor, selectedExamination);
+                ExaminationService.Delete(selectedExamination.Id);
+                DoctorService.DeleteExamination(selectedExamination);
             }
         }
     }

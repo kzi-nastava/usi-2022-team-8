@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.EquipmentTransfers.Repository
 {
-    public class EquipmentTransferRepository
+    public class EquipmentTransferRepository : IEquipmentTransferRepository
     {
         private String _fileName;
 
@@ -118,27 +118,24 @@ namespace HealthInstitution.Core.EquipmentTransfers.Repository
             return null;
         }
 
-        public void Add(EquipmentTransferDTO equipmentTransferDTO)
+        public void Add(EquipmentTransfer equipmentTransfer)
         {
             this._maxId++;
             int id = this._maxId;
-            Equipment equipment = equipmentTransferDTO.Equipment;
-            Room? fromRoom = equipmentTransferDTO.FromRoom;
-            Room toRoom = equipmentTransferDTO.ToRoom;
-            DateTime transferTime = equipmentTransferDTO.TransferTime;
-            EquipmentTransfer equipmentTransfer = new EquipmentTransfer(id,equipment,fromRoom,toRoom,transferTime);
+            equipmentTransfer.Id = id;
+
             this.EquipmentTransfers.Add(equipmentTransfer);
             this.EquipmentTransferById.Add(equipmentTransfer.Id, equipmentTransfer);
             Save();
         }
 
-        public void Update(int id, EquipmentTransferDTO equipmentTransferDTO)
+        public void Update(int id, EquipmentTransfer byEquipmentTransfer)
         {
             EquipmentTransfer equipmentTransfer = GetById(id);
-            equipmentTransfer.Equipment = equipmentTransferDTO.Equipment;
-            equipmentTransfer.FromRoom = equipmentTransferDTO.FromRoom;
-            equipmentTransfer.ToRoom = equipmentTransferDTO.ToRoom;
-            equipmentTransfer.TransferTime = equipmentTransferDTO.TransferTime;
+            equipmentTransfer.Equipment = byEquipmentTransfer.Equipment;
+            equipmentTransfer.FromRoom = byEquipmentTransfer.FromRoom;
+            equipmentTransfer.ToRoom = byEquipmentTransfer.ToRoom;
+            equipmentTransfer.TransferTime = byEquipmentTransfer.TransferTime;
             Save();
         }
 

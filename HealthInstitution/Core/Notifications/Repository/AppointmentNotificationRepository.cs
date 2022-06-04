@@ -18,7 +18,7 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.Notifications.Repository
 {
-    internal class AppointmentNotificationRepository
+    public class AppointmentNotificationRepository : IAppointmentNotificationRepository
     {
         private String _fileName;
         public int _maxId { get; set; }
@@ -101,7 +101,19 @@ namespace HealthInstitution.Core.Notifications.Repository
             }
             return null;
         }
-
+        private void AddToCollections(AppointmentNotification notification)
+        {
+            notification.Doctor.Notifications.Add(notification);
+            notification.Patient.Notifications.Add(notification);
+            Notifications.Add(notification);
+            NotificationsById.Add(notification.Id, notification);
+        }
+        private void SaveAll()
+        {
+            Save();
+            AppointmentNotificationPatientRepository.GetInstance().Save();
+            AppointmentNotificationDoctorRepository.GetInstance().Save();
+        }
         public void Add(AppointmentNotificationDTO appointmentNotificationDTO)
         {
             int id = ++this._maxId;
@@ -110,21 +122,15 @@ namespace HealthInstitution.Core.Notifications.Repository
                 notification = new AppointmentNotification(id, null, appointmentNotificationDTO.NewAppointment, appointmentNotificationDTO.Doctor, appointmentNotificationDTO.Patient, true,true);
             else
                 notification = new AppointmentNotification(id, appointmentNotificationDTO.OldAppointment, appointmentNotificationDTO.NewAppointment, appointmentNotificationDTO.Doctor, appointmentNotificationDTO.Patient, true, true);
-            appointmentNotificationDTO.Doctor.Notifications.Add(notification);
-            appointmentNotificationDTO.Patient.Notifications.Add(notification);
-            this.Notifications.Add(notification);
-            this.NotificationsById.Add(id, notification);
-            Save();
-            AppointmentNotificationPatientRepository.GetInstance().Save();
-            AppointmentNotificationDoctorRepository.GetInstance().Save();
-
+            AddToCollections(notification);
+            SaveAll();
         }
 
         public void Delete(int id)
         {
             AppointmentNotification notification=NotificationsById[id];
-            this.Notifications.Remove(notification);
-            this.NotificationsById.Remove(id);
+            Notifications.Remove(notification);
+            NotificationsById.Remove(id);
             Save();
         }
     }

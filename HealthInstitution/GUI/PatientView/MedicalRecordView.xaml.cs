@@ -1,86 +1,64 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-using HealthInstitution.Core.SystemUsers.Users.Model;
+﻿using HealthInstitution.Core.Examinations;
 using HealthInstitution.Core.Examinations.Model;
-using HealthInstitution.Core.Examinations.Repository;
+using HealthInstitution.Core.SystemUsers.Users.Model;
+using System.Windows;
 
-namespace HealthInstitution.GUI.PatientView
+namespace HealthInstitution.GUI.PatientView;
+
+/// <summary>
+/// Interaction logic for MedicalRecordView.xaml
+/// </summary>
+public partial class MedicalRecordView : Window
 {
-    /// <summary>
-    /// Interaction logic for MedicalRecordView.xaml
-    /// </summary>
-    public partial class MedicalRecordView : Window
+    private User _loggedPatient;
+    private List<Examination> _currentExaminations;
+
+    public MedicalRecordView(User loggedPatient)
     {
-        private User _loggedPatient;
-        private List<Examination> _currentExaminations;
+        InitializeComponent();
+        _loggedPatient = loggedPatient;
+        LoadAllRows();
+    }
 
-        public MedicalRecordView(User loggedPatient)
-        {
-            InitializeComponent();
-            _loggedPatient = loggedPatient;
-            loadAllRows();
-        }
+    private void DoctorButton_Click(object sender, RoutedEventArgs e)
+    {
+        LoadRows(ExaminationService.OrderByDoctor(_currentExaminations));
+    }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-        }
+    private void DateButton_Click(object sender, RoutedEventArgs e)
+    {
+        LoadRows(ExaminationService.OrderByDate(_currentExaminations));
+    }
 
-        private void DoctorButton_Click(object sender, RoutedEventArgs e)
-        {
-            _currentExaminations = _currentExaminations.OrderBy(o => o.Doctor.Username).ToList();
-            loadRows(_currentExaminations);
-        }
+    private void SpecializationButton_Click(object sender, RoutedEventArgs e)
+    {
+        LoadRows(ExaminationService.OrderByDoctorSpeciality(_currentExaminations));
+    }
 
-        private void DateButton_Click(object sender, RoutedEventArgs e)
-        {
-            _currentExaminations = _currentExaminations.OrderBy(o => o.Appointment).ToList();
-            loadRows(_currentExaminations);
-        }
+    private void SearchButton_Click(object sender, RoutedEventArgs e)
+    {
+        LoadRows(ExaminationService.GetSearchAnamnesis(searchParameter.Text, _loggedPatient.Username));
+    }
 
-        private void SpecializationButton_Click(object sender, RoutedEventArgs e)
-        {
-            _currentExaminations = _currentExaminations.OrderBy(o => o.Doctor.Specialty).ToList();
-            loadRows(_currentExaminations);
-        }
+    private void LoadAllRows()
+    {
+        LoadRows(ExaminationService.GetCompletedByPatient(_loggedPatient.Username));
+    }
 
-        private void SearchButton_Click(object sender, RoutedEventArgs e)
+    private void LoadRows(List<Examination> examinations)
+    {
+        _currentExaminations = examinations;
+        dataGrid.Items.Clear();
+        foreach (Examination examination in examinations)
         {
-            var result = ExaminationRepository.GetInstance().GetSeachAnamnesis(seachParameter.Text, _loggedPatient.Username);
-            loadRows(result);
+            if (examination.MedicalRecord.Patient.Username.Equals(_loggedPatient.Username))
+                dataGrid.Items.Add(examination);
         }
+        dataGrid.Items.Refresh();
+    }
 
-        private void loadAllRows()
-        {
-            var allRows = ExaminationRepository.GetInstance().GetCompletedByPatient(_loggedPatient.Username);
-            loadRows(allRows);
-        }
-
-        private void loadRows(List<Examination> examinations)
-        {
-            _currentExaminations = examinations;
-            dataGrid.Items.Clear();
-            foreach (Examination examination in examinations)
-            {
-                if (examination.MedicalRecord.Patient.Username.Equals(_loggedPatient.Username))
-                    dataGrid.Items.Add(examination);
-            }
-            dataGrid.Items.Refresh();
-        }
-
-        private void seachParameter_GotFocus(object sender, RoutedEventArgs e)
-        {
-            seachParameter.Clear();
-        }
+    private void SearchParameter_GotFocus(object sender, RoutedEventArgs e)
+    {
+        searchParameter.Clear();
     }
 }

@@ -83,54 +83,54 @@
     <Compile Update="GUI\PatientView\PatientScheduleWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="GUI\SecretaryView\ReferralSchedulingView\AddExaminationWithReferralDialog.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="GUI\PatientView\RecepieNotificationDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="GUI\PatientView\RecepieNotificationSettingsDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="GUI\SecretaryView\AddExaminationWithReferralDialog.xaml.cs">
+    <Compile Update="GUI\SecretaryView\UrgentAppointmentView\AddUrgentExaminationDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="GUI\SecretaryView\AddUrgentExaminationDialog.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="GUI\SecretaryView\AddUrgentOperationDialog.xaml.cs">
+    <Compile Update="GUI\SecretaryView\UrgentAppointmentView\AddUrgentOperationDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="GUI\PatientView\RecommendedWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="GUI\SecretaryView\CreatePatientDialog.xaml.cs">
+    <Compile Update="GUI\SecretaryView\PatientManipulationView\CreatePatientDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="GUI\SecretaryView\DelayExaminationOperationDialog.xaml.cs">
+    <Compile Update="GUI\SecretaryView\UrgentAppointmentView\DelayExaminationOperationDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="GUI\SecretaryView\DynamicEquipmentPurchaseDialog.xaml.cs">
+    <Compile Update="GUI\SecretaryView\EquipmentManipulationView\DynamicEquipmentPurchaseDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="GUI\SecretaryView\DynamicEquipmentReviewDialog.xaml.cs">
+    <Compile Update="GUI\SecretaryView\EquipmentManipulationView\DynamicEquipmentReviewDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="GUI\SecretaryView\DynamicEquipmentTransferDialog.xaml.cs">
+    <Compile Update="GUI\SecretaryView\EquipmentManipulationView\DynamicEquipmentTransferDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="GUI\SecretaryView\PatientReferralsDialog.xaml.cs">
+    <Compile Update="GUI\SecretaryView\ReferralSchedulingView\PatientReferralsDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="GUI\SecretaryView\PatientSelectionDialog.xaml.cs">
+    <Compile Update="GUI\SecretaryView\ReferralSchedulingView\PatientSelectionDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="GUI\SecretaryView\PatientsTable.xaml.cs">
+    <Compile Update="GUI\SecretaryView\PatientManipulationView\PatientsTable.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="GUI\SecretaryView\UpdatePatientDialog.xaml.cs">
+    <Compile Update="GUI\SecretaryView\PatientManipulationView\UpdatePatientDialog.xaml.cs">
     </Compile>
-    <Compile Update="GUI\ManagerView\AddRoomDialog.xaml.cs">
+    <Compile Update="GUI\ManagerView\RoomView\AddRoomDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="GUI\ManagerView\EditRoomDialog.xaml.cs">
+    <Compile Update="GUI\ManagerView\RoomView\EditRoomDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="GUI\ManagerView\EquipmentInspectionDialog.xaml.cs">
@@ -142,16 +142,16 @@
     <Compile Update="GUI\ManagerView\EquipmentTransferDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="GUI\ManagerView\RoomsTableWindow.xaml.cs">
+    <Compile Update="GUI\ManagerView\RoomView\RoomsTableWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="GUI\SecretaryView\CreatePatientDialog.xaml.cs">
+    <Compile Update="GUI\SecretaryView\PatientManipulationView\CreatePatientDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="GUI\SecretaryView\PatientsTable.xaml.cs">
+    <Compile Update="GUI\SecretaryView\PatientManipulationView\PatientsTable.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="GUI\SecretaryView\UpdatePatientDialog.xaml.cs">
+    <Compile Update="GUI\SecretaryView\PatientManipulationView\UpdatePatientDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="GUI\DoctorView\AddOperationDialog.xaml.cs">
@@ -181,10 +181,10 @@
     <Compile Update="GUI\LoginView\LoginWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="GUI\SecretaryView\UrgentExaminationDialog.xaml.cs">
+    <Compile Update="GUI\SecretaryView\UrgentAppointmentView\UrgentExaminationDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="GUI\SecretaryView\UrgentOperationDialog.xaml.cs">
+    <Compile Update="GUI\SecretaryView\UrgentAppointmentView\UrgentOperationDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="GUI\UserWindow\ManagerWindow.xaml.cs">
@@ -306,54 +306,54 @@
     <Page Update="GUI\PatientView\PatientScheduleWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="GUI\SecretaryView\ReferralSchedulingView\AddExaminationWithReferralDialog.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="GUI\PatientView\RecepieNotificationDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="GUI\PatientView\RecepieNotificationSettingsDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="GUI\SecretaryView\AddExaminationWithReferralDialog.xaml">
+    <Page Update="GUI\SecretaryView\UrgentAppointmentView\AddUrgentExaminationDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="GUI\SecretaryView\AddUrgentExaminationDialog.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="GUI\SecretaryView\AddUrgentOperationDialog.xaml">
+    <Page Update="GUI\SecretaryView\UrgentAppointmentView\AddUrgentOperationDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="GUI\PatientView\RecommendedWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="GUI\SecretaryView\CreatePatientDialog.xaml">
+    <Page Update="GUI\SecretaryView\PatientManipulationView\CreatePatientDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="GUI\SecretaryView\DelayExaminationOperationDialog.xaml">
+    <Page Update="GUI\SecretaryView\UrgentAppointmentView\DelayExaminationOperationDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="GUI\SecretaryView\DynamicEquipmentPurchaseDialog.xaml">
+    <Page Update="GUI\SecretaryView\EquipmentManipulationView\DynamicEquipmentPurchaseDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="GUI\SecretaryView\DynamicEquipmentReviewDialog.xaml">
+    <Page Update="GUI\SecretaryView\EquipmentManipulationView\DynamicEquipmentReviewDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="GUI\SecretaryView\DynamicEquipmentTransferDialog.xaml">
+    <Page Update="GUI\SecretaryView\EquipmentManipulationView\DynamicEquipmentTransferDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="GUI\SecretaryView\PatientReferralsDialog.xaml">
+    <Page Update="GUI\SecretaryView\ReferralSchedulingView\PatientReferralsDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="GUI\SecretaryView\PatientSelectionDialog.xaml">
+    <Page Update="GUI\SecretaryView\ReferralSchedulingView\PatientSelectionDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="GUI\SecretaryView\PatientsTable.xaml">
+    <Page Update="GUI\SecretaryView\PatientManipulationView\PatientsTable.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="GUI\SecretaryView\UpdatePatientDialog.xaml">
+    <Page Update="GUI\SecretaryView\PatientManipulationView\UpdatePatientDialog.xaml">
     </Page>
-    <Page Update="GUI\ManagerView\AddRoomDialog.xaml">
+    <Page Update="GUI\ManagerView\RoomView\AddRoomDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="GUI\ManagerView\EditRoomDialog.xaml">
+    <Page Update="GUI\ManagerView\RoomView\EditRoomDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="GUI\ManagerView\EquipmentInspectionDialog.xaml">
@@ -365,25 +365,25 @@
     <Page Update="GUI\ManagerView\EquipmentTransferDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="GUI\ManagerView\RoomsTableWindow.xaml">
+    <Page Update="GUI\ManagerView\RoomView\RoomsTableWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="GUI\SecretaryView\CreatePatientDialog.xaml">
+    <Page Update="GUI\SecretaryView\PatientManipulationView\CreatePatientDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="GUI\SecretaryView\PatientsTable.xaml">
+    <Page Update="GUI\SecretaryView\PatientManipulationView\PatientsTable.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="GUI\SecretaryView\UpdatePatientDialog.xaml">
+    <Page Update="GUI\SecretaryView\PatientManipulationView\UpdatePatientDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="GUI\LoginView\LoginWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="GUI\SecretaryView\UrgentExaminationDialog.xaml">
+    <Page Update="GUI\SecretaryView\UrgentAppointmentView\UrgentExaminationDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="GUI\SecretaryView\UrgentOperationDialog.xaml">
+    <Page Update="GUI\SecretaryView\UrgentAppointmentView\UrgentOperationDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="GUI\UserWindow\ManagerWindow.xaml">

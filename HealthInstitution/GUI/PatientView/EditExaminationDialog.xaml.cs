@@ -1,10 +1,11 @@
 ﻿using HealthInstitution.Core.Examinations.Model;
-using HealthInstitution.Core.Examinations.Repository;
-using HealthInstitution.Core.ScheduleEditRequests.Repository;
+using HealthInstitution.Core.ScheduleEditRequests;
 using HealthInstitution.Core.SystemUsers.Users.Model;
-using HealthInstitution.Core.SystemUsers.Users.Repository;
 using System.Windows;
 using System.Windows.Controls;
+using HealthInstitution.Core.SystemUsers.Doctors;
+using HealthInstitution.Core.Examinations;
+using HealthInstitution.Core.Scheduling;
 
 namespace HealthInstitution.GUI.PatientWindows;
 
@@ -30,15 +31,19 @@ public partial class EditExaminationDialog : Window
 
     private void GenerateRequest(DateTime dateTime)
     {
-        Examination newExamination = ExaminationRepository.GetInstance().GenerateRequestExamination(_selectedExamination, _doctorUsername, dateTime);
-        ScheduleEditRequestFileRepository.GetInstance().AddEditRequest(newExamination);
+        ExaminationDTO examinationDTO = ExaminationService.ParseExaminationToExaminationDTO(_selectedExamination);
+        examinationDTO.Doctor = DoctorService.GetById(_doctorUsername);
+        examinationDTO.Appointment = dateTime;
+        Examination newExamination = EditSchedulingService.GenerateRequestExamination(_selectedExamination.Id, examinationDTO);
+        ScheduleEditRequestService.AddEditRequest(newExamination);
     }
 
     private void EditNow(DateTime dateTime)
     {
-        ExaminationRepository.GetInstance().EditExamination(_selectedExamination, _doctorUsername, dateTime);
-        ExaminationDoctorRepository.GetInstance().Save();
-        ExaminationRepository.GetInstance().Save();
+        ExaminationDTO examinationDTO = ExaminationService.ParseExaminationToExaminationDTO(_selectedExamination);
+        examinationDTO.Doctor = DoctorService.GetById(_doctorUsername);
+        examinationDTO.Appointment = dateTime;
+        EditSchedulingService.EditExamination(_selectedExamination.Id, examinationDTO);
     }
 
     private void Save_Click(object sender, RoutedEventArgs e)
@@ -72,10 +77,9 @@ public partial class EditExaminationDialog : Window
         var doctorComboBox = sender as System.Windows.Controls.ComboBox;
         List<String> doctors = new List<String>();
 
-        foreach (User user in UserRepository.GetInstance().GetAll())
+        foreach (User user in DoctorService.GetAll())
         {
-            if (user.Type == UserType.Doctor)
-                doctors.Add(user.Username);
+            doctors.Add(user.Username);
         }
 
         doctorComboBox.ItemsSource = doctors;

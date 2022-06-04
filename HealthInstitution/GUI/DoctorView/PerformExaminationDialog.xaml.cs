@@ -1,5 +1,7 @@
-﻿using HealthInstitution.Core.Examinations.Model;
+﻿using HealthInstitution.Core.Examinations;
+using HealthInstitution.Core.Examinations.Model;
 using HealthInstitution.Core.Examinations.Repository;
+using HealthInstitution.Core.MedicalRecords;
 using HealthInstitution.Core.MedicalRecords.Model;
 using HealthInstitution.Core.MedicalRecords.Repository;
 using HealthInstitution.Core.Prescriptions.Model;
@@ -90,24 +92,16 @@ namespace HealthInstitution.GUI.DoctorView
             return new MedicalRecordDTO(height, weight, previousIllnesses, allergens, _selectedExamination.MedicalRecord.Patient, prescriptions, referrals);
         }
 
-        private void UpdateExaminationFromInputData()
-        {
-            this._selectedExamination.Anamnesis = anamnesisTextBox.Text;
-            this._selectedExamination.Status = ExaminationStatus.Completed;
-            ExaminationRepository.GetInstance().Save();
-        }
-
         private void Submit_Click(object sender, RoutedEventArgs e)
         {
             try
             {
                 MedicalRecordDTO medicalRecordDTO = CreateMedicalRecordDTOFromInputData();
-                MedicalRecordRepository.GetInstance().Update(medicalRecordDTO);
-                UpdateExaminationFromInputData();
+                MedicalRecordService.Update(medicalRecordDTO);
+                ExaminationService.Complete(_selectedExamination, anamnesisTextBox.Text);
                 System.Windows.MessageBox.Show("You have finished the examination!", "Congrats", MessageBoxButton.OK, MessageBoxImage.Information);
                 this.Close();
                 new ConsumedEquipmentDialog(_selectedExamination.Room).ShowDialog();
-
             }
             catch
             {

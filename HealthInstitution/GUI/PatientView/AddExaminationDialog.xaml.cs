@@ -1,12 +1,11 @@
 ﻿using HealthInstitution.Core.Examinations.Model;
-using HealthInstitution.Core.Examinations.Repository;
+using HealthInstitution.Core.MedicalRecords;
 using HealthInstitution.Core.MedicalRecords.Model;
-using HealthInstitution.Core.MedicalRecords.Repository;
+using HealthInstitution.Core.Scheduling;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
-using HealthInstitution.Core.SystemUsers.Doctors.Repository;
+using HealthInstitution.Core.SystemUsers.Doctors;
 using HealthInstitution.Core.SystemUsers.Patients.Model;
 using HealthInstitution.Core.SystemUsers.Users.Model;
-using HealthInstitution.Core.SystemUsers.Users.Repository;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -63,10 +62,9 @@ namespace HealthInstitution.GUI.PatientView
             var doctorComboBox = sender as System.Windows.Controls.ComboBox;
             List<string> doctors = new List<string>();
 
-            foreach (User user in UserRepository.GetInstance().GetAll())
+            foreach (User user in DoctorService.GetAll())
             {
-                if (user.Type == UserType.Doctor)
-                    doctors.Add(user.Username);
+                doctors.Add(user.Username);
             }
 
             doctorComboBox.ItemsSource = doctors;
@@ -76,11 +74,10 @@ namespace HealthInstitution.GUI.PatientView
 
         private void CreateExamination(DateTime dateTime)
         {
-            MedicalRecord medicalRecord = MedicalRecordRepository.GetInstance().GetByPatientUsername(_loggedPatient);
-            Doctor doctor = DoctorRepository.GetInstance().GetById(_doctorUsername);
+            MedicalRecord medicalRecord = MedicalRecordService.GetByPatientUsername(_loggedPatient);
+            Doctor doctor = DoctorService.GetById(_doctorUsername);
             ExaminationDTO examination = new ExaminationDTO(dateTime, null, doctor, medicalRecord);
-            ExaminationRepository.GetInstance().ReserveExamination(examination);
-            ExaminationDoctorRepository.GetInstance().Save();
+            SchedulingService.ReserveExamination(examination);
         }
 
         private void Create_Click(object sender, RoutedEventArgs e)

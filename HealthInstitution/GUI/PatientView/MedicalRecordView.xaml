@@ -24,7 +24,7 @@
             </DataGrid.Columns>
         </DataGrid>
         <Button Name="Search" Content="Search anamnesis by keyword" HorizontalAlignment="Left" Height="18" Margin="600,356,0,0" VerticalAlignment="Top" Width="172" Click="SearchButton_Click" />
-        <TextBox Name="seachParameter" HorizontalAlignment="Left" Margin="600,333,0,0" TextWrapping="Wrap" Text="Anamensis keyword" VerticalAlignment="Top" Width="172" GotFocus="seachParameter_GotFocus" />
+        <TextBox Name="searchParameter" HorizontalAlignment="Left" Margin="600,333,0,0" TextWrapping="Wrap" Text="Anamensis keyword" VerticalAlignment="Top" Width="172" GotFocus="SearchParameter_GotFocus" />
         <Button Content="Doctor" HorizontalAlignment="Left" Height="23" Margin="45,342,0,0" VerticalAlignment="Top" Width="101" Click="DoctorButton_Click" />
         <Button Content="Date" HorizontalAlignment="Left" Height="23" Margin="195,342,0,0" VerticalAlignment="Top" Width="101" Click="DateButton_Click" />
         <Button Content="Doctor specialization" HorizontalAlignment="Center" Height="23" Margin="0,342,0,0" VerticalAlignment="Top" Width="143" Click="SpecializationButton_Click" />

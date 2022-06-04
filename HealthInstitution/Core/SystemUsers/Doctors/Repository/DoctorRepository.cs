@@ -10,7 +10,7 @@ using System.Text.Json.Serialization;
 
 namespace HealthInstitution.Core.SystemUsers.Doctors.Repository;
 
-internal class DoctorRepository
+public class DoctorRepository : IDoctorRepository
 {
     private String _fileName;
     public List<Doctor> Doctors { get; set; }
@@ -98,15 +98,15 @@ internal class DoctorRepository
         return null;
     }
 
-    public void DeleteExamination(Doctor doctor, Examination examination)
+    public void DeleteExamination(Examination examination)
     {
-        doctor.Examinations.Remove(examination);
+        examination.Doctor.Examinations.Remove(examination);
         Save();
     }
 
-    public void DeleteOperation(Doctor doctor, Operation operation)
+    public void DeleteOperation(Operation operation)
     {
-        doctor.Operations.Remove(operation);
+        operation.Doctor.Operations.Remove(operation);
         Save();
     }
 
@@ -180,10 +180,48 @@ internal class DoctorRepository
         return operationsForDate;
     }
 
-        public void DeleteNotification(Doctor doctor, AppointmentNotification notification)
+    public void DeleteNotifications(Doctor doctor)
+    {
+        doctor.Notifications.Clear();
+        Save();
+    }
+
+    public List<Doctor> GetSearchName(string keyword)
+    {
+        keyword = keyword.Trim();
+        List<Doctor> found = new List<Doctor>();
+
+        foreach (Doctor doctor in DoctorsByUsername.Values)
         {
-            doctor.Notifications.Remove(notification);
-            Save();
+            if (doctor.Name.ToLower().Contains(keyword)) found.Add(doctor);
         }
+
+        return found;
+    }
+
+    public List<Doctor> GetSearchSurname(string keyword)
+    {
+        keyword = keyword.Trim();
+        List<Doctor> found = new List<Doctor>();
+
+        foreach (Doctor doctor in DoctorsByUsername.Values)
+        {
+            if (doctor.Surname.ToLower().Contains(keyword)) found.Add(doctor);
+        }
+
+        return found;
+    }
+
+    public List<Doctor> GetSearchSpeciality(string keyword)
+    {
+        keyword = keyword.Trim();
+        List<Doctor> found = new List<Doctor>();
+
+        foreach (Doctor doctor in DoctorsByUsername.Values)
+        {
+            if (doctor.Specialty.ToString().ToLower().Contains(keyword)) found.Add(doctor);
+        }
+
+        return found;
     }
 }
