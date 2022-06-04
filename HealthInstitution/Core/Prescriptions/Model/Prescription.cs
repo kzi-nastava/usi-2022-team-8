@@ -10,6 +10,9 @@ public class Prescription
     public Drug Drug { get; set; }
     public DateTime HourlyRate { get; set; }
 
+    public Prescription()
+    { }
+
     public Prescription(int id, int dailyDose, PrescriptionTime timeOfUse, Drug drug, DateTime hourlyRate)
     {
         this.Id = id;

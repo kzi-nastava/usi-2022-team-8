@@ -40,9 +40,9 @@ namespace HealthInstitution.GUI.DoctorView
             {
                 dataGrid.Items.Add(notification);
                 AppointmentNotificationService.ChangeActiveStatus(notification,true);
-                DoctorService.DeleteNotification(_loggedDoctor, notification);
             }
             dataGrid.Items.Refresh();
+            DoctorService.DeleteNotifications(_loggedDoctor);
         }
     }
 }

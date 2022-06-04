@@ -16,6 +16,8 @@ using HealthInstitution.Core.Notifications.Repository;
 using HealthInstitution.Core.SystemUsers.Users;
 using HealthInstitution.Core.TrollCounters;
 using HealthInstitution.Core.PrescriptionNotifications.Service;
+using HealthInstitution.Core.SystemUsers.Doctors;
+using HealthInstitution.Core.SystemUsers.Patients;
 
 namespace HealthInstitution.GUI.LoginView
 {
@@ -27,7 +29,6 @@ namespace HealthInstitution.GUI.LoginView
     {
         private String _usernameInput;
         private String _passwordInput;
-        private UserRepository _userRepository = UserRepository.GetInstance();
 
         public LoginWindow()
         {
@@ -95,23 +96,15 @@ namespace HealthInstitution.GUI.LoginView
 
         private void RedirectPatient(User foundUser)
         {
-            AppointmentNotificationDoctorRepository.GetInstance();
-            AppointmentNotificationPatientRepository.GetInstance();
-            PatientRepository patientRepository = PatientRepository.GetInstance();
             TrollCounterService.TrollCheck(foundUser.Username);
-            Patient loggedPatient = patientRepository.GetByUsername(_usernameInput);
-
+            Patient loggedPatient = PatientService.GetByUsername(_usernameInput);
             PrescriptionNotificationService.GenerateAllSkippedNotifications(loggedPatient.Username);
             new PatientWindow(loggedPatient).ShowDialog();
         }
 
         private void RedirectDoctor()
         {
-            DoctorRepository doctorRepository = DoctorRepository.GetInstance();
-            AppointmentNotificationDoctorRepository.GetInstance();
-            AppointmentNotificationPatientRepository.GetInstance();
-            OperationDoctorRepository.GetInstance();
-            Doctor loggedDoctor = doctorRepository.GetById(_usernameInput);
+            Doctor loggedDoctor = DoctorService.GetById(_usernameInput);
             new DoctorWindow(loggedDoctor).ShowDialog();
         }
 

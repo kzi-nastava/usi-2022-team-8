@@ -180,9 +180,9 @@ internal class DoctorRepository
         return operationsForDate;
     }
 
-    public void DeleteNotification(Doctor doctor, AppointmentNotification notification)
+    public void DeleteNotifications(Doctor doctor)
     {
-        doctor.Notifications.Remove(notification);
+        doctor.Notifications.Clear();
         Save();
     }
 

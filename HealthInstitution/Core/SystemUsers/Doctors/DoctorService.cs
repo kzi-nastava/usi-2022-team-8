@@ -19,9 +19,9 @@ internal static class DoctorService
     {
         return s_doctorRepository.GetById(username);
     }
-    public static void DeleteNotification(Doctor doctor, AppointmentNotification notification)
+    public static void DeleteNotifications(Doctor doctor)
     {
-        s_doctorRepository.DeleteNotification(doctor, notification);
+        s_doctorRepository.DeleteNotifications(doctor);
     }
 
     public static void DeleteExamination(Examination examination)

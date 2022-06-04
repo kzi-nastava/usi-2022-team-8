@@ -4,6 +4,9 @@ namespace HealthInstitution.Core.PrescriptionNotifications.Model;
 
 public class PrescriptionNotificationSettings
 {
+    public PrescriptionNotificationSettings()
+    { }
+
     public PrescriptionNotificationSettings(DateTime beforeAmmount, string patientUsername, Prescription prescription, DateTime lastUpdated, int id)
     {
         BeforeAmmount = beforeAmmount;

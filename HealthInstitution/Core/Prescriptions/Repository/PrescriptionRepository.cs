@@ -49,9 +49,9 @@ namespace HealthInstitution.Core.Prescriptions.Repository
             Dictionary<int, Drug> drugById = DrugRepository.GetInstance().DrugById;
             PrescriptionTime prescriptionTime;
             Enum.TryParse<PrescriptionTime>((string)prescription["timeOfUse"], out prescriptionTime);
-            var dt = (string)prescription["dateTime"];
+            var dt = (string)prescription["hourlyRate"];
             string format = "MM/dd/yyyy HH:mm:ss";
-            bool parse = DateTime.TryParseExact((string)prescription["dateTime"], format, null, DateTimeStyles.None, out var dateTime);
+            bool parse = DateTime.TryParseExact((string)prescription["hourlyRate"], format, null, DateTimeStyles.None, out var dateTime);
             return new Prescription((int)prescription["id"], (int)prescription["dailyDose"], prescriptionTime, drugById[(int)prescription["drug"]], dateTime);
         }
 

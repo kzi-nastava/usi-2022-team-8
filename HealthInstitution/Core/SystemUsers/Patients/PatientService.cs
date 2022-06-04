@@ -55,9 +55,9 @@ namespace HealthInstitution.Core.SystemUsers.Patients
             TrollCounterService.Delete(username);
             UserService.Delete(username);
         }
-        public static void DeleteNotification(Patient patient, AppointmentNotification notification)
+        public static void DeleteNotifications(Patient patient)
         {
-            s_patientRepository.DeleteNotification(patient,notification);
+            s_patientRepository.DeleteNotifications(patient);
         }
     } 
 }

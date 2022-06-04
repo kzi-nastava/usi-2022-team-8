@@ -22,6 +22,7 @@ public class PrescriptionNotificationCronJobService
         // get a scheduler
         IScheduler scheduler = StdSchedulerFactory.GetDefaultScheduler().Result;
         scheduler.Start();
+        _scheduler = scheduler;
     }
 
     public static void GenerateJob(string loggedUser, PrescriptionNotificationSettings settings, DateTime dateTime)

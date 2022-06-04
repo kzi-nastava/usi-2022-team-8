@@ -102,12 +102,14 @@ namespace HealthInstitution.Core.Scheduling
             PatientOperationAvailabilityService.CheckIfPatientIsAvailable(operationDTO);
             OperationService.Add(operationDTO);
         }
+
         public static void ReserveExamination(ExaminationDTO examinationDTO)
         {
             examinationDTO.Validate();
             examinationDTO = CheckExaminationAvailable(examinationDTO);
             ExaminationService.Add(examinationDTO);
         }
+
         public static Room FindAvailableOperationRoom(OperationDTO operationDTO, int id = 0)
         {
             bool isAvailable;
@@ -140,6 +142,7 @@ namespace HealthInstitution.Core.Scheduling
             int index = random.Next(0, availableRooms.Count);
             return availableRooms[index];
         }
+
         public static Room FindAvailableExaminationRoom(DateTime appointment)
         {
             List<Room> availableRooms = FindAllAvailableRooms(RoomType.ExaminationRoom, appointment);
@@ -150,6 +153,7 @@ namespace HealthInstitution.Core.Scheduling
             int index = random.Next(0, availableRooms.Count);
             return availableRooms[index];
         }
+
         public static List<Room> FindAllAvailableRooms(RoomType roomType, DateTime appointment)
         {
             bool isAvailable;
@@ -172,30 +176,12 @@ namespace HealthInstitution.Core.Scheduling
             return availableRooms;
         }
 
-        private static ExaminationDTO CheckExaminationAvailable(ExaminationDTO examinationDTO)
+        public static ExaminationDTO CheckExaminationAvailable(ExaminationDTO examinationDTO)
         {
             examinationDTO.Room = FindAvailableExaminationRoom(examinationDTO.Appointment);
             DoctorExaminationAvailabilityService.CheckIfDoctorIsAvailable(examinationDTO);
             PatientExaminationAvailabilityService.CheckIfPatientIsAvailable(examinationDTO);
             return examinationDTO;
-        }
-
-        public static Examination GenerateRequestExamination(int id, ExaminationDTO examinationDTO)
-        {
-            examinationDTO.Validate();
-            examinationDTO = CheckExaminationAvailable(examinationDTO);
-            Examination e = new Examination(examinationDTO);
-            e.Id = id;
-            return e;
-        }
-
-        public static void EditExamination(int id, ExaminationDTO examinationDTO)
-        {
-            examinationDTO.Validate();
-            examinationDTO = CheckExaminationAvailable(examinationDTO);
-            Examination e = new Examination(examinationDTO);
-            e.Id = id;
-            ExaminationService.Update(id, examinationDTO);
         }
     }
 }

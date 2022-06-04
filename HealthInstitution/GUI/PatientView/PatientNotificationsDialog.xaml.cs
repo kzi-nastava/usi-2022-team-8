@@ -41,9 +41,9 @@ namespace HealthInstitution.GUI.PatientView
             {
                 dataGrid.Items.Add(notification);
                 AppointmentNotificationService.ChangeActiveStatus(notification, false);
-                PatientService.DeleteNotification(_loggedPatient, notification);
             }
             dataGrid.Items.Refresh();
+            PatientService.DeleteNotifications(_loggedPatient);
         }
     }
 }
