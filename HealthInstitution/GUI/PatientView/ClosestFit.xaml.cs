@@ -27,10 +27,10 @@ namespace HealthInstitution.GUI.PatientView
         {
             InitializeComponent();
             _suggestions = suggestions;
-            loadRows();
+            LoadRows();
         }
 
-        private void addButton_click(object sender, RoutedEventArgs e)
+        private void AddButton_click(object sender, RoutedEventArgs e)
         {
             Examination selectedExamination = _suggestions[0];
             if (secondRadioButton.IsChecked == true) selectedExamination = _suggestions[1];
@@ -39,7 +39,7 @@ namespace HealthInstitution.GUI.PatientView
             this.Close();
         }
 
-        private void loadRows()
+        private void LoadRows()
         {
             foreach (Examination examination in _suggestions)
             {

@@ -57,7 +57,7 @@ public partial class MedicalRecordView : Window
         dataGrid.Items.Refresh();
     }
 
-    private void searchParameter_GotFocus(object sender, RoutedEventArgs e)
+    private void SearchParameter_GotFocus(object sender, RoutedEventArgs e)
     {
         searchParameter.Clear();
     }

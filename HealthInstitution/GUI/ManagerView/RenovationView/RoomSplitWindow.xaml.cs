@@ -26,6 +26,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Forms;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
@@ -138,23 +139,30 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
             
             this.Close();
         }
-
-        private void ScheduleSeparation()
+        private RoomDTO GetFirstRoom()
         {
             string firstNumberInput = firstRoomNumberBox.Text;
-            string secondNumberInput = secondRoomNumberBox.Text;
             int firstRoomNumber = Int32.Parse(firstNumberInput);
+            RoomType firstRoomType = (RoomType)firstRoomTypeComboBox.SelectedItem;
+            RoomDTO firstRoomDTO = new RoomDTO(firstRoomType, firstRoomNumber, true, false);
+            return firstRoomDTO;
+        }
+        private RoomDTO GetSecondRoom()
+        {
+            string secondNumberInput = secondRoomNumberBox.Text;
             int secondRoomNumber = Int32.Parse(secondNumberInput);
+            RoomType secondRoomType = (RoomType)secondRoomTypeComboBox.SelectedItem;
+            RoomDTO secondRoomDTO = new RoomDTO(secondRoomType, secondRoomNumber, true, false);
+            return secondRoomDTO;
+        }
+        private void ScheduleSeparation()
+        {
             DateTime startDate = (DateTime)startDatePicker.SelectedDate;
             DateTime endDate = (DateTime)endDatePicker.SelectedDate;
             Room selectedRoom = (Room)splitRoomComboBox.SelectedItem;
-            RoomType firstRoomType = (RoomType)firstRoomTypeComboBox.SelectedItem;
-            RoomType secondRoomType = (RoomType)secondRoomTypeComboBox.SelectedItem;
 
-            RoomDTO firstRoomDTO = new RoomDTO(firstRoomType, firstRoomNumber, true, false);
-            Room firstRoom = RoomService.AddRoom(firstRoomDTO);
-            RoomDTO secondRoomDTO = new RoomDTO(secondRoomType, secondRoomNumber, true, false);
-            Room secondRoom = RoomService.AddRoom(secondRoomDTO);
+            Room firstRoom = RoomService.AddRoom(GetFirstRoom());
+            Room secondRoom = RoomService.AddRoom(GetSecondRoom());
 
             if (EquipmentService.IsEmpty(_firstRoomEquipmentFromArranging) && EquipmentService.IsEmpty(_secondRoomEquipmentFromArranging))
             {

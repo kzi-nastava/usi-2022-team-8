@@ -12,7 +12,7 @@ using HealthInstitution.Core.Prescriptions.Repository;
 
 namespace HealthInstitution.Core.MedicalRecords.Repository
 {
-    internal class MedicalRecordRepository : IMedicalRecordRepository
+    public class MedicalRecordRepository : IMedicalRecordRepository
     {
         private String _fileName;
         public List<MedicalRecord> MedicalRecords { get; set; }

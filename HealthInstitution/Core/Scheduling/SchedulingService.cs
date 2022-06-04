@@ -15,7 +15,7 @@ using System.Windows;
 
 namespace HealthInstitution.Core.Scheduling
 {
-    internal static class SchedulingService
+    public static class SchedulingService
     {
         private static Random rnd = new Random();
         private static ExaminationRepository s_examinationRepository = ExaminationRepository.GetInstance();

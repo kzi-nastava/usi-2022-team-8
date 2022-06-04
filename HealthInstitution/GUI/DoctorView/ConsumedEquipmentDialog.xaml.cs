@@ -52,7 +52,6 @@ namespace HealthInstitution.GUI.DoctorView
                 System.Windows.MessageBox.Show("You have removed " + consumedQuantity + " " + equipment.Name + " from " + _room, "Info", MessageBoxButton.OK, MessageBoxImage.Information);
                 equipmentComboBox.Items.Remove(equipment);
                 consumedQuantityComboBox.Items.Clear();
-                /*if (equipmentComboBox.Items.Count == 0) this.Close();*/
             }
             catch
             {

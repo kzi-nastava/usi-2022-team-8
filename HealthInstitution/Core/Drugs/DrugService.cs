@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.Drugs
 {
-    internal static class DrugService
+    public static class DrugService
     {
         private static DrugRepository s_drugRepository = DrugRepository.GetInstance();
         public static Drug GetById(int id)

@@ -42,35 +42,12 @@ namespace HealthInstitution.GUI.LoginView
             return UserService.GetByUsername(_usernameInput);
         }
 
-        private bool IsUserFound(User user)
-        {
-            if (user == null)
-            {
-                System.Windows.MessageBox.Show("Username doesn't exist!", "Log in error", MessageBoxButton.OK, MessageBoxImage.Error);
-                return false;
-            }
-            if (user.Password != _passwordInput)
-            {
-                System.Windows.MessageBox.Show("Username and password don't match!", "Log in error", MessageBoxButton.OK, MessageBoxImage.Error);
-                return false;
-            }
-            return true;
-        }
-
-        private bool IsUserBlocked(User user)
-        {
-            if (user.Blocked != BlockState.NotBlocked)
-            {
-                System.Windows.MessageBox.Show("Account is blocked!", "Log in error", MessageBoxButton.OK, MessageBoxImage.Error);
-                return true;
-            }
-            return false;
-        }
+        
 
         private void LoginButton_click(object sender, RoutedEventArgs e)
         {
             User user = GetUserFromInputData();
-            if (IsUserFound(user) && !IsUserBlocked(user))
+            if (UserService.IsUserFound(user,_passwordInput) && !UserService.IsUserBlocked(user))
             {
                 this.Close();
                 switch (user.Type)

@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.Scheduling
 {
-    internal static class PatientOperationAvailabilityService
+    public static class PatientOperationAvailabilityService
     {
         private static void CheckIfPatientHasExaminations(OperationDTO operationDTO, int id)
         {

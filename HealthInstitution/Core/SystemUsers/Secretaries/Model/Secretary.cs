@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.SystemUsers.Secretaries.Model
 {
-    internal class Secretary
+    public class Secretary
     {
     }
 }

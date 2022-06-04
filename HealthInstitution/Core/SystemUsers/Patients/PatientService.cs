@@ -15,7 +15,7 @@ using HealthInstitution.Core.Notifications.Model;
 
 namespace HealthInstitution.Core.SystemUsers.Patients
 {
-    internal static class PatientService
+    public static class PatientService
     {
         static PatientRepository s_patientRepository = PatientRepository.GetInstance();
         public static List<Patient> GetAll()

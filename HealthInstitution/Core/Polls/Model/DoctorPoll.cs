@@ -8,7 +8,7 @@ using HealthInstitution.Core.SystemUsers.Doctors.Model;
 
 namespace HealthInstitution.Core.Polls.Model
 {
-    internal class DoctorPoll : Poll
+    public class DoctorPoll : Poll
     {
         public String AdditionalComment { get; set; }
 

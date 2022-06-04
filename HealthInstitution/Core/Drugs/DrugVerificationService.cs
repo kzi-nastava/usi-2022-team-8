@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.Drugs
 {
-    internal static class DrugVerificationService
+    public static class DrugVerificationService
     {
         private static DrugRepository s_drugRepository = DrugRepository.GetInstance();
 

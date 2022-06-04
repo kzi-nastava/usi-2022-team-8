@@ -1,4 +1,5 @@
-﻿using HealthInstitution.Core.Examinations.Model;
+﻿using HealthInstitution.Core.Examinations;
+using HealthInstitution.Core.Examinations.Model;
 using HealthInstitution.Core.Examinations.Repository;
 using HealthInstitution.Core.ScheduleEditRequests;
 using HealthInstitution.Core.SystemUsers.Patients.Model;
@@ -13,7 +14,6 @@ namespace HealthInstitution.GUI.PatientWindows;
 /// </summary>
 public partial class PatientScheduleWindow : Window
 {
-    private ExaminationRepository _examinationRepository = ExaminationRepository.GetInstance();
     private Patient _loggedPatient;
 
     public PatientScheduleWindow(Patient loggedPatient)
@@ -73,7 +73,7 @@ public partial class PatientScheduleWindow : Window
             else
             {
                 dataGrid.Items.Remove(selectedExamination);
-                _examinationRepository.Delete(selectedExamination.Id);
+                ExaminationService.Delete(selectedExamination.Id);
                 selectedExamination.Doctor.Examinations.Remove(selectedExamination);
             }
         }
@@ -81,7 +81,7 @@ public partial class PatientScheduleWindow : Window
 
     private void LoadRows()
     {
-        foreach (Examination examination in ExaminationRepository.GetInstance().Examinations)
+        foreach (Examination examination in ExaminationService.GetAll())
         {
             if (examination.MedicalRecord.Patient.Username.Equals(_loggedPatient.Username))
 

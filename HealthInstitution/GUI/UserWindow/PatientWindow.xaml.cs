@@ -1,29 +1,10 @@
-﻿using HealthInstitution.Core.Examinations.Repository;
-using HealthInstitution.Core.SystemUsers.Users.Model;
-using HealthInstitution.GUI.PatientWindows;
+﻿using HealthInstitution.GUI.PatientWindows;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
-
-using HealthInstitution.GUI.PatientWindows;
-using HealthInstitution.Core.SystemUsers.Users.Model;
-
-using HealthInstitution.Core.TrollCounters.Repository;
-using HealthInstitution.Core.TrollCounters.Model;
-
-using HealthInstitution.Core.Examinations.Repository;
 
 using HealthInstitution.GUI.LoginView;
 using HealthInstitution.GUI.PatientView;
 using HealthInstitution.Core.SystemUsers.Patients.Model;
 using HealthInstitution.Core.Notifications.Model;
-
-using HealthInstitution.Core.SystemUsers.Patients.Model;
 
 namespace HealthInstitution.GUI.UserWindow
 {
@@ -44,7 +25,6 @@ namespace HealthInstitution.GUI.UserWindow
 
         private void ShowNotificationsDialog()
         {
-            //ExaminationDoctorRepository.GetInstance();
             int activeNotifications = 0;
             foreach (AppointmentNotification notification in this._loggedPatient.Notifications)
             {

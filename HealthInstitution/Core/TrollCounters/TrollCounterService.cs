@@ -14,7 +14,7 @@ using System.Windows;
 
 namespace HealthInstitution.Core.TrollCounters
 {
-    internal static class TrollCounterService
+    public static class TrollCounterService
     {
         static TrollCounterFileRepository s_trollCounterFileRepository = TrollCounterFileRepository.GetInstance();
         public static TrollCounter GetById(string id)

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.Examinations;
 
-internal static class ExaminationService
+public static class ExaminationService
 {
     private static ExaminationRepository s_examinationRepository = ExaminationRepository.GetInstance();
 

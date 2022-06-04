@@ -8,7 +8,7 @@ using HealthInstitution.Core.SystemUsers.Doctors.Repository;
 
 namespace HealthInstitution.Core.SystemUsers.Doctors;
 
-internal static class DoctorService
+public static class DoctorService
 {
     private static DoctorRepository s_doctorRepository = DoctorRepository.GetInstance();
 

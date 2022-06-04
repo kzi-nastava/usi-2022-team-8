@@ -15,7 +15,7 @@
                 <DataGridTextColumn Header="Average Rating" FontSize="18" Binding="{Binding AvgRating}" />
             </DataGrid.Columns>
         </DataGrid>
-        <TextBox x:Name="SearchBox" HorizontalAlignment="Center" Height="23" Margin="0,334,0,0" TextWrapping="Wrap" Text="Search term" VerticalAlignment="Top" Width="108" GotFocus="seachParameter_GotFocus" />
+        <TextBox x:Name="SearchBox" HorizontalAlignment="Center" Height="23" Margin="0,334,0,0" TextWrapping="Wrap" Text="Search term" VerticalAlignment="Top" Width="108" GotFocus="SearchParameter_GotFocus" />
         <Button Name="NameSearch" Content="Name search" HorizontalAlignment="Left" Height="23" Margin="26,387,0,0" VerticalAlignment="Top" Width="93" Click="NameSearch_Click" />
         <Button x:Name="SurnameSearch" Content="Surname search" HorizontalAlignment="Left" Height="23" Margin="119,387,0,0" VerticalAlignment="Top" Width="96" Click="SurnameSearch_Click" />
         <Button x:Name="SpecialitySearch" Content="Speciality search" HorizontalAlignment="Left" Height="23" Margin="215,387,0,0" VerticalAlignment="Top" Width="103" Click="SpecialitySearch_Click" />

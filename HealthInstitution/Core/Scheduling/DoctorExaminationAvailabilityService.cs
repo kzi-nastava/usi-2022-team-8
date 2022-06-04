@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.Scheduling
 {
-    internal static class DoctorExaminationAvailabilityService
+    public static class DoctorExaminationAvailabilityService
     {
         private static void CheckIfDoctorHasOperations(ExaminationDTO examinationDTO)
         {

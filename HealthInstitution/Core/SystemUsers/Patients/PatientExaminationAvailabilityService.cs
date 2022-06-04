@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.SystemUsers.Patients
 {
-    internal class PatientExaminationAvailabilityService
+    public class PatientExaminationAvailabilityService
     {
         private void CheckIfPatientHasExaminations(ExaminationDTO examinationDTO)
         {

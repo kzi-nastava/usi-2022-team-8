@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.Notifications
 {
-    internal static class AppointmentNotificationService
+    public static class AppointmentNotificationService
     {
         private static AppointmentNotificationRepository s_appointmentNotificationRepository = AppointmentNotificationRepository.GetInstance();
         public static void ChangeActiveStatus(AppointmentNotification notification, bool forDoctor)
