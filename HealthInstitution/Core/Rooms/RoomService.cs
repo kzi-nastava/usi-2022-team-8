@@ -141,40 +141,6 @@ namespace HealthInstitution.Core.Rooms
                 room.AvailableEquipment.Add(equipment);
             }          
         }
-
-        public static Room FindAvailableRoom(OperationDTO operationDTO, int id = 0)
-        {
-            bool isAvailable;
-            List<Room> availableRooms = new List<Room>();
-            var rooms = s_roomRepository.GetNotRenovating();
-            DateTime appointment = operationDTO.Appointment;
-            int duration = operationDTO.Duration;
-
-            foreach (var room in rooms)
-            {
-                if (room.Type != RoomType.OperatingRoom) continue;
-                isAvailable = true;
-                foreach (var operation in OperationRepository.GetInstance().GetAll())
-                {
-                    if (operation.Room.Id == room.Id && operation.Id != id)
-                    {
-                        if ((appointment < operation.Appointment.AddMinutes(operation.Duration)) && (appointment.AddMinutes(duration) > operation.Appointment))
-                        {
-                            isAvailable = false;
-                            break;
-                        }
-                    }
-                }
-                if (isAvailable)
-                    availableRooms.Add(room);
-            }
-
-            if (availableRooms.Count == 0) throw new Exception("There are no available rooms!");
-            Random random = new Random();
-            int index = random.Next(0, availableRooms.Count);
-            return availableRooms[index];
-        }
-
         public static void RemoveEquipmentFrom(Room room)
         {
             List<Equipment> equipments = room.AvailableEquipment;

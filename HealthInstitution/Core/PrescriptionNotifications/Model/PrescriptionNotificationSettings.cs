@@ -1,10 +1,10 @@
 ﻿using HealthInstitution.Core.Prescriptions.Model;
 
-namespace HealthInstitution.Core.RecepieNotifications.Model;
+namespace HealthInstitution.Core.PrescriptionNotifications.Model;
 
-public class RecepieNotificationSettings
+public class PrescriptionNotificationSettings
 {
-    public RecepieNotificationSettings(DateTime beforeAmmount, string patientUsername, Prescription prescription, DateTime lastUpdated, int id)
+    public PrescriptionNotificationSettings(DateTime beforeAmmount, string patientUsername, Prescription prescription, DateTime lastUpdated, int id)
     {
         BeforeAmmount = beforeAmmount;
         PatientUsername = patientUsername;

@@ -87,5 +87,10 @@ namespace HealthInstitution.GUI.UserWindow
         {
             new DoctorPickExamination(_loggedPatient).ShowDialog();
         }
+
+        private void recepieNotificationSettings_button_Click(object sender, RoutedEventArgs e)
+        {
+            new RecepieNotificationSettingsDialog(_loggedPatient.Username).ShowDialog();
+        }
     }
 }

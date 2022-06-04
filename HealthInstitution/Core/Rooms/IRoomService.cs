@@ -27,7 +27,6 @@ namespace HealthInstitution.Core.Rooms
         public List<Equipment> GetAvailableEquipment(Room room);
         public List<TableItemEquipment> GetTableItemEquipments();
         public void UpdateEquipmentQuantity(Room room, Equipment equipment);
-        public Room FindAvailableRoom(OperationDTO operationDTO, int id = 0);
         public void RemoveEquipmentFrom(Room room);
     }
 }

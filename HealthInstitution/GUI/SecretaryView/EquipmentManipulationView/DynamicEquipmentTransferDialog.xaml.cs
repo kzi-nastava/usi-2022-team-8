@@ -67,7 +67,7 @@ namespace HealthInstitution.GUI.SecretaryView
         }
         private void TransferDynamicEquipment(Room fromRoom)
         {
-            int quantity = EquipmentService.GetQuantityForTransferFromForm(quantityBox.Text, fromRoom, _equipmentName);
+            int quantity = EquipmentService.GetQuantityForTransfer(quantityBox.Text, fromRoom, _equipmentName);
             Equipment equipment = EquipmentService.GetEquipmentFromRoom(fromRoom, _equipmentName);
             EquipmentTransferService.Transfer(_toRoom, equipment, quantity);
 

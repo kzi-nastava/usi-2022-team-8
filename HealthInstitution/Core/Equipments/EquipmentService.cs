@@ -7,7 +7,7 @@ using System.Dynamic;
 
 namespace HealthInstitution.Core.Equipments
 {
-    internal static class EquipmentService
+    public class EquipmentService
     {
         private static EquipmentRepository s_equipmentRepository = EquipmentRepository.GetInstance();
         private static RoomRepository s_roomRepository = RoomRepository.GetInstance();
@@ -27,6 +27,7 @@ namespace HealthInstitution.Core.Equipments
             Equipment equipment = new Equipment(equipmentDTO);
             s_equipmentRepository.Update(id, equipment);
         }
+
         public static void Delete(int id)
         {
             s_equipmentRepository.Delete(id);
@@ -72,10 +73,12 @@ namespace HealthInstitution.Core.Equipments
                     if (equipment.Quantity != 0)
                         return false;
                     break;
+
                 case 1:
                     if (equipment.Quantity > 10)
                         return false;
                     break;
+
                 case 2:
                     if (equipment.Quantity < 10)
                         return false;
@@ -88,7 +91,6 @@ namespace HealthInstitution.Core.Equipments
         {
             return !equipmentFilter.ApplyEquipmentTypeFilter || equipment.HasEquipmentType(equipmentFilter.EquipmentTypeFilter);
         }
-
 
         private static bool MatchRoomTypeFilter(Room room, EquipmentFilterDTO equipmentFilter)
         {
@@ -126,8 +128,6 @@ namespace HealthInstitution.Core.Equipments
                 return true;
             return false;
         }
-
-        
 
         public static Equipment GetEquipmentFromRoom(Room room, string equipmentName)
         {
@@ -167,7 +167,8 @@ namespace HealthInstitution.Core.Equipments
 
             return !list.Any();
         }
-        public static int GetQuantityFromForm(string quantityFromForm, Room room, string equipmentName)
+
+        public static int GetQuantityForTransfer(string quantityFromForm, Room room, string equipmentName)
         {
             int quantity;
             string exceptionMessage = "Quantity must be filled";
@@ -195,6 +196,7 @@ namespace HealthInstitution.Core.Equipments
             obj.Quantity = quantityInRoom;
             return obj;
         }
+
         private static int GetQuantityOfEquipmentInRoom(Room room, Equipment equipment)
         {
             int quantity = 0;
@@ -205,6 +207,7 @@ namespace HealthInstitution.Core.Equipments
             }
             return quantity;
         }
+
         private static void CheckRoomEquipmentPair(Room room, Equipment equipment, HashSet<String> distinctEquipments, List<dynamic> pairs)
         {
             if (equipment.IsDynamic && !distinctEquipments.Contains(equipment.Name))
@@ -217,6 +220,7 @@ namespace HealthInstitution.Core.Equipments
                 }
             }
         }
+
         public static List<dynamic> GetMissingEquipment()
         {
             List<Equipment> equipments = s_equipmentRepository.Equipments;
@@ -235,7 +239,8 @@ namespace HealthInstitution.Core.Equipments
         }
         public static void RemoveConsumed(Equipment equipment, int consumedQuantity)
         {
-
-        }
-    }  
+            equipment.Quantity -= consumedQuantity;
+            s_equipmentRepository.Save();
+         }
+    }
 }

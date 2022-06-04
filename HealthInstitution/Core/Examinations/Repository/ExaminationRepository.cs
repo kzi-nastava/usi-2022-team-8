@@ -1,29 +1,18 @@
 ﻿using HealthInstitution.Core.Examinations.Model;
+using HealthInstitution.Core.MedicalRecords;
 using HealthInstitution.Core.MedicalRecords.Model;
 using HealthInstitution.Core.MedicalRecords.Repository;
+using HealthInstitution.Core.Scheduling;
 using HealthInstitution.Core.Rooms.Model;
 using HealthInstitution.Core.Rooms.Repository;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using HealthInstitution.Core.SystemUsers.Doctors.Repository;
-using HealthInstitution.Core.SystemUsers.Patients.Repository;
 using HealthInstitution.Core.SystemUsers.Patients.Model;
+using HealthInstitution.Core.SystemUsers.Patients.Repository;
 using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
-using HealthInstitution.Core.Operations.Repository;
-using HealthInstitution.Core.Operations.Model;
-using HealthInstitution.Core.Notifications.Repository;
-using HealthInstitution.Core.RecommededDTO;
-using HealthInstitution.Core.Notifications.Model;
-using HealthInstitution.Core.MedicalRecords;
-using HealthInstitution.Core.Operations;
-using HealthInstitution.Core.Scheduling;
 
 namespace HealthInstitution.Core.Examinations.Repository;
 
@@ -140,21 +129,18 @@ internal class ExaminationRepository
         Examinations.Add(examination);
         ExaminationsById.Add(examination.Id, examination);
     }
+
     private void SaveAll()
     {
         Save();
         ExaminationDoctorRepository.GetInstance().Save();
     }
+
     public void Add(Examination examination)
     {
         examination.Id = ++_maxId;
         AddToCollections(examination);
         SaveAll();
-    }
-
-    private ExaminationDTO ParseExaminationToExaminationDTO(Examination examination)
-    {
-        return new ExaminationDTO(examination.Appointment, examination.Room, examination.Doctor, examination.MedicalRecord);
     }
 
     public void Update(int id, Examination byExamination)
@@ -172,8 +158,9 @@ internal class ExaminationRepository
         Examination examination = ExaminationsById[id];
         ExaminationsById.Remove(examination.Id);
         Examinations.Remove(examination);
-        SaveAll();  
+        SaveAll();
     }
+
     public List<Examination> GetByPatient(string username)
     {
         List<Examination> patientExaminations = new List<Examination>();
@@ -210,6 +197,7 @@ internal class ExaminationRepository
 
         return resault;
     }
+
     public void SwapExaminationValue(Examination examination)
     {
         var oldExamination = ExaminationsById[examination.Id];
@@ -219,139 +207,5 @@ internal class ExaminationRepository
         oldExamination.Doctor.Examinations.Remove(oldExamination);
         ExaminationsById[examination.Id] = examination;
         Save();
-    }
-
-    public Examination GenerateRequestExamination(Examination examination, string doctorUsername, DateTime dateTime)
-    {
-        Doctor doctor = DoctorRepository.GetInstance().GetById(doctorUsername);
-        var examinatioDTO = ParseExaminationToExaminationDTO(examination);
-        examinatioDTO.Appointment = dateTime;
-        DoctorExaminationAvailabilityService.CheckIfDoctorIsAvailable(examinatioDTO);
-        PatientExaminationAvailabilityService.CheckIfPatientIsAvailable(examinatioDTO);
-        var room = SchedulingService.FindAvailableExaminationRoom(dateTime);
-        Examination e = new Examination(examination.Id, examination.Status, dateTime, room, doctor, examination.MedicalRecord, "");
-        return e;
-    }
-
-    public void EditExamination(Examination examination, string doctorUsername, DateTime dateTime)
-    {
-        Doctor doctor = DoctorRepository.GetInstance().GetById(doctorUsername);
-        var examinatioDTO = ParseExaminationToExaminationDTO(examination);
-        examinatioDTO.Appointment = dateTime;
-        DoctorExaminationAvailabilityService.CheckIfDoctorIsAvailable(examinatioDTO);
-        PatientExaminationAvailabilityService.CheckIfPatientIsAvailable(examinatioDTO);
-        var room = SchedulingService.FindAvailableExaminationRoom(dateTime);
-        Examination e = new Examination(examination.Id, examination.Status, dateTime, room, doctor, examination.MedicalRecord, "");
-        SwapExaminationValue(e);
-    }
-    
-    private ExaminationDTO FindFit(ExaminationDTO examinationDTO, FindFitDTO findFitDTO)
-    {
-        bool found = false;
-        while (findFitDTO.fit <= findFitDTO.end)
-        {
-            try
-            {
-                Room room = SchedulingService.FindAvailableExaminationRoom(findFitDTO.fit);
-                examinationDTO.Appointment = findFitDTO.fit;
-                examinationDTO.Room = room;
-                DoctorExaminationAvailabilityService.CheckIfDoctorIsAvailable(examinationDTO);
-                PatientExaminationAvailabilityService.CheckIfPatientIsAvailable(examinationDTO);
-                found = true;
-                break;
-            }
-            catch
-            {
-                findFitDTO.fit = IncrementFit(findFitDTO.fit, findFitDTO.maxHour, findFitDTO.maxMinutes, findFitDTO.minHour, findFitDTO.minMinutes);
-            }
-        }
-        if (found)
-            return examinationDTO;
-        else
-            return null;
-    }
-
-    public bool FindFirstFit(FirstFitDTO firstFitDTO)
-    {
-        bool found = false;
-        DateTime fit = GenerateFitDateTime(firstFitDTO.minHour, firstFitDTO.minMinutes);
-        Doctor doctor = DoctorRepository.GetInstance().GetById(firstFitDTO.doctorUsername);
-        Patient patient = PatientRepository.GetInstance().GetByUsername(firstFitDTO.patientUsername);
-        var medicalRecord = MedicalRecordService.GetByPatientUsername(patient);
-        ExaminationDTO examinationDTO = new ExaminationDTO(fit, null, doctor, medicalRecord);
-        FindFitDTO findFitDTO = new FindFitDTO(fit, firstFitDTO.end, firstFitDTO.minHour, firstFitDTO.minMinutes, firstFitDTO.maxHour, firstFitDTO.maxMinutes);
-        ExaminationDTO firstFit = FindFit(examinationDTO, findFitDTO);
-        if (firstFit is not null)
-        {
-            found = true;
-            ExaminationService.Add(examinationDTO);
-            MessageBox.Show("Examination scheduled for: " + fit.ToString());
-        }
-        return found;
-    }
-
-    public DateTime GenerateFitDateTime(int minHour, int minMinutes)
-    {
-        DateTime fit = DateTime.Today.AddDays(1);
-        fit = fit.AddHours(minHour);
-        fit = fit.AddMinutes(minMinutes);
-        return fit;
-    }
-
-    public List<Examination> FindClosestFit(ClosestFitDTO closestFitDTO)
-    {
-        Doctor pickedDoctor = DoctorRepository.GetInstance().GetById(closestFitDTO.doctorUsername);
-        Patient patient = PatientRepository.GetInstance().GetByUsername(closestFitDTO.patientUsername);
-        var medicalRecord = MedicalRecordService.GetByPatientUsername(patient);
-        List<Examination> suggestions = new List<Examination>();
-        List<Doctor> viableDoctors = new List<Doctor>();
-
-        if (closestFitDTO.doctorPriority)
-        {
-            closestFitDTO.maxHour = 22;
-            closestFitDTO.maxMinutes = 45;
-            viableDoctors.Add(pickedDoctor);
-            closestFitDTO.end = closestFitDTO.end.AddHours(-closestFitDTO.end.Hour + 22);
-            closestFitDTO.end = closestFitDTO.end.AddMinutes(-closestFitDTO.end.Minute + 45);
-        }
-        else
-        {
-            viableDoctors = DoctorRepository.GetInstance().GetAll();
-            viableDoctors.Remove(pickedDoctor);
-        }
-
-        foreach (Doctor doctor in viableDoctors)
-        {
-            DateTime fit = GenerateFitDateTime(closestFitDTO.minHour, closestFitDTO.minMinutes);
-            ExaminationDTO examinationDTO = new ExaminationDTO(fit, null, doctor, medicalRecord);
-
-            if (suggestions.Count == 3) break;
-            while (fit <= closestFitDTO.end)
-            {
-                if (suggestions.Count == 3) break;
-                FindFitDTO findFitDTO = new FindFitDTO(fit, closestFitDTO.end, closestFitDTO.maxHour, closestFitDTO.minMinutes, closestFitDTO.maxHour, closestFitDTO.maxMinutes);
-                ExaminationDTO firstFit = FindFit(examinationDTO, findFitDTO);
-                if (firstFit is not null)
-                {
-                    suggestions.Add(new Examination(firstFit));
-                    fit = firstFit.Appointment;
-                    fit = IncrementFit(fit, closestFitDTO.maxHour, closestFitDTO.maxMinutes, closestFitDTO.minHour, closestFitDTO.minMinutes);
-                }
-            }
-        }
-        return suggestions;
-    }
-
-    public static DateTime IncrementFit(DateTime fit, int maxHour, int maxMinutes, int minHour, int minMinutes)
-    {
-        fit = fit.AddMinutes(15);
-
-        if ((fit.Hour > maxHour) || (fit.Hour == maxHour && fit.Minute > maxMinutes))
-        {
-            fit = fit.AddDays(1);
-            fit = fit.AddHours(minHour - fit.Hour);
-            fit = fit.AddMinutes(minMinutes - fit.Minute);
-        }
-        return fit;
     }
 }

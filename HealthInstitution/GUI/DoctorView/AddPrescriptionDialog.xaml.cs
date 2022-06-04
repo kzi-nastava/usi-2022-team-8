@@ -36,6 +36,30 @@ namespace HealthInstitution.GUI.DoctorView
             this._medicalRecord = medicalRecord;
         }
 
+        private void HourComboBox_Loaded(object sender, RoutedEventArgs e)
+        {
+            var hourComboBox = sender as System.Windows.Controls.ComboBox;
+            List<String> hours = new List<String>();
+            for (int i = 9; i < 22; i++)
+            {
+                hours.Add(i.ToString());
+            }
+            hourComboBox.ItemsSource = hours;
+            hourComboBox.SelectedIndex = 0;
+        }
+
+        private void MinuteComboBox_Loaded(object sender, RoutedEventArgs e)
+        {
+            var minuteComboBox = sender as System.Windows.Controls.ComboBox;
+            List<String> minutes = new List<String>();
+            minutes.Add("00");
+            minutes.Add("15");
+            minutes.Add("30");
+            minutes.Add("45");
+            minuteComboBox.ItemsSource = minutes;
+            minuteComboBox.SelectedIndex = 0;
+        }
+
         private void TimeComboBox_Loaded(object sender, RoutedEventArgs e)
         {
             var timeComboBox = sender as System.Windows.Controls.ComboBox;
@@ -55,7 +79,6 @@ namespace HealthInstitution.GUI.DoctorView
             {
                 drugComboBox.Items.Add(drug);
             }
-            /*drugComboBox.ItemsSource = drugs;*/
             drugComboBox.SelectedIndex = 0;
             drugComboBox.Items.Refresh();
         }
@@ -65,9 +88,12 @@ namespace HealthInstitution.GUI.DoctorView
             Drug drug = (Drug)drugComboBox.SelectedItem;
             if (PrescriptionService.IsPatientAlergic(_medicalRecord,drug.Ingredients))
                 throw new Exception("Patient is alergic to drug ingredients");
+            int minutes = Int32.Parse(minuteComboBox.Text);
+            int hours = Int32.Parse(hourComboBox.Text);
+            DateTime hourlyRate = DateTime.Now.AddHours(hours).AddMinutes(minutes);
             PrescriptionTime timeOfUse = (PrescriptionTime)timeComboBox.SelectedIndex;
             int dailyDose = Int32.Parse(doseTextBox.Text);
-            PrescriptionDTO prescription = new PrescriptionDTO(dailyDose, timeOfUse, drug);
+            PrescriptionDTO prescription = new PrescriptionDTO(dailyDose, timeOfUse, drug, hourlyRate);
             return prescription;
         }
 

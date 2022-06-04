@@ -12,7 +12,8 @@ namespace HealthInstitution.Core.Prescriptions
 {
     public static class PrescriptionService
     {
-        static PrescriptionRepository s_prescriptionRepository = PrescriptionRepository.GetInstance();
+        private static PrescriptionRepository s_prescriptionRepository = PrescriptionRepository.GetInstance();
+
         public static List<Prescription> GetAll()
         {
             return s_prescriptionRepository.GetAll();
