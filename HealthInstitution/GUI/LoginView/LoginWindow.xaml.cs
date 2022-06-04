@@ -18,6 +18,7 @@ using HealthInstitution.Core.TrollCounters;
 using HealthInstitution.Core.PrescriptionNotifications.Service;
 using HealthInstitution.Core.SystemUsers.Doctors;
 using HealthInstitution.Core.SystemUsers.Patients;
+using HealthInstitution.Core.DoctorRatings;
 
 namespace HealthInstitution.GUI.LoginView
 {
@@ -42,12 +43,10 @@ namespace HealthInstitution.GUI.LoginView
             return UserService.GetByUsername(_usernameInput);
         }
 
-        
-
         private void LoginButton_click(object sender, RoutedEventArgs e)
         {
             User user = GetUserFromInputData();
-            if (UserService.IsUserFound(user,_passwordInput) && !UserService.IsUserBlocked(user))
+            if (UserService.IsUserFound(user, _passwordInput) && !UserService.IsUserBlocked(user))
             {
                 this.Close();
                 switch (user.Type)
@@ -76,6 +75,7 @@ namespace HealthInstitution.GUI.LoginView
             TrollCounterService.TrollCheck(foundUser.Username);
             Patient loggedPatient = PatientService.GetByUsername(_usernameInput);
             PrescriptionNotificationService.GenerateAllSkippedNotifications(loggedPatient.Username);
+            DoctorRatingsService.AssignScores();
             new PatientWindow(loggedPatient).ShowDialog();
         }
 
