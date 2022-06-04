@@ -4,11 +4,14 @@ namespace HealthInstitution.Core.Drugs.Model;
 
 public class Drug
 {
-    public int Id { get; set; }    
+    public int Id { get; set; }
     public String Name { get; set; }
     public DrugState State { get; set; }
     public List<Ingredient> Ingredients { get; set; }
     public String RejectionReason { get; set; }
+
+    public Drug()
+    { }
 
     public Drug(int id, string name, DrugState state, List<Ingredient> ingredients, string rejectionReason = "")
     {
@@ -18,6 +21,7 @@ public class Drug
         this.Ingredients = ingredients;
         this.RejectionReason = rejectionReason;
     }
+
     public Drug(DrugDTO drugDTO)
     {
         this.Name = drugDTO.Name;
@@ -25,11 +29,11 @@ public class Drug
         this.Ingredients = drugDTO.Ingredients;
         this.RejectionReason = drugDTO.RejectionReason;
     }
+
     public override string ToString()
     {
         return this.Name;
     }
-
 
     public bool ContainsIngredient(Ingredient ingredient)
     {

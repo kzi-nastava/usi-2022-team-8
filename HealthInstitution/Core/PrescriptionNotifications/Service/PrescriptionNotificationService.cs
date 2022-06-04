@@ -13,6 +13,7 @@ public class PrescriptionNotificationService
 {
     public static void GenerateAllSkippedNotifications(string loggedPatient)
     {
+        PrescriptionNotificationCronJobService.GenerateScheduler();
         foreach (var setting in PrescriptionNotificationSettingsRepository.GetInstance().Settings)
         {
             GenerateForOne(setting, loggedPatient);

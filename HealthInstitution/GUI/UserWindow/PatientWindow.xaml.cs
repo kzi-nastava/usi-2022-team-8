@@ -68,27 +68,27 @@ namespace HealthInstitution.GUI.UserWindow
             }
         }
 
-        private void manuallSchedule_Click(object sender, RoutedEventArgs e)
+        private void ManuallSchedule_Click(object sender, RoutedEventArgs e)
         {
             new PatientScheduleWindow(this._loggedPatient).ShowDialog();
         }
 
-        private void recommendedSchedule_Click(object sender, RoutedEventArgs e)
+        private void RecommendedSchedule_Click(object sender, RoutedEventArgs e)
         {
             new RecommendedWindow(this._loggedPatient).ShowDialog();
         }
 
-        private void medicalRecordView_button_Click(object sender, RoutedEventArgs e)
+        private void MedicalRecordView_button_Click(object sender, RoutedEventArgs e)
         {
             new MedicalRecordView(_loggedPatient).ShowDialog();
         }
 
-        private void pickDoctor_button_Click(object sender, RoutedEventArgs e)
+        private void PickDoctor_button_Click(object sender, RoutedEventArgs e)
         {
             new DoctorPickExamination(_loggedPatient).ShowDialog();
         }
 
-        private void recepieNotificationSettings_button_Click(object sender, RoutedEventArgs e)
+        private void RecepieNotificationSettings_button_Click(object sender, RoutedEventArgs e)
         {
             new RecepieNotificationSettingsDialog(_loggedPatient.Username).ShowDialog();
         }
