@@ -177,7 +177,7 @@ namespace HealthInstitution.Core.Scheduling
             ExaminationDTO examinationDTO = new ExaminationDTO(appointment, null, doctor, medicalRecord);
             DoctorExaminationAvailabilityService.CheckIfDoctorIsAvailable(examinationDTO);
             PatientExaminationAvailabilityService.CheckIfPatientIsAvailable(examinationDTO);
-            examinationDTO.Room = RoomService.FindAvailableRoom(appointment);
+            examinationDTO.Room = SchedulingService.FindAvailableExaminationRoom(appointment);
             ExaminationService.Add(examinationDTO);
             AppointmentNotificationDTO appointmentNotificationDTO = new AppointmentNotificationDTO(null, appointment, doctor, medicalRecord.Patient);
             AppointmentNotificationRepository.GetInstance().Add(appointmentNotificationDTO);

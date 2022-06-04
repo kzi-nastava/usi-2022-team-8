@@ -78,15 +78,15 @@ public partial class DoctorPickExamination : Window
         LoadRows();
     }
 
+    private void seachParameter_GotFocus(object sender, RoutedEventArgs e)
+    {
+        SearchBox.Clear();
+    }
+
     private void NameSearch_Click(object sender, RoutedEventArgs e)
     {
         string name = SearchBox.Text;
         _currentDoctors = DoctorService.SearchByName(name);
         LoadRows();
-    }
-
-    private void seachParameter_GotFocus(object sender, RoutedEventArgs e)
-    {
-        SearchBox.Clear();
     }
 }

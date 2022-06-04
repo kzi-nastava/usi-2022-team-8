@@ -30,7 +30,7 @@ namespace HealthInstitution.Core.Scheduling
         {
             var patient = examinationDTO.MedicalRecord.Patient;
             DateTime appointment = examinationDTO.Appointment;
-            var patientOperations = OperationService.GetPatientOperations(patient);
+            var patientOperations = OperationService.GetByPatient(patient.Username);
 
             foreach (var operation in patientOperations)
             {

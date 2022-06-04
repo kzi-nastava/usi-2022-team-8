@@ -3,6 +3,7 @@ using HealthInstitution.Core.Examinations.Model;
 using HealthInstitution.Core.Operations;
 using HealthInstitution.Core.Operations.Model;
 using HealthInstitution.Core.Rooms;
+using HealthInstitution.Core.Rooms.Model;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using System;
 using System.Collections.Generic;
@@ -45,7 +46,7 @@ namespace HealthInstitution.Core.Scheduling
                     {
                         continue;
                     }
-                    if (RoomService.FindAllAvailableRooms(firstAvailableAppointment).Contains(examination.Room))
+                    if (SchedulingService.FindAllAvailableRooms(RoomType.ExaminationRoom,firstAvailableAppointment).Contains(examination.Room))
                     {
                         priorityExaminationsAndOperations.Add(new Tuple<int, int, DateTime>(examination.Id, 1, firstAvailableAppointment));
                         break;
@@ -76,7 +77,7 @@ namespace HealthInstitution.Core.Scheduling
                         continue;
                     }
 
-                    if (RoomService.FindAllAvailableRooms(firstAvailableAppointment).Contains(operation.Room))
+                    if (SchedulingService.FindAllAvailableRooms(RoomType.OperatingRoom, firstAvailableAppointment).Contains(operation.Room))
                     {
                         priorityExaminationsAndOperations.Add(new Tuple<int, int, DateTime>(operation.Id, 0, firstAvailableAppointment));
                         break;

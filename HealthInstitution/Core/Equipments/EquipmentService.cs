@@ -235,8 +235,10 @@ namespace HealthInstitution.Core.Equipments
             return pairs;
         }
 
-        /* public static void RemoveConsumed(Equipment equipment, int consumedQuantity)
-         {
-             s_equipmentRepository*/
+        public static void RemoveConsumed(Equipment equipment, int consumedQuantity)
+        {
+            equipment.Quantity -= consumedQuantity;
+            s_equipmentRepository.Save();
+         }
     }
 }

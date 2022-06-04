@@ -44,7 +44,6 @@ namespace HealthInstitution.GUI.SecretaryView
                 PatientRepository patientRepository = PatientRepository.GetInstance();
                 UserDTO userDTO = CreateUserDTOFromInputData();
                 PatientService.Update(userDTO);
-                userRepository.Update(userDTO);
                 Close();
             }
             catch
