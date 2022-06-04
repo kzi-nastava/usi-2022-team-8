@@ -14,8 +14,5 @@ namespace HealthInstitution.Core
         public void Save();
 
         public void LoadFromFile();
-
-        public void Parse(JToken? examination);
-
     }
 }

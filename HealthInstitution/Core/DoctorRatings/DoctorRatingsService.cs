@@ -25,7 +25,7 @@ public class DoctorRatingsService
 
     public static void AssignScores()
     {
-        foreach (var rating in s_doctorRatingRepository.Ratings)
+        foreach (var rating in s_doctorRatingRepository.GetAll())
         {
             DoctorService.AssignScorebyId(rating.Username, rating.GetAverage());
         }
