@@ -5,18 +5,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HealthInstitution.Core.PrescriptionNotifications.Repository
+namespace HealthInstitution.Core.PrescriptionNotifications.Repository;
+
+public interface IPrescriptionNotificationSettingsRepository : IRepository<PrescriptionNotificationSettings>
 {
-    public interface IPrescriptionNotificationSettingsRepository : IRepository<PrescriptionNotificationSettings>
-    {
-        public void LoadFromFile();
+    public void LoadFromFile();
 
-        public void Save();
+    public void Save();
 
-        public PrescriptionNotificationSettings GetById(int id);
+    public PrescriptionNotificationSettings GetById(int id);
 
-        public void Add(PrescriptionNotificationSettings recepieNotificationSettings);
+    public void Add(PrescriptionNotificationSettings recepieNotificationSettings);
 
-        public void Delete(int id);
-    }
+    public void Delete(int id);
+
+    public void Update(int id, PrescriptionNotificationSettings settings);
 }

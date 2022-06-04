@@ -16,4 +16,6 @@ public interface IPrescriptionNotificationService
     public void GenerateCronJobs(List<DateTime> dateTimes, PrescriptionNotificationSettings setting, string loggedPatient);
 
     public List<DateTime> GenerateDateTimes(PrescriptionNotificationSettings setting);
+
+    public static void UpdateSettings(int id, PrescriptionNotificationSettings settings);
 }
