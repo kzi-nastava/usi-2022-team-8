@@ -34,7 +34,7 @@ public partial class EditExaminationDialog : Window
         ExaminationDTO examinationDTO = ExaminationService.ParseExaminationToExaminationDTO(_selectedExamination);
         examinationDTO.Doctor = DoctorService.GetById(_doctorUsername);
         examinationDTO.Appointment = dateTime;
-        Examination newExamination = SchedulingService.GenerateRequestExamination(_selectedExamination.Id, examinationDTO);
+        Examination newExamination = EditSchedulingService.GenerateRequestExamination(_selectedExamination.Id, examinationDTO);
         ScheduleEditRequestService.AddEditRequest(newExamination);
     }
 
@@ -43,7 +43,7 @@ public partial class EditExaminationDialog : Window
         ExaminationDTO examinationDTO = ExaminationService.ParseExaminationToExaminationDTO(_selectedExamination);
         examinationDTO.Doctor = DoctorService.GetById(_doctorUsername);
         examinationDTO.Appointment = dateTime;
-        SchedulingService.EditExamination(_selectedExamination.Id, examinationDTO);
+        EditSchedulingService.EditExamination(_selectedExamination.Id, examinationDTO);
     }
 
     private void Save_Click(object sender, RoutedEventArgs e)

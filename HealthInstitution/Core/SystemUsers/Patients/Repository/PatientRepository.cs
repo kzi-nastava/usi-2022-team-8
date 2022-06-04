@@ -146,9 +146,9 @@ namespace HealthInstitution.Core.SystemUsers.Patients.Repository
             Save();
         }
 
-        public void DeleteNotification(Patient patient, AppointmentNotification notification)
+        public void DeleteNotifications(Patient patient)
         {
-            patient.Notifications.Remove(notification);
+            patient.Notifications.Clear();
             Save();
         }
     }

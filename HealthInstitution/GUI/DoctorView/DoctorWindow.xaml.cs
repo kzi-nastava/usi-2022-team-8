@@ -33,7 +33,7 @@ namespace HealthInstitution.GUI.DoctorView
         }
         private void ShowNotificationsDialog()
         {
-            ExaminationDoctorRepository.GetInstance();
+            //ExaminationDoctorRepository.GetInstance();
             int activeNotifications = 0;
             foreach (AppointmentNotification notification in this._loggedDoctor.Notifications)
             {

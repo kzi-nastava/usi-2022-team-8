@@ -38,9 +38,14 @@ namespace HealthInstitution.Core.Operations
             s_operationRepository.Delete(id);
         }
 
-        public static List<Operation> GetByPatient(String username)
+        public static List<Operation> GetByPatient(String patientUsername)
         {
-            return s_operationRepository.GetByPatient(username);
+            return s_operationRepository.GetByPatient(patientUsername);
+        }
+
+        public static List<Operation> GetByDoctor(String doctorUsername)
+        {
+            return s_operationRepository.GetByDoctor(doctorUsername);
         }
     }
 }

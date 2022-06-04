@@ -23,7 +23,7 @@ namespace HealthInstitution.GUI.DoctorView
         private void LoadRows()
         {
             dataGrid.Items.Clear();
-            List<Operation> doctorOperations = this._loggedDoctor.Operations;
+            List<Operation> doctorOperations = OperationService.GetByDoctor(_loggedDoctor.Username);
             foreach (Operation operation in doctorOperations)
             {
                 dataGrid.Items.Add(operation);
@@ -47,7 +47,7 @@ namespace HealthInstitution.GUI.DoctorView
 
         private void DeleteButton_Click(object sender, RoutedEventArgs e)
         {
-            var answer = System.Windows.MessageBox.Show("Are you sure you want to delete selected examination", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+            var answer = System.Windows.MessageBox.Show("Are you sure you want to delete selected operation?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning);
             if (answer == MessageBoxResult.Yes)
             {
                 Operation selectedOperation = (Operation)dataGrid.SelectedItem;

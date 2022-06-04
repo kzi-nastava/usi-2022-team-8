@@ -1,4 +1,5 @@
 ﻿using HealthInstitution.Core;
+using HealthInstitution.Core.Examinations;
 using HealthInstitution.Core.Examinations.Model;
 using HealthInstitution.Core.MedicalRecords.Model;
 using HealthInstitution.Core.Operations.Model;
@@ -116,23 +117,15 @@ namespace HealthInstitution.GUI.DoctorView
             return true;
         }
 
-        private bool IsExaminationReadyForPerforming(Examination selectedExamination)
-        {
-            if (!(selectedExamination.Appointment <= DateTime.Now))
-            {
-                System.Windows.MessageBox.Show("Date of examination didn't pass!", "Error", MessageBoxButton.OKCancel, MessageBoxImage.Error);
-                return false;
-            }
-            return true;
-        }
         private void StartExamination_Click(object sender, RoutedEventArgs e)
         {
-            bool isSelected = IsExaminationSelected();
-            if (isSelected)
+            if (IsExaminationSelected())
             { 
                 Examination selectedExamination = (Examination)dataGrid.SelectedItem;
-                if (IsExaminationReadyForPerforming(selectedExamination))
+                if (ExaminationService.IsReadyForPerforming(selectedExamination))
                     new PerformExaminationDialog(selectedExamination).ShowDialog();
+                else
+                    System.Windows.MessageBox.Show("Date of examination didn't pass!", "Error", MessageBoxButton.OKCancel, MessageBoxImage.Error);
             }
             dataGrid.Items.Refresh();
         }

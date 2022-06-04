@@ -19,6 +19,6 @@ namespace HealthInstitution.Core.SystemUsers.Patients.Repository
         public void Update(Patient byPatient);
         public void Delete(string username);
         public void ChangeBlockedStatus(Patient patient);
-        public void DeleteNotification(Patient patient, AppointmentNotification notification);
+        public void DeleteNotifications(Patient patient);
     }
 }

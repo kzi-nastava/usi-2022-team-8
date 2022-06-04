@@ -178,13 +178,22 @@ namespace HealthInstitution.Core.Operations.Repository
             Save();
         }
 
-        public List<Operation> GetByPatient(String username)
+        public List<Operation> GetByPatient(String patientUsername)
         {
             List<Operation> patientOperations = new List<Operation>();
             foreach (var operation in this.GetAll())
-                if (operation.MedicalRecord.Patient.Username == username)
+                if (operation.MedicalRecord.Patient.Username == patientUsername)
                     patientOperations.Add(operation);
             return patientOperations;
+        }
+
+        public List<Operation> GetByDoctor(String doctorUsername)
+        {
+            List<Operation> doctorOperations = new List<Operation>();
+            foreach (var operation in this.GetAll())
+                if (operation.Doctor.Username == doctorUsername)
+                    doctorOperations.Add(operation);
+            return doctorOperations;
         }
     }
 }

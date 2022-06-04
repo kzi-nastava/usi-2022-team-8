@@ -1,22 +1,9 @@
 ﻿using HealthInstitution.Core.Equipments;
 using HealthInstitution.Core.Equipments.Model;
-using HealthInstitution.Core.Equipments.Repository;
 using HealthInstitution.Core.Rooms;
 using HealthInstitution.Core.Rooms.Model;
-using HealthInstitution.Core.Rooms.Repository;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 
 namespace HealthInstitution.GUI.DoctorView
 {
@@ -25,7 +12,6 @@ namespace HealthInstitution.GUI.DoctorView
     /// </summary>
     public partial class ConsumedEquipmentDialog : Window
     {
-        //Dictionary<String, int> equipmentQuantities;
         private Room _room;
 
         public ConsumedEquipmentDialog(Room room)
@@ -66,10 +52,11 @@ namespace HealthInstitution.GUI.DoctorView
                 System.Windows.MessageBox.Show("You have removed " + consumedQuantity + " " + equipment.Name + " from " + _room, "Info", MessageBoxButton.OK, MessageBoxImage.Information);
                 equipmentComboBox.Items.Remove(equipment);
                 consumedQuantityComboBox.Items.Clear();
+                /*if (equipmentComboBox.Items.Count == 0) this.Close();*/
             }
-            catch (Exception ex)
+            catch
             {
-                System.Windows.MessageBox.Show(ex.Message, "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+                System.Windows.MessageBox.Show("You have to choose equipment and quantity!", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
 

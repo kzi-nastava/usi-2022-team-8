@@ -1,4 +1,5 @@
-﻿using HealthInstitution.Core.Examinations.Model;
+﻿using HealthInstitution.Core.Examinations;
+using HealthInstitution.Core.Examinations.Model;
 using HealthInstitution.Core.Examinations.Repository;
 using HealthInstitution.Core.MedicalRecords;
 using HealthInstitution.Core.MedicalRecords.Model;
@@ -56,7 +57,7 @@ namespace HealthInstitution.GUI.SecretaryView
         }
         private void ShowReservedExaminationWithoutDelaying(List<Tuple<int, int, DateTime>> examinationsAndOperationsForDelaying)
         {
-            Examination urgentExamination = ExaminationRepository.GetInstance().GetById(examinationsAndOperationsForDelaying[0].Item1);
+            Examination urgentExamination = ExaminationService.GetById(examinationsAndOperationsForDelaying[0].Item1);
             System.Windows.MessageBox.Show("Urgent examination has ordered successfully.");
             UrgentExaminationDialog urgentExaminationDialog = new UrgentExaminationDialog(urgentExamination);
             urgentExaminationDialog.ShowDialog();

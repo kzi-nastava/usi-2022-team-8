@@ -24,12 +24,12 @@ internal static class ExaminationService
         return s_examinationRepository.GetById(id);
     }
 
-        public static Examination Add(ExaminationDTO examinationDTO)
-        {
-            Examination examination = new Examination(examinationDTO);
-            s_examinationRepository.Add(examination);
-            return examination;
-        }
+    public static Examination Add(ExaminationDTO examinationDTO)
+    {
+        Examination examination = new Examination(examinationDTO);
+        s_examinationRepository.Add(examination);
+        return examination;
+    }
 
     public static void Update(int id, ExaminationDTO examinationDTO)
     {
@@ -45,9 +45,14 @@ internal static class ExaminationService
         s_examinationRepository.Delete(id);
     }
 
-    public static List<Examination> GetByPatient(string username)
+    public static List<Examination> GetByPatient(string patientUsername)
     {
-        return s_examinationRepository.GetByPatient(username);
+        return s_examinationRepository.GetByPatient(patientUsername);
+    }
+
+    public static List<Examination> GetByDoctor(string doctorUsername)
+    {
+        return s_examinationRepository.GetByDoctor(doctorUsername);
     }
 
     public static List<Examination> GetCompletedByPatient(string patientUsername)
@@ -78,5 +83,17 @@ internal static class ExaminationService
     public static ExaminationDTO ParseExaminationToExaminationDTO(Examination examination)
     {
         return new ExaminationDTO(examination.Appointment, examination.Room, examination.Doctor, examination.MedicalRecord);
+    }
+
+    public static bool IsReadyForPerforming(Examination examination)
+    {
+        return examination.Appointment <= DateTime.Now;
+    }
+
+    public static void Complete(Examination examination, string anamnesis)
+    {
+        examination.Anamnesis = anamnesis;
+        examination.Status = ExaminationStatus.Completed;
+        s_examinationRepository.Save();
     }
 }

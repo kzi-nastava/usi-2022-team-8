@@ -38,7 +38,8 @@ namespace HealthInstitution.GUI.DoctorView
             }
             else
             {
-                DrugService.Reject(_selectedDrug, rejectionReason);
+                DrugVerificationService.Reject(_selectedDrug, rejectionReason);
+                System.Windows.MessageBox.Show("Successfull rejection!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 Close();
             }
         }

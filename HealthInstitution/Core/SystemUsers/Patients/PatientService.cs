@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using HealthInstitution.Core.Operations.Model;
 using HealthInstitution.Core.Operations.Repository;
 using HealthInstitution.Core.TrollCounters;
+using HealthInstitution.Core.Notifications.Model;
 
 namespace HealthInstitution.Core.SystemUsers.Patients
 {
@@ -53,6 +54,10 @@ namespace HealthInstitution.Core.SystemUsers.Patients
             s_patientRepository.Delete(username);
             TrollCounterService.Delete(username);
             UserService.Delete(username);
+        }
+        public static void DeleteNotifications(Patient patient)
+        {
+            s_patientRepository.DeleteNotifications(patient);
         }
     } 
 }

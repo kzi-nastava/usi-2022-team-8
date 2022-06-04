@@ -14,6 +14,14 @@ namespace HealthInstitution.Core.Notifications
     internal static class AppointmentNotificationService
     {
         private static AppointmentNotificationRepository s_appointmentNotificationRepository = AppointmentNotificationRepository.GetInstance();
+        public static void ChangeActiveStatus(AppointmentNotification notification, bool forDoctor)
+        {
+            if (forDoctor)
+                notification.ActiveForDoctor = false;
+            else
+                notification.ActiveForPatient = false;
+            s_appointmentNotificationRepository.Save();
+        }
         public static void SendNotificationsForDelayedExamination(ScheduleEditRequest selectedAppointment)
         {
             AppointmentNotificationDTO appointmentNotificationDto = new AppointmentNotificationDTO(selectedAppointment.CurrentExamination.Appointment, selectedAppointment.NewExamination.Appointment, selectedAppointment.NewExamination.Doctor, selectedAppointment.NewExamination.MedicalRecord.Patient);

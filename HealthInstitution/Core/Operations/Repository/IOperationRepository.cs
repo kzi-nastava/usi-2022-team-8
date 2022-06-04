@@ -19,5 +19,6 @@ namespace HealthInstitution.Core.Operations.Repository
         public void Delete(int id);
         public void SwapOperationValue(Operation operation);
         public List<Operation> GetByPatient(String username);
+        public List<Operation> GetByDoctor(String username);
     }
 }

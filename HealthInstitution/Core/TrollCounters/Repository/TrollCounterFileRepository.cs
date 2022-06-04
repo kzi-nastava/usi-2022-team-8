@@ -59,6 +59,11 @@ public class TrollCounterFileRepository : ITrollCounterFileRepository
         File.WriteAllText(this._fileName, allTrollCounters);
     }
 
+    public List<TrollCounter> GetAll()
+    {
+        return this.Counters;
+    }
+
     public TrollCounter GetById(string id)
     {
         return this.CountersById[id];

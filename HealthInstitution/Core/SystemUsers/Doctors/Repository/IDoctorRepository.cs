@@ -25,6 +25,6 @@ namespace HealthInstitution.Core.SystemUsers.Doctors.Repository
         public List<Operation> GetOperationsInThreeDays(List<Operation> operations);
         public List<Examination> GetExaminationsByDate(List<Examination> examinations, DateTime date);
         public List<Operation> GetOperationsByDate(List<Operation> operations, DateTime date);
-        public void DeleteNotification(Doctor doctor, AppointmentNotification notification);
+        public void DeleteNotifications(Doctor doctor);
     }
 }
