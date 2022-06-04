@@ -11,11 +11,7 @@ namespace HealthInstitution.Core.Rooms.Repository
 {
     public interface IRoomRepository : IRepository<Room>
     {
-        public List<Equipment> ConvertJTokenToEquipments(JToken tokens);
-        public Room Parse(JToken? room);
         public void LoadFromFile();
-        public List<int> FormListOfIds(List<Equipment> equipments);
-        public List<dynamic> PrepareForSerialization();
         public void Save();
         public List<Room> GetAll();
         public Room GetById(int id);

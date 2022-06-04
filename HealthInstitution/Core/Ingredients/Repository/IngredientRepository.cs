@@ -4,7 +4,7 @@ using System.Text.Json;
 
 namespace HealthInstitution.Core.Ingredients.Repository;
 
-public class IngredientRepository
+public class IngredientRepository : IIngredientRepository
 {
     private int _maxId;
     private String _fileName;

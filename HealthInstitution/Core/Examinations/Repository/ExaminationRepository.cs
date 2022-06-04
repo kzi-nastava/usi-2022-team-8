@@ -16,7 +16,7 @@ using System.Text.Json.Serialization;
 
 namespace HealthInstitution.Core.Examinations.Repository;
 
-internal class ExaminationRepository
+internal class ExaminationRepository : IExaminationRepository
 {
     private String _fileName;
     public int _maxId { get; set; }

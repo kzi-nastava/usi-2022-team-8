@@ -6,7 +6,7 @@ using System.Text.Json.Serialization;
 
 namespace HealthInstitution.Core.SystemUsers.Users.Repository;
 
-public class UserRepository
+public class UserRepository : IUserRepository
 {
     private String _fileName;
     public List<User> Users { get; set; }

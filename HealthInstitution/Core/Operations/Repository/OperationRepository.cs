@@ -20,7 +20,7 @@ using System.Text.Json.Serialization;
 
 namespace HealthInstitution.Core.Operations.Repository
 {
-    internal class OperationRepository
+    internal class OperationRepository : IOperationRepository
     {
         private String _fileName;
         public int _maxId { get; set; }

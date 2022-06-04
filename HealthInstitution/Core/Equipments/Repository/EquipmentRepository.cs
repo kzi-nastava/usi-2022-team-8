@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.Equipments.Repository
 {
-    public class EquipmentRepository
+    public class EquipmentRepository : IEquipmentRepository
     {
         private String _fileName;
 

@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.Renovations.Repository
 {
-    public class RenovationRepository
+    public class RenovationRepository : IRenovationRepository
     {
         private String _fileName;
 

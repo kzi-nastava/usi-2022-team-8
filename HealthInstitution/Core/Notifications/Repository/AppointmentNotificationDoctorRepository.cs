@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.Notifications.Repository
 {
-    internal class AppointmentNotificationDoctorRepository
+    internal class AppointmentNotificationDoctorRepository : IAppointmentNotificationDoctorRepository
     {
         private String _fileName;
         private AppointmentNotificationDoctorRepository(String fileName)

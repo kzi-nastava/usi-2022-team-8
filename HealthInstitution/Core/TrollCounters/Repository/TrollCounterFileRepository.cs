@@ -10,7 +10,7 @@ using System.Windows;
 
 namespace HealthInstitution.Core.TrollCounters.Repository;
 
-public class TrollCounterFileRepository
+public class TrollCounterFileRepository : ITrollCounterFileRepository
 {
     private String _fileName;
     public List<TrollCounter> Counters { get; set; }

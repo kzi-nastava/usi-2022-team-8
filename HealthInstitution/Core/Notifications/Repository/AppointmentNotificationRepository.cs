@@ -18,7 +18,7 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.Notifications.Repository
 {
-    internal class AppointmentNotificationRepository
+    internal class AppointmentNotificationRepository : IAppointmentNotificationRepository
     {
         private String _fileName;
         public int _maxId { get; set; }

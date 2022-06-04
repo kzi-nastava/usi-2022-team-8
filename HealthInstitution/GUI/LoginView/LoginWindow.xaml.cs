@@ -16,6 +16,7 @@ using HealthInstitution.Core.Notifications.Repository;
 using HealthInstitution.Core.SystemUsers.Users;
 using HealthInstitution.Core.TrollCounters;
 using HealthInstitution.Core.PrescriptionNotifications.Service;
+using HealthInstitution.Core.SystemUsers.Doctors;
 
 namespace HealthInstitution.GUI.LoginView
 {
@@ -107,11 +108,9 @@ namespace HealthInstitution.GUI.LoginView
 
         private void RedirectDoctor()
         {
-            DoctorRepository doctorRepository = DoctorRepository.GetInstance();
             AppointmentNotificationDoctorRepository.GetInstance();
             AppointmentNotificationPatientRepository.GetInstance();
-            OperationDoctorRepository.GetInstance();
-            Doctor loggedDoctor = doctorRepository.GetById(_usernameInput);
+            Doctor loggedDoctor = DoctorService.GetById(_usernameInput);
             new DoctorWindow(loggedDoctor).ShowDialog();
         }
 

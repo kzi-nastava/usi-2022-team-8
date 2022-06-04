@@ -10,12 +10,8 @@ namespace HealthInstitution.Core
     public interface IRepository<T> where T : class
     {
         public List<T> GetAll();
-
         public void Save();
-
         public void LoadFromFile();
-
-        public void Parse(JToken? examination);
 
     }
 }

@@ -11,9 +11,7 @@ namespace HealthInstitution.Core.SystemUsers.Patients.Repository
 {
     public interface IPatientRepository : IRepository<Patient>
     {
-        public Patient Parse(JToken? patient);
         public void LoadFromFile();
-        public List<dynamic> PrepareForSerialization();
         public void Save();
         public List<Patient> GetAll();
         public Patient GetByUsername(string username);

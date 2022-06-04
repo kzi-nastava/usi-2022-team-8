@@ -5,7 +5,7 @@ using System.Text.Json.Serialization;
 
 namespace HealthInstitution.Core.PrescriptionNotifications.Repository;
 
-public class PrescriptionNotificationRepository
+public class PrescriptionNotificationRepository 
 {
     private String _fileName;
     public List<PrescriptionNotification> Notifications { get; set; }

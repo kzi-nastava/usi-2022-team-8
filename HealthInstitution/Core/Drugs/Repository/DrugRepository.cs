@@ -8,7 +8,7 @@ using System.Text.Json.Serialization;
 
 namespace HealthInstitution.Core.Drugs.Repository;
 
-public class DrugRepository
+public class DrugRepository : IDrugRepository
 {
     private int _maxId;
     private String _fileName;
@@ -58,6 +58,9 @@ public class DrugRepository
                                   JToken2Ingredients(drug["ingredients"]),
                                   (string)drug["rejectionReason"]);
     }
+
+
+
     public void LoadFromFile()
     {
         var drugs = JArray.Parse(File.ReadAllText(_fileName));

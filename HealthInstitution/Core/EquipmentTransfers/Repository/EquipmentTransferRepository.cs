@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.EquipmentTransfers.Repository
 {
-    public class EquipmentTransferRepository
+    public class EquipmentTransferRepository : IEquipmentTransferRepository
     {
         private String _fileName;
 

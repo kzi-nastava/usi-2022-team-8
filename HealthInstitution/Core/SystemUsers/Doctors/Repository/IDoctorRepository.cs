@@ -13,9 +13,7 @@ namespace HealthInstitution.Core.SystemUsers.Doctors.Repository
 {
     public interface IDoctorRepository : IRepository<Doctor>
     {
-        public Doctor Parse(JToken? doctor);
         public void LoadFromFile();
-        public List<dynamic> PrepareForSerialization();
         public void Save();
         public List<Doctor> GetAll();
         public Doctor GetById(String username);

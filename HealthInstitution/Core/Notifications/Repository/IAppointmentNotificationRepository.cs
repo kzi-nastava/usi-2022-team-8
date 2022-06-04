@@ -13,8 +13,6 @@ namespace HealthInstitution.Core.Notifications.Repository
         public void Save();
         public List<AppointmentNotification> GetAll();
         public AppointmentNotification GetById(int id);
-        public void AddToCollections(AppointmentNotification notification);
-        public void SaveAll();
         public void Add(AppointmentNotificationDTO appointmentNotificationDTO);
         public void Delete(int id);
     }
