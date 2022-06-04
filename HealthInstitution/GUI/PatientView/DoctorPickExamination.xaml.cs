@@ -60,7 +60,7 @@ public partial class DoctorPickExamination : Window
 
     private void RatingSort_Click(object sender, RoutedEventArgs e)
     {
-        _currentDoctors = DoctorService.OrderByDoctorSurname(_currentDoctors);
+        _currentDoctors = DoctorService.OrderByDoctorRating(_currentDoctors);
         LoadRows();
     }
 
