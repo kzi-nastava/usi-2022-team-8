@@ -10,10 +10,7 @@ namespace HealthInstitution.Core.Renovations.Repository
 {
     public interface IRenovationRepository : IRepository<Renovation>
     {
-        public Renovation Parse(JToken? renovation);
         public void LoadFromFile();
-        public List<dynamic> PrepareForSerialization();
-        public void AttachReducedRenovation(List<dynamic> reducedRenovation, Renovation renovation);
         public void Save();
         public List<Renovation> GetAll();
         public Renovation GetById(int id);

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.Notifications
 {
-    internal class DrugNotificationService
+    public class DrugNotificationService
     {
     }
 }

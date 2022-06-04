@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.Examinations.Repository
 {
-    public class ExaminationDoctorRepository
+    public class ExaminationDoctorRepository : IExaminationDoctorRepository
     {
         private String _fileName;
 

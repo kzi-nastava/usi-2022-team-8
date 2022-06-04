@@ -26,6 +26,6 @@
         <RadioButton Name="firstRadioButton" IsChecked="True" GroupName="Select" Content="First suggestion" HorizontalAlignment="Left" Margin="100,304,0,0" VerticalAlignment="Top" Grid.Column="1" />
         <RadioButton Name="secondRadioButton" IsChecked="False" GroupName="Select" Content="Second suggestion" HorizontalAlignment="Left" Margin="314,303,0,0" VerticalAlignment="Top" />
         <RadioButton Name="thirdRadioButton" IsChecked="False" GroupName="Select" Content="Third suggestionl" HorizontalAlignment="Left" Margin="518,307,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.496,0.705" />
-        <Button Name="addButton" Content="Add" Click="addButton_click" HorizontalAlignment="Left" Height="30" Margin="653,379,0,0" VerticalAlignment="Top" Width="111" RenderTransformOrigin="0.243,0.514" Cursor="Arrow" FontSize="18" Visibility="Visible" />
+        <Button Name="addButton" Content="Add" Click="AddButton_click" HorizontalAlignment="Left" Height="30" Margin="653,379,0,0" VerticalAlignment="Top" Width="111" RenderTransformOrigin="0.243,0.514" Cursor="Arrow" FontSize="18" Visibility="Visible" />
     </Grid>
 </Window>

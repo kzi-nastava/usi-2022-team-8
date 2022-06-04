@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.Drugs
 {
-    internal static class DrugService
+    public static class DrugService
     {
         private static DrugRepository s_drugRepository = DrugRepository.GetInstance();
         public static Drug GetById(int id)
@@ -42,14 +42,6 @@ namespace HealthInstitution.Core.Drugs
             Drug drug = new Drug(drugDTO);
             s_drugRepository.Update(id, drug);
         }
-        public static void Accept(Drug drug)
-        {
-            s_drugRepository.Accept(drug);
-        }
-        public static void Reject(Drug drug, string rejectionReason)
-        {
-            s_drugRepository.Reject(drug, rejectionReason);
-        }
         public static void Delete(int id)
         {
             s_drugRepository.Delete(id);
@@ -67,11 +59,6 @@ namespace HealthInstitution.Core.Drugs
         public static bool Contains(string name)
         {
             return s_drugRepository.Contains(name);
-        }
-
-        public static string ReasonForRejection(Drug drug)
-        {
-            return drug.RejectionReason;
         }
     }
 }

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.Scheduling
 {
-    internal static class PatientExaminationAvailabilityService
+    public static class PatientExaminationAvailabilityService
     {
         private static void CheckIfPatientHasExaminations(ExaminationDTO examinationDTO)
         {

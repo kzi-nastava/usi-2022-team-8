@@ -1,4 +1,5 @@
-﻿using HealthInstitution.Core.Examinations.Model;
+﻿using HealthInstitution.Core.Examinations;
+using HealthInstitution.Core.Examinations.Model;
 using HealthInstitution.Core.Examinations.Repository;
 using HealthInstitution.Core.ScheduleEditRequests;
 using HealthInstitution.Core.SystemUsers.Patients.Model;
@@ -73,7 +74,6 @@ public partial class PatientScheduleWindow : Window
             else
             {
                 dataGrid.Items.Remove(selectedExamination);
-
                 ExaminationService.Delete(selectedExamination.Id);
                 selectedExamination.Doctor.Examinations.Remove(selectedExamination);
             }

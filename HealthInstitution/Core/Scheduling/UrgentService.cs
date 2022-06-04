@@ -19,7 +19,7 @@ using HealthInstitution.Core.SystemUsers.Patients.Model;
 
 namespace HealthInstitution.Core.Scheduling
 {
-    internal static class UrgentService
+    public static class UrgentService
     {
         public static void SetExaminationDetails(Examination examination, ScheduleEditRequest selectedAppointment)
         {

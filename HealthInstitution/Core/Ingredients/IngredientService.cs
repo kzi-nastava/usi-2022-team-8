@@ -9,7 +9,7 @@ using HealthInstitution.Core.Drugs;
 
 namespace HealthInstitution.Core.Ingredients
 {
-    internal static class IngredientService
+    public static class IngredientService
     {
         static IngredientRepository s_ingredientRepository = IngredientRepository.GetInstance();
 

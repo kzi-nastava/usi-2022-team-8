@@ -8,7 +8,7 @@ using HealthInstitution.Core.SystemUsers.Patients.Model;
 
 namespace HealthInstitution.Core.Polls.Model
 {
-    internal class Poll
+    public class Poll
     {
         public List<PollItem> Items { get; set; }
 

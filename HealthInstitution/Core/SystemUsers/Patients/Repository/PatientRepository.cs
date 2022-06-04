@@ -13,7 +13,7 @@ using HealthInstitution.Core.MedicalRecords;
 
 namespace HealthInstitution.Core.SystemUsers.Patients.Repository
 {
-    internal class PatientRepository
+    public class PatientRepository : IPatientRepository
     {
         private String _fileName;
         public List<Patient> Patients { get; set; }

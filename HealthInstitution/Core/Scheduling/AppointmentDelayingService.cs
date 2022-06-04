@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.Scheduling
 {
-    internal static class AppointmentDelayingService
+    public static class AppointmentDelayingService
     {
         private static DateTime FindFirstAvailableAppointment(DateTime appointment, int appointmentCounter, TimeSpan ts)
         {

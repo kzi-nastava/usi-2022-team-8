@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.Polls
 {
-    internal class PollService
+    public class PollService
     {
     }
 }

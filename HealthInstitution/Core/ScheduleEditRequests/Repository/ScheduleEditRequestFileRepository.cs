@@ -15,7 +15,7 @@ using System.Text.Json.Serialization;
 
 namespace HealthInstitution.Core.ScheduleEditRequests.Repository;
 
-public class ScheduleEditRequestFileRepository
+public class ScheduleEditRequestFileRepository : IScheduleEditRequestFileRepository
 {
     private String _fileName;
     public List<ScheduleEditRequest> Requests { get; set; }
@@ -102,7 +102,7 @@ public class ScheduleEditRequestFileRepository
         }
     }
 
-    private void Save()
+    public void Save()
     {
         var allExaminations = JsonSerializer.Serialize(PrepareForSerialization(), _options);
         File.WriteAllText(this._fileName, allExaminations);

@@ -10,11 +10,12 @@ namespace HealthInstitution.Core.Operations
 {
     public interface IOperationService
     {
-        public Task<IEnumerable<Operation>> GetAll();
+        public List<Operation> GetAll();
         public Operation GetById(int id);
         public void Add(OperationDTO operationDTO);
         public void Update(int id, OperationDTO operationDTO);
         public void Delete(int id);
-        public Task<IEnumerable<Operation>> GetPatientOperations(Patient patient);
+        public List<Operation> GetByPatient(string patientUsername);
+        public List<Operation> GetByDoctor(string doctorUsername);
     }
 }

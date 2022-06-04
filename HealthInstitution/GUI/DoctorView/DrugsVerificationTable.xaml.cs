@@ -36,14 +36,13 @@ namespace HealthInstitution.GUI.DoctorView
             {
                 dataGrid.Items.Add(drug);
             }
-            dataGrid.Items.Refresh();
         }
 
         private void AcceptButton_Click(object sender, RoutedEventArgs e)
         {
             Drug selectedDrug = (Drug)dataGrid.SelectedItem;
             System.Windows.MessageBox.Show("You have accepted a new drug!", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
-            DrugService.Accept(selectedDrug);
+            DrugVerificationService.Accept(selectedDrug);
             dataGrid.Items.Remove(selectedDrug);
         }
 
@@ -53,7 +52,7 @@ namespace HealthInstitution.GUI.DoctorView
             RejectionReasonDialog rejectionReasonDialog = new RejectionReasonDialog(selectedDrug);
             rejectionReasonDialog.ShowDialog();
             LoadRows();
-            //dataGrid.Items.Refresh();
+            dataGrid.Items.Refresh();
         }
     }
 }

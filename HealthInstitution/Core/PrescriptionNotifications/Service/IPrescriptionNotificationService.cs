@@ -17,5 +17,5 @@ public interface IPrescriptionNotificationService
 
     public List<DateTime> GenerateDateTimes(PrescriptionNotificationSettings setting);
 
-    public static void UpdateSettings(int id, PrescriptionNotificationSettings settings);
+    public void UpdateSettings(int id, PrescriptionNotificationSettings settings);
 }

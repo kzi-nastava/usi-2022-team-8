@@ -1,15 +1,22 @@
 ﻿using HealthInstitution.Core.Examinations.Model;
+using HealthInstitution.Core.Examinations.Repository;
 using HealthInstitution.Core.Notifications.Model;
 using HealthInstitution.Core.Operations.Model;
+using HealthInstitution.Core.Operations.Repository;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using HealthInstitution.Core.SystemUsers.Doctors.Repository;
 
 namespace HealthInstitution.Core.SystemUsers.Doctors;
 
-internal static class DoctorService
+public static class DoctorService
 {
     private static DoctorRepository s_doctorRepository = DoctorRepository.GetInstance();
 
+    public static void LoadAppointments()
+    {
+        OperationDoctorRepository.GetInstance();
+        ExaminationDoctorRepository.GetInstance();
+    }
     public static List<Doctor> GetAll()
     {
         return s_doctorRepository.GetAll();

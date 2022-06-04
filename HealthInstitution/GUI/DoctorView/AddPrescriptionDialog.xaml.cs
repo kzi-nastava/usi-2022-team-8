@@ -1,4 +1,5 @@
-﻿using HealthInstitution.Core.Drugs.Model;
+﻿using HealthInstitution.Core.Drugs;
+using HealthInstitution.Core.Drugs.Model;
 using HealthInstitution.Core.Drugs.Repository;
 using HealthInstitution.Core.Ingredients.Model;
 using HealthInstitution.Core.MedicalRecords;
@@ -29,7 +30,6 @@ namespace HealthInstitution.GUI.DoctorView
     public partial class AddPrescriptionDialog : Window
     {
         private MedicalRecord _medicalRecord;
-        private DrugRepository DrugSerivce = DrugRepository.GetInstance();
         public AddPrescriptionDialog(MedicalRecord medicalRecord)
         {
             InitializeComponent();
@@ -40,7 +40,7 @@ namespace HealthInstitution.GUI.DoctorView
         {
             var hourComboBox = sender as System.Windows.Controls.ComboBox;
             List<String> hours = new List<String>();
-            for (int i = 9; i < 22; i++)
+            for (int i = 8; i <= 12; i++)
             {
                 hours.Add(i.ToString());
             }
@@ -53,9 +53,7 @@ namespace HealthInstitution.GUI.DoctorView
             var minuteComboBox = sender as System.Windows.Controls.ComboBox;
             List<String> minutes = new List<String>();
             minutes.Add("00");
-            minutes.Add("15");
             minutes.Add("30");
-            minutes.Add("45");
             minuteComboBox.ItemsSource = minutes;
             minuteComboBox.SelectedIndex = 0;
         }
@@ -74,7 +72,7 @@ namespace HealthInstitution.GUI.DoctorView
         private void DrugComboBox_Loaded(object sender, RoutedEventArgs e)
         {
             var drugComboBox = sender as System.Windows.Controls.ComboBox;
-            List<Drug> drugs = DrugSerivce.GetAll();
+            List<Drug> drugs = DrugService.GetAll();
             foreach (Drug drug in drugs)
             {
                 drugComboBox.Items.Add(drug);

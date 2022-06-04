@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.Renovations.Functionality
 {
-    public static class RenovationRefreshingService
+    public static class RenovationRefreshingService 
     {
         private static RenovationRepository s_renovationRepository = RenovationRepository.GetInstance();
        

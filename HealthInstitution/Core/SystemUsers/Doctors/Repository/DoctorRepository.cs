@@ -10,7 +10,7 @@ using System.Text.Json.Serialization;
 
 namespace HealthInstitution.Core.SystemUsers.Doctors.Repository;
 
-internal class DoctorRepository
+public class DoctorRepository : IDoctorRepository
 {
     private String _fileName;
     public List<Doctor> Doctors { get; set; }

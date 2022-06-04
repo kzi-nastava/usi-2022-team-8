@@ -15,8 +15,9 @@ using System.Windows;
 
 namespace HealthInstitution.Core.Scheduling
 {
-    internal static class SchedulingService
+    public static class SchedulingService
     {
+        private static Random rnd = new Random();
         private static ExaminationRepository s_examinationRepository = ExaminationRepository.GetInstance();
         private static OperationRepository s_operationRepository = OperationRepository.GetInstance();
 
@@ -138,8 +139,7 @@ namespace HealthInstitution.Core.Scheduling
             }
 
             if (availableRooms.Count == 0) throw new Exception("There are no available rooms!");
-            Random random = new Random();
-            int index = random.Next(0, availableRooms.Count);
+            int index = rnd.Next(0, availableRooms.Count);
             return availableRooms[index];
         }
 
@@ -149,8 +149,7 @@ namespace HealthInstitution.Core.Scheduling
 
             if (availableRooms.Count == 0) throw new Exception("There are no available rooms!");
 
-            Random random = new Random();
-            int index = random.Next(0, availableRooms.Count);
+            int index = rnd.Next(0, availableRooms.Count);
             return availableRooms[index];
         }
 

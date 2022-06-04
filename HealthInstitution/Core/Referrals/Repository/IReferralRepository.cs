@@ -10,9 +10,7 @@ namespace HealthInstitution.Core.Referrals.Repository
 {
     public interface IReferralRepository : IRepository<Referral>
     {
-        public Referral Parse(JToken? referral);
         public void LoadFromFile();
-        public List<dynamic> PrepareForSerialization();
         public void Save();
         public List<Referral> GetAll();
         public Referral GetById(int id);

@@ -10,9 +10,7 @@ namespace HealthInstitution.Core.Prescriptions.Repository
 {
     public interface IPrescriptionRepository : IRepository<Prescription>
     {
-        public Prescription Parse(JToken? prescription);
         public void LoadFromFile();
-        public List<dynamic> PrepareForSerialization();
         public void Save();
         public List<Prescription> GetAll();
         public Prescription GetById(int id);

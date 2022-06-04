@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.ScheduleEditRequests
 {
-    internal static class ScheduleEditRequestService
+    public static class ScheduleEditRequestService
     {
         static ScheduleEditRequestFileRepository s_scheduleEditRequestRepository = ScheduleEditRequestFileRepository.GetInstance();
 

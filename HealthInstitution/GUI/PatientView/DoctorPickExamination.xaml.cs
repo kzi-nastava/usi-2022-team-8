@@ -78,7 +78,7 @@ public partial class DoctorPickExamination : Window
         LoadRows();
     }
 
-    private void seachParameter_GotFocus(object sender, RoutedEventArgs e)
+    private void SearchParameter_GotFocus(object sender, RoutedEventArgs e)
     {
         SearchBox.Clear();
     }

@@ -8,7 +8,7 @@ using System.Text.Json.Serialization;
 
 namespace HealthInstitution.Core.Referrals.Repository
 {
-    internal class ReferralRepository
+    public class ReferralRepository : IReferralRepository
     {
         private String _fileName;
         public int maxId;

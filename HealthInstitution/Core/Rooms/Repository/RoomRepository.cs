@@ -15,7 +15,7 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.Rooms.Repository
 {
-    public class RoomRepository
+    public class RoomRepository : IRoomRepository
     {
         private String _fileName;
 

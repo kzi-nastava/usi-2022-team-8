@@ -41,7 +41,8 @@ namespace HealthInstitution.GUI.DoctorView
 
         public void Load()
         {
-            doctorComboBox.IsEnabled = false;
+            doctorRadioButton.IsChecked = true;
+            doctorComboBox.IsEnabled = true;
             specialtyComboBox.IsEnabled = false;
         }
 
@@ -81,40 +82,32 @@ namespace HealthInstitution.GUI.DoctorView
             specialtyComboBox.Items.Refresh();
         }
 
-        private void CreateReferralWithDoctor()
+        private ReferralDTO CreateReferralDTOWithDoctor()
         {
-            this.Close();
             Doctor refferedDoctor = (Doctor)doctorComboBox.SelectedItem;
-            ReferralDTO referralDTO = new ReferralDTO(ReferralType.SpecificDoctor, _doctor, refferedDoctor, null);
-            Referral referral = ReferralService.Add(referralDTO);
-            MedicalRecordService.AddReferral(_patient, referral);
-            System.Windows.MessageBox.Show("You have created the referral!", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
+            return new ReferralDTO(ReferralType.SpecificDoctor, _doctor, refferedDoctor, null);
         }
 
-        private void CreateReferralWithSpecialty()
+        private ReferralDTO CreateReferralDTOWithSpecialty()
         {
-            this.Close();
             SpecialtyType specialtyType = (SpecialtyType)specialtyComboBox.SelectedIndex;
-            ReferralDTO referralDTO = new ReferralDTO(ReferralType.Specialty, _doctor, null, specialtyType);
-            Referral referral = ReferralService.Add(referralDTO);
-            MedicalRecordService.AddReferral(_patient, referral);
-            System.Windows.MessageBox.Show("You have created the referral!", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
+            return new ReferralDTO(ReferralType.Specialty, _doctor, null, specialtyType);
         }
 
         private void Submit_Click(object sender, RoutedEventArgs e)
         {
+            this.Close();
+            ReferralDTO referralDTO;
             if ((bool)doctorRadioButton.IsChecked)
             {
-                CreateReferralWithDoctor();
-            }
-            else if ((bool)specialtyRadioButton.IsChecked)
+                referralDTO = CreateReferralDTOWithDoctor();
+            } else
             {
-                CreateReferralWithSpecialty();
+                referralDTO = CreateReferralDTOWithSpecialty();
             }
-            else
-            {
-                System.Windows.MessageBox.Show("Select one of two options!", "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
-            }
+            Referral referral = ReferralService.Add(referralDTO);
+            MedicalRecordService.AddReferral(_patient, referral);
+            System.Windows.MessageBox.Show("You have created the referral!", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
         }
     }
 }

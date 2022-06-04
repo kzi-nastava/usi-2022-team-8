@@ -11,11 +11,7 @@ namespace HealthInstitution.Core.Drugs.Repository
 {
     public interface IDrugRepository : IRepository<Drug>
     {
-        public DrugRepository GetInstance();
-        public List<Ingredient> JToken2Ingredients(JToken tokens);
-        public Drug Parse(JToken? drug);
         public void LoadFromFile();
-        public List<dynamic> PrepareForSerialization();
         public void Save();
         public List<Drug> GetAll();
         public List<Drug> GetAllAccepted();

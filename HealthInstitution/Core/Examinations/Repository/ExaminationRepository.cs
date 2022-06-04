@@ -16,7 +16,7 @@ using System.Text.Json.Serialization;
 
 namespace HealthInstitution.Core.Examinations.Repository;
 
-internal class ExaminationRepository
+public class ExaminationRepository : IExaminationRepository
 {
     private String _fileName;
     public int _maxId { get; set; }
@@ -161,28 +161,34 @@ internal class ExaminationRepository
         SaveAll();
     }
 
-    public List<Examination> GetByPatient(string username)
+    public List<Examination> GetByPatient(string patientUsername)
     {
         List<Examination> patientExaminations = new List<Examination>();
         foreach (var examination in Examinations)
-            if (examination.MedicalRecord.Patient.Username == username)
+            if (examination.MedicalRecord.Patient.Username == patientUsername)
                 patientExaminations.Add(examination);
         return patientExaminations;
+    }
+
+    public List<Examination> GetByDoctor(String doctorUsername)
+    {
+        List<Examination> doctorExaminations = new List<Examination>();
+        foreach (var examination in this.GetAll())
+            if (examination.Doctor.Username == doctorUsername)
+                doctorExaminations.Add(examination);
+        return doctorExaminations;
     }
 
     public List<Examination> GetCompletedByPatient(string patientUsername)
     {
         List<Examination> completed = new List<Examination>();
-
-        foreach (Examination examination in Examinations)
+        foreach (Examination examination in GetByPatient(patientUsername))
         {
-            if (examination.Status == ExaminationStatus.Completed && examination.MedicalRecord.Patient.Username == patientUsername)
+            if (examination.Status == ExaminationStatus.Completed)
                 completed.Add(examination);
         }
         return completed;
     }
-
-    //stankelino
 
     public List<Examination> GetSeachAnamnesis(string keyword, string patientUsername)
     {

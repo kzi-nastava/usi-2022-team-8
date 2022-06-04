@@ -5,7 +5,7 @@ using HealthInstitution.Core.SystemUsers.Patients.Model;
 
 namespace HealthInstitution.Core.Operations
 {
-    internal static class OperationService
+    public static class OperationService
     {
         static OperationRepository s_operationRepository = OperationRepository.GetInstance();
         public static List<Operation> GetAll()
@@ -38,9 +38,14 @@ namespace HealthInstitution.Core.Operations
             s_operationRepository.Delete(id);
         }
 
-        public static List<Operation> GetByPatient(String username)
+        public static List<Operation> GetByPatient(String patientUsername)
         {
-            return s_operationRepository.GetByPatient(username);
+            return s_operationRepository.GetByPatient(patientUsername);
+        }
+
+        public static List<Operation> GetByDoctor(String doctorUsername)
+        {
+            return s_operationRepository.GetByDoctor(doctorUsername);
         }
     }
 }

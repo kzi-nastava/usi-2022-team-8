@@ -77,7 +77,7 @@ namespace HealthInstitution.GUI.ManagerView.DrugView
         {
             Drug selectedDrug = (Drug)drugsDataGrid.SelectedItem;
 
-            reasonLabel.Content = "Reject reason: " + DrugService.ReasonForRejection(selectedDrug);
+            reasonLabel.Content = "Reject reason: " + DrugVerificationService.ReasonForRejection(selectedDrug);
         }
 
         private void ReviseButton_Click(object sender, RoutedEventArgs e)
