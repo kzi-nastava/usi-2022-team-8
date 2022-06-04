@@ -1,5 +1,7 @@
-﻿using HealthInstitution.Core.Notifications.Model;
+﻿using HealthInstitution.Core.Notifications;
+using HealthInstitution.Core.Notifications.Model;
 using HealthInstitution.Core.Notifications.Repository;
+using HealthInstitution.Core.SystemUsers.Doctors;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using HealthInstitution.Core.SystemUsers.Doctors.Repository;
 using System;
@@ -24,13 +26,9 @@ namespace HealthInstitution.GUI.DoctorView
     public partial class DoctorNotificationsDialog : Window
     {
         private Doctor _loggedDoctor;
-        private DoctorRepository _doctorRepository;
-        private AppointmentNotificationRepository _notificationRepository;
         public DoctorNotificationsDialog(Doctor doctor)
         {
             _loggedDoctor = doctor;
-            _doctorRepository = DoctorRepository.GetInstance();
-            _notificationRepository = AppointmentNotificationRepository.GetInstance();
             InitializeComponent();
             LoadRows();
         }
@@ -38,14 +36,11 @@ namespace HealthInstitution.GUI.DoctorView
         {
             dataGrid.Items.Clear();
             List<AppointmentNotification> doctorsNotifications = _loggedDoctor.Notifications;
-            //List<Notification> doctorsNotificationsCopy = doctorsNotifications.ConvertAll(notification => new Notification(notification.Id,notification.OldAppointment,notification.NewAppointment,notification.Doctor,notification.Patient,notification.ActiveForDoctor,notification.ActiveForPatient));
             foreach (AppointmentNotification notification in doctorsNotifications)
             {
                 dataGrid.Items.Add(notification);
-                notification.ActiveForDoctor = false;
-                AppointmentNotificationRepository.GetInstance().Save();
-                //_notificationRepository.Delete(notification.Id);
-                //_doctorRepository.DeleteNotification(_loggedDoctor, notification);
+                AppointmentNotificationService.ChangeActiveStatus(notification,true);
+                DoctorService.DeleteNotification(_loggedDoctor, notification);
             }
             dataGrid.Items.Refresh();
         }

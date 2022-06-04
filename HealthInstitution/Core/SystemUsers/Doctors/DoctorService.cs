@@ -1,4 +1,5 @@
 ﻿using HealthInstitution.Core.Examinations.Model;
+using HealthInstitution.Core.Notifications.Model;
 using HealthInstitution.Core.Operations.Model;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using HealthInstitution.Core.SystemUsers.Doctors.Repository;
@@ -17,6 +18,10 @@ internal static class DoctorService
     public static Doctor GetById(String username)
     {
         return s_doctorRepository.GetById(username);
+    }
+    public static void DeleteNotification(Doctor doctor, AppointmentNotification notification)
+    {
+        s_doctorRepository.DeleteNotification(doctor, notification);
     }
 
     public static void DeleteExamination(Examination examination)

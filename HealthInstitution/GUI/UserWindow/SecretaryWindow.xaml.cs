@@ -75,6 +75,7 @@ namespace HealthInstitution.GUI.UserWindow
                 this.Close();
                 LoginWindow window = new LoginWindow();
                 window.ShowDialog();
+            
             }
         }
 

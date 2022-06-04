@@ -117,10 +117,6 @@ namespace HealthInstitution.GUI.LoginView
 
         private void RedirectSecretary()
         {
-            DoctorRepository.GetInstance();
-            ExaminationRepository.GetInstance();
-            ExaminationDoctorRepository.GetInstance();
-            OperationDoctorRepository.GetInstance();
             SecretaryWindow secretaryWindow = new SecretaryWindow();
             secretaryWindow.ShowDialog();
         }

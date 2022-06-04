@@ -1,6 +1,8 @@
-﻿using HealthInstitution.Core.Notifications.Model;
+﻿using HealthInstitution.Core.Notifications;
+using HealthInstitution.Core.Notifications.Model;
 using HealthInstitution.Core.Notifications.Repository;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
+using HealthInstitution.Core.SystemUsers.Patients;
 using HealthInstitution.Core.SystemUsers.Patients.Model;
 using HealthInstitution.Core.SystemUsers.Patients.Repository;
 using System;
@@ -25,13 +27,9 @@ namespace HealthInstitution.GUI.PatientView
     public partial class PatientNotificationsDialog : Window
     {
         private Patient _loggedPatient;
-        private PatientRepository _patientRepository;
-        private AppointmentNotificationRepository _notificationRepository;
         public PatientNotificationsDialog(Patient patient)
         {
             _loggedPatient = patient;
-            _patientRepository = PatientRepository.GetInstance();
-            _notificationRepository = AppointmentNotificationRepository.GetInstance();
             InitializeComponent();
             LoadRows();
         }
@@ -42,10 +40,8 @@ namespace HealthInstitution.GUI.PatientView
             foreach (AppointmentNotification notification in patientsNotifications)
             {
                 dataGrid.Items.Add(notification);
-                notification.ActiveForPatient = false;
-                AppointmentNotificationRepository.GetInstance().Save();
-                /*_notificationRepository.Delete(notification.Id);
-                _patientRepository.DeleteNotification(_loggedPatient, notification);*/
+                AppointmentNotificationService.ChangeActiveStatus(notification, false);
+                PatientService.DeleteNotification(_loggedPatient, notification);
             }
             dataGrid.Items.Refresh();
         }

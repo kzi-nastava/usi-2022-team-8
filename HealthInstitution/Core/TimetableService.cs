@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core
 {
-    static class TimetableService
+    public class TimetableService 
     {
         public static List<Examination> GetScheduledExaminations(Doctor doctor)
         {
