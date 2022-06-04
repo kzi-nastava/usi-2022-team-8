@@ -10,7 +10,7 @@ using System.Text.Json.Serialization;
 
 namespace HealthInstitution.Core.PrescriptionNotifications.Repository;
 
-public class PrescriptionNotificationSettingsRepository
+public class PrescriptionNotificationSettingsRepository : IPrescriptionNotificationSettingsRepository
 {
     private String _fileName;
     public List<PrescriptionNotificationSettings> Settings { get; set; }
@@ -80,5 +80,10 @@ public class PrescriptionNotificationSettingsRepository
             this.Settings.Remove(setting);
             Save();
         }
+    }
+
+    public List<PrescriptionNotificationSettings> GetAll()
+    {
+        return Settings;
     }
 }

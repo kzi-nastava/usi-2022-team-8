@@ -8,10 +8,11 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 using HealthInstitution.Core.SystemUsers.Doctors.Repository;
+using Newtonsoft.Json.Linq;
 
 namespace HealthInstitution.Core.DoctorRatings.Repository;
 
-public class DoctorRatingRepository
+public class DoctorRatingRepository : IDoctorRatingRepository
 {
     private String _fileName;
     public List<DoctorRating> Ratings { get; set; }
@@ -83,5 +84,10 @@ public class DoctorRatingRepository
             this.Ratings.Remove(rating);
             Save();
         }
+    }
+
+    public List<DoctorRating> GetAll()
+    {
+        return Ratings;
     }
 }

@@ -12,6 +12,5 @@ namespace HealthInstitution.Core
         public List<T> GetAll();
         public void Save();
         public void LoadFromFile();
-
     }
 }
