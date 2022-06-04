@@ -104,8 +104,7 @@ namespace HealthInstitution.GUI.LoginView
 
         private void RedirectDoctor()
         {
-            OperationDoctorRepository.GetInstance();
-            ExaminationDoctorRepository.GetInstance();
+            DoctorService.LoadAppointments();
             Doctor loggedDoctor = DoctorService.GetById(_usernameInput);
             new DoctorWindow(loggedDoctor).ShowDialog();
         }
