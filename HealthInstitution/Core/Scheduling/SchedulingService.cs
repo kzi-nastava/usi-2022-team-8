@@ -101,7 +101,7 @@ namespace HealthInstitution.Core.Scheduling
         public static void ReserveOperation(OperationDTO operationDTO, int id = 0)
         {
             operationDTO.Validate();
-            operationDTO.Room = RoomService.FindAvailableRoom(operationDTO);
+            operationDTO.Room = FindAvailableOperationRoom(operationDTO);
             DoctorOperationAvailabilityService.CheckIfDoctorIsAvailable(operationDTO);
             PatientOperationAvailabilityService.CheckIfPatientIsAvailable(operationDTO);
             OperationService.Add(operationDTO);
@@ -126,7 +126,7 @@ namespace HealthInstitution.Core.Scheduling
             {
                 if (room.Type != RoomType.OperatingRoom) continue;
                 isAvailable = true;
-                foreach (var operation in OperationRepository.GetInstance().GetAll())
+                foreach (var operation in OperationService.GetAll())
                 {
                     if (operation.Room.Id == room.Id && operation.Id != id)
                     {
@@ -166,7 +166,7 @@ namespace HealthInstitution.Core.Scheduling
             {
                 if (room.Type != roomType) continue;
                 isAvailable = true;
-                foreach (var examination in ExaminationRepository.GetInstance().Examinations)
+                foreach (var examination in ExaminationService.GetAll())
                 {
                     if (examination.Appointment == appointment && examination.Room.Id == room.Id)
                     {
@@ -182,7 +182,7 @@ namespace HealthInstitution.Core.Scheduling
 
         private static ExaminationDTO CheckExaminationAvailable(ExaminationDTO examinationDTO)
         {
-            examinationDTO.Room = RoomService.FindAvailableRoom(examinationDTO);
+            examinationDTO.Room = FindAvailableExaminationRoom(examinationDTO.Appointment);
             DoctorExaminationAvailabilityService.CheckIfDoctorIsAvailable(examinationDTO);
             PatientExaminationAvailabilityService.CheckIfPatientIsAvailable(examinationDTO);
             return examinationDTO;

@@ -107,7 +107,7 @@ namespace HealthInstitution.Core.Scheduling
             OperationDTO operationDTO = new OperationDTO(appointment, duration, null, doctor, medicalRecord);
             DoctorOperationAvailabilityService.CheckIfDoctorIsAvailable(operationDTO);
             PatientOperationAvailabilityService.CheckIfPatientIsAvailable(operationDTO);
-            operationDTO.Room = RoomService.FindAvailableRoom(operationDTO);
+            operationDTO.Room = SchedulingService.FindAvailableOperationRoom(operationDTO);
             OperationService.Add(operationDTO);
             AppointmentNotificationDTO appointmentNotificationDTO = new AppointmentNotificationDTO(null, appointment, doctor, medicalRecord.Patient);
             AppointmentNotificationRepository.GetInstance().Add(appointmentNotificationDTO);
