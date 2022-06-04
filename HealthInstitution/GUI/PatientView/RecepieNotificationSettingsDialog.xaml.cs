@@ -70,6 +70,7 @@ public partial class RecepieNotificationSettingsDialog : Window
         DateTime before = DateTime.Today;
         before = before.AddMinutes(_minutes).AddHours(_hours);
         PrescriptionNotificationSettings recepieNotificationSettings = new PrescriptionNotificationSettings(before, _loggedPatinet, prescription, DateTime.Now, prescription.Id);
+        PrescriptionNotificationService.UpdateSettings(recepieNotificationSettings.Id, recepieNotificationSettings);
         List<DateTime> dateTimes = PrescriptionNotificationService.GenerateDateTimes(recepieNotificationSettings);
         PrescriptionNotificationService.GenerateCronJobs(dateTimes, recepieNotificationSettings, _loggedPatinet);
     }

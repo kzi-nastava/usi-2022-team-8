@@ -1,1 +1,21 @@
-[{"height":189.6,"weight":85,"patientUsername":"pera","previousIlnesses":["Headaches","Diarrhea","Diarea","NovaBolest","sss","Corona"],"allergens":["Gluten","Nuts","princ belve","NOVI ALERGEN","NovAlergen","sss","Asistent iz OS-a"],"prescriptionsId":[],"referralsId":[2]},{"height":174,"weight":75.1,"patientUsername":"marko","previousIlnesses":["Headaches","Mononucleosis","Arthritis","fff","nova bolest"],"allergens":["Milk","Soya","diazepam","Nuts","fff","novi alergen"],"prescriptionsId":[6],"referralsId":[1]}]
+[
+
+  {
+    "height": 189.6,
+    "weight": 85,
+    "patientUsername": "pera",
+    "previousIlnesses": [ "Headaches", "Diarrhea", "Diarea", "NovaBolest", "sss", "Corona" ],
+    "allergens": [ "Gluten", "Nuts", "princ belve", "NOVI ALERGEN", "NovAlergen", "sss", "Asistent iz OS-a" ],
+    "prescriptionsId": [ 4 ],
+    "referralsId": [ 2 ]
+  },
+  {
+    "height": 174,
+    "weight": 75.1,
+    "patientUsername": "marko",
+    "previousIlnesses": [ "Headaches", "Mononucleosis", "Arthritis", "fff", "nova bolest" ],
+    "allergens": [ "Milk", "Soya", "diazepam", "Nuts", "fff", "novi alergen" ],
+    "prescriptionsId": [ 6 ],
+    "referralsId": [ 1 ]
+  }
+]

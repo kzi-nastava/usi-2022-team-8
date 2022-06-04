@@ -93,4 +93,9 @@ public class PrescriptionNotificationService
     {
         return PrescriptionNotificationRepository.GetInstance().GetPatientActiveNotification(username);
     }
+
+    public static void UpdateSettings(int id, PrescriptionNotificationSettings settings)
+    {
+        PrescriptionNotificationSettingsRepository.GetInstance().Update(id, settings);
+    }
 }

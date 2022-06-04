@@ -1,29 +1,27 @@
 [
+
   {
-    "BeforeAmmount": "2022-05-14T01:00:00+02:00",
+    "BeforeAmmount": "2022-06-04T10:00:00+02:00",
     "PatientUsername": "pera",
     "Prescription": {
-      "id": 4,
-      "dailyDose": 2,
-      "timeOfUse": "DuringMeal",
-      "drug": {
-        "id": 2,
-        "name": "Pertamol",
-        "state": "Accepted",
-        "ingredients": [
+      "Id": 4,
+      "DailyDose": 2,
+      "TimeOfUse": "DuringMeal",
+      "Drug": {
+        "Id": 1,
+        "Name": "Brufen",
+        "State": "Accepted",
+        "Ingredients": [
           {
-            "id": 1,
-            "name": "diazepam"
-          },
-          {
-            "id": 3,
-            "name": "paracetamol"
+            "Id": 2,
+            "Name": "bromazepam"
           }
-        ]
+        ],
+        "RejectionReason": ""
       },
-      "HourlyRate": "2022-05-14T00:00:00+02:00"
+      "HourlyRate": "2022-05-14T00:00:00"
     },
-    "LastUpdated": "2022-05-14T00:00:00+02:00",
+    "LastUpdated": "2022-06-04T18:51:31.8254469+02:00",
     "Id": 4
   }
 ]

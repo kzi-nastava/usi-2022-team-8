@@ -64,6 +64,22 @@ public class PrescriptionNotificationSettingsRepository : IPrescriptionNotificat
         return this.SettingsById[id];
     }
 
+    public void Update(int id, PrescriptionNotificationSettings settings)
+    {
+        if (SettingsById.ContainsKey(id))
+        {
+            var current = SettingsById[id];
+            Settings.Remove(current);
+            Settings.Add(settings);
+            SettingsById[id] = settings;
+            Save();
+        }
+        else
+        {
+            Add(settings);
+        }
+    }
+
     public void Add(PrescriptionNotificationSettings recepieNotificationSettings)
     {
         this.Settings.Add(recepieNotificationSettings);

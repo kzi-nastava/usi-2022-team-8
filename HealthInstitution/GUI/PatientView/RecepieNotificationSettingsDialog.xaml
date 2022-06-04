@@ -12,7 +12,7 @@
                 <DataGridTextColumn Header="DailyDose" FontSize="18" Binding="{Binding DailyDose}" Width ="140" />
                 <DataGridTextColumn Header="PrescriprionTime" FontSize="18" Binding="{Binding TimeOfUse}" Width ="140" />
                 <DataGridTextColumn Header="Drug" FontSize="18" Binding="{Binding Drug.Name}" Width ="140" />
-                <DataGridTextColumn Header="dateTime" FontSize="18" Binding="{Binding DateTime}" Width ="140" />
+                <DataGridTextColumn Header="HourlyRate" FontSize="18" Binding="{Binding HourlyRate}" Width ="140" />
             </DataGrid.Columns>
         </DataGrid>
         <Label Content="Time" HorizontalAlignment="Left" Margin="44,333,0,0" VerticalAlignment="Top" />

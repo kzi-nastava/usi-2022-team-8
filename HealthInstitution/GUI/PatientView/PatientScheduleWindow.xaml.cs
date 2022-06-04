@@ -5,6 +5,7 @@ using HealthInstitution.Core.SystemUsers.Patients.Model;
 using HealthInstitution.Core.TrollCounters;
 using HealthInstitution.GUI.PatientView;
 using System.Windows;
+using HealthInstitution.Core.Examinations;
 
 namespace HealthInstitution.GUI.PatientWindows;
 
@@ -13,7 +14,6 @@ namespace HealthInstitution.GUI.PatientWindows;
 /// </summary>
 public partial class PatientScheduleWindow : Window
 {
-    private ExaminationRepository _examinationRepository = ExaminationRepository.GetInstance();
     private Patient _loggedPatient;
 
     public PatientScheduleWindow(Patient loggedPatient)
@@ -50,7 +50,7 @@ public partial class PatientScheduleWindow : Window
     {
         Examination selectedExamination = (Examination)dataGrid.SelectedItem;
         TrollCounterService.TrollCheck(_loggedPatient.Username);
-        ExaminationDoctorRepository.GetInstance().Save();
+        //ExaminationDoctorRepository.GetInstance().Save();
         GridRefresh();
         TrollCounterService.AppendEditDeleteDates(_loggedPatient.Username);
         ConfirmDelete(selectedExamination);
@@ -73,7 +73,8 @@ public partial class PatientScheduleWindow : Window
             else
             {
                 dataGrid.Items.Remove(selectedExamination);
-                _examinationRepository.Delete(selectedExamination.Id);
+
+                ExaminationService.Delete(selectedExamination.Id);
                 selectedExamination.Doctor.Examinations.Remove(selectedExamination);
             }
         }
@@ -81,7 +82,7 @@ public partial class PatientScheduleWindow : Window
 
     private void LoadRows()
     {
-        foreach (Examination examination in ExaminationRepository.GetInstance().Examinations)
+        foreach (Examination examination in ExaminationService.GetAll())
         {
             if (examination.MedicalRecord.Patient.Username.Equals(_loggedPatient.Username))
 
