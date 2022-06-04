@@ -1,10 +1,10 @@
 ﻿using HealthInstitution.Core.Prescriptions.Model;
 
-namespace HealthInstitution.Core.RecepieNotifications.Model;
+namespace HealthInstitution.Core.PrescriptionNotifications.Model;
 
-public class RecepieNotification
+public class PrescriptionNotification
 {
-    public RecepieNotification(int id, string patient, Prescription prescription, bool activeForPatient)
+    public PrescriptionNotification(int id, string patient, Prescription prescription, bool activeForPatient)
     {
         Id = id;
         Patient = patient;
@@ -12,7 +12,7 @@ public class RecepieNotification
         ActiveForPatient = activeForPatient;
     }
 
-    public RecepieNotification()
+    public PrescriptionNotification()
     { }
 
     public int Id { get; set; }

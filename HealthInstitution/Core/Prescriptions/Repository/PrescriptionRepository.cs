@@ -11,7 +11,7 @@ namespace HealthInstitution.Core.Prescriptions.Repository
 {
     public class PrescriptionRepository
     {
-        private int _maxId;
+        public int maxId;
         private String _fileName;
         public List<Prescription> Prescriptions { get; set; }
         public Dictionary<int, Prescription> PrescriptionById { get; set; }
@@ -24,7 +24,7 @@ namespace HealthInstitution.Core.Prescriptions.Repository
 
         private PrescriptionRepository(string fileName) //singleton
         {
-            this._maxId = 0;
+            this.maxId = 0;
             this._fileName = fileName;
             this.Prescriptions = new List<Prescription>();
             this.PrescriptionById = new Dictionary<int, Prescription>();
@@ -62,9 +62,9 @@ namespace HealthInstitution.Core.Prescriptions.Repository
             foreach (var prescription in prescriptions)
             {
                 Prescription loadedPrescription = Parse(prescription);
-                if (loadedPrescription.Id > _maxId)
+                if (loadedPrescription.Id > maxId)
                 {
-                    _maxId = loadedPrescription.Id;
+                    maxId = loadedPrescription.Id;
                 }
                 this.Prescriptions.Add(loadedPrescription);
                 this.PrescriptionById[loadedPrescription.Id] = loadedPrescription;
@@ -107,7 +107,7 @@ namespace HealthInstitution.Core.Prescriptions.Repository
 
         public Prescription Add(Prescription prescription)
         {
-            prescription.Id = ++_maxId;
+            prescription.Id = ++maxId;
             this.Prescriptions.Add(prescription);
             this.PrescriptionById[prescription.Id] = prescription;
             Save();
