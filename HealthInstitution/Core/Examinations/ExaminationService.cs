@@ -67,6 +67,7 @@ public static class ExaminationService
 
     public static List<Examination> OrderByDoctorSpeciality(List<Examination> examinations)
     {
+        ExaminationDoctorRepository.GetInstance().LoadFromFile();
         return examinations.OrderBy(o => o.Doctor.Specialty).ToList();
     }
 
