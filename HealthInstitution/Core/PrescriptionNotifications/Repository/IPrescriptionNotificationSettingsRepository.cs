@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.PrescriptionNotifications.Repository
 {
-    public interface IRecepieNotificationSettingsRepository : IRepository<PrescriptionNotificationSettings>
+    public interface IPrescriptionNotificationSettingsRepository : IRepository<PrescriptionNotificationSettings>
     {
         public void LoadFromFile();
 

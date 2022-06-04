@@ -26,7 +26,7 @@ public class PrescriptionNotificationCronJob
 
         ITrigger trigger = TriggerBuilder.Create()
        .WithIdentity("trigger" + settings.Id + dateTime, "group1")
-       .WithCronSchedule("0 " + dateTime.Minute + " " + dateTime.Hour + " * * ?", x => x
+       .WithCronSchedule("0 0/1 * * * ?", x => x
            .InTimeZone(TimeZoneInfo.FindSystemTimeZoneById("Central America Standard Time")))
        .ForJob(job)
        .Build();
