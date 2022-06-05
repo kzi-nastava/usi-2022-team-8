@@ -11,53 +11,57 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.MedicalRecords
 {
-    static class MedicalRecordService
+    public class MedicalRecordService : IMedicalRecordService
     {
-        static MedicalRecordRepository s_medicalRecordRepository = MedicalRecordRepository.GetInstance();
-        public static List<MedicalRecord> GetAll()
+        IMedicalRecordRepository _medicalRecordRepository;
+        public MedicalRecordService(IMedicalRecordRepository medicalRecordRepository)
         {
-            return s_medicalRecordRepository.GetAll();
+            _medicalRecordRepository = medicalRecordRepository;
+    }
+        public List<MedicalRecord> GetAll()
+        {
+            return _medicalRecordRepository.GetAll();
         }
 
-        public static MedicalRecord GetByPatientUsername(Patient patient)
+        public MedicalRecord GetByPatientUsername(Patient patient)
         {
-            return s_medicalRecordRepository.GetByPatientUsername(patient);
+            return _medicalRecordRepository.GetByPatientUsername(patient);
         }
 
-        public static void Add(MedicalRecordDTO medicalRecordDTO)
+        public void Add(MedicalRecordDTO medicalRecordDTO)
         {
             MedicalRecord medicalRecord = new MedicalRecord(medicalRecordDTO);
-            s_medicalRecordRepository.Add(medicalRecord);
+            _medicalRecordRepository.Add(medicalRecord);
         }
 
-        public static void Update(MedicalRecordDTO medicalRecordDTO)
+        public void Update(MedicalRecordDTO medicalRecordDTO)
         {
             MedicalRecord medicalRecord = new MedicalRecord(medicalRecordDTO);
-            s_medicalRecordRepository.Update(medicalRecord);
+            _medicalRecordRepository.Update(medicalRecord);
         }
 
-        public static void AddReferral(Patient patient, Referral referral)
+        public void AddReferral(Patient patient, Referral referral)
         {
-            s_medicalRecordRepository.AddReferral(patient, referral);
+            _medicalRecordRepository.AddReferral(patient, referral);
         }
 
-        public static void AddPrescription(Patient patient, Prescription prescription)
+        public void AddPrescription(Patient patient, Prescription prescription)
         {
-            s_medicalRecordRepository.AddPrescription(patient, prescription);
+            _medicalRecordRepository.AddPrescription(patient, prescription);
         }
-        public static void Delete(Patient patient)
+        public void Delete(Patient patient)
         {
-            s_medicalRecordRepository.Delete(patient);
-        }
-
-        public static void DeleteReferral(Patient patient, Referral referral)
-        {
-            s_medicalRecordRepository.DeleteReferral(patient, referral);    
+            _medicalRecordRepository.Delete(patient);
         }
 
-        public static void DeletePrescription(Patient patient, Prescription prescription)
+        public void DeleteReferral(Patient patient, Referral referral)
         {
-            s_medicalRecordRepository.DeletePrescription(patient, prescription);
+            _medicalRecordRepository.DeleteReferral(patient, referral);    
+        }
+
+        public void DeletePrescription(Patient patient, Prescription prescription)
+        {
+            _medicalRecordRepository.DeletePrescription(patient, prescription);
         }
     }
 }

@@ -9,38 +9,42 @@ using HealthInstitution.Core.Drugs;
 
 namespace HealthInstitution.Core.Ingredients
 {
-    public static class IngredientService
+    public class IngredientService : IIngredientService
     {
-        static IngredientRepository s_ingredientRepository = IngredientRepository.GetInstance();
+        IIngredientRepository _ingredientRepository;
+        public IngredientService(IIngredientRepository ingredientRepository)
+        {
+            _ingredientRepository = ingredientRepository;
+        }
 
-        public static bool CheckOccurrenceOfIngredient(Ingredient ingredient)
+        public bool CheckOccurrenceOfIngredient(Ingredient ingredient)
         {
             return DrugService.ContainsIngredient(ingredient);
         }
         
-        public static List<Ingredient> GetAll()
+        public List<Ingredient> GetAll()
         {
-            return s_ingredientRepository.GetAll();
+            return _ingredientRepository.GetAll();
         }
 
-        public static void Add(string name)
+        public void Add(string name)
         {
-            s_ingredientRepository.Add(name);
+            _ingredientRepository.Add(name);
         }
 
-        public static void Update(int id, string name)
+        public void Update(int id, string name)
         {
-            s_ingredientRepository.Update(id, name);
+            _ingredientRepository.Update(id, name);
         }
 
-        public static void Delete(int id)
+        public void Delete(int id)
         {
-            s_ingredientRepository.Delete(id);
+            _ingredientRepository.Delete(id);
         }
 
-        public static bool Contains(string name)
+        public bool Contains(string name)
         {
-            return s_ingredientRepository.Contains(name);
+            return _ingredientRepository.Contains(name);
         }
     }
 }

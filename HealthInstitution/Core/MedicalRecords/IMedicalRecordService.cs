@@ -12,7 +12,7 @@ namespace HealthInstitution.Core.MedicalRecords
 {
     public interface IMedicalRecordService
     {
-        public Task<IEnumerable<MedicalRecord>> GetAll();
+        public List<MedicalRecord> GetAll();
         public MedicalRecord GetByPatientUsername(Patient patient);
         public void Add(MedicalRecordDTO medicalRecordDTO);
         public void Update(MedicalRecordDTO medicalRecordDTO);

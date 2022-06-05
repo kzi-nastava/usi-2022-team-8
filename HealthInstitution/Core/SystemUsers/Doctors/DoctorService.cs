@@ -8,77 +8,81 @@ using HealthInstitution.Core.SystemUsers.Doctors.Repository;
 
 namespace HealthInstitution.Core.SystemUsers.Doctors;
 
-public static class DoctorService
-{
-    private static DoctorRepository s_doctorRepository = DoctorRepository.GetInstance();
+public class DoctorService
+{ 
+    IDoctorRepository _doctorRepository;
+    public DoctorService(IDoctorRepository doctorRepository)
+    {
+        _doctorRepository = doctorRepository;
+    }
 
-    public static void LoadAppointments()
+    public void LoadAppointments()
     {
         OperationDoctorRepository.GetInstance();
         ExaminationDoctorRepository.GetInstance();
     }
-    public static List<Doctor> GetAll()
+    public List<Doctor> GetAll()
     {
-        return s_doctorRepository.GetAll();
+        return _doctorRepository.GetAll();
     }
 
-    public static Doctor GetById(String username)
+    public Doctor GetById(String username)
     {
-        return s_doctorRepository.GetById(username);
+        return _doctorRepository.GetById(username);
     }
-    public static void DeleteNotifications(Doctor doctor)
+    public void DeleteNotifications(Doctor doctor)
     {
-        s_doctorRepository.DeleteNotifications(doctor);
-    }
-
-    public static void DeleteExamination(Examination examination)
-    {
-        s_doctorRepository.DeleteExamination(examination);
+        _doctorRepository.DeleteNotifications(doctor);
     }
 
-    public static void DeleteOperation(Operation operation)
+    public void DeleteExamination(Examination examination)
     {
-        s_doctorRepository.DeleteOperation(operation);
+        _doctorRepository.DeleteExamination(examination);
     }
 
-    public static List<Doctor> SearchBySpeciality(string keyword)
+    public void DeleteOperation(Operation operation)
     {
-        return s_doctorRepository.GetSearchSpeciality(keyword);
+        _doctorRepository.DeleteOperation(operation);
     }
 
-    public static List<Doctor> SearchByName(string keyword)
+    public List<Doctor> SearchBySpeciality(string keyword)
     {
-        return s_doctorRepository.GetSearchName(keyword);
+        return _doctorRepository.GetSearchSpeciality(keyword);
     }
 
-    public static List<Doctor> SearchBySurname(string keyword)
+    public List<Doctor> SearchByName(string keyword)
     {
-        return s_doctorRepository.GetSearchSurname(keyword);
+        return _doctorRepository.GetSearchName(keyword);
     }
 
-    public static List<Doctor> OrderByDoctorSpeciality(List<Doctor> examinations)
+    public List<Doctor> SearchBySurname(string keyword)
+    {
+        return _doctorRepository.GetSearchSurname(keyword);
+    }
+
+    public List<Doctor> OrderByDoctorSpeciality(List<Doctor> examinations)
     {
         return examinations.OrderBy(o => o.Specialty).ToList();
     }
 
-    public static List<Doctor> OrderByDoctorName(List<Doctor> examinations)
+    public List<Doctor> OrderByDoctorName(List<Doctor> examinations)
     {
         return examinations.OrderBy(o => o.Name).ToList();
     }
 
-    public static List<Doctor> OrderByDoctorSurname(List<Doctor> examinations)
+    public List<Doctor> OrderByDoctorSurname(List<Doctor> examinations)
     {
         return examinations.OrderBy(o => o.Specialty).ToList();
     }
 
-    public static List<Doctor> OrderByDoctorRating(List<Doctor> examinations)
+    public List<Doctor> OrderByDoctorRating(List<Doctor> examinations)
     {
         return examinations.OrderBy(o => o.AvgRating).ToList();
     }
 
-    public static void AssignScorebyId(string username, double avgRating)
+    public void AssignScorebyId(string username, double avgRating)
     {
         GetById(username).AvgRating = avgRating;
-        s_doctorRepository.Save();
+        _doctorRepository.Save();
     }
 }

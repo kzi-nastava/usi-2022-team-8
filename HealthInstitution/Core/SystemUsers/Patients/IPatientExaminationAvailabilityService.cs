@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HealthInstitution.Core.Scheduling
+namespace HealthInstitution.Core.SystemUsers.Patients
 {
     public interface IPatientExaminationAvailabilityService
     {

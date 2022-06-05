@@ -15,49 +15,53 @@ using HealthInstitution.Core.Notifications.Model;
 
 namespace HealthInstitution.Core.SystemUsers.Patients
 {
-    public static class PatientService
+    public class PatientService : IPatientService
     {
-        static PatientRepository s_patientRepository = PatientRepository.GetInstance();
-        public static List<Patient> GetAll()
+        IPatientRepository _patientRepository;
+        public PatientService(IPatientRepository patientRepository)
         {
-            return s_patientRepository.GetAll();
+            _patientRepository = patientRepository;
         }
-        public static Patient GetByUsername(string username)
+        public List<Patient> GetAll()
         {
-            return s_patientRepository.GetByUsername(username);
+            return _patientRepository.GetAll();
         }
-        public static void ChangeBlockedStatus(string username)
+        public Patient GetByUsername(string username)
+        {
+            return _patientRepository.GetByUsername(username);
+        }
+        public void ChangeBlockedStatus(string username)
         {
             Patient patient = GetByUsername(username);
             User user = UserService.GetByUsername(username);
-            s_patientRepository.ChangeBlockedStatus(patient);
+            _patientRepository.ChangeBlockedStatus(patient);
             UserService.ChangeBlockedStatus(user);
             //dodati u usera
         }
-        public static void Add(UserDTO userDTO, MedicalRecords.Model.MedicalRecordDTO medicalRecordDTO)
+        public void Add(UserDTO userDTO, MedicalRecords.Model.MedicalRecordDTO medicalRecordDTO)
         {
             Patient patient = new Patient(userDTO);
             medicalRecordDTO.Patient = patient;
             MedicalRecordService.Add(medicalRecordDTO);
             UserService.Add(userDTO);
             TrollCounterService.Add(userDTO.Username);
-            s_patientRepository.Add(patient);
+            _patientRepository.Add(patient);
         }
-        public static void Update(UserDTO userDTO)
+        public void Update(UserDTO userDTO)
         {
             Patient patient = new Patient(userDTO);
-            s_patientRepository.Update(patient);
+            _patientRepository.Update(patient);
             UserService.Update(userDTO);
         }
-        public static void Delete(string username)
+        public void Delete(string username)
         {
-            s_patientRepository.Delete(username);
+            _patientRepository.Delete(username);
             TrollCounterService.Delete(username);
             UserService.Delete(username);
         }
-        public static void DeleteNotifications(Patient patient)
+        public void DeleteNotifications(Patient patient)
         {
-            s_patientRepository.DeleteNotifications(patient);
+            _patientRepository.DeleteNotifications(patient);
         }
     } 
 }

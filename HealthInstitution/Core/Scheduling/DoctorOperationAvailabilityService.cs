@@ -8,9 +8,10 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.Scheduling
 {
-    public static class DoctorOperationAvailabilityService
+    public class DoctorOperationAvailabilityService : IDoctorOperationAvailabilityService
     {
-        private static void CheckIfDoctorHasExaminations(OperationDTO operationDTO, int id = 0)
+        public DoctorOperationAvailabilityService() { }
+        private void CheckIfDoctorHasExaminations(OperationDTO operationDTO, int id = 0)
         {
             Doctor doctor = operationDTO.Doctor;
             DateTime appointment = operationDTO.Appointment;
@@ -27,7 +28,7 @@ namespace HealthInstitution.Core.Scheduling
             }
         }
 
-        private static void CheckIfDoctorHasOperations(OperationDTO operationDTO, int id = 0)
+        private void CheckIfDoctorHasOperations(OperationDTO operationDTO, int id = 0)
         {
             Doctor doctor = operationDTO.Doctor;
             DateTime appointment = operationDTO.Appointment;
@@ -43,7 +44,7 @@ namespace HealthInstitution.Core.Scheduling
                 }
             }
         }
-        public static void CheckIfDoctorIsAvailable(OperationDTO operationDTO, int id = 0)
+        public void CheckIfDoctorIsAvailable(OperationDTO operationDTO, int id = 0)
         {
             CheckIfDoctorHasExaminations(operationDTO, id);
             CheckIfDoctorHasOperations(operationDTO, id);

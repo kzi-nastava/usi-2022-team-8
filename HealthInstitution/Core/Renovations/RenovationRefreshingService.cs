@@ -14,13 +14,16 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.Renovations.Functionality
 {
-    public static class RenovationRefreshingService 
+    public class RenovationRefreshingService : IRenovationRefreshingService
     {
-        private static RenovationRepository s_renovationRepository = RenovationRepository.GetInstance();
-       
-        public static void UpdateByRenovation()
+        IRenovationRepository _renovationRepository;
+        public RenovationRefreshingService(IRenovationRepository renovationRepository) 
         {
-            foreach (Renovation renovation in s_renovationRepository.Renovations)
+            _renovationRepository = renovationRepository;
+        }
+        public void UpdateByRenovation()
+        {
+            foreach (Renovation renovation in _renovationRepository.Renovations)
             {
 
                 if (renovation.IsSimpleRenovation())
