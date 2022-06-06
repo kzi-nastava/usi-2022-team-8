@@ -15,9 +15,6 @@ namespace HealthInstitution.Core.Scheduling
     {
         public bool CheckOccurrenceOfRoom(Room room);
         public void RedirectByType(Referral referral, DateTime appointment, MedicalRecord medicalRecord);
-        public void ScheduleWithSpecificDoctor(DateTime appointment, Referral referral, MedicalRecord medicalRecord);
-        public void ScheduleWithOrderedSpecialist(ExaminationDTO examination, Referral referral);
-        public void ScheduleWithOrderedSpecialty(DateTime appointment, Referral referral, MedicalRecord medicalRecord);
         public void ReserveOperation(OperationDTO operationDTO, int id = 0);
         public void ReserveExamination(ExaminationDTO examinationDTO);
         public Room FindAvailableOperationRoom(OperationDTO operationDTO, int id = 0);

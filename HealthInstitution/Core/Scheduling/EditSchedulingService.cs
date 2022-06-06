@@ -8,9 +8,9 @@ using HealthInstitution.Core.Examinations;
 
 namespace HealthInstitution.Core.Scheduling;
 
-public class EditSchedulingService
+public class EditSchedulingService : IEditSchedulingService
 {
-    public static Examination GenerateRequestExamination(int id, ExaminationDTO examinationDTO)
+    public Examination GenerateRequestExamination(int id, ExaminationDTO examinationDTO)
     {
         examinationDTO.Validate();
         examinationDTO = SchedulingService.CheckExaminationAvailable(examinationDTO);
@@ -19,7 +19,7 @@ public class EditSchedulingService
         return e;
     }
 
-    public static void EditExamination(int id, ExaminationDTO examinationDTO)
+    public void EditExamination(int id, ExaminationDTO examinationDTO)
     {
         examinationDTO.Validate();
         examinationDTO = SchedulingService.CheckExaminationAvailable(examinationDTO);

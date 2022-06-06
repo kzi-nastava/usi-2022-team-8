@@ -17,9 +17,10 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.Scheduling
 {
-    public static class AppointmentDelayingService
+    public class AppointmentDelayingService : IAppointmentDelayingService
     {
-        private static DateTime FindFirstAvailableAppointment(DateTime appointment, int appointmentCounter, TimeSpan ts)
+        public AppointmentDelayingService() { }
+        private DateTime FindFirstAvailableAppointment(DateTime appointment, int appointmentCounter, TimeSpan ts)
         {
             DateTime firstAvailableAppointment = appointment + appointmentCounter * ts;
             if (firstAvailableAppointment.Hour > 22)
@@ -28,7 +29,7 @@ namespace HealthInstitution.Core.Scheduling
             }
             return firstAvailableAppointment;
         }
-        private static void GetExaminationsWithPriorities(List<Examination> nextTwoHoursExaminations, List<Tuple<int, int, DateTime>> priorityExaminationsAndOperations, RoomType roomType)
+        private void GetExaminationsWithPriorities(List<Examination> nextTwoHoursExaminations, List<Tuple<int, int, DateTime>> priorityExaminationsAndOperations, RoomType roomType)
         {
             int appointmentCounter;
             DateTime firstAvailableAppointment;
@@ -57,7 +58,7 @@ namespace HealthInstitution.Core.Scheduling
                 }
             }
         }
-        private static void GetOperationsWithPriorities(List<Operation> nextTwoHoursOperations, List<Tuple<int, int, DateTime>> priorityExaminationsAndOperations, RoomType roomType)
+        private void GetOperationsWithPriorities(List<Operation> nextTwoHoursOperations, List<Tuple<int, int, DateTime>> priorityExaminationsAndOperations, RoomType roomType)
         {
             int appointmentCounter;
             DateTime firstAvailableAppointment;
@@ -87,7 +88,7 @@ namespace HealthInstitution.Core.Scheduling
                 }
             }
         }
-        private static List<Tuple<int, int, DateTime>> GetPriorityExaminationsAndOperations(List<Examination> nextTwoHoursExaminations, List<Operation> nextTwoHoursOperations, RoomType roomType)
+        private List<Tuple<int, int, DateTime>> GetPriorityExaminationsAndOperations(List<Examination> nextTwoHoursExaminations, List<Operation> nextTwoHoursOperations, RoomType roomType)
         {
             List<Tuple<int, int, DateTime>> priorityExaminationsAndOperations = new List<Tuple<int, int, DateTime>>();
             GetExaminationsWithPriorities(nextTwoHoursExaminations, priorityExaminationsAndOperations, roomType);
@@ -95,7 +96,7 @@ namespace HealthInstitution.Core.Scheduling
             priorityExaminationsAndOperations.Sort((x, y) => y.Item3.CompareTo(x.Item3));
             return priorityExaminationsAndOperations;
         }
-        public static List<Tuple<int, int, DateTime>> FindClosest(List<DateTime> nextTwoHoursAppointments, SpecialtyType specialtyType, RoomType roomType)
+        public List<Tuple<int, int, DateTime>> FindClosest(List<DateTime> nextTwoHoursAppointments, SpecialtyType specialtyType, RoomType roomType)
         {
             List<Examination> nextTwoHoursExaminations = new List<Examination>();
             List<Operation> nextTwoHoursOperations = new List<Operation>();
@@ -111,7 +112,7 @@ namespace HealthInstitution.Core.Scheduling
             }
             return GetPriorityExaminationsAndOperations(nextTwoHoursExaminations, nextTwoHoursOperations, roomType);
         }
-        public static List<ScheduleEditRequest> PrepareDataForDelaying(List<Tuple<int, int, DateTime>> examinationsAndOperationsForDelaying)
+        public List<ScheduleEditRequest> PrepareDataForDelaying(List<Tuple<int, int, DateTime>> examinationsAndOperationsForDelaying)
         {
             List<ScheduleEditRequest> delayedAppointments = new List<ScheduleEditRequest>();
             foreach (Tuple<int, int, DateTime> tuple in examinationsAndOperationsForDelaying)
@@ -131,7 +132,7 @@ namespace HealthInstitution.Core.Scheduling
             }
             return delayedAppointments;
         }
-        public static void DelayExamination(ScheduleEditRequest selectedAppointment, Examination examination)
+        public void DelayExamination(ScheduleEditRequest selectedAppointment, Examination examination)
         {
             ExaminationRepository.GetInstance().SwapExaminationValue(selectedAppointment.NewExamination);
             UrgentService.SetExaminationDetails(examination, selectedAppointment);
@@ -140,7 +141,7 @@ namespace HealthInstitution.Core.Scheduling
             AppointmentNotificationService.SendNotificationsForDelayedExamination(selectedAppointment);
             AppointmentNotificationService.SendNotificationForNewExamination(examination);
         }
-        public static void DelayOperation(ScheduleEditRequest selectedAppointment, Operation operation)
+        public void DelayOperation(ScheduleEditRequest selectedAppointment, Operation operation)
         {
             OperationRepository.GetInstance().SwapOperationValue(selectedAppointment.NewOperation);
             UrgentService.SetOperationDetails(operation, selectedAppointment);

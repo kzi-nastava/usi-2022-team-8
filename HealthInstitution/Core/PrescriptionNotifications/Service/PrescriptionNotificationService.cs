@@ -11,6 +11,7 @@ namespace HealthInstitution.Core.PrescriptionNotifications.Service;
 
 public class PrescriptionNotificationService : IPrescriptionNotificationService
 {
+
     IPrescriptionNotificationRepository _prescriptionNotificationRepository;
     public PrescriptionNotificationService(IPrescriptionNotificationRepository prescriptionNotificationRepository)
     {
@@ -19,7 +20,7 @@ public class PrescriptionNotificationService : IPrescriptionNotificationService
     public void GenerateAllSkippedNotifications(string loggedPatient)
     {
         PrescriptionNotificationCronJobService.GenerateScheduler();
-        foreach (var setting in PrescriptionNotificationSettingsRepository.GetInstance().Settings)
+        foreach (var setting in _prescriptionNotificationRepository.Settings)
         {
             GenerateForOne(setting, loggedPatient);
         }
@@ -27,7 +28,7 @@ public class PrescriptionNotificationService : IPrescriptionNotificationService
 
     private DateTime GetLastDateTime(PrescriptionNotificationSettings setting)
     {
-        var createdNotifications = PrescriptionNotificationRepository.GetInstance().GetPatientPresctiptionNotification(setting.PatientUsername, setting.Prescription.Id);
+        var createdNotifications = _prescriptionNotificationRepository.GetPatientPresctiptionNotification(setting.PatientUsername, setting.Prescription.Id);
         createdNotifications.OrderBy(o => o.TriggerDateTime).ToList();
         if (createdNotifications.Count == 0) return DateTime.Today.AddDays(-1);
 
@@ -64,10 +65,10 @@ public class PrescriptionNotificationService : IPrescriptionNotificationService
             foreach (var dateTime in dateTimes)
             {
                 if (dateTime > DateTime.Now) return;
-                int id = PrescriptionNotificationRepository.GetInstance().Notifications.Count;
+                int id = _prescriptionNotificationRepository.Notifications.Count;
                 PrescriptionNotification recepieNotification = new PrescriptionNotification(id, setting.PatientUsername, setting.Prescription, true);
                 recepieNotification.TriggerDateTime = dateTime;
-                PrescriptionNotificationRepository.GetInstance().Add(recepieNotification);
+                _prescriptionNotificationRepository.Add(recepieNotification);
             }
             dateTimes = NextDay(dateTimes);
         }
