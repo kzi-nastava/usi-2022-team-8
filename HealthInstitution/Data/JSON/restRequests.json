@@ -1,10 +1,11 @@
 {
-  "exclude": [
-    "**/bin",
-    "**/bower_components",
-    "**/jspm_packages",
-    "**/node_modules",
-    "**/obj",
-    "**/platforms"
-  ]
+  {
+    "id": 1,
+    "doctor": "jovan",
+    "reason": "Sahranjuje psa",
+    "startDate": "2022-06-19",
+    "daysDuration": "10",
+    "state": "OnHold",
+    "urgent": false
+  }
 }
