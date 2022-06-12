@@ -66,5 +66,15 @@ namespace HealthInstitution.Core.Polls
         {
             s_pollQuestionRepository.Delete(id);
         }
+
+        public static List<string> GetHospitalQuestions()
+        {
+            return s_pollQuestionRepository.GetHospitalQuestions();
+        }
+
+        public static List<string> GetDoctorQuestions()
+        {
+            return s_pollQuestionRepository.GetDoctorQuestions();
+        }
     }
 }

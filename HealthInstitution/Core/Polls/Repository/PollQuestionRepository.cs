@@ -17,6 +17,9 @@ namespace HealthInstitution.Core.Polls.Repository
     {
         private String _fileName;
 
+        public List<string> HospitalQuestions { get; set; }
+        public List<string> DoctorQuestions { get; set; }
+
         private int _maxId;
         public List<PollQuestion> PollQuestions { get; set; }
         public Dictionary<int, PollQuestion> PollQuestionById { get; set; }
@@ -32,6 +35,16 @@ namespace HealthInstitution.Core.Polls.Repository
             this.PollQuestions = new List<PollQuestion>();
             this.PollQuestionById = new Dictionary<int, PollQuestion>();
             this._maxId = 0;
+            this.HospitalQuestions = new List<string> {   "Rate quality of service",
+                                                          "Rate hygiene",
+                                                          "Rate satisfaction with service",
+                                                          "How likely would you recommend this hospital",
+                                                          "Rate overall experience" };
+            this.DoctorQuestions = new List<string> {     "Rate quality of service",
+                                                          "Rate competence of the doctor",
+                                                          "Rate satisfaction with service",
+                                                          "How likely would you recommend this doctor",
+                                                          "Rate overall experience" };
             this.LoadFromFile();
         }
         private static PollQuestionRepository s_instance = null;
@@ -149,6 +162,16 @@ namespace HealthInstitution.Core.Polls.Repository
             this.PollQuestions.Remove(pollQuestion);
             this.PollQuestionById.Remove(id);
             Save();
+        }
+
+        public List<string> GetHospitalQuestions()
+        {
+            return this.HospitalQuestions;
+        }
+
+        public List<string> GetDoctorQuestions()
+        {
+            return this.DoctorQuestions;
         }
     }
 }
