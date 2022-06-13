@@ -37,5 +37,6 @@ public class DoctorRatingsService
         var ratings = s_doctorRatingRepository.GetById(DoctorUsername);
         ratings.Scores.Add(score);
         doctor.AvgRating = GetAverageById(DoctorUsername);
+        s_doctorRatingRepository.Save();
     }
 }

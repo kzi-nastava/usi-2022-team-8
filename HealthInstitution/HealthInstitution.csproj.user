@@ -62,7 +62,10 @@
     <Compile Update="GUI\DoctorView\DoctorNotificationsDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="GUI\PatientView\PatientHospitalPollDialog.xaml.cs">
+    <Compile Update="GUI\PatientView\Polls\DoctorPollDialog.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="GUI\PatientView\Polls\HospitalPollDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="GUI\PatientView\Scheduling\AddExaminationDialog.xaml.cs">
@@ -288,7 +291,10 @@
     <Page Update="GUI\ManagerView\RenovationView\SimpleRenovationWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="GUI\PatientView\PatientHospitalPollDialog.xaml">
+    <Page Update="GUI\PatientView\Polls\DoctorPollDialog.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="GUI\PatientView\Polls\HospitalPollDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="GUI\PatientView\Scheduling\AddExaminationDialog.xaml">

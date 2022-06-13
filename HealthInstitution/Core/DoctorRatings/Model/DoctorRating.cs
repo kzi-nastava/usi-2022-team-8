@@ -14,6 +14,7 @@ public class DoctorRating
 
     public double GetAverage()
     {
+        if (Scores.Count == 0) return 0;
         return Scores.Average();
     }
 
