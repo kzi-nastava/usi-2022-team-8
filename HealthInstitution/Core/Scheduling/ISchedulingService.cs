@@ -20,5 +20,6 @@ namespace HealthInstitution.Core.Scheduling
         public Room FindAvailableOperationRoom(OperationDTO operationDTO, int id = 0);
         public Room FindAvailableExaminationRoom(DateTime appointment);
         public List<Room> FindAllAvailableRooms(RoomType roomType, DateTime appointment);
+        public ExaminationDTO CheckExaminationAvailable(ExaminationDTO examinationDTO);
     }
 }

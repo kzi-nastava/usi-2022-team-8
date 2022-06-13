@@ -11,10 +11,10 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.Notifications
 {
-    public class AppointmentNotificationService
+    public class AppointmentNotificationService : IAppointmentNotificationService
     {
-        AppointmentNotificationRepository _appointmentNotificationRepository;
-        public AppointmentNotificationService(IAppointmentNotificationService appointmentNotificationRepository) {
+        IAppointmentNotificationRepository _appointmentNotificationRepository;
+        public AppointmentNotificationService(IAppointmentNotificationRepository appointmentNotificationRepository) {
             _appointmentNotificationRepository = appointmentNotificationRepository;
         }
         public void ChangeActiveStatus(AppointmentNotification notification, bool forDoctor)

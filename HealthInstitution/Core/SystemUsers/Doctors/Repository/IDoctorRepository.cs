@@ -1,6 +1,7 @@
 ﻿using HealthInstitution.Core.Examinations.Model;
 using HealthInstitution.Core.Notifications.Model;
 using HealthInstitution.Core.Operations.Model;
+using HealthInstitution.Core.RestRequests.Model;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using Newtonsoft.Json.Linq;
 using System;
@@ -26,5 +27,10 @@ namespace HealthInstitution.Core.SystemUsers.Doctors.Repository
         public List<Examination> GetExaminationsByDate(List<Examination> examinations, DateTime date);
         public List<Operation> GetOperationsByDate(List<Operation> operations, DateTime date);
         public void DeleteNotifications(Doctor doctor);
+        public void DeleteRestRequest(RestRequest restRequest);
+        public List<Doctor> GetSearchName(string keyword);
+        public List<Doctor> GetSearchSurname(string keyword);
+        public List<Doctor> GetSearchSpecialty(string keyword);
+
     }
 }

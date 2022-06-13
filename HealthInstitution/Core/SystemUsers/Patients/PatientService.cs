@@ -18,9 +18,15 @@ namespace HealthInstitution.Core.SystemUsers.Patients
     public class PatientService : IPatientService
     {
         IPatientRepository _patientRepository;
-        public PatientService(IPatientRepository patientRepository)
+        IUserService _userService;
+        ITrollCounterService _trollCounterService;
+        IMedicalRecordService _medicalRecordService;
+        public PatientService(IPatientRepository patientRepository, IUserService userService, ITrollCounterService trollCounterService, IMedicalRecordService medicalRecordService)
         {
             _patientRepository = patientRepository;
+            _medicalRecordService = medicalRecordService;
+            _userService = userService;
+            _trollCounterService = trollCounterService;
         }
         public List<Patient> GetAll()
         {
@@ -33,31 +39,30 @@ namespace HealthInstitution.Core.SystemUsers.Patients
         public void ChangeBlockedStatus(string username)
         {
             Patient patient = GetByUsername(username);
-            User user = UserService.GetByUsername(username);
+            User user = _userService.GetByUsername(username);
             _patientRepository.ChangeBlockedStatus(patient);
-            UserService.ChangeBlockedStatus(user);
-            //dodati u usera
+            _userService.ChangeBlockedStatus(user);
         }
         public void Add(UserDTO userDTO, MedicalRecords.Model.MedicalRecordDTO medicalRecordDTO)
         {
             Patient patient = new Patient(userDTO);
             medicalRecordDTO.Patient = patient;
-            MedicalRecordService.Add(medicalRecordDTO);
-            UserService.Add(userDTO);
-            TrollCounterService.Add(userDTO.Username);
+            _medicalRecordService.Add(medicalRecordDTO);
+            _userService.Add(userDTO);
+            _trollCounterService.Add(userDTO.Username);
             _patientRepository.Add(patient);
         }
         public void Update(UserDTO userDTO)
         {
             Patient patient = new Patient(userDTO);
             _patientRepository.Update(patient);
-            UserService.Update(userDTO);
+            _userService.Update(userDTO);
         }
         public void Delete(string username)
         {
             _patientRepository.Delete(username);
-            TrollCounterService.Delete(username);
-            UserService.Delete(username);
+            _trollCounterService.Delete(username);
+            _userService.Delete(username);
         }
         public void DeleteNotifications(Patient patient)
         {

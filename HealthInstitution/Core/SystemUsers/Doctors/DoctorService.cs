@@ -46,14 +46,14 @@ public class DoctorService
     {
         _doctorRepository.DeleteOperation(operation);
     }
-    public static void DeleteRestRequest(RestRequest restRequest)
+    public void DeleteRestRequest(RestRequest restRequest)
     {
-        s_doctorRepository.DeleteRestRequest(restRequest);
+        _doctorRepository.DeleteRestRequest(restRequest);
     }
 
     public List<Doctor> SearchBySpeciality(string keyword)
     {
-        return _doctorRepository.GetSearchSpeciality(keyword);
+        return _doctorRepository.GetSearchSpecialty(keyword);
     }
 
     public List<Doctor> SearchByName(string keyword)

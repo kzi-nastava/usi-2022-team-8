@@ -22,15 +22,18 @@ namespace HealthInstitution.GUI.UserWindow
     /// </summary>
     public partial class ExaminationRequestsReview : Window
     {
-        public ExaminationRequestsReview()
+        IScheduleEditRequestsService _scheduleEditRequestsService;
+
+        public ExaminationRequestsReview(IScheduleEditRequestsService scheduleEditRequestsService)
         {
             InitializeComponent();
+            _scheduleEditRequestsService = scheduleEditRequestsService;
             LoadRows();
         }
         private void LoadRows()
         {
             dataGrid.Items.Clear();
-            List<ScheduleEditRequest> scheduleEditRequests = ScheduleEditRequestService.GetAll();
+            List<ScheduleEditRequest> scheduleEditRequests = _scheduleEditRequestsService.GetAll();
             foreach (ScheduleEditRequest scheduleEditRequest in scheduleEditRequests)
             {
                 dataGrid.Items.Add(scheduleEditRequest);
@@ -43,7 +46,7 @@ namespace HealthInstitution.GUI.UserWindow
             ScheduleEditRequest selectedRequest = (ScheduleEditRequest)dataGrid.SelectedItem;  
             if(selectedRequest!=null)
             {
-                ScheduleEditRequestService.AcceptScheduleEditRequests(selectedRequest.Id);
+                _scheduleEditRequestsService.AcceptScheduleEditRequests(selectedRequest.Id);
             }
             LoadRows();
         }
@@ -53,7 +56,7 @@ namespace HealthInstitution.GUI.UserWindow
             ScheduleEditRequest selectedRequest = (ScheduleEditRequest)dataGrid.SelectedItem;
             if (selectedRequest != null)
             {
-                ScheduleEditRequestService.RejectScheduleEditRequests(selectedRequest.Id);
+                _scheduleEditRequestsService.RejectScheduleEditRequests(selectedRequest.Id);
             }
             LoadRows();
         }
