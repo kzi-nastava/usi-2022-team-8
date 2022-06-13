@@ -20,11 +20,19 @@ namespace HealthInstitution.GUI.PatientView
         private int _hours;
         private Patient _loggedPatient;
         private string _doctorUsername;
+        IDoctorService _doctorService;
+        IMedicalRecordService _medicalRecordService;
+        ISchedulingService _schedulingService;
 
-        public AddExaminationDialog(Patient loggedPatient)
+        public AddExaminationDialog(Patient loggedPatient, IDoctorService doctorService,
+                                    IMedicalRecordService medicalRecordService,
+                                    ISchedulingService schedulingService)
         {
             InitializeComponent();
             this._loggedPatient = loggedPatient;
+            _doctorService = doctorService;
+            _medicalRecordService = medicalRecordService;
+            _schedulingService = schedulingService;
         }
 
         private void HourComboBox_Loaded(object sender, RoutedEventArgs e)
@@ -62,7 +70,7 @@ namespace HealthInstitution.GUI.PatientView
             var doctorComboBox = sender as System.Windows.Controls.ComboBox;
             List<string> doctors = new List<string>();
 
-            foreach (User user in DoctorService.GetAll())
+            foreach (User user in _doctorService.GetAll())
             {
                 doctors.Add(user.Username);
             }
@@ -74,10 +82,10 @@ namespace HealthInstitution.GUI.PatientView
 
         private void CreateExamination(DateTime dateTime)
         {
-            MedicalRecord medicalRecord = MedicalRecordService.GetByPatientUsername(_loggedPatient);
-            Doctor doctor = DoctorService.GetById(_doctorUsername);
+            MedicalRecord medicalRecord = _medicalRecordService.GetByPatientUsername(_loggedPatient);
+            Doctor doctor = _doctorService.GetById(_doctorUsername);
             ExaminationDTO examination = new ExaminationDTO(dateTime, null, doctor, medicalRecord);
-            SchedulingService.ReserveExamination(examination);
+            _schedulingService.ReserveExamination(examination);
         }
 
         private void Create_Click(object sender, RoutedEventArgs e)

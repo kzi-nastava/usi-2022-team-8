@@ -38,10 +38,5 @@ namespace HealthInstitution.Core.Prescriptions
         {
             _prescriptionRepository.Delete(id);
         }
-
-        public bool IsPatientAlergic(MedicalRecord medicalRecord, List<Ingredient> ingredients)
-        {
-            return ingredients.Any(i => medicalRecord.Allergens.Contains(i.Name));
-        }
     }
 }

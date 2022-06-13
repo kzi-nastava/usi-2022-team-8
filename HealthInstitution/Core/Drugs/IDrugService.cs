@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.Drugs
 {
-    public interface IDrugService : IService<Drug> 
+    public interface IDrugService
     {
         public List<Drug> GetAll();
         public Drug GetById(int id);

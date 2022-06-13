@@ -1,4 +1,5 @@
-﻿using HealthInstitution.Core.MedicalRecords.Model;
+﻿using HealthInstitution.Core.Ingredients.Model;
+using HealthInstitution.Core.MedicalRecords.Model;
 using HealthInstitution.Core.MedicalRecords.Repository;
 using HealthInstitution.Core.Prescriptions.Model;
 using HealthInstitution.Core.Referrals.Model;
@@ -62,6 +63,11 @@ namespace HealthInstitution.Core.MedicalRecords
         public void DeletePrescription(Patient patient, Prescription prescription)
         {
             _medicalRecordRepository.DeletePrescription(patient, prescription);
+        }
+
+        public bool IsPatientAlergic(MedicalRecord medicalRecord, List<Ingredient> ingredients)
+        {
+            return ingredients.Any(i => medicalRecord.Allergens.Contains(i.Name));
         }
     }
 }

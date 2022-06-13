@@ -12,10 +12,12 @@ namespace HealthInstitution.Core.DoctorRatings;
 public class DoctorRatingsService : IDoctorRatingService
 {
     IDoctorRatingRepository _doctorRatingRepository;
+    IDoctorService _doctorService;
 
-    public DoctorRatingsService(IDoctorRatingRepository doctorRatingRepository)
+    public DoctorRatingsService(IDoctorRatingRepository doctorRatingRepository, IDoctorService doctorService)
     {
         _doctorRatingRepository = doctorRatingRepository;
+        _doctorService = doctorService;
     }
     public void Add(string username)
     {
@@ -31,7 +33,7 @@ public class DoctorRatingsService : IDoctorRatingService
     {
         foreach (var rating in _doctorRatingRepository.GetAll())
         {
-            DoctorService.AssignScorebyId(rating.Username, rating.GetAverage());
+            _doctorService.AssignScorebyId(rating.Username, rating.GetAverage());
         }
     }
 }

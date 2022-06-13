@@ -21,5 +21,6 @@ namespace HealthInstitution.Core.MedicalRecords
         public void Delete(Patient patient);
         public void DeleteReferral(Patient patient, Referral referral);
         public void DeletePrescription(Patient patient, Prescription prescription);
+        public bool IsPatientAlergic(MedicalRecord medicalRecord, List<Ingredient> ingredients);
     }
 }

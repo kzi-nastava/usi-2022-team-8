@@ -19,7 +19,9 @@ namespace HealthInstitution.Core.EquipmentTransfers
     {
         IEquipmentRepository _equipmentRepository;
         IEquipmentTransferRepository _equipmentTransferRepository;
-        public EquipmentTransferService(IEquipmentRepository equipmentRepository, IEquipmentTransferRepository equipmentTransferRepository)
+        public EquipmentTransferService(IEquipmentRepository equipmentRepository, 
+            IEquipmentTransferRepository equipmentTransferRepository,
+            )
         {
             _equipmentRepository = equipmentRepository;
             _equipmentTransferRepository = equipmentTransferRepository;

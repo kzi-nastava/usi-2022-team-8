@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.SystemUsers.Users.Repository
 {
-    public interface IUserRepository : IRepository<User>
+    public interface IUserRepository
     {
         public void LoadFromFile();
         public void Save();

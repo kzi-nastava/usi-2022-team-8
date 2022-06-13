@@ -13,14 +13,20 @@ public class PrescriptionNotificationService : IPrescriptionNotificationService
 {
 
     IPrescriptionNotificationRepository _prescriptionNotificationRepository;
-    public PrescriptionNotificationService(IPrescriptionNotificationRepository prescriptionNotificationRepository)
+    IPrescriptionNotificationCronJobService _prescriptionNotificationCronJobService;
+    IPrescriptionNotificationSettingsRepository _prescriptionNotificationSettingsRepository;
+    public PrescriptionNotificationService(IPrescriptionNotificationRepository prescriptionNotificationRepository,
+        IPrescriptionNotificationCronJobService prescriptionNotificationCronJobService,
+        IPrescriptionNotificationSettingsRepository prescriptionNotificationSettingsRepository)
     {
         _prescriptionNotificationRepository = prescriptionNotificationRepository;
-    }
+        _prescriptionNotificationCronJobService = prescriptionNotificationCronJobService;
+        _prescriptionNotificationSettingsRepository = prescriptionNotificationSettingsRepository;
+}
     public void GenerateAllSkippedNotifications(string loggedPatient)
     {
-        PrescriptionNotificationCronJobService.GenerateScheduler();
-        foreach (var setting in _prescriptionNotificationRepository.Settings)
+        _prescriptionNotificationCronJobService.GenerateScheduler();
+        foreach (var setting in _prescriptionNotificationSettingsRepository.GetAll())
         {
             GenerateForOne(setting, loggedPatient);
         }
@@ -52,7 +58,7 @@ public class PrescriptionNotificationService : IPrescriptionNotificationService
     public void GenerateCronJobs(List<DateTime> dateTimes, PrescriptionNotificationSettings setting, string loggedPatient)
     {
         foreach (DateTime dateTime in dateTimes)
-            PrescriptionNotificationCronJobService.GenerateJob(loggedPatient, setting, dateTime);
+            _prescriptionNotificationCronJobService.GenerateJob(loggedPatient, setting, dateTime);
     }
 
     private void GenerateForOne(PrescriptionNotificationSettings setting, string loggedPatient)
@@ -65,7 +71,7 @@ public class PrescriptionNotificationService : IPrescriptionNotificationService
             foreach (var dateTime in dateTimes)
             {
                 if (dateTime > DateTime.Now) return;
-                int id = _prescriptionNotificationRepository.Notifications.Count;
+                int id = _prescriptionNotificationRepository.GetAll().Count;
                 PrescriptionNotification recepieNotification = new PrescriptionNotification(id, setting.PatientUsername, setting.Prescription, true);
                 recepieNotification.TriggerDateTime = dateTime;
                 _prescriptionNotificationRepository.Add(recepieNotification);

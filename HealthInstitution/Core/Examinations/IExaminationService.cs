@@ -18,6 +18,11 @@ namespace HealthInstitution.Core.Examinations
         public List<Examination> GetByDoctor(string doctorUsername);
         public List<Examination> GetCompletedByPatient(string patientUsername);
         public List<Examination> GetSearchAnamnesis(string keyword, string patientUsername);
+        public List<Examination> OrderByDoctorSpeciality(List<Examination> examinations);
+        public List<Examination> OrderByDate(List<Examination> examinations);
+        public List<Examination> OrderByDoctor(List<Examination> examinations);
+
         public bool IsReadyForPerforming(Examination examination);
+        public ExaminationDTO ParseExaminationToExaminationDTO(Examination examination);
     }
 }

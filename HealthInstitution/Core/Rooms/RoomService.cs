@@ -1,28 +1,28 @@
 ﻿using HealthInstitution.Core.Equipments;
 using HealthInstitution.Core.Equipments.Model;
 using HealthInstitution.Core.EquipmentTransfers;
-using HealthInstitution.Core.EquipmentTransfers.Repository;
-using HealthInstitution.Core.Examinations.Repository;
-using HealthInstitution.Core.Operations.Model;
-using HealthInstitution.Core.Operations.Repository;
 using HealthInstitution.Core.Renovations;
 using HealthInstitution.Core.Rooms.Model;
 using HealthInstitution.Core.Rooms.Repository;
 using HealthInstitution.Core.Scheduling;
 using HealthInstitution.GUI.ManagerView;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace HealthInstitution.Core.Rooms
 {
     public class RoomService : IRoomService
     {
         IRoomRepository _roomRepository;
-        public RoomService(IRoomRepository roomRepository) {
+        IEquipmentService _equipmentService;
+        IRenovationService _renovationService;
+        IEquipmentTransferService _equipmentTransferService;
+        ISchedulingService _schedulingService;
+
+        public RoomService(IRoomRepository roomRepository, IEquipmentService equipmentService, IRenovationService renovationService,
+            IEquipmentTransferService equipmentTransferService, ISchedulingService schedulingService) {
             _roomRepository = roomRepository;
+            _equipmentService = equipmentService;
+            _renovationService = renovationService;
+            _equipmentTransferService = equipmentTransferService;
+            _schedulingService = schedulingService;
         }
         public List<Room> GetAll()
         {
@@ -52,12 +52,12 @@ namespace HealthInstitution.Core.Rooms
         }
         public bool CheckImportantOccurrenceOfRoom(Room room)
         {
-            if (EquipmentTransferService.CheckOccurrenceOfRoom(room))
+            if (_equipmentTransferService.CheckOccurrenceOfRoom(room))
             {
                 return true;
             }
 
-            if (SchedulingService.CheckOccurrenceOfRoom(room))
+            if (_schedulingService.CheckOccurrenceOfRoom(room))
             {
                 return true;
             }
@@ -67,7 +67,7 @@ namespace HealthInstitution.Core.Rooms
 
         public void MoveRoomToRenovationHistory(Room selectedRoom)
         {
-            if (RenovationService.CheckRenovationStatusForHistoryDelete(selectedRoom))
+            if (_renovationService.CheckRenovationStatusForHistoryDelete(selectedRoom))
             {
                 _roomRepository.Delete(selectedRoom.Id);
             }
@@ -136,7 +136,7 @@ namespace HealthInstitution.Core.Rooms
             if (index >= 0)
             {
                 room.AvailableEquipment[index].Quantity += equipment.Quantity;
-                EquipmentService.Delete(equipment.Id);
+                _equipmentService.Delete(equipment.Id);
             }
             else
             {
@@ -148,7 +148,7 @@ namespace HealthInstitution.Core.Rooms
             List<Equipment> equipments = room.AvailableEquipment;
             foreach (Equipment equipment in equipments)
             {
-                EquipmentService.Delete(equipment.Id);
+                _equipmentService.Delete(equipment.Id);
             }
             equipments.Clear();
         }

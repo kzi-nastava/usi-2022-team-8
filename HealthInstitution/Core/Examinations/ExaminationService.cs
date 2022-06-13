@@ -13,9 +13,16 @@ namespace HealthInstitution.Core.Examinations;
 public class ExaminationService : IExaminationService
 {
     IExaminationRepository _examinationRepository;
-    public ExaminationService(IExaminationRepository examinationRepository)
+    IDoctorExaminationAvailabilityService _doctorExaminationAvailabilityService;
+    IPatientExaminationAvailabilityService _patientExaminationAvailabilityService;
+
+    public ExaminationService(IExaminationRepository examinationRepository,
+        IDoctorExaminationAvailabilityService doctorExaminationAvailabilityService,
+        IPatientExaminationAvailabilityService patientExaminationAvailabilityService)
     {
         _examinationRepository = examinationRepository;
+        _doctorExaminationAvailabilityService = doctorExaminationAvailabilityService;
+        _patientExaminationAvailabilityService = patientExaminationAvailabilityService;
     }
     public List<Examination> GetAll()
     {
@@ -38,8 +45,8 @@ public class ExaminationService : IExaminationService
     {
         examinationDTO.Validate();
         Examination examination = new Examination(examinationDTO);
-        DoctorExaminationAvailabilityService.CheckIfDoctorIsAvailable(examinationDTO);
-        PatientExaminationAvailabilityService.CheckIfPatientIsAvailable(examinationDTO);
+        _doctorExaminationAvailabilityService.CheckIfDoctorIsAvailable(examinationDTO);
+        _patientExaminationAvailabilityService.CheckIfPatientIsAvailable(examinationDTO);
         _examinationRepository.Update(id, examination);
     }
 

@@ -10,5 +10,15 @@ namespace HealthInstitution.Core.SystemUsers.Doctors
         public Doctor GetById(String username);
         public void DeleteExamination(Examination examination);
         public void DeleteOperation(Operation operation);
+        public void AssignScorebyId(string username, double avgRating);
+        public List<Doctor> OrderByDoctorRating(List<Doctor> examinations);
+        public List<Doctor> OrderByDoctorSpeciality(List<Doctor> examinations);
+        public List<Doctor> OrderByDoctorName(List<Doctor> examinations);
+        public List<Doctor> OrderByDoctorSurname(List<Doctor> examinations);
+        public List<Doctor> SearchBySpeciality(string keyword);
+        public List<Doctor> SearchByName(string keyword);
+        public List<Doctor> SearchBySurname(string keyword);
+        public void LoadAppointments();
+
     }
 }

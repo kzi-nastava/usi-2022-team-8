@@ -11,7 +11,7 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.MedicalRecords.Repository
 {
-    public interface IMedicalRecordRepository : IRepository<MedicalRecord>
+    public interface IMedicalRecordRepository
     {
         public void LoadFromFile();
         public void Save();

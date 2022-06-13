@@ -62,7 +62,7 @@ namespace HealthInstitution.Core.Equipments
 
         public Dictionary<string, int> EquipmentPerQuantity()
         {
-            return _equipmentRepository.EquipmentPerQuantity;
+            return _equipmentRepository.GetEquipmentPerQuantity();
         }
 
         private bool MatchQuantityFilter(Equipment equipment, EquipmentFilterDTO equipmentFilter)

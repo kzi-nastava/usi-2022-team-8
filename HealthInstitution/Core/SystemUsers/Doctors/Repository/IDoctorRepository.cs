@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.SystemUsers.Doctors.Repository
 {
-    public interface IDoctorRepository : IRepository<Doctor>
+    public interface IDoctorRepository
     {
         public void LoadFromFile();
         public void Save();

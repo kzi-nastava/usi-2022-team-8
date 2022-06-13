@@ -21,11 +21,12 @@ namespace HealthInstitution.GUI.PatientView;
 /// </summary>
 public partial class RecepieNotificationDialog : Window
 {
-    public RecepieNotificationDialog(string _loggedPatient)
+    IPrescriptionNotificationService _prescriptionNotificationService;
+    public RecepieNotificationDialog(string _loggedPatient, IPrescriptionNotificationService prescriptionNotificationService)
     {
         InitializeComponent();
-
-        LoadRows(PrescriptionNotificationService.GetPatientActiveNotification(_loggedPatient));
+        _prescriptionNotificationService = prescriptionNotificationService;
+        LoadRows(_prescriptionNotificationService.GetPatientActiveNotification(_loggedPatient));
     }
 
     private void LoadRows(List<PrescriptionNotification> recepieNotifications)
