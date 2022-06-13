@@ -19,6 +19,7 @@ using HealthInstitution.Core.PrescriptionNotifications.Service;
 using HealthInstitution.Core.SystemUsers.Doctors;
 using HealthInstitution.Core.SystemUsers.Patients;
 using HealthInstitution.Core.DoctorRatings;
+using HealthInstitution.Core.RestRequests;
 
 namespace HealthInstitution.GUI.LoginView
 {
@@ -88,6 +89,7 @@ namespace HealthInstitution.GUI.LoginView
 
         private void RedirectSecretary()
         {
+            RestRequestService.LoadRequests();
             SecretaryWindow secretaryWindow = new SecretaryWindow();
             secretaryWindow.ShowDialog();
         }

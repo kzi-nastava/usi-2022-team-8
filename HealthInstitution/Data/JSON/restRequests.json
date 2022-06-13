@@ -1,11 +1,1 @@
-{
-  {
-    "id": 1,
-    "doctor": "jovan",
-    "reason": "Sahranjuje psa",
-    "startDate": "2022-06-19",
-    "daysDuration": "10",
-    "state": "OnHold",
-    "urgent": false
-  }
-}
+[{"id":1,"reason":"Sahranjuje psa","startDate":"2022-06-19T00:00:00","daysDuration":10,"state":"Rejected","urgent":false,"rejectionReason":"TOVARI"}]

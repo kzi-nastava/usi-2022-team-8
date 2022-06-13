@@ -7,12 +7,13 @@ public class RestRequest
     public int Id { get; set; }
     public Doctor Doctor { get; set; }
     public String Reason { get; set; }
-    public DateOnly StartDate { get; set; }
+    public DateTime StartDate { get; set; }
     public int DaysDuration { get; set; }
     public RestRequestState State { get; set; }
     public bool IsUrgent { get; set; }
+    public string RejectionReason { get; set; }
 
-    public RestRequest(int id, Doctor doctor, string reason, DateOnly startDate, int daysDuration, RestRequestState state, bool isUrgent)
+    public RestRequest(int id, Doctor doctor, string reason, DateTime startDate, int daysDuration, RestRequestState state, bool isUrgent, string rejectionReason)
     {
         Id = id;
         Doctor = doctor;
@@ -21,6 +22,18 @@ public class RestRequest
         DaysDuration = daysDuration;
         State = state;
         IsUrgent = isUrgent;
+        RejectionReason = rejectionReason;
+    }
+
+    public RestRequest(RestRequestDTO restRequestDTO)
+    {
+        Doctor = restRequestDTO.Doctor;
+        Reason = restRequestDTO.Reason;
+        StartDate = restRequestDTO.StartDate;
+        DaysDuration = restRequestDTO.DaysDuration;
+        State = restRequestDTO.State;
+        IsUrgent = restRequestDTO.IsUrgent;
+        RejectionReason = restRequestDTO.RejectionReason;
     }
 }
 

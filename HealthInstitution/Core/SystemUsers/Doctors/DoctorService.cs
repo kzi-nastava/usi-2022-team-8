@@ -3,6 +3,8 @@ using HealthInstitution.Core.Examinations.Repository;
 using HealthInstitution.Core.Notifications.Model;
 using HealthInstitution.Core.Operations.Model;
 using HealthInstitution.Core.Operations.Repository;
+using HealthInstitution.Core.RestRequests.Model;
+using HealthInstitution.Core.RestRequests.Repository;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using HealthInstitution.Core.SystemUsers.Doctors.Repository;
 
@@ -39,6 +41,10 @@ public static class DoctorService
     public static void DeleteOperation(Operation operation)
     {
         s_doctorRepository.DeleteOperation(operation);
+    }
+    public static void DeleteRestRequest(RestRequest restRequest)
+    {
+        s_doctorRepository.DeleteRestRequest(restRequest);
     }
 
     public static List<Doctor> SearchBySpeciality(string keyword)

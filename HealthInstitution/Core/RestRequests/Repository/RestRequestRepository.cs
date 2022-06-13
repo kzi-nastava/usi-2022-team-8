@@ -48,16 +48,15 @@ namespace HealthInstitution.Core.RestRequests.Repository
         private RestRequest Parse(JToken? RestRequest)
         {
             int id = (int)RestRequest["id"];
-            string username = (string)RestRequest["doctor"];
-            Doctor doctor = DoctorRepository.GetInstance().GetById(username);
             string reason = (string)RestRequest["reason"];
             DateTime startDate = (DateTime)RestRequest["startDate"];
             int daysDuration = (int)RestRequest["daysDuration"];
             RestRequestState state;
             Enum.TryParse(RestRequest["state"].ToString(), out state);
             bool urgent = (bool)RestRequest["urgent"];
+            string rejectionReason = (string)RestRequest["rejectionReason"];
             
-            return new RestRequest(id,doctor,reason,DateOnly.FromDateTime(startDate), daysDuration,state,urgent);
+            return new RestRequest(id,null,reason,startDate, daysDuration,state,urgent,rejectionReason);
         }
         public void LoadFromFile()
         {
@@ -81,12 +80,12 @@ namespace HealthInstitution.Core.RestRequests.Repository
                 reducedRestRequests.Add(new
                 {
                     id = RestRequest.Id,
-                    doctor = RestRequest.Doctor.Username,
                     reason = RestRequest.Reason,
                     startDate = RestRequest.StartDate,
                     daysDuration = RestRequest.DaysDuration,
                     state = RestRequest.State,
-                    urgent=RestRequest.IsUrgent
+                    urgent=RestRequest.IsUrgent,
+                    rejectionReason=RestRequest.RejectionReason
                 });
             }
             return reducedRestRequests;
@@ -96,18 +95,6 @@ namespace HealthInstitution.Core.RestRequests.Repository
             List<dynamic> reducedRestRequests = PrepareForSerialization();
             var allRestRequests = JsonSerializer.Serialize(reducedRestRequests, _options);
             File.WriteAllText(this._fileName, allRestRequests);
-        }
-
-        public void AcceptScheduleEditRequests(RestRequest restRequest)
-        {
-            restRequest.State = RestRequestState.Accepted;
-            Save();
-        }
-
-        public void RejectScheduleEditRequests(RestRequest restRequest)
-        {
-            restRequest.State = RestRequestState.Rejected;
-            Save();
         }
 
         public List<RestRequest> GetAll()
@@ -155,7 +142,18 @@ namespace HealthInstitution.Core.RestRequests.Repository
             this.RestRequests.Remove(RestRequest);
             this.RestRequestsById.Remove(id);
             Save();
-            DoctorRepository.GetInstance().Save();
+            RestRequestDoctorRepository.GetInstance().Save();
+        }
+        public void AcceptRestRequest(RestRequest restRequest)
+        {
+            restRequest.State = RestRequestState.Accepted;
+            Save();
+        }
+        public void RejectRestRequest(RestRequest restRequest, string rejectionReason)
+        {
+            restRequest.State = RestRequestState.Rejected;
+            restRequest.RejectionReason = rejectionReason;
+            Save();
         }
     }
 }

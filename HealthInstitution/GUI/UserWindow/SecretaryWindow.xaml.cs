@@ -1,5 +1,6 @@
 ﻿using HealthInstitution.GUI.LoginView;
 using HealthInstitution.GUI.SecretaryView;
+using HealthInstitution.GUI.SecretaryView.RequestsView;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,6 +40,11 @@ namespace HealthInstitution.GUI.UserWindow
             examinationRequestsReview.ShowDialog();
         }
 
+        private void RestRequests_Click(object sender, RoutedEventArgs e)
+        {
+            RestRequestsReview restRequestsReview = new RestRequestsReview();
+            restRequestsReview.ShowDialog();
+        }
 
         private void UrgentExaminations_Click(object sender, RoutedEventArgs e)
         {
