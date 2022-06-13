@@ -9,32 +9,38 @@ using HealthInstitution.Core.PrescriptionNotifications.Model;
 
 namespace HealthInstitution.Core.PrescriptionNotifications.Service;
 
-public class PrescriptionNotificationService
+public class PrescriptionNotificationService : IPrescriptionNotificationService
 {
-    public static void GenerateAllSkippedNotifications(string loggedPatient)
+
+    IPrescriptionNotificationRepository _prescriptionNotificationRepository;
+    public PrescriptionNotificationService(IPrescriptionNotificationRepository prescriptionNotificationRepository)
+    {
+        _prescriptionNotificationRepository = prescriptionNotificationRepository;
+    }
+    public void GenerateAllSkippedNotifications(string loggedPatient)
     {
         PrescriptionNotificationCronJobService.GenerateScheduler();
-        foreach (var setting in PrescriptionNotificationSettingsRepository.GetInstance().Settings)
+        foreach (var setting in _prescriptionNotificationRepository.Settings)
         {
             GenerateForOne(setting, loggedPatient);
         }
     }
 
-    private static DateTime GetLastDateTime(PrescriptionNotificationSettings setting)
+    private DateTime GetLastDateTime(PrescriptionNotificationSettings setting)
     {
-        var createdNotifications = PrescriptionNotificationRepository.GetInstance().GetPatientPresctiptionNotification(setting.PatientUsername, setting.Prescription.Id);
+        var createdNotifications = _prescriptionNotificationRepository.GetPatientPresctiptionNotification(setting.PatientUsername, setting.Prescription.Id);
         createdNotifications.OrderBy(o => o.TriggerDateTime).ToList();
         if (createdNotifications.Count == 0) return DateTime.Today.AddDays(-1);
 
         return createdNotifications.Last().TriggerDateTime;
     }
 
-    private static double CalculateIncrement(PrescriptionNotificationSettings setting)
+    private double CalculateIncrement(PrescriptionNotificationSettings setting)
     {
         return 24 / setting.Prescription.DailyDose;
     }
 
-    private static DateTime CalculateFirstDatetime(PrescriptionNotificationSettings setting)
+    private DateTime CalculateFirstDatetime(PrescriptionNotificationSettings setting)
     {
         DateTime lastDateTime = GetLastDateTime(setting);
         var firstDate = setting.Prescription.HourlyRate.AddHours(-setting.BeforeAmmount.Hour).AddMinutes(-setting.BeforeAmmount.Minute);
@@ -43,13 +49,13 @@ public class PrescriptionNotificationService
         return lastDateTime;
     }
 
-    public static void GenerateCronJobs(List<DateTime> dateTimes, PrescriptionNotificationSettings setting, string loggedPatient)
+    public void GenerateCronJobs(List<DateTime> dateTimes, PrescriptionNotificationSettings setting, string loggedPatient)
     {
         foreach (DateTime dateTime in dateTimes)
             PrescriptionNotificationCronJobService.GenerateJob(loggedPatient, setting, dateTime);
     }
 
-    private static void GenerateForOne(PrescriptionNotificationSettings setting, string loggedPatient)
+    private void GenerateForOne(PrescriptionNotificationSettings setting, string loggedPatient)
     {
         List<DateTime> dateTimes = GenerateDateTimes(setting);
         GenerateCronJobs(dateTimes, setting, loggedPatient);
@@ -59,16 +65,16 @@ public class PrescriptionNotificationService
             foreach (var dateTime in dateTimes)
             {
                 if (dateTime > DateTime.Now) return;
-                int id = PrescriptionNotificationRepository.GetInstance().Notifications.Count;
+                int id = _prescriptionNotificationRepository.Notifications.Count;
                 PrescriptionNotification recepieNotification = new PrescriptionNotification(id, setting.PatientUsername, setting.Prescription, true);
                 recepieNotification.TriggerDateTime = dateTime;
-                PrescriptionNotificationRepository.GetInstance().Add(recepieNotification);
+                _prescriptionNotificationRepository.Add(recepieNotification);
             }
             dateTimes = NextDay(dateTimes);
         }
     }
 
-    private static List<DateTime> NextDay(List<DateTime> dateTimes)
+    private List<DateTime> NextDay(List<DateTime> dateTimes)
     {
         for (int i = 0; i < dateTimes.Count; i++)
         {
@@ -77,7 +83,7 @@ public class PrescriptionNotificationService
         return dateTimes;
     }
 
-    public static List<DateTime> GenerateDateTimes(PrescriptionNotificationSettings setting)
+    public List<DateTime> GenerateDateTimes(PrescriptionNotificationSettings setting)
     {
         double increment = CalculateIncrement(setting);
         List<DateTime> notificationTimes = new List<DateTime>();
@@ -89,13 +95,13 @@ public class PrescriptionNotificationService
         return notificationTimes;
     }
 
-    public static List<PrescriptionNotification> GetPatientActiveNotification(string username)
+    public List<PrescriptionNotification> GetPatientActiveNotification(string username)
     {
-        return PrescriptionNotificationRepository.GetInstance().GetPatientActiveNotification(username);
+        return _prescriptionNotificationRepository.GetPatientActiveNotification(username);
     }
 
-    public static void UpdateSettings(int id, PrescriptionNotificationSettings settings)
+    public void UpdateSettings(int id, PrescriptionNotificationSettings settings)
     {
-        PrescriptionNotificationSettingsRepository.GetInstance().Update(id, settings);
+        _prescriptionNotificationRepository.Update(id, settings);
     }
 }

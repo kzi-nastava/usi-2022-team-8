@@ -11,8 +11,9 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.SystemUsers.Patients
 {
-    public class PatientExaminationAvailabilityService
+    public class PatientExaminationAvailabilityService : IPatientExaminationAvailabilityService
     {
+        public PatientExaminationAvailabilityService() { }
         private void CheckIfPatientHasExaminations(ExaminationDTO examinationDTO)
         {
             var patient = examinationDTO.MedicalRecord.Patient;

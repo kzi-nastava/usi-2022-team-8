@@ -5,47 +5,51 @@ using HealthInstitution.Core.SystemUsers.Patients.Model;
 
 namespace HealthInstitution.Core.Operations
 {
-    public static class OperationService
+    public class OperationService : IOperationService
     {
-        static OperationRepository s_operationRepository = OperationRepository.GetInstance();
-        public static List<Operation> GetAll()
+        IOperationRepository _operationRepository;
+        public OperationService(IOperationRepository operationRepository)
         {
-            return s_operationRepository.GetAll();
+            _operationRepository = operationRepository;
         }
-        public static Operation GetById(int id)
+        public List<Operation> GetAll()
         {
-            return s_operationRepository.GetById(id);
+            return _operationRepository.GetAll();
+        }
+        public Operation GetById(int id)
+        {
+            return _operationRepository.GetById(id);
         }
 
-        public static Operation Add(OperationDTO operationDTO)
+        public Operation Add(OperationDTO operationDTO)
         {
             Operation operation = new Operation(operationDTO);
-            s_operationRepository.Add(operation);
+            _operationRepository.Add(operation);
             return operation;
         }
 
-        public static void Update(int id, OperationDTO operationDTO)
+        public void Update(int id, OperationDTO operationDTO)
         {
             operationDTO.Validate();
             Operation operation = new Operation(operationDTO);
             DoctorOperationAvailabilityService.CheckIfDoctorIsAvailable(operationDTO, id);
             PatientOperationAvailabilityService.CheckIfPatientIsAvailable(operationDTO, id);
-            s_operationRepository.Update(id, operation);
+            _operationRepository.Update(id, operation);
         }
 
-        public static void Delete(int id)
+        public void Delete(int id)
         {
-            s_operationRepository.Delete(id);
+            _operationRepository.Delete(id);
         }
 
-        public static List<Operation> GetByPatient(String patientUsername)
+        public List<Operation> GetByPatient(String patientUsername)
         {
-            return s_operationRepository.GetByPatient(patientUsername);
+            return _operationRepository.GetByPatient(patientUsername);
         }
 
-        public static List<Operation> GetByDoctor(String doctorUsername)
+        public List<Operation> GetByDoctor(String doctorUsername)
         {
-            return s_operationRepository.GetByDoctor(doctorUsername);
+            return _operationRepository.GetByDoctor(doctorUsername);
         }
     }
 }

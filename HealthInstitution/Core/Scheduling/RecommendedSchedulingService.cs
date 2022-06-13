@@ -15,9 +15,10 @@ using HealthInstitution.Core.Rooms;
 
 namespace HealthInstitution.Core.Scheduling;
 
-public class RecommendedSchedulingService
+public class RecommendedSchedulingService : IRecommendedSchedulingService
 {
-    private static ExaminationDTO FindFit(ExaminationDTO examinationDTO, FindFitDTO findFitDTO)
+    public RecommendedSchedulingService() { }
+    private ExaminationDTO FindFit(ExaminationDTO examinationDTO, FindFitDTO findFitDTO)
     {
         bool found = false;
         while (findFitDTO.Fit <= findFitDTO.End)
@@ -43,7 +44,7 @@ public class RecommendedSchedulingService
             return null;
     }
 
-    public static bool FindFirstFit(RecommendedSchedulingDTOs firstFitDTO)
+    public bool FindFirstFit(RecommendedSchedulingDTOs firstFitDTO)
     {
         bool found = false;
         DateTime fit = GenerateFitDateTime(firstFitDTO.MinHour, firstFitDTO.MinMinutes);
@@ -62,7 +63,7 @@ public class RecommendedSchedulingService
         return found;
     }
 
-    public static DateTime GenerateFitDateTime(int minHour, int minMinutes)
+    public DateTime GenerateFitDateTime(int minHour, int minMinutes)
     {
         DateTime fit = DateTime.Today.AddDays(1);
         fit = fit.AddHours(minHour);
@@ -70,7 +71,7 @@ public class RecommendedSchedulingService
         return fit;
     }
 
-    public static List<Examination> FindClosestFit(ClosestFitDTO closestFitDTO)
+    public List<Examination> FindClosestFit(ClosestFitDTO closestFitDTO)
     {
         Doctor pickedDoctor = DoctorRepository.GetInstance().GetById(closestFitDTO.DoctorUsername);
         Patient patient = PatientRepository.GetInstance().GetByUsername(closestFitDTO.PatientUsername);
@@ -114,7 +115,7 @@ public class RecommendedSchedulingService
         return suggestions;
     }
 
-    public static DateTime IncrementFit(DateTime fit, int maxHour, int maxMinutes, int minHour, int minMinutes)
+    public DateTime IncrementFit(DateTime fit, int maxHour, int maxMinutes, int minHour, int minMinutes)
     {
         fit = fit.AddMinutes(15);
 

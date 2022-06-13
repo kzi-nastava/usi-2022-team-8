@@ -10,7 +10,7 @@ namespace HealthInstitution.Core.Ingredients
     public interface IIngredientService
     {
         public bool CheckOccurrenceOfIngredient(Ingredient ingredient);
-        public Task<IEnumerable<Ingredient>> GetAll();
+        public List<Ingredient> GetAll();
         public void Add(string name);
         public void Update(int id, string name);
         public void Delete(int id);

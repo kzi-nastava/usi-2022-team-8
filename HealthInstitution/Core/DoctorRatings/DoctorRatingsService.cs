@@ -9,23 +9,27 @@ using HealthInstitution.Core.SystemUsers.Doctors;
 
 namespace HealthInstitution.Core.DoctorRatings;
 
-public class DoctorRatingsService
+public class DoctorRatingsService : IDoctorRatingService
 {
-    private static DoctorRatingRepository s_doctorRatingRepository = DoctorRatingRepository.GetInstance();
+    IDoctorRatingRepository _doctorRatingRepository;
 
-    public static void Add(string username)
+    public DoctorRatingsService(IDoctorRatingRepository doctorRatingRepository)
     {
-        s_doctorRatingRepository.Add(username);
+        _doctorRatingRepository = doctorRatingRepository;
+    }
+    public void Add(string username)
+    {
+        _doctorRatingRepository.Add(username);
     }
 
-    public static double GetAverageById(string id)
+    public double GetAverageById(string id)
     {
-        return s_doctorRatingRepository.RatingsById[id].GetAverage();
+        return _doctorRatingRepository.GetById(id).GetAverage();
     }
 
-    public static void AssignScores()
+    public void AssignScores()
     {
-        foreach (var rating in s_doctorRatingRepository.GetAll())
+        foreach (var rating in _doctorRatingRepository.GetAll())
         {
             DoctorService.AssignScorebyId(rating.Username, rating.GetAverage());
         }

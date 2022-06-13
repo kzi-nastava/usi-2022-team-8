@@ -10,30 +10,33 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.Prescriptions
 {
-    public static class PrescriptionService
+    public class PrescriptionService : IPrescriptionService
     {
-        private static PrescriptionRepository s_prescriptionRepository = PrescriptionRepository.GetInstance();
-
-        public static List<Prescription> GetAll()
+        IPrescriptionRepository _prescriptionRepository;
+        public PrescriptionService(PrescriptionRepository prescriptionRepository)
         {
-            return s_prescriptionRepository.GetAll();
+            _prescriptionRepository = prescriptionRepository;
+        }
+        public List<Prescription> GetAll()
+        {
+            return _prescriptionRepository.GetAll();
         }
 
-        public static Prescription Add(PrescriptionDTO prescriptionDTO)
+        public Prescription Add(PrescriptionDTO prescriptionDTO)
         {
             Prescription prescription = new Prescription(prescriptionDTO);
-            return s_prescriptionRepository.Add(prescription);
+            return _prescriptionRepository.Add(prescription);
         }
 
-        public static void Update(int id, PrescriptionDTO prescriptionDTO)
+        public void Update(int id, PrescriptionDTO prescriptionDTO)
         {
             Prescription prescription = new Prescription(prescriptionDTO);
-            s_prescriptionRepository.Update(id, prescription);
+            _prescriptionRepository.Update(id, prescription);
         }
 
-        public static void Delete(int id)
+        public void Delete(int id)
         {
-            s_prescriptionRepository.Delete(id);
+            _prescriptionRepository.Delete(id);
         }
 
         public static bool IsPatientAlergic(MedicalRecord medicalRecord, List<Ingredient> ingredients)
