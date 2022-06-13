@@ -173,5 +173,15 @@ namespace HealthInstitution.Core.Polls.Repository
         {
             return this.DoctorQuestions;
         }
+
+        public List<PollQuestion> GetHospitalGradeByQuestion()
+        {
+            return PollQuestions.FindAll(question => question.ForDoctor == null);
+        }
+
+        public List<PollQuestion> GetDoctorGradeByQuestion(Doctor doctor)
+        {
+            return PollQuestions.FindAll(question => question.ForDoctor == doctor);
+        }
     }
 }

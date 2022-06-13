@@ -44,6 +44,15 @@
     <Compile Update="GUI\ManagerView\IngredientView\IngredientsTableWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="GUI\ManagerView\PollView\DoctorPollWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="GUI\ManagerView\PollView\HospitalPollWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="GUI\ManagerView\PollView\RatedDoctorsWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="GUI\ManagerView\RenovationView\ArrangeEquipmentForSplitWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -268,6 +277,15 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="GUI\ManagerView\IngredientView\IngredientsTableWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="GUI\ManagerView\PollView\DoctorPollWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="GUI\ManagerView\PollView\HospitalPollWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="GUI\ManagerView\PollView\RatedDoctorsWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="GUI\ManagerView\RenovationView\ArrangeEquipmentForSplitWindow.xaml">

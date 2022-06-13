@@ -139,5 +139,15 @@ namespace HealthInstitution.Core.Polls.Repository
             this.PollCommentById.Remove(id);
             Save();
         }
+
+        public List<PollComment> GetHospitalComments()
+        {
+            return PollComments.FindAll(item => item.ForDoctor == null);
+        }
+
+        public List<PollComment> GetCommentsByDoctor(Doctor doctor)
+        {
+            return PollComments.FindAll(item => item.ForDoctor == doctor);
+        }
     }
 }

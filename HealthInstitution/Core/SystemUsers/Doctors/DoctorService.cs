@@ -81,4 +81,9 @@ public static class DoctorService
         GetById(username).AvgRating = avgRating;
         s_doctorRepository.Save();
     }
+
+    public static List<Doctor> GetDoctorsOrderByRating()
+    {
+        return s_doctorRepository.Doctors.OrderBy(d => d.AvgRating).ToList();
+    }
 }

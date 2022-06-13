@@ -1,0 +1,31 @@
+﻿<Window x:Class="HealthInstitution.GUI.ManagerView.PollView.HospitalPollWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:HealthInstitution.GUI.ManagerView.PollView"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+        Title="Hospital poll" Height="500" Width="700">
+    <Grid>
+        <DataGrid ItemsSource="{Binding TableItemPoll}" AutoGenerateColumns="False" Name="pollDataGrid" Grid.ColumnSpan="3" Margin="0,50,0,248">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Question" FontSize="18" Binding="{Binding Question}" Width ="*"/>
+                <DataGridTextColumn Header="Avg" FontSize="18" Binding="{Binding Avg}" Width ="65"/>
+                <DataGridTextColumn Header="Num of 1s" FontSize="18" Binding="{Binding NumOf1s}" Width ="65"/>
+                <DataGridTextColumn Header="Num of 2s" FontSize="18" Binding="{Binding NumOf2s}" Width ="65"/>
+                <DataGridTextColumn Header="Num of 3s" FontSize="18" Binding="{Binding NumOf3s}" Width ="65"/>
+                <DataGridTextColumn Header="Num of 4s" FontSize="18" Binding="{Binding NumOf4s}" Width ="65"/>
+                <DataGridTextColumn Header="Num of 5s" FontSize="18" Binding="{Binding NumOf5s}" Width ="65"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <Label Content="Hospital poll" HorizontalAlignment="Left" Margin="10,19,0,0" VerticalAlignment="Top"/>
+        <DataGrid ItemsSource="{Binding PollComment}" AutoGenerateColumns="False" Name="commentDataGrid" Grid.ColumnSpan="3" Margin="0,290,0,38">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Comment" FontSize="18" Binding="{Binding Comment}" Width ="*"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <Label Content="Poll comments" HorizontalAlignment="Left" Margin="10,259,0,0" VerticalAlignment="Top"/>
+
+    </Grid>
+</Window>
