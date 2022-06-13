@@ -40,13 +40,13 @@ namespace HealthInstitution.GUI.ManagerView.PollView
         }
 
         private void RefreshDataGrid()
-        {    
+        {
             Doctor doctor = (Doctor)doctorComboBox.SelectedItem;
 
             List<TableItemPoll> questions = PollService.GetDoctorPollByQuestions(doctor);
             pollDataGrid.ItemsSource = questions;
 
-            List<PollComment> comments = PollService.GetHospitalComments();
+            List<PollComment> comments = PollService.GetCommentsByDoctor(doctor);
             commentDataGrid.ItemsSource = comments;
         }
 

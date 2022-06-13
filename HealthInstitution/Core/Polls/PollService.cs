@@ -37,17 +37,6 @@ internal static class PollService
         PollComment pollComment = new PollComment(pollCommentDTO);
         s_pollCommentRepository.Update(id, pollComment);
     }
-        public static void AddComment(PollCommentDTO pollCommentDTO)
-        {
-            PollComment pollComment = new PollComment(pollCommentDTO);
-            s_pollCommentRepository.Add(pollComment);
-        }
-        
-        public static void UpdateComment(int id, PollCommentDTO pollCommentDTO)
-        {
-            PollComment pollComment = new PollComment(pollCommentDTO);
-            s_pollCommentRepository.Update(id, pollComment);
-        }
 
     public static void DeleteComment(int id)
     {
@@ -101,71 +90,77 @@ internal static class PollService
         s_pollQuestionRepository.Save();
     }
 
+    public static List<TableItemPoll> GetHospitalPollByQuestions()
+    {
+        List<PollQuestion> hospitalQuestions = s_pollQuestionRepository.GetHospitalGradeByQuestion();
+        List<TableItemPoll> items = new List<TableItemPoll>();
+
+        var groupByQuestion = hospitalQuestions.ToLookup(q => q.Question);
+        foreach (var group in groupByQuestion)
+        {
+            List<int> grades = group.SelectMany(q => q.Grades).ToList();
+            var occurrenceByGrade = GetOccurrenceByGrade(grades);
+            double avg = grades.Count > 0 ? Math.Round(grades.Average(), 2) : 0.0;
+            items.Add(new TableItemPoll(group.Key, avg, occurrenceByGrade));
+        }
+
+        return items;
+    }
+
+    public static List<TableItemPoll> GetDoctorPollByQuestions(Doctor doctor)
+    {
+        List<PollQuestion> hospitalQuestions = s_pollQuestionRepository.GetDoctorGradeByQuestion(doctor);
+        List<TableItemPoll> items = new List<TableItemPoll>();
+
+        var groupByQuestion = hospitalQuestions.ToLookup(q => q.Question);
+        foreach (var group in groupByQuestion)
+        {
+            List<int> grades = group.SelectMany(q => q.Grades).ToList();
+            var occurrenceByGrade = GetOccurrenceByGrade(grades);
+            double avg = grades.Count > 0 ? Math.Round(grades.Average(), 2) : 0.0;
+            items.Add(new TableItemPoll(group.Key, avg, occurrenceByGrade));
+        }
+
+        return items;
+    }
+
+    private static Dictionary<int, int> GetOccurrenceByGrade(List<int> grades)
+    {
+        var groups = grades.GroupBy(i => i);
+        Dictionary<int, int> occurrenceByGrade = GetDefaultGrades();
+
+        foreach (var grp in groups)
+        {
+            occurrenceByGrade[grp.Key] = grp.Count();
+        }
+        return occurrenceByGrade;
+    }
+
+    private static Dictionary<int, int> GetDefaultGrades()
+    {
+        Dictionary<int, int> occurrenceByGrade = new Dictionary<int, int>();
+        for (int i = 1; i <= 5; i++)
+        {
+            occurrenceByGrade[i] = 0;
+        }
+        return occurrenceByGrade;
+    }
+
+    public static List<PollComment> GetHospitalComments()
+    {
+        return s_pollCommentRepository.GetHospitalComments();
+    }
+
+    public static List<PollComment> GetCommentsByDoctor(Doctor doctor)
+    {
+        return s_pollCommentRepository.GetCommentsByDoctor(doctor);
+    }
+
     private static void UpdateDoctorRatings(PollQuestionDTO pollQuestionDTO)
     {
         if (pollQuestionDTO.ForDoctor != null)
         {
             DoctorRatingsService.UpdateScore(pollQuestionDTO.ForDoctor.Username, pollQuestionDTO.Grades[0]);
-        }
-        public static List<string> GetDoctorQuestions()
-        {
-            return s_pollQuestionRepository.GetDoctorQuestions();
-        }
-
-        public static List<TableItemPoll> GetHospitalPollByQuestions()
-        {
-            List<PollQuestion> hospitalQuestions = s_pollQuestionRepository.GetHospitalGradeByQuestion();
-            List<TableItemPoll> items = new List<TableItemPoll>();
-
-            var groupByQuestion = hospitalQuestions.ToLookup(q => q.Question);
-            foreach (var group in groupByQuestion)
-            {
-                List<int> grades = group.SelectMany(q => q.Grades).ToList();
-                var occurrenceByGrade = GetOccurrenceByGrade(grades);
-                double avg = grades.Count > 0 ? Math.Round(grades.Average(),2) : 0.0;
-                items.Add(new TableItemPoll(group.Key, avg, occurrenceByGrade));
-            }
-
-            return items;
-        }
-
-        public static List<TableItemPoll> GetDoctorPollByQuestions(Doctor doctor)
-        {
-            List<PollQuestion> hospitalQuestions = s_pollQuestionRepository.GetDoctorGradeByQuestion(doctor);
-            List<TableItemPoll> items = new List<TableItemPoll>();
-
-            var groupByQuestion = hospitalQuestions.ToLookup(q => q.Question);
-            foreach (var group in groupByQuestion)
-            {
-                List<int> grades = group.SelectMany(q => q.Grades).ToList();
-                var occurrenceByGrade = GetOccurrenceByGrade(grades);
-                double avg = grades.Count > 0 ? Math.Round(grades.Average(), 2) : 0.0;
-                items.Add(new TableItemPoll(group.Key, avg, occurrenceByGrade));
-            }
-
-            return items;
-        }
-
-        private static Dictionary<int, int> GetOccurrenceByGrade(List<int> grades)
-        {
-            Dictionary<int,int> occurrenceByGrade = new Dictionary<int,int>();
-            var groups = grades.GroupBy(i => i);
-
-            foreach (var grp in groups)
-            {
-                occurrenceByGrade[grp.Key] = grp.Count();
-            }
-            return occurrenceByGrade;
-        }
-
-        public static List<PollComment> GetHospitalComments()
-        {
-            return s_pollCommentRepository.GetHospitalComments();
-        }
-
-        public static List<PollComment> GetCommentsByDoctor(Doctor doctor)
-        {
-            return s_pollCommentRepository.GetCommentsByDoctor(doctor);
         }
     }
 
