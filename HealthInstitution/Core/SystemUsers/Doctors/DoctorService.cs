@@ -1,8 +1,11 @@
 ﻿using HealthInstitution.Core.Examinations.Model;
 using HealthInstitution.Core.Examinations.Repository;
 using HealthInstitution.Core.Notifications.Model;
+using HealthInstitution.Core.Notifications.Repository;
 using HealthInstitution.Core.Operations.Model;
 using HealthInstitution.Core.Operations.Repository;
+using HealthInstitution.Core.RestRequestNotifications.Model;
+using HealthInstitution.Core.RestRequestNotifications.Repository;
 using HealthInstitution.Core.RestRequests.Model;
 using HealthInstitution.Core.RestRequests.Repository;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
@@ -18,6 +21,12 @@ public static class DoctorService
     {
         OperationDoctorRepository.GetInstance();
         ExaminationDoctorRepository.GetInstance();
+    }
+    public static void LoadNotifications()
+    {
+        AppointmentNotificationDoctorRepository.GetInstance();
+        AppointmentNotificationPatientRepository.GetInstance();
+        RestRequestNotificationDoctorRepository.GetInstance();
     }
     public static List<Doctor> GetAll()
     {
@@ -86,5 +95,21 @@ public static class DoctorService
     {
         GetById(username).AvgRating = avgRating;
         s_doctorRepository.Save();
+    }
+    public static List<AppointmentNotification> GetActiveAppointmentNotification(Doctor doctor)
+    {
+        List<AppointmentNotification> appointmentNotifications = new List<AppointmentNotification>();
+        foreach (AppointmentNotification appointmentNotification in doctor.AppointmentNotifications)
+            if (appointmentNotification.ActiveForDoctor)
+                appointmentNotifications.Add(appointmentNotification);
+        return appointmentNotifications;
+    }
+    public static List<RestRequestNotification> GetActiveRestRequestNotification(Doctor doctor)
+    {
+        List<RestRequestNotification> restRequestNotifications = new List<RestRequestNotification>();
+        foreach (RestRequestNotification restRequestNotification in doctor.RestRequestNotifications)
+            if (restRequestNotification.Active)
+                restRequestNotifications.Add(restRequestNotification);
+        return restRequestNotifications;
     }
 }

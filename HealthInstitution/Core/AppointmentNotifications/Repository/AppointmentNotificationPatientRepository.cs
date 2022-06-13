@@ -28,7 +28,7 @@ namespace HealthInstitution.Core.Notifications.Repository
             {
                 if (s_instance == null)
                 {
-                    s_instance = new AppointmentNotificationPatientRepository(@"..\..\..\Data\JSON\notificationPatient.json");
+                    s_instance = new AppointmentNotificationPatientRepository(@"..\..\..\Data\JSON\appointmentNotificationPatient.json");
                 }
                 return s_instance;
             }
@@ -57,8 +57,7 @@ namespace HealthInstitution.Core.Notifications.Repository
             foreach (var notification in notifications)
             {
                 Patient patient=notification.Patient;
-                if (notification.ActiveForPatient)
-                    patientUseranamesNotificationIds.Add(new { id = notification.Id, username = patient.Username });
+                patientUseranamesNotificationIds.Add(new { id = notification.Id, username = patient.Username });
             }
             var allPairs = JsonSerializer.Serialize(patientUseranamesNotificationIds);
             File.WriteAllText(this._fileName, allPairs);

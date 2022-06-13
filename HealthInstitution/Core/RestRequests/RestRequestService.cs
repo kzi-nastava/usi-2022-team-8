@@ -1,4 +1,5 @@
-﻿using HealthInstitution.Core.RestRequests.Model;
+﻿using HealthInstitution.Core.RestRequestNotifications;
+using HealthInstitution.Core.RestRequests.Model;
 using HealthInstitution.Core.RestRequests.Repository;
 using System;
 using System.Collections.Generic;
@@ -52,11 +53,13 @@ namespace HealthInstitution.Core.RestRequests
         public static void AcceptRestRequest(RestRequest restRequest)
         {
             s_restRequestRepository.AcceptRestRequest(restRequest);
+            RestRequestNotificationService.SendNotification(restRequest);
         }
 
         public static void RejectRestRequest(RestRequest restRequest,string rejectionReason)
         {
             s_restRequestRepository.RejectRestRequest(restRequest,rejectionReason);
+            RestRequestNotificationService.SendNotification(restRequest);
         }
     }
 }

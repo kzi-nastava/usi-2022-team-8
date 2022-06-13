@@ -44,7 +44,7 @@ namespace HealthInstitution.Core.Notifications.Repository
             {
                 if (s_instance == null)
                 {
-                    s_instance = new AppointmentNotificationRepository(@"..\..\..\Data\JSON\notifications.json");
+                    s_instance = new AppointmentNotificationRepository(@"..\..\..\Data\JSON\appointmentNotifications.json");
                 }
                 return s_instance;
             }
@@ -103,7 +103,7 @@ namespace HealthInstitution.Core.Notifications.Repository
         }
         private void AddToCollections(AppointmentNotification notification)
         {
-            notification.Doctor.Notifications.Add(notification);
+            notification.Doctor.AppointmentNotifications.Add(notification);
             notification.Patient.Notifications.Add(notification);
             Notifications.Add(notification);
             NotificationsById.Add(notification.Id, notification);
@@ -114,24 +114,12 @@ namespace HealthInstitution.Core.Notifications.Repository
             AppointmentNotificationPatientRepository.GetInstance().Save();
             AppointmentNotificationDoctorRepository.GetInstance().Save();
         }
-        public void Add(AppointmentNotificationDTO appointmentNotificationDTO)
+        public void Add(AppointmentNotification appointmentNotification)
         {
             int id = ++this._maxId;
-            AppointmentNotification notification;
-            if (appointmentNotificationDTO.OldAppointment==null)
-                notification = new AppointmentNotification(id, null, appointmentNotificationDTO.NewAppointment, appointmentNotificationDTO.Doctor, appointmentNotificationDTO.Patient, true,true);
-            else
-                notification = new AppointmentNotification(id, appointmentNotificationDTO.OldAppointment, appointmentNotificationDTO.NewAppointment, appointmentNotificationDTO.Doctor, appointmentNotificationDTO.Patient, true, true);
-            AddToCollections(notification);
+            appointmentNotification.Id = id;
+            AddToCollections(appointmentNotification);
             SaveAll();
-        }
-
-        public void Delete(int id)
-        {
-            AppointmentNotification notification=NotificationsById[id];
-            Notifications.Remove(notification);
-            NotificationsById.Remove(id);
-            Save();
         }
     }
 }

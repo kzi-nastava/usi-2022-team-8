@@ -22,25 +22,30 @@ namespace HealthInstitution.Core.Notifications
                 notification.ActiveForPatient = false;
             s_appointmentNotificationRepository.Save();
         }
+        private static void Add(AppointmentNotificationDTO appointmentNotificationDTO)
+        {
+            AppointmentNotification appointmentNotification = new AppointmentNotification(appointmentNotificationDTO);
+            s_appointmentNotificationRepository.Add(appointmentNotification);
+        }
         public static void SendNotificationsForDelayedExamination(ScheduleEditRequest selectedAppointment)
         {
-            AppointmentNotificationDTO appointmentNotificationDto = new AppointmentNotificationDTO(selectedAppointment.CurrentExamination.Appointment, selectedAppointment.NewExamination.Appointment, selectedAppointment.NewExamination.Doctor, selectedAppointment.NewExamination.MedicalRecord.Patient);
-            s_appointmentNotificationRepository.Add(appointmentNotificationDto);
+            AppointmentNotificationDTO appointmentNotificationDTO = new AppointmentNotificationDTO(selectedAppointment.CurrentExamination.Appointment, selectedAppointment.NewExamination.Appointment, selectedAppointment.NewExamination.Doctor, selectedAppointment.NewExamination.MedicalRecord.Patient);
+            Add(appointmentNotificationDTO);
         }
         public static void SendNotificationForNewExamination(Examination examination)
         {
-            AppointmentNotificationDTO appointmentNotificationDto = new AppointmentNotificationDTO(null, examination.Appointment, examination.Doctor, examination.MedicalRecord.Patient);
-            s_appointmentNotificationRepository.Add(appointmentNotificationDto);
+            AppointmentNotificationDTO appointmentNotificationDTO = new AppointmentNotificationDTO(null, examination.Appointment, examination.Doctor, examination.MedicalRecord.Patient);
+            Add(appointmentNotificationDTO);
         }
         public static void SendNotificationsForDelayedOperation(ScheduleEditRequest selectedAppointment)
         {
-            AppointmentNotificationDTO appointmentNotificationDto = new AppointmentNotificationDTO(selectedAppointment.CurrentOperation.Appointment, selectedAppointment.NewOperation.Appointment, selectedAppointment.NewOperation.Doctor, selectedAppointment.NewOperation.MedicalRecord.Patient);
-            s_appointmentNotificationRepository.Add(appointmentNotificationDto);
+            AppointmentNotificationDTO appointmentNotificationDTO = new AppointmentNotificationDTO(selectedAppointment.CurrentOperation.Appointment, selectedAppointment.NewOperation.Appointment, selectedAppointment.NewOperation.Doctor, selectedAppointment.NewOperation.MedicalRecord.Patient);
+            Add(appointmentNotificationDTO);
         }
         public static void SendNotificationForNewOperation(Operation operation)
         {
-            AppointmentNotificationDTO appointmentNotificationDto = new AppointmentNotificationDTO(null, operation.Appointment, operation.Doctor, operation.MedicalRecord.Patient);
-            s_appointmentNotificationRepository.Add(appointmentNotificationDto);
+            AppointmentNotificationDTO appointmentNotificationDTO = new AppointmentNotificationDTO(null, operation.Appointment, operation.Doctor, operation.MedicalRecord.Patient);
+            Add(appointmentNotificationDTO);
         }
     }
 }

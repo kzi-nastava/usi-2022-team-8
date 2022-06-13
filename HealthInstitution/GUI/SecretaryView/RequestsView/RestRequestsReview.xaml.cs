@@ -1,4 +1,5 @@
-﻿using HealthInstitution.Core.RestRequests;
+﻿using HealthInstitution.Core.RestRequestNotifications;
+using HealthInstitution.Core.RestRequests;
 using HealthInstitution.Core.RestRequests.Model;
 using System;
 using System.Collections.Generic;

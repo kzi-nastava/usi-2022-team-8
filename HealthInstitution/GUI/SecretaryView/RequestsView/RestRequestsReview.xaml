@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:HealthInstitution.GUI.SecretaryView.RequestsView"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
-        Title="RestRequestsReview" Height="400" Width="650">
+        Title="RestRequestsReview" Height="400" Width="700">
     <Grid>
         <DataGrid  ItemsSource="{Binding RestRequest}" AutoGenerateColumns="False" Name="dataGrid"  Height="250" VerticalAlignment="Top">
             <DataGrid.Columns>
@@ -20,7 +20,7 @@
                 </DataGridTextColumn>
                 <DataGridTextColumn Header="Start date" FontSize="18" Binding="{Binding StartDate, StringFormat='dd.MM.yyyy'}" Width =" 100"/>
                 <DataGridTextColumn Header="Days duration" FontSize="18" Binding="{Binding DaysDuration}" Width =" 100"/>
-                <DataGridTextColumn Header="Reason" FontSize="18" Binding="{Binding Reason}" Width =" 170"/>
+                <DataGridTextColumn Header="Reason" FontSize="18" Binding="{Binding Reason}" Width =" 220"/>
                 <DataGridTextColumn Header="Request state" FontSize="18" Binding="{Binding State}" Width =" 110"/>
             </DataGrid.Columns>
         </DataGrid>

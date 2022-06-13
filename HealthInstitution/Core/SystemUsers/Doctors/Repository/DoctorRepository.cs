@@ -189,7 +189,8 @@ public class DoctorRepository : IDoctorRepository
 
     public void DeleteNotifications(Doctor doctor)
     {
-        doctor.Notifications.Clear();
+        doctor.AppointmentNotifications.Clear();
+        doctor.RestRequestNotifications.Clear();
         Save();
     }
 
