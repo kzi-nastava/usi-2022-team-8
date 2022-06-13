@@ -98,8 +98,7 @@ namespace HealthInstitution.GUI.LoginView
             managerWindow.ShowDialog();
         }
 
-        [STAThread]
-        private static void Main(string[] args)
+        public async Task StartAsync()
         {
             EquipmentTransferRefreshingService.UpdateByTransfer();
             RenovationRefreshingService.UpdateByRenovation();
