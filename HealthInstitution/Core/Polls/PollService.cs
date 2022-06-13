@@ -5,13 +5,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using HealthInstitution.Core.DoctorRatings;
 
 namespace HealthInstitution.Core.Polls
 {
-    static class PollService
+    internal static class PollService
     {
-        static PollQuestionRepository s_pollQuestionRepository = PollQuestionRepository.GetInstance();
-        static PollCommentRepository s_pollCommentRepository = PollCommentRepository.GetInstance();
+        private static PollQuestionRepository s_pollQuestionRepository = PollQuestionRepository.GetInstance();
+        private static PollCommentRepository s_pollCommentRepository = PollCommentRepository.GetInstance();
 
         public static List<PollComment> GetAllComments()
         {
@@ -75,6 +76,32 @@ namespace HealthInstitution.Core.Polls
         public static List<string> GetDoctorQuestions()
         {
             return s_pollQuestionRepository.GetDoctorQuestions();
+        }
+
+        public static void UpdateQuestionGrades(PollQuestionDTO pollQuestionDTO)
+        {
+            List<PollQuestion> allQuestions = GetAllQuestions();
+            List<PollQuestion> filteredQuestions = allQuestions.Where(o => o.Question == pollQuestionDTO.Question).ToList();
+            filteredQuestions = filteredQuestions.Where(o => o.ForDoctor == null).ToList();
+            HandleAddingScores(filteredQuestions, pollQuestionDTO);
+            UpdateDoctorRatings(pollQuestionDTO);
+            s_pollQuestionRepository.Save();
+        }
+
+        private static void UpdateDoctorRatings(PollQuestionDTO pollQuestionDTO)
+        {
+            if (pollQuestionDTO.ForDoctor != null)
+            {
+                DoctorRatingsService.UpdateScore(pollQuestionDTO.ForDoctor.Username, pollQuestionDTO.Grades[0]);
+            }
+        }
+
+        private static void HandleAddingScores(List<PollQuestion> filteredQuestions, PollQuestionDTO pollQuestionDTO)
+        {
+            if (filteredQuestions.Count > 0)
+                filteredQuestions[0].Grades.AddRange(pollQuestionDTO.Grades);
+            else
+                AddQuestion(pollQuestionDTO);
         }
     }
 }

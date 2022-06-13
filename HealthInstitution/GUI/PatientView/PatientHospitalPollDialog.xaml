@@ -1,0 +1,54 @@
+﻿<Window x:Class="HealthInstitution.GUI.PatientView.PatientHospitalPollDialog"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:HealthInstitution.GUI.PatientView"
+        mc:Ignorable="d"
+        Title="PatientHospitalPollDialog" Height="820" Width="800">
+    <Grid>
+        <Grid Name="Q1">
+            <RadioButton Content="1" HorizontalAlignment="Left" Margin="70,100,0,0" VerticalAlignment="Top" GroupName="Q1" />
+            <RadioButton Content="2" HorizontalAlignment="Left" Margin="185,100,0,0" VerticalAlignment="Top" GroupName="Q1" />
+            <RadioButton Content="3" HorizontalAlignment="Left" Margin="315,100,0,0" VerticalAlignment="Top" GroupName="Q1" IsChecked="True" />
+            <RadioButton Content="4" HorizontalAlignment="Left" Margin="442,100,0,0" VerticalAlignment="Top" GroupName="Q1" />
+            <RadioButton Content="5" HorizontalAlignment="Left" Margin="575,100,0,0" VerticalAlignment="Top" GroupName="Q1" />
+        </Grid>
+        <Grid Name="Q2">
+            <RadioButton Content="1" HorizontalAlignment="Left" Margin="70,200,0,0" VerticalAlignment="Top" GroupName="Q2" />
+            <RadioButton Content="2" HorizontalAlignment="Left" Margin="185,200,0,0" VerticalAlignment="Top" GroupName="Q2" />
+            <RadioButton Content="3" HorizontalAlignment="Left" Margin="315,200,0,0" VerticalAlignment="Top" GroupName="Q2" IsChecked="True" />
+            <RadioButton Content="4" HorizontalAlignment="Left" Margin="442,200,0,0" VerticalAlignment="Top" GroupName="Q2" />
+            <RadioButton Content="5" HorizontalAlignment="Left" Margin="575,200,0,0" VerticalAlignment="Top" GroupName="Q2" />
+        </Grid>
+        <Grid Name="Q3">
+            <RadioButton Content="1" HorizontalAlignment="Left" Margin="70,350,0,0" VerticalAlignment="Top" GroupName="Q3" />
+            <RadioButton Content="2" HorizontalAlignment="Left" Margin="185,350,0,0" VerticalAlignment="Top" GroupName="Q3" />
+            <RadioButton Content="3" HorizontalAlignment="Left" Margin="315,350,0,0" VerticalAlignment="Top" GroupName="Q3" IsChecked="True" />
+            <RadioButton Content="4" HorizontalAlignment="Left" Margin="442,350,0,0" VerticalAlignment="Top" GroupName="Q3" />
+            <RadioButton Content="5" HorizontalAlignment="Left" Margin="575,350,0,0" VerticalAlignment="Top" GroupName="Q3" />
+        </Grid>
+        <Grid Name="Q4">
+            <RadioButton Content="1" HorizontalAlignment="Left" Margin="70,500,0,0" VerticalAlignment="Top" GroupName="Q4" />
+            <RadioButton Content="2" HorizontalAlignment="Left" Margin="185,500,0,0" VerticalAlignment="Top" GroupName="Q4" />
+            <RadioButton Content="3" HorizontalAlignment="Left" Margin="315,500,0,0" VerticalAlignment="Top" GroupName="Q4" IsChecked="True" />
+            <RadioButton Content="4" HorizontalAlignment="Left" Margin="442,500,0,0" VerticalAlignment="Top" GroupName="Q4" />
+            <RadioButton Content="5" HorizontalAlignment="Left" Margin="575,500,0,0" VerticalAlignment="Top" GroupName="Q4" />
+        </Grid>
+        <Grid Name="Q5">
+            <RadioButton Content="1" HorizontalAlignment="Left" Margin="70,650,0,0" VerticalAlignment="Top" GroupName="Q5" />
+            <RadioButton Content="2" HorizontalAlignment="Left" Margin="185,650,0,0" VerticalAlignment="Top" GroupName="Q5" />
+            <RadioButton Content="3" HorizontalAlignment="Left" Margin="315,650,0,0" VerticalAlignment="Top" GroupName="Q5" IsChecked="True" />
+            <RadioButton Content="4" HorizontalAlignment="Left" Margin="442,650,0,0" VerticalAlignment="Top" GroupName="Q5" />
+            <RadioButton Content="5" HorizontalAlignment="Left" Margin="575,650,0,0" VerticalAlignment="Top" GroupName="Q5" />
+        </Grid>
+        <Label Name="LabelQ1" Content="" HorizontalAlignment="Left" Height="28" Margin="70,50,0,0" VerticalAlignment="Top" Width="595" />
+        <Label Name="LabelQ2" Content="" HorizontalAlignment="Left" Height="28" Margin="70,150,0,0" VerticalAlignment="Top" Width="595" />
+        <Label Name="LabelQ3" Content="" HorizontalAlignment="Left" Height="28" Margin="70,300,0,0" VerticalAlignment="Top" Width="595" />
+        <Label Name="LabelQ4" Content="" HorizontalAlignment="Left" Height="28" Margin="70,450,0,0" VerticalAlignment="Top" Width="595" />
+        <Label Name="LabelQ5" Content="" HorizontalAlignment="Left" Height="28" Margin="70,600,0,0" VerticalAlignment="Top" Width="595" />
+        <TextBox x:Name="CommentTextBox" HorizontalAlignment="Left" Margin="52,750,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="300" />
+        <Label Content="Komentar" HorizontalAlignment="Left" Height="28" Margin="52,717,0,0" VerticalAlignment="Top" Width="300" />
+        <Button Content="Submit" HorizontalAlignment="Left" Margin="570,750,0,0" VerticalAlignment="Top" Height="33" Width="145" Click="Button_Click" />
+    </Grid>
+</Window>

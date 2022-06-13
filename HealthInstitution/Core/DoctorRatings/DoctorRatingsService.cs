@@ -30,4 +30,12 @@ public class DoctorRatingsService
             DoctorService.AssignScorebyId(rating.Username, rating.GetAverage());
         }
     }
+
+    public static void UpdateScore(string DoctorUsername, int score)
+    {
+        var doctor = DoctorService.GetById(DoctorUsername);
+        var ratings = s_doctorRatingRepository.GetById(DoctorUsername);
+        ratings.Scores.Add(score);
+        doctor.AvgRating = GetAverageById(DoctorUsername);
+    }
 }

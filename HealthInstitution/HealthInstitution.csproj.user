@@ -62,7 +62,7 @@
     <Compile Update="GUI\DoctorView\DoctorNotificationsDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="GUI\PatientView\PatientPolllDialog.xaml.cs">
+    <Compile Update="GUI\PatientView\PatientHospitalPollDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="GUI\PatientView\Scheduling\AddExaminationDialog.xaml.cs">
@@ -288,7 +288,7 @@
     <Page Update="GUI\ManagerView\RenovationView\SimpleRenovationWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="GUI\PatientView\PatientPolllDialog.xaml">
+    <Page Update="GUI\PatientView\PatientHospitalPollDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="GUI\PatientView\Scheduling\AddExaminationDialog.xaml">

@@ -1,0 +1,33 @@
+[
+
+  {
+    "id": 1,
+    "question": "Rate quality of service",
+    "forDoctor": "",
+    "grades": [ 3, 3 ]
+  },
+  {
+    "id": 2,
+    "question": "Rate hygiene",
+    "forDoctor": "",
+    "grades": [ 3, 3 ]
+  },
+  {
+    "id": 3,
+    "question": "Rate satisfaction with service",
+    "forDoctor": "",
+    "grades": [ 3, 3 ]
+  },
+  {
+    "id": 4,
+    "question": "How likely would you recommend this hospital",
+    "forDoctor": "",
+    "grades": [ 3, 3 ]
+  },
+  {
+    "id": 5,
+    "question": "Rate overall experience",
+    "forDoctor": "",
+    "grades": [ 3, 3 ]
+  }
+]
