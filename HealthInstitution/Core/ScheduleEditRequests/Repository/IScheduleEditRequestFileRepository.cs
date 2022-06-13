@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.ScheduleEditRequests.Repository
 {
-    public interface IScheduleEditRequestFileRepository : IRepository<ScheduleEditRequest>
+    public interface IScheduleEditRequestFileRepository
     {
         public void LoadFromFile();
         public void Save();

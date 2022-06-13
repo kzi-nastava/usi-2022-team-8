@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.EquipmentTransfers.Repository
 {
-    public interface IEquipmentTransferRepository : IRepository<EquipmentTransfer>
+    public interface IEquipmentTransferRepository
     {
         public void LoadFromFile();
         public void Save();

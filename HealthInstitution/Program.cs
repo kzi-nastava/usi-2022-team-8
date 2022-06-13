@@ -9,17 +9,3 @@ using HealthInstitution.Core.SystemUsers.Patients.Model;
 using HealthInstitution.GUI.LoginView;
 
 
-/*
-private JsonSerializerOptions _options = new JsonSerializerOptions
-{
-    Converters ={
-        new JsonStringEnumConverter()
-    }
-};
-var users = JsonSerializer.Deserialize<List<User>>(File.ReadAllText(@"..\..\..\Data\JSON\users.json"), _options);
-
-foreach (User user in users)
-{
-    System.Console.WriteLine(user.Username);
-    //System.Console.WriteLine(user.Type);
-}*/

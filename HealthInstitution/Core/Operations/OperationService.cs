@@ -8,9 +8,15 @@ namespace HealthInstitution.Core.Operations
     public class OperationService : IOperationService
     {
         IOperationRepository _operationRepository;
-        public OperationService(IOperationRepository operationRepository)
+        IDoctorOperationAvailabilityService _doctorOperationAvailabilityService;
+        IPatientOperationAvailabilityService _patientOperationAvailabilityService;
+        public OperationService(IOperationRepository operationRepository,
+            IDoctorOperationAvailabilityService doctorOperationAvailabilityService,
+            IPatientOperationAvailabilityService patientOperationAvailabilityService)
         {
             _operationRepository = operationRepository;
+            _doctorOperationAvailabilityService = doctorOperationAvailabilityService;
+            _patientOperationAvailabilityService = patientOperationAvailabilityService;
         }
         public List<Operation> GetAll()
         {
@@ -32,8 +38,8 @@ namespace HealthInstitution.Core.Operations
         {
             operationDTO.Validate();
             Operation operation = new Operation(operationDTO);
-            DoctorOperationAvailabilityService.CheckIfDoctorIsAvailable(operationDTO, id);
-            PatientOperationAvailabilityService.CheckIfPatientIsAvailable(operationDTO, id);
+            _doctorOperationAvailabilityService.CheckIfDoctorIsAvailable(operationDTO, id);
+            _patientOperationAvailabilityService.CheckIfPatientIsAvailable(operationDTO, id);
             _operationRepository.Update(id, operation);
         }
 

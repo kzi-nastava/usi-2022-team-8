@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.Renovations.Repository
 {
-    public interface IRenovationRepository : IRepository<Renovation>
+    public interface IRenovationRepository
     {
         public void LoadFromFile();
         public void Save();

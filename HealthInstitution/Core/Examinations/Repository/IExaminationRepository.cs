@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.Examinations.Repository
 {
-    public interface IExaminationRepository : IRepository<Examination>
+    public interface IExaminationRepository
     {
         public void LoadFromFile();
         public void Save();

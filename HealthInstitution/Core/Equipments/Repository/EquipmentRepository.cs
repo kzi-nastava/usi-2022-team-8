@@ -141,6 +141,11 @@ namespace HealthInstitution.Core.Equipments.Repository
             EquipmentById[equipment.Id] = equipment;
             Save();
         }
+
+        public Dictionary<String, int> GetEquipmentPerQuantity()
+        {
+            return EquipmentPerQuantity;
+        }
     }
 }
 

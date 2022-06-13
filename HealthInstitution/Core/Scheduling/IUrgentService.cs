@@ -15,7 +15,7 @@ namespace HealthInstitution.Core.Scheduling
     {
         public void SetExaminationDetails(Examination examination, ScheduleEditRequest selectedAppointment);
         public void SetOperationDetails(Operation operation, ScheduleEditRequest selectedAppointment);
-       `public List<Tuple<int, int, DateTime>> ReserveUrgentOperation(string patientUsername, SpecialtyType specialtyType, int duration);
+        public List<Tuple<int, int, DateTime>> ReserveUrgentOperation(string patientUsername, SpecialtyType specialtyType, int duration);
         public List<Tuple<int, int, DateTime>> ReserveUrgentExamination(string patientUsername, SpecialtyType specialtyType);
     }
 }

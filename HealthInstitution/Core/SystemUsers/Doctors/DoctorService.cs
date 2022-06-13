@@ -8,7 +8,7 @@ using HealthInstitution.Core.SystemUsers.Doctors.Repository;
 
 namespace HealthInstitution.Core.SystemUsers.Doctors;
 
-public class DoctorService
+public class DoctorService : IDoctorService
 { 
     IDoctorRepository _doctorRepository;
     public DoctorService(IDoctorRepository doctorRepository)

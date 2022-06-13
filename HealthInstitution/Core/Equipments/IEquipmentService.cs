@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.Equipments
 {
-    public interface IEquipmentService : IService<EquipmentService>
+    public interface IEquipmentService
     {
         public List<Equipment> GetAll();
         public Equipment Add(EquipmentDTO equipmentDTO);
@@ -19,5 +19,6 @@ namespace HealthInstitution.Core.Equipments
         public List<TableItemEquipment> SearchEquipment(string searchInput);
         public Equipment GetEquipmentFromRoom(Room room, string equipmentName);
         public List<dynamic> GetMissingEquipment();
+        public void RemoveConsumed(Equipment equipment, int consumedQuantity);
     }
 }

@@ -12,14 +12,16 @@ namespace HealthInstitution.Core.Ingredients
     public class IngredientService : IIngredientService
     {
         IIngredientRepository _ingredientRepository;
-        public IngredientService(IIngredientRepository ingredientRepository)
+        IDrugService _drugService;
+        public IngredientService(IIngredientRepository ingredientRepository, IDrugService drugService)
         {
             _ingredientRepository = ingredientRepository;
+            _drugService = drugService;
         }
 
         public bool CheckOccurrenceOfIngredient(Ingredient ingredient)
         {
-            return DrugService.ContainsIngredient(ingredient);
+            return _drugService.ContainsIngredient(ingredient);
         }
         
         public List<Ingredient> GetAll()

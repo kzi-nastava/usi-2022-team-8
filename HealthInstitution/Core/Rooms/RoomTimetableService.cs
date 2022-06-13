@@ -19,10 +19,16 @@ namespace HealthInstitution.Core.Rooms
     {
         IOperationRepository _operationRepository;
         IExaminationRepository _examinationRepository;
-        public RoomTimetableService(IOperationRepository operationRepository, IExaminationRepository examinationRepository)
+        IEquipmentTransferService _equipmentTransferService;
+        IRenovationService _renovationService;
+
+        public RoomTimetableService(IOperationRepository operationRepository, IExaminationRepository examinationRepository,
+            IEquipmentTransferService equipmentTransferService, IRenovationService renovationService)
         {
             _operationRepository = operationRepository;
             _examinationRepository = examinationRepository;
+            _equipmentTransferService = equipmentTransferService;
+            _renovationService = renovationService;
         }
         public bool CheckRoomTimetable(Room selectedRoom, DateTime startDate, out string message)
         {
@@ -55,7 +61,7 @@ namespace HealthInstitution.Core.Rooms
 
         private bool CheckIfRoomHasScheduledEquipmentTransfer(Room selectedRoom, DateTime startDate)
         {
-            foreach (EquipmentTransfer equipmentTransfer in EquipmentTransferService.GetAll())
+            foreach (EquipmentTransfer equipmentTransfer in _equipmentTransferService.GetAll())
             {
                 if (equipmentTransfer.TransferTime < startDate)
                 {
@@ -72,7 +78,7 @@ namespace HealthInstitution.Core.Rooms
 
         private bool CheckIfRoomHasScheduledRenovation(Room selectedRoom)
         {
-            foreach (Renovation renovation in RenovationService.GetAll())
+            foreach (Renovation renovation in _renovationService.GetAll())
             {
                 if (renovation.Room == selectedRoom)
                 {

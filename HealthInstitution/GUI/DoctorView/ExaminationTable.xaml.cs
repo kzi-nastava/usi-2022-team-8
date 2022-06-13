@@ -26,9 +26,13 @@ namespace HealthInstitution.GUI.DoctorView
     public partial class ExaminationTable : Window
     {
         private Doctor _loggedDoctor;
-        public ExaminationTable(Doctor doctor)
+        IExaminationService _examinationService;
+        IDoctorService _doctorService;
+        public ExaminationTable(Doctor doctor, IExaminationService examinationService, IDoctorService doctorService)
         {
             this._loggedDoctor = doctor;
+            _examinationService = examinationService;
+            _doctorService = doctorService;
             InitializeComponent();
             LoadRows();
         }
@@ -36,7 +40,7 @@ namespace HealthInstitution.GUI.DoctorView
         private void LoadRows()
         {
             dataGrid.Items.Clear();
-            List<Examination> doctorExaminations = ExaminationService.GetByDoctor(_loggedDoctor.Username);
+            List<Examination> doctorExaminations = _examinationService.GetByDoctor(_loggedDoctor.Username);
             foreach (Examination examination in doctorExaminations)
             {
                 dataGrid.Items.Add(examination);
@@ -64,8 +68,8 @@ namespace HealthInstitution.GUI.DoctorView
             {
                 Examination selectedExamination = (Examination)dataGrid.SelectedItem;
                 dataGrid.Items.Remove(selectedExamination);
-                ExaminationService.Delete(selectedExamination.Id);
-                DoctorService.DeleteExamination(selectedExamination);
+                _examinationService.Delete(selectedExamination.Id);
+                _doctorService.DeleteExamination(selectedExamination);
             }
         }
     }

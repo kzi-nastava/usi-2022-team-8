@@ -26,6 +26,8 @@ namespace HealthInstitution.GUI.DoctorView
     public partial class DoctorNotificationsDialog : Window
     {
         private Doctor _loggedDoctor;
+        IDoctorService _doctorService;
+        IAppointmentNotificationService _appointmentNotificationService;
         public DoctorNotificationsDialog(Doctor doctor)
         {
             _loggedDoctor = doctor;

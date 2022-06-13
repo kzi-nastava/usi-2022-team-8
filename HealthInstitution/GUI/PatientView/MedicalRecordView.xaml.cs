@@ -12,37 +12,39 @@ public partial class MedicalRecordView : Window
 {
     private User _loggedPatient;
     private List<Examination> _currentExaminations;
+    IExaminationService _examinationService;
 
-    public MedicalRecordView(User loggedPatient)
+    public MedicalRecordView(User loggedPatient, IExaminationService examinationService)
     {
         InitializeComponent();
         _loggedPatient = loggedPatient;
+        _examinationService = examinationService;
         LoadAllRows();
     }
 
     private void DoctorButton_Click(object sender, RoutedEventArgs e)
     {
-        LoadRows(ExaminationService.OrderByDoctor(_currentExaminations));
+        LoadRows(_examinationService.OrderByDoctor(_currentExaminations));
     }
 
     private void DateButton_Click(object sender, RoutedEventArgs e)
     {
-        LoadRows(ExaminationService.OrderByDate(_currentExaminations));
+        LoadRows(_examinationService.OrderByDate(_currentExaminations));
     }
 
     private void SpecializationButton_Click(object sender, RoutedEventArgs e)
     {
-        LoadRows(ExaminationService.OrderByDoctorSpeciality(_currentExaminations));
+        LoadRows(_examinationService.OrderByDoctorSpeciality(_currentExaminations));
     }
 
     private void SearchButton_Click(object sender, RoutedEventArgs e)
     {
-        LoadRows(ExaminationService.GetSearchAnamnesis(searchParameter.Text, _loggedPatient.Username));
+        LoadRows(_examinationService.GetSearchAnamnesis(searchParameter.Text, _loggedPatient.Username));
     }
 
     private void LoadAllRows()
     {
-        LoadRows(ExaminationService.GetCompletedByPatient(_loggedPatient.Username));
+        LoadRows(_examinationService.GetCompletedByPatient(_loggedPatient.Username));
     }
 
     private void LoadRows(List<Examination> examinations)
