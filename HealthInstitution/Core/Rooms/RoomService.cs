@@ -1,61 +1,63 @@
 ﻿using HealthInstitution.Core.Equipments;
 using HealthInstitution.Core.Equipments.Model;
 using HealthInstitution.Core.EquipmentTransfers;
-using HealthInstitution.Core.EquipmentTransfers.Repository;
-using HealthInstitution.Core.Examinations.Repository;
-using HealthInstitution.Core.Operations.Model;
-using HealthInstitution.Core.Operations.Repository;
 using HealthInstitution.Core.Renovations;
 using HealthInstitution.Core.Rooms.Model;
 using HealthInstitution.Core.Rooms.Repository;
 using HealthInstitution.Core.Scheduling;
 using HealthInstitution.GUI.ManagerView;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace HealthInstitution.Core.Rooms
 {
-    public static class RoomService
+    public class RoomService : IRoomService
     {
-        private static RoomRepository s_roomRepository = RoomRepository.GetInstance();
+        IRoomRepository _roomRepository;
+        IEquipmentService _equipmentService;
+        IRenovationService _renovationService;
+        IEquipmentTransferService _equipmentTransferService;
+        ISchedulingService _schedulingService;
 
-        public static List<Room> GetAll()
+        public RoomService(IRoomRepository roomRepository, IEquipmentService equipmentService, IRenovationService renovationService,
+            IEquipmentTransferService equipmentTransferService, ISchedulingService schedulingService) {
+            _roomRepository = roomRepository;
+            _equipmentService = equipmentService;
+            _renovationService = renovationService;
+            _equipmentTransferService = equipmentTransferService;
+            _schedulingService = schedulingService;
+        }
+        public List<Room> GetAll()
         {
-            return s_roomRepository.GetAll();
+            return _roomRepository.GetAll();
         }
 
-        public static Room AddRoom(RoomDTO roomDTO)
+        public Room AddRoom(RoomDTO roomDTO)
         {
             Room room = new Room(roomDTO);
-            return s_roomRepository.AddRoom(room);
+            return _roomRepository.AddRoom(room);
         }
 
-        public static void Update(int id, RoomDTO roomDTO)
+        public void Update(int id, RoomDTO roomDTO)
         {
             Room room = new Room(roomDTO);
-            s_roomRepository.Update(id, room);
+            _roomRepository.Update(id, room);
         }
 
-        public static void Delete(int id)
+        public void Delete(int id)
         {
-            s_roomRepository.Delete(id);
+            _roomRepository.Delete(id);
         }
 
-        public static void WriteIn()
+        public void WriteIn()
         {
-            s_roomRepository.Save();
+            _roomRepository.Save();
         }
-        public static bool CheckImportantOccurrenceOfRoom(Room room)
+        public bool CheckImportantOccurrenceOfRoom(Room room)
         {
-            if (EquipmentTransferService.CheckOccurrenceOfRoom(room))
+            if (_equipmentTransferService.CheckOccurrenceOfRoom(room))
             {
                 return true;
             }
 
-            if (SchedulingService.CheckOccurrenceOfRoom(room))
+            if (_schedulingService.CheckOccurrenceOfRoom(room))
             {
                 return true;
             }
@@ -63,61 +65,61 @@ namespace HealthInstitution.Core.Rooms
             return false;
         }
 
-        public static void MoveRoomToRenovationHistory(Room selectedRoom)
+        public void MoveRoomToRenovationHistory(Room selectedRoom)
         {
-            if (RenovationService.CheckRenovationStatusForHistoryDelete(selectedRoom))
+            if (_renovationService.CheckRenovationStatusForHistoryDelete(selectedRoom))
             {
-                s_roomRepository.Delete(selectedRoom.Id);
+                _roomRepository.Delete(selectedRoom.Id);
             }
         }
 
-        public static bool ExistsChangedRoomNumber(int number, Room oldRoom)
+        public bool ExistsChangedRoomNumber(int number, Room oldRoom)
         {
-            int idx = s_roomRepository.FindIndexWithRoomNumber(number);
+            int idx = _roomRepository.FindIndexWithRoomNumber(number);
             if (idx >= 0)
             {
-                if (s_roomRepository.GetAll()[idx] != oldRoom)
+                if (_roomRepository.GetAll()[idx] != oldRoom)
                 {
                     return true;
                 }
             }
             return false;
         }
-        public static void AddToRoom(int id, Equipment equipment)
+        public void AddToRoom(int id, Equipment equipment)
         {
-            s_roomRepository.AddToRoom(id, equipment);
+            _roomRepository.AddToRoom(id, equipment);
         }
 
-        public static List<Room> GetActive()
+        public List<Room> GetActive()
         {
-            return s_roomRepository.GetActive();
+            return _roomRepository.GetActive();
         }
 
-        public static List<Room> GetNotRenovating()
+        public List<Room> GetNotRenovating()
         {
-            return s_roomRepository.GetNotRenovating();
+            return _roomRepository.GetNotRenovating();
         }
 
-        public static List<Equipment> GetDynamicEquipment(Room room)
+        public List<Equipment> GetDynamicEquipment(Room room)
         {
-            return s_roomRepository.GetDynamicEquipment(room);
+            return _roomRepository.GetDynamicEquipment(room);
         }
 
-        public static bool RoomNumberIsTaken(int number)
+        public bool RoomNumberIsTaken(int number)
         {
-            return s_roomRepository.RoomNumberIsTaken(number);
+            return _roomRepository.RoomNumberIsTaken(number);
         }
 
-        public static List<Equipment> GetAvailableEquipment(Room room)
+        public List<Equipment> GetAvailableEquipment(Room room)
         {
             return room.AvailableEquipment;
         }
 
-        public static List<TableItemEquipment> GetTableItemEquipments()
+        public List<TableItemEquipment> GetTableItemEquipments()
         {
             List<TableItemEquipment> items = new List<TableItemEquipment>();
 
-            foreach (Room room in s_roomRepository.GetActive())
+            foreach (Room room in _roomRepository.GetActive())
             {
                 foreach (Equipment equipment in room.AvailableEquipment)
                 {
@@ -128,31 +130,31 @@ namespace HealthInstitution.Core.Rooms
             return items;
         }
 
-        public static void UpdateEquipmentQuantity(Room room, Equipment equipment)
+        public void UpdateEquipmentQuantity(Room room, Equipment equipment)
         { 
             int index = room.AvailableEquipment.FindIndex(eq => eq.Name == equipment.Name && eq.Type == equipment.Type);
             if (index >= 0)
             {
                 room.AvailableEquipment[index].Quantity += equipment.Quantity;
-                EquipmentService.Delete(equipment.Id);
+                _equipmentService.Delete(equipment.Id);
             }
             else
             {
                 room.AvailableEquipment.Add(equipment);
             }          
         }
-        public static void RemoveEquipmentFrom(Room room)
+        public void RemoveEquipmentFrom(Room room)
         {
             List<Equipment> equipments = room.AvailableEquipment;
             foreach (Equipment equipment in equipments)
             {
-                EquipmentService.Delete(equipment.Id);
+                _equipmentService.Delete(equipment.Id);
             }
             equipments.Clear();
         }
-        public static Room? GetRoomFromString(string? roomFromForm)
+        public Room? GetRoomFromString(string? roomFromForm)
         {
-            return s_roomRepository.GetRoomFromString(roomFromForm);
+            return _roomRepository.GetRoomFromString(roomFromForm);
         }
     }
 }

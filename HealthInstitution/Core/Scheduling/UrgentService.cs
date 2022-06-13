@@ -19,9 +19,10 @@ using HealthInstitution.Core.SystemUsers.Patients.Model;
 
 namespace HealthInstitution.Core.Scheduling
 {
-    public static class UrgentService
+    public class UrgentService : IUrgentService
     {
-        public static void SetExaminationDetails(Examination examination, ScheduleEditRequest selectedAppointment)
+        public UrgentService() { }
+        public void SetExaminationDetails(Examination examination, ScheduleEditRequest selectedAppointment)
         {
             if (selectedAppointment.CurrentExamination == null)
             {
@@ -36,7 +37,7 @@ namespace HealthInstitution.Core.Scheduling
                 examination.Doctor = selectedAppointment.CurrentExamination.Doctor;
             }
         }
-        public static void SetOperationDetails(Operation operation, ScheduleEditRequest selectedAppointment)
+        public void SetOperationDetails(Operation operation, ScheduleEditRequest selectedAppointment)
         {
             if (selectedAppointment.CurrentExamination == null)
             {
@@ -51,7 +52,7 @@ namespace HealthInstitution.Core.Scheduling
                 operation.Doctor = selectedAppointment.CurrentExamination.Doctor;
             }
         }
-        private static List<DateTime> FindNextTwoHoursAppointments()
+        private List<DateTime> FindNextTwoHoursAppointments()
         {
             List<DateTime> possibleAppointments = new List<DateTime>();
             DateTime current = DateTime.Now;
@@ -69,7 +70,7 @@ namespace HealthInstitution.Core.Scheduling
             }
             return possibleAppointments;
         }
-        private static void TrySchedulingUrgentOperation(DateTime appointment, int duration, Doctor doctor, MedicalRecord medicalRecord, List<Tuple<int, int, DateTime>> priorityExaminationsAndOperations)
+        private void TrySchedulingUrgentOperation(DateTime appointment, int duration, Doctor doctor, MedicalRecord medicalRecord, List<Tuple<int, int, DateTime>> priorityExaminationsAndOperations)
         {
             OperationDTO operationDTO = new OperationDTO(appointment, duration, null, doctor, medicalRecord);
             DoctorOperationAvailabilityService.CheckIfDoctorIsAvailable(operationDTO);
@@ -80,7 +81,7 @@ namespace HealthInstitution.Core.Scheduling
             int id = OperationRepository.GetInstance()._maxId;
             priorityExaminationsAndOperations.Add(new Tuple<int, int, DateTime>(id, 2, appointment));
         }
-        public static List<Tuple<int, int, DateTime>> ReserveUrgentOperation(string patientUsername, SpecialtyType specialtyType, int duration)
+        public List<Tuple<int, int, DateTime>> ReserveUrgentOperation(string patientUsername, SpecialtyType specialtyType, int duration)
         {
             List<Tuple<int, int, DateTime>> priorityExaminationsAndOperations = new List<Tuple<int, int, DateTime>>();
             Patient patient = PatientService.GetByUsername(patientUsername);
@@ -108,7 +109,7 @@ namespace HealthInstitution.Core.Scheduling
             priorityExaminationsAndOperations.AddRange(AppointmentDelayingService.FindClosest(nextTwoHoursAppointments, specialtyType, Rooms.Model.RoomType.OperatingRoom));
             return priorityExaminationsAndOperations;
         }
-        private static void TrySchedulingUrgentExamination(DateTime appointment, Doctor doctor, MedicalRecord medicalRecord, List<Tuple<int, int, DateTime>> priorityExaminationsAndOperations)
+        private void TrySchedulingUrgentExamination(DateTime appointment, Doctor doctor, MedicalRecord medicalRecord, List<Tuple<int, int, DateTime>> priorityExaminationsAndOperations)
         {
             ExaminationDTO examinationDTO = new ExaminationDTO(appointment, null, doctor, medicalRecord);
             DoctorExaminationAvailabilityService.CheckIfDoctorIsAvailable(examinationDTO);
@@ -119,7 +120,7 @@ namespace HealthInstitution.Core.Scheduling
             int id = ExaminationRepository.GetInstance()._maxId;
             priorityExaminationsAndOperations.Add(new Tuple<int, int, DateTime>(id, 2, appointment));
         }
-        public static List<Tuple<int, int, DateTime>> ReserveUrgentExamination(string patientUsername, SpecialtyType specialtyType)
+        public List<Tuple<int, int, DateTime>> ReserveUrgentExamination(string patientUsername, SpecialtyType specialtyType)
         {
             List<Tuple<int, int, DateTime>> priorityExaminationsAndOperations = new List<Tuple<int, int, DateTime>>();
             Patient patient = PatientService.GetByUsername(patientUsername);

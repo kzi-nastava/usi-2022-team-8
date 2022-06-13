@@ -7,9 +7,10 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.Scheduling
 {
-    public static class DoctorExaminationAvailabilityService
+    public class DoctorExaminationAvailabilityService : IDoctorExaminationAvailabilityService
     {
-        private static void CheckIfDoctorHasOperations(ExaminationDTO examinationDTO)
+        public DoctorExaminationAvailabilityService() { }
+        private void CheckIfDoctorHasOperations(ExaminationDTO examinationDTO)
         {
             var doctor = examinationDTO.Doctor;
             DateTime appointment = examinationDTO.Appointment;
@@ -23,7 +24,7 @@ namespace HealthInstitution.Core.Scheduling
             }
         }
 
-        private static void CheckIfDoctorHasExaminations(ExaminationDTO examinationDTO)
+        private void CheckIfDoctorHasExaminations(ExaminationDTO examinationDTO)
         {
             var doctor = examinationDTO.Doctor;
             DateTime appointment = examinationDTO.Appointment;
@@ -37,7 +38,7 @@ namespace HealthInstitution.Core.Scheduling
             }
         }
 
-        public static void CheckIfDoctorIsAvailable(ExaminationDTO examinationDTO)
+        public void CheckIfDoctorIsAvailable(ExaminationDTO examinationDTO)
         {
             CheckIfDoctorHasExaminations(examinationDTO);
             CheckIfDoctorHasOperations(examinationDTO);

@@ -22,8 +22,12 @@ namespace HealthInstitution.GUI.DoctorView
     /// </summary>
     public partial class DrugsVerificationTable : Window
     {
-        public DrugsVerificationTable()
+        IDrugVerificationService _drugVerificationService;
+        IDrugService _drugService;
+        public DrugsVerificationTable(IDrugVerificationService drugVerificationService, IDrugService drugService)
         {
+            _drugService = drugService;
+            _drugVerificationService = drugVerificationService;
             InitializeComponent();
             LoadRows();
         }
@@ -31,7 +35,7 @@ namespace HealthInstitution.GUI.DoctorView
         private void LoadRows()
         {
             dataGrid.Items.Clear();
-            List<Drug> drugs = DrugService.GetAllCreated();
+            List<Drug> drugs = _drugService.GetAllCreated();
             foreach (Drug drug in drugs)
             {
                 dataGrid.Items.Add(drug);
@@ -42,7 +46,7 @@ namespace HealthInstitution.GUI.DoctorView
         {
             Drug selectedDrug = (Drug)dataGrid.SelectedItem;
             System.Windows.MessageBox.Show("You have accepted a new drug!", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
-            DrugVerificationService.Accept(selectedDrug);
+            _drugVerificationService.Accept(selectedDrug);
             dataGrid.Items.Remove(selectedDrug);
         }
 

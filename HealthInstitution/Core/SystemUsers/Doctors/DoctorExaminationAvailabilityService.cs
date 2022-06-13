@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.SystemUsers.Doctors
 {
-    class DoctorExaminationAvailabilityService
+    public class DoctorExaminationAvailabilityService
     {
         private void CheckIfDoctorHasExaminations(ExaminationDTO examinationDTO)
         {

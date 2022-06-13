@@ -13,10 +13,14 @@ namespace HealthInstitution.GUI.DoctorView
     public partial class ConsumedEquipmentDialog : Window
     {
         private Room _room;
+        IRoomService _roomService;
+        IEquipmentService _equipmentService;
 
-        public ConsumedEquipmentDialog(Room room)
+        public ConsumedEquipmentDialog(Room room, IRoomService roomService, IEquipmentService equipmentService)
         {
             this._room = room;
+            _roomService = roomService;
+            _equipmentService = equipmentService;
             InitializeComponent();
             roomLabel.Content = _room;
         }
@@ -24,7 +28,7 @@ namespace HealthInstitution.GUI.DoctorView
         private void EquipmentComboBox_Loaded(object sender, RoutedEventArgs e)
         {
             var equipmentComboBox = sender as System.Windows.Controls.ComboBox;
-            var dynamicEquipment = RoomService.GetDynamicEquipment(_room);
+            var dynamicEquipment = _roomService.GetDynamicEquipment(_room);
             foreach (var equipment in dynamicEquipment)
             {
                 equipmentComboBox.Items.Add(equipment);
@@ -48,7 +52,7 @@ namespace HealthInstitution.GUI.DoctorView
             {
                 var equipment = (Equipment)equipmentComboBox.SelectedItem;
                 var consumedQuantity = (int)consumedQuantityComboBox.SelectedItem;
-                EquipmentService.RemoveConsumed(equipment, consumedQuantity);
+                _equipmentService.RemoveConsumed(equipment, consumedQuantity);
                 System.Windows.MessageBox.Show("You have removed " + consumedQuantity + " " + equipment.Name + " from " + _room, "Info", MessageBoxButton.OK, MessageBoxImage.Information);
                 equipmentComboBox.Items.Remove(equipment);
                 consumedQuantityComboBox.Items.Clear();

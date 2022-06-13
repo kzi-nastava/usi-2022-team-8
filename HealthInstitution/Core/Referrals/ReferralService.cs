@@ -8,30 +8,34 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.Referrals
 {
-    public static class ReferralService
+    public class ReferralService : IReferralService
     {
-        static ReferralRepository s_referralRepository = ReferralRepository.GetInstance();
-
-        public static List<Referral> GetAll()
+        IReferralRepository _referralRepository;
+        public ReferralService(IReferralRepository referralRepository)
         {
-            return s_referralRepository.GetAll();
+            _referralRepository = referralRepository;
         }
 
-        public static Referral Add(ReferralDTO referralDTO)
+        public List<Referral> GetAll()
+        {
+            return _referralRepository.GetAll();
+        }
+
+        public Referral Add(ReferralDTO referralDTO)
         {
             Referral referral = new Referral(referralDTO);
-            return s_referralRepository.Add(referral);
+            return _referralRepository.Add(referral);
         }
 
-        public static void Update(int id, ReferralDTO referralDTO)
+        public void Update(int id, ReferralDTO referralDTO)
         {
             Referral referral = new Referral(referralDTO);
-            s_referralRepository.Update(id, referral);
+            _referralRepository.Update(id, referral);
         }
 
-        public static void Delete(int id)
+        public void Delete(int id)
         {
-            s_referralRepository.Delete(id);
+            _referralRepository.Delete(id);
         }
     }
 }

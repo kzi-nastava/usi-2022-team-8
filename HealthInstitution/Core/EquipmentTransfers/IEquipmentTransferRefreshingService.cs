@@ -10,7 +10,5 @@ namespace HealthInstitution.Core.EquipmentTransfers
     public interface IEquipmentTransferRefreshingService
     {
         public void UpdateByTransfer();
-        public void FillWarehouse(EquipmentTransfer equipmentTransfer, List<int> equipmentTransfersToRemove);
-        public void RemoveOldTransfers(List<int> equipmentTransfersToRemove);
     }
 }

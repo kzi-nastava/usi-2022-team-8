@@ -25,6 +25,7 @@ namespace HealthInstitution.Core.Rooms
         public List<Room> GetNotRenovating();
         public bool RoomNumberIsTaken(int number);
         public List<Equipment> GetAvailableEquipment(Room room);
+        public List<Equipment> GetDynamicEquipment(Room room);
         public List<TableItemEquipment> GetTableItemEquipments();
         public void UpdateEquipmentQuantity(Room room, Equipment equipment);
         public void RemoveEquipmentFrom(Room room);

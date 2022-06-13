@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.Drugs
 {
-    public interface IDrugVerificationService : IService<Drug>
+    public interface IDrugVerificationService
     {
         public void Accept(Drug drug);
         public void Reject(Drug drug, string rejectionReason);

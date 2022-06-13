@@ -10,13 +10,16 @@ using Quartz.Impl;
 
 namespace HealthInstitution.Core.PrescriptionNotifications.Service;
 
-public class PrescriptionNotificationCronJobService
+public class PrescriptionNotificationCronJobService : IPrescriptionNotificationCronJobService
 {
     private static Dictionary<int, List<JobKey>> _jobKeysbyId = new();
     private static IScheduler _scheduler;
 
-    public static void GenerateScheduler()
+    public PrescriptionNotificationCronJobService() { }
+
+    public void GenerateScheduler()
     {
+        //???
         ISchedulerFactory schedFact = new StdSchedulerFactory();
 
         // get a scheduler
@@ -25,7 +28,7 @@ public class PrescriptionNotificationCronJobService
         _scheduler = scheduler;
     }
 
-    public static void GenerateJob(string loggedUser, PrescriptionNotificationSettings settings, DateTime dateTime)
+    public void GenerateJob(string loggedUser, PrescriptionNotificationSettings settings, DateTime dateTime)
     {
         IJobDetail job = GenerateJob(settings, dateTime);
         job.JobDataMap.Put("loggedUser", loggedUser);
@@ -40,7 +43,7 @@ public class PrescriptionNotificationCronJobService
         //0 0/1 * * * ?
     }
 
-    private static void AddToDictionary(int id, JobKey jobKey)
+    private void AddToDictionary(int id, JobKey jobKey)
     {
         if (!_jobKeysbyId.ContainsKey(id))
             _jobKeysbyId[id] = new List<JobKey>();
@@ -48,7 +51,7 @@ public class PrescriptionNotificationCronJobService
         _jobKeysbyId[id].Add(jobKey);
     }
 
-    private static ITrigger GenerateTrigger(PrescriptionNotificationSettings settings, DateTime dateTime, IJobDetail job)
+    private ITrigger GenerateTrigger(PrescriptionNotificationSettings settings, DateTime dateTime, IJobDetail job)
     {
         return TriggerBuilder.Create()
       .WithIdentity("trigger" + settings.Id + dateTime, "group1")
@@ -58,7 +61,7 @@ public class PrescriptionNotificationCronJobService
       .Build();
     }
 
-    private static IJobDetail GenerateJob(PrescriptionNotificationSettings settings, DateTime dateTime)
+    private IJobDetail GenerateJob(PrescriptionNotificationSettings settings, DateTime dateTime)
     {
         return JobBuilder.Create<PrescriptionNotificationSender>()
        .WithIdentity("myJob" + settings.Id + dateTime, "group1") // name "myJob", group "group1"

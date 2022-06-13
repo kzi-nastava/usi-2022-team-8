@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.Equipments.Repository
 {
-    public interface IEquipmentRepository : IRepository<Equipment>
+    public interface IEquipmentRepository
     {
         public void LoadFromFile();
         public void Save();
@@ -18,5 +18,7 @@ namespace HealthInstitution.Core.Equipments.Repository
         public void Delete(int id);
         public EquipmentType GetEquipmentType(string equipmentName);
         public void RemoveConsumed(Equipment equipment, int consumedQuantity);
+
+        public Dictionary<String, int> GetEquipmentPerQuantity();
     }
 }

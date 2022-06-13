@@ -7,7 +7,7 @@ using HealthInstitution.Core.DoctorRatings.Model;
 
 namespace HealthInstitution.Core.DoctorRatings.Repository;
 
-public interface IDoctorRatingRepository : IRepository<DoctorRating>
+public interface IDoctorRatingRepository
 {
     public void LoadFromFile();
 

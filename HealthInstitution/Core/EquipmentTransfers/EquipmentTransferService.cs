@@ -15,49 +15,56 @@ using HealthInstitution.Core.Rooms;
 
 namespace HealthInstitution.Core.EquipmentTransfers
 {
-    public static class EquipmentTransferService
+    public class EquipmentTransferService : IEquipmentTransferService
     {
-        private static EquipmentTransferRepository s_equipmentTransferRepository = EquipmentTransferRepository.GetInstance();
-        private static EquipmentRepository s_equipmentRepository = EquipmentRepository.GetInstance();
-        public static List<EquipmentTransfer> GetAll()
+        IEquipmentRepository _equipmentRepository;
+        IEquipmentTransferRepository _equipmentTransferRepository;
+        public EquipmentTransferService(IEquipmentRepository equipmentRepository, 
+            IEquipmentTransferRepository equipmentTransferRepository,
+            )
         {
-            return s_equipmentTransferRepository.GetAll();
+            _equipmentRepository = equipmentRepository;
+            _equipmentTransferRepository = equipmentTransferRepository;
+        }
+        public List<EquipmentTransfer> GetAll()
+        {
+            return _equipmentTransferRepository.GetAll();
         }
 
-        public static void Add(EquipmentTransferDTO equipmentTransferDTO)
+        public void Add(EquipmentTransferDTO equipmentTransferDTO)
         {
             EquipmentTransfer equipmentTransfer = new EquipmentTransfer(equipmentTransferDTO);
-            s_equipmentTransferRepository.Add(equipmentTransfer);
+            _equipmentTransferRepository.Add(equipmentTransfer);
         }
 
-        public static void Update(int id, EquipmentTransferDTO equipmentTransferDTO)
+        public void Update(int id, EquipmentTransferDTO equipmentTransferDTO)
         {
             EquipmentTransfer equipmentTransfer = new EquipmentTransfer(equipmentTransferDTO);
-            s_equipmentTransferRepository.Update(id, equipmentTransfer);
+            _equipmentTransferRepository.Update(id, equipmentTransfer);
         }
 
 
-        public static void Delete(int id)
+        public void Delete(int id)
         {
-            s_equipmentTransferRepository.Delete(id);
+            _equipmentTransferRepository.Delete(id);
         }
-        public static bool CheckOccurrenceOfRoom(Room room)
+        public bool CheckOccurrenceOfRoom(Room room)
         {
-            if (s_equipmentTransferRepository.EquipmentTransfers.Find(eqTransfer => eqTransfer.FromRoom == room || eqTransfer.ToRoom == room) == null)
+            if (_equipmentTransferRepository.EquipmentTransfers.Find(eqTransfer => eqTransfer.FromRoom == room || eqTransfer.ToRoom == room) == null)
             {
                 return false;
             }
             return true;
         }
 
-        public static void Transfer(Room toRoom, Equipment equipment, int quantity)
+        public void Transfer(Room toRoom, Equipment equipment, int quantity)
         {
             equipment.Quantity -= quantity;
             int index = toRoom.AvailableEquipment.FindIndex(eq => (eq.Name == equipment.Name && eq.Type == equipment.Type));
             if (index >= 0)
             {
                 toRoom.AvailableEquipment[index].Quantity += quantity;
-                s_equipmentRepository.Save();
+                _equipmentRepository.Save();
             }
             else
             {
@@ -67,14 +74,14 @@ namespace HealthInstitution.Core.EquipmentTransfers
             }
         }
 
-        public static void Transfer(List<Equipment> toRoomEquipments, Equipment equipment, int quantity)
+        public void Transfer(List<Equipment> toRoomEquipments, Equipment equipment, int quantity)
         {
             equipment.Quantity -= quantity;
             int index = toRoomEquipments.FindIndex(eq => (eq.Name == equipment.Name && eq.Type == equipment.Type));
             if (index >= 0)
             {
                 toRoomEquipments[index].Quantity += quantity;
-                s_equipmentRepository.Save();
+                _equipmentRepository.Save();
             }
             else
             {
@@ -84,11 +91,11 @@ namespace HealthInstitution.Core.EquipmentTransfers
             }
         }
 
-        public static int CalculateProjectedQuantityLoss(Room fromRoom, Equipment equipment)
+        public int CalculateProjectedQuantityLoss(Room fromRoom, Equipment equipment)
         {
             int projectedQuantityLoss = 0;
            
-            foreach (EquipmentTransfer equipmentTransfer in s_equipmentTransferRepository.GetAll())
+            foreach (EquipmentTransfer equipmentTransfer in _equipmentTransferRepository.GetAll())
             {
                 if (equipmentTransfer.FromRoom == fromRoom)
                 {
@@ -100,9 +107,9 @@ namespace HealthInstitution.Core.EquipmentTransfers
             }
             return projectedQuantityLoss;
         }
-        public static void ScheduleWarehouseRefill(string equipmentName, int quantity)
+        public void ScheduleWarehouseRefill(string equipmentName, int quantity)
         {
-            EquipmentType equipmentType = s_equipmentRepository.GetEquipmentType(equipmentName);
+            EquipmentType equipmentType = _equipmentRepository.GetEquipmentType(equipmentName);
             EquipmentDTO selectedEquipmentDTO = new EquipmentDTO(quantity, equipmentName, equipmentType, true);
             Equipment newEquipment = EquipmentService.Add(selectedEquipmentDTO);
             DateTime tomorrowSameTime = DateTime.Now + new TimeSpan(1, 0, 0, 0);

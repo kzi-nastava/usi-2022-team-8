@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.Prescriptions.Repository
 {
-    public interface IPrescriptionRepository : IRepository<Prescription>
+    public interface IPrescriptionRepository
     {
         public void LoadFromFile();
         public void Save();

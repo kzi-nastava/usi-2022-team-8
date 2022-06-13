@@ -12,13 +12,15 @@ public partial class DoctorPickExamination : Window
 {
     private Patient _loggedPatient;
     private List<Doctor> _currentDoctors;
+    IDoctorService _doctorService;
 
-    public DoctorPickExamination(Patient loggedPatinent)
+    public DoctorPickExamination(Patient loggedPatinent, IDoctorService doctorService)
     {
         InitializeComponent();
         _loggedPatient = loggedPatinent;
         dataGrid.SelectedIndex = 0;
-        _currentDoctors = DoctorService.GetAll();
+        _doctorService = doctorService;
+        _currentDoctors = _doctorService.GetAll();
         LoadRows();
     }
 
@@ -32,7 +34,7 @@ public partial class DoctorPickExamination : Window
 
     private void NameSort_Click(object sender, RoutedEventArgs e)
     {
-        _currentDoctors = DoctorService.OrderByDoctorName(_currentDoctors);
+        _currentDoctors = _doctorService.OrderByDoctorName(_currentDoctors);
         LoadRows();
     }
 
@@ -48,33 +50,33 @@ public partial class DoctorPickExamination : Window
 
     private void SurnameSort_Click(object sender, RoutedEventArgs e)
     {
-        _currentDoctors = DoctorService.OrderByDoctorSurname(_currentDoctors);
+        _currentDoctors = _doctorService.OrderByDoctorSurname(_currentDoctors);
         LoadRows();
     }
 
     private void SpecialitySort_Click(object sender, RoutedEventArgs e)
     {
-        _currentDoctors = DoctorService.OrderByDoctorSpeciality(_currentDoctors);
+        _currentDoctors = _doctorService.OrderByDoctorSpeciality(_currentDoctors);
         LoadRows();
     }
 
     private void RatingSort_Click(object sender, RoutedEventArgs e)
     {
-        _currentDoctors = DoctorService.OrderByDoctorRating(_currentDoctors);
+        _currentDoctors = _doctorService.OrderByDoctorRating(_currentDoctors);
         LoadRows();
     }
 
     private void SpecialitySearch_Click(object sender, RoutedEventArgs e)
     {
         string speciality = SearchBox.Text;
-        _currentDoctors = DoctorService.SearchBySpeciality(speciality);
+        _currentDoctors = _doctorService.SearchBySpeciality(speciality);
         LoadRows();
     }
 
     private void SurnameSearch_Click(object sender, RoutedEventArgs e)
     {
         string surname = SearchBox.Text;
-        _currentDoctors = DoctorService.SearchBySurname(surname);
+        _currentDoctors = _doctorService.SearchBySurname(surname);
         LoadRows();
     }
 
@@ -86,7 +88,7 @@ public partial class DoctorPickExamination : Window
     private void NameSearch_Click(object sender, RoutedEventArgs e)
     {
         string name = SearchBox.Text;
-        _currentDoctors = DoctorService.SearchByName(name);
+        _currentDoctors = _doctorService.SearchByName(name);
         LoadRows();
     }
 }

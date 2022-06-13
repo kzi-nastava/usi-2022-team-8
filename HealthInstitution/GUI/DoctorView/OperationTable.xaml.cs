@@ -14,16 +14,20 @@ namespace HealthInstitution.GUI.DoctorView
     public partial class OperationTable : Window
     {
         private Doctor _loggedDoctor;
-        public OperationTable(Doctor doctor)
+        IOperationService _operationService;
+        IDoctorService _doctorService;
+        public OperationTable(Doctor doctor, IOperationService operationService, IDoctorService doctorService)
         {
             this._loggedDoctor = doctor;
+            this._operationService = operationService;
+            _doctorService = doctorService;
             InitializeComponent();
             LoadRows();
         }
         private void LoadRows()
         {
             dataGrid.Items.Clear();
-            List<Operation> doctorOperations = OperationService.GetByDoctor(_loggedDoctor.Username);
+            List<Operation> doctorOperations = _operationService.GetByDoctor(_loggedDoctor.Username);
             foreach (Operation operation in doctorOperations)
             {
                 dataGrid.Items.Add(operation);
@@ -52,8 +56,8 @@ namespace HealthInstitution.GUI.DoctorView
             {
                 Operation selectedOperation = (Operation)dataGrid.SelectedItem;
                 dataGrid.Items.Remove(selectedOperation);
-                OperationService.Delete(selectedOperation.Id);
-                DoctorService.DeleteOperation(selectedOperation);
+                _operationService.Delete(selectedOperation.Id);
+                _doctorService.DeleteOperation(selectedOperation);
             }
         }
     }

@@ -19,6 +19,8 @@ using HealthInstitution.Core.PrescriptionNotifications.Service;
 using HealthInstitution.Core.SystemUsers.Doctors;
 using HealthInstitution.Core.SystemUsers.Patients;
 using HealthInstitution.Core.DoctorRatings;
+using HealthInstitution.Core.EquipmentTransfers;
+using HealthInstitution.Core.Renovations;
 
 namespace HealthInstitution.GUI.LoginView
 {
@@ -31,24 +33,40 @@ namespace HealthInstitution.GUI.LoginView
         private String _usernameInput;
         private String _passwordInput;
 
-        public LoginWindow()
+        IUserService _userService;
+        ITrollCounterService _trollCounterService;
+        IPatientService _patientService;
+        IDoctorService _doctorService;
+        IEquipmentTransferRefreshingService _equipmentTransferRefreshingService;
+        IRenovationRefreshingService _renovationRefreshingService;
+        IPrescriptionNotificationService _prescriptionNotificationService;
+        IDoctorRatingsService _doctorRatingsService;
+
+        public LoginWindow(IUserService userService, 
+            ITrollCounterService trollCounterService, 
+            IPatientService patientService,
+            IDoctorService doctorService)
         {
             InitializeComponent();
+            _userService = userService;
+            _trollCounterService = trollCounterService; 
+            _patientService = patientService;
         }
 
         private User GetUserFromInputData()
         {
             _usernameInput = usernameBox.Text;
             _passwordInput = passwordBox.Password.ToString();
-            return UserService.GetByUsername(_usernameInput);
+            return _userService.GetByUsername(_usernameInput);
         }
 
         private void LoginButton_click(object sender, RoutedEventArgs e)
         {
             User user = GetUserFromInputData();
-            if (UserService.IsUserFound(user, _passwordInput) && !UserService.IsUserBlocked(user))
+            if (_userService.IsUserFound(user, _passwordInput) && !_userService.IsUserBlocked(user))
             {
                 this.Close();
+                UpdateEquipmentOnStartup();
                 switch (user.Type)
                 {
                     case UserType.Patient:
@@ -72,17 +90,17 @@ namespace HealthInstitution.GUI.LoginView
 
         private void RedirectPatient(User foundUser)
         {
-            TrollCounterService.TrollCheck(foundUser.Username);
-            Patient loggedPatient = PatientService.GetByUsername(_usernameInput);
-            PrescriptionNotificationService.GenerateAllSkippedNotifications(loggedPatient.Username);
-            DoctorRatingsService.AssignScores();
+            _trollCounterService.TrollCheck(foundUser.Username);
+            Patient loggedPatient = _patientService.GetByUsername(_usernameInput);
+            _prescriptionNotificationService.GenerateAllSkippedNotifications(loggedPatient.Username);
+            _doctorRatingsService.AssignScores();
             new PatientWindow(loggedPatient).ShowDialog();
         }
 
         private void RedirectDoctor()
         {
-            DoctorService.LoadAppointments();
-            Doctor loggedDoctor = DoctorService.GetById(_usernameInput);
+            _doctorService.LoadAppointments();
+            Doctor loggedDoctor = _doctorService.GetById(_usernameInput);
             new DoctorWindow(loggedDoctor).ShowDialog();
         }
 

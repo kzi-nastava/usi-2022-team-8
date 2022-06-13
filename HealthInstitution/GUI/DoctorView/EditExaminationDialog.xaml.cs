@@ -19,11 +19,19 @@ namespace HealthInstitution.GUI.DoctorView
     {
 
         private Examination _selectedExamination; 
-        public EditExaminationDialog(Examination examination)
+        IPatientService _patientService;
+        IMedicalRecordService _medicalRecordService;
+        IExaminationService _examinationService;
+        public EditExaminationDialog(Examination examination, IPatientService patientService,
+                                    IMedicalRecordService medicalRecordService,
+                                    IExaminationService examinationService)
         {
             this._selectedExamination = examination;
             InitializeComponent();
             Load();
+            _patientService = patientService;
+            _medicalRecordService = medicalRecordService;
+            _examinationService = examinationService;
         }
 
         public void Load()
@@ -35,7 +43,7 @@ namespace HealthInstitution.GUI.DoctorView
         private void PatientComboBox_Loaded(object sender, RoutedEventArgs e)
         {
             var patientComboBox = sender as System.Windows.Controls.ComboBox;
-            List<Patient> patients = PatientService.GetAll();
+            List<Patient> patients = _patientService.GetAll();
             foreach (Patient patient in patients)
             {
                 patientComboBox.Items.Add(patient);
@@ -80,7 +88,7 @@ namespace HealthInstitution.GUI.DoctorView
             appointment = appointment.AddHours(hours);
             appointment = appointment.AddMinutes(minutes);
             Patient patient = (Patient)patientComboBox.SelectedItem;
-            MedicalRecord medicalRecord = MedicalRecordService.GetByPatientUsername(patient);
+            MedicalRecord medicalRecord = _medicalRecordService.GetByPatientUsername(patient);
             var doctor = _selectedExamination.Doctor;
             ExaminationDTO examination = new ExaminationDTO(appointment, null, doctor, medicalRecord);
             return examination;
@@ -90,7 +98,7 @@ namespace HealthInstitution.GUI.DoctorView
             try
                 {
                 ExaminationDTO examinationDTO = CreateExaminationDTOFromInputData();
-                ExaminationService.Update(_selectedExamination.Id, examinationDTO);
+                _examinationService.Update(_selectedExamination.Id, examinationDTO);
                 this.Close();
             }
             catch (Exception ex)
