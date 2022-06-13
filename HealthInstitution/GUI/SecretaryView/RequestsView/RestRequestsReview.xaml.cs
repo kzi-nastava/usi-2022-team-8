@@ -43,7 +43,7 @@ namespace HealthInstitution.GUI.SecretaryView.RequestsView
             RestRequest selectedRequest = (RestRequest)dataGrid.SelectedItem;
             if (selectedRequest != null)
             {
-                RestRequestService.AcceptRestRequest(selectedRequest);
+                RestRequestService.Accept(selectedRequest);
             }
             LoadRows();
         }

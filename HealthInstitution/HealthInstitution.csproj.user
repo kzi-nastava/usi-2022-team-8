@@ -11,6 +11,9 @@
     <Compile Update="GUI\DoctorView\AddReferralDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="GUI\DoctorView\AddRestRequestDialog.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="GUI\DoctorView\DrugRejectionReasonDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -18,6 +21,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="GUI\DoctorView\ConsumedEquipmentDialog.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="GUI\DoctorView\RestRequestTable.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="GUI\ManagerView\DrugView\AddDrugDialog.xaml.cs">
@@ -216,6 +222,9 @@
     <Page Update="GUI\DoctorView\AddReferralDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="GUI\DoctorView\AddRestRequestDialog.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="GUI\DoctorView\ConsumedEquipmentDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -247,6 +256,9 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="GUI\DoctorView\PerformExaminationDialog.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="GUI\DoctorView\RestRequestTable.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="GUI\DoctorView\ScheduledExaminationTable.xaml">

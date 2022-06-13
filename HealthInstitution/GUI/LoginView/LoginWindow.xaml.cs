@@ -83,6 +83,7 @@ namespace HealthInstitution.GUI.LoginView
         private void RedirectDoctor()
         {
             DoctorService.LoadAppointments();
+            RestRequestService.LoadRequests();
             Doctor loggedDoctor = DoctorService.GetById(_usernameInput);
             new DoctorWindow(loggedDoctor).ShowDialog();
         }

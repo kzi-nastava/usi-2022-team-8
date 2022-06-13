@@ -95,6 +95,7 @@ namespace HealthInstitution.Core.RestRequests.Repository
             List<dynamic> reducedRestRequests = PrepareForSerialization();
             var allRestRequests = JsonSerializer.Serialize(reducedRestRequests, _options);
             File.WriteAllText(this._fileName, allRestRequests);
+            RestRequestDoctorRepository.GetInstance().Save();
         }
 
         public List<RestRequest> GetAll()
@@ -144,16 +145,30 @@ namespace HealthInstitution.Core.RestRequests.Repository
             Save();
             RestRequestDoctorRepository.GetInstance().Save();
         }
-        public void AcceptRestRequest(RestRequest restRequest)
+        public void Accept(RestRequest restRequest)
         {
             restRequest.State = RestRequestState.Accepted;
             Save();
         }
-        public void RejectRestRequest(RestRequest restRequest, string rejectionReason)
+        public void Reject(RestRequest restRequest, string rejectionReason)
         {
             restRequest.State = RestRequestState.Rejected;
             restRequest.RejectionReason = rejectionReason;
             Save();
+        }
+
+        public List<RestRequest> GetByDoctor(string doctorUsername)
+        {
+            /*List<RestRequest> doctorRestRequests = new List<RestRequest>();
+            foreach (var restRequest in this.RestRequests)
+            {
+                if (restRequest.Doctor.Username == doctorUsername)
+                    doctorRestRequests.Add(restRequest);
+            }
+            return doctorRestRequests;*/
+
+
+            return GetAll().Where(restRequest => restRequest.Doctor.Username == doctorUsername).ToList();
         }
     }
 }

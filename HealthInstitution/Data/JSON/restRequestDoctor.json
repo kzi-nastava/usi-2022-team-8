@@ -1,6 +1,1 @@
-﻿[
-  {
-    "id": 1,
-    "doctor": "jovan"
-  }
-]
+[{"id":1,"doctor":"jovan"},{"id":2,"doctor":"jovan"},{"id":3,"doctor":"nikola"},{"id":4,"doctor":"nikola"}]

@@ -97,7 +97,7 @@ namespace HealthInstitution.Core.Scheduling
 
         public static void ReserveOperation(OperationDTO operationDTO, int id = 0)
         {
-            operationDTO.Validate();
+            OperationService.Validate(operationDTO);
             operationDTO.Room = FindAvailableOperationRoom(operationDTO);
             DoctorOperationAvailabilityService.CheckIfDoctorIsAvailable(operationDTO);
             PatientOperationAvailabilityService.CheckIfPatientIsAvailable(operationDTO);
@@ -106,7 +106,7 @@ namespace HealthInstitution.Core.Scheduling
 
         public static void ReserveExamination(ExaminationDTO examinationDTO)
         {
-            examinationDTO.Validate();
+            ExaminationService.Validate(examinationDTO);
             examinationDTO = CheckExaminationAvailable(examinationDTO);
             ExaminationService.Add(examinationDTO);
         }

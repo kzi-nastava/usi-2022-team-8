@@ -75,6 +75,11 @@ namespace HealthInstitution.GUI.DoctorView
         {
             new DrugsVerificationTable().ShowDialog();
         }
+
+        private void RestRequests_Click(object sender, RoutedEventArgs e)
+        {
+            new RestRequestTable(this._loggedDoctor).ShowDialog();
+        }
     }
 
 }

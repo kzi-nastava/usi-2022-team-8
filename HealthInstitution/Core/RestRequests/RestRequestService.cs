@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace HealthInstitution.Core.RestRequests
 {
@@ -40,23 +41,48 @@ namespace HealthInstitution.Core.RestRequests
 
         public static void Add(RestRequestDTO restRequestDTO)
         {
-            RestRequest RestRequest = new RestRequest(restRequestDTO);
-            s_restRequestRepository.Add(RestRequest);
+            RestRequest restRequest = new RestRequest(restRequestDTO);
+            s_restRequestRepository.Add(restRequest);
+            if (restRequestDTO.IsUrgent)
+                Accept(restRequest);
         }
 
-        public static void DeleteRequest(int id)
+        public static void Delete(int id)
         {
             s_restRequestRepository.Delete(id);
         }
 
-        public static void AcceptRestRequest(RestRequest restRequest)
+        public static void Accept(RestRequest restRequest)
         {
-            s_restRequestRepository.AcceptRestRequest(restRequest);
+            s_restRequestRepository.Accept(restRequest);
         }
 
-        public static void RejectRestRequest(RestRequest restRequest,string rejectionReason)
+        public static void Reject(RestRequest restRequest,string rejectionReason)
         {
-            s_restRequestRepository.RejectRestRequest(restRequest,rejectionReason);
+            s_restRequestRepository.Reject(restRequest,rejectionReason);
+        }
+
+        public static List<RestRequest> GetByDoctor(string doctorUsername)
+        {
+            return s_restRequestRepository.GetByDoctor(doctorUsername);
+        }
+
+        private static void Validate(RestRequestDTO restRequestDTO)
+        {
+            if ((restRequestDTO.StartDate - DateTime.Now).Days <= 2)
+            {
+                System.Windows.MessageBox.Show((restRequestDTO.StartDate - DateTime.Now).Days.ToString(), "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+                throw new Exception("You have to request your days off minimum two days before the start of it!");
+            }
+
+            if (restRequestDTO.IsUrgent && !(restRequestDTO.DaysDuration > 0 && restRequestDTO.DaysDuration < 5))
+                throw new Exception("Urgent requests have to be five or less days!");
+            TimetableService.IsDoctorAvailable(restRequestDTO);
+        }
+        public static void ApplyForRestRequest(RestRequestDTO restRequestDTO)
+        {
+            Validate(restRequestDTO);
+            Add(restRequestDTO);
         }
     }
 }
