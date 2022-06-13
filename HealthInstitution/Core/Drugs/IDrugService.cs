@@ -19,7 +19,7 @@ namespace HealthInstitution.Core.Drugs
         public void Update(int id, DrugDTO drugDTO);
         public void Delete(int id);
         public bool ContainsIngredient(Ingredient ingredient);
-
-
+        public List<Ingredient> GetIngredients(Drug drug);
+        public bool Contains(string name);
     }
 }

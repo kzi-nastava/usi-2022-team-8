@@ -29,5 +29,6 @@ namespace HealthInstitution.Core.Rooms
         public List<TableItemEquipment> GetTableItemEquipments();
         public void UpdateEquipmentQuantity(Room room, Equipment equipment);
         public void RemoveEquipmentFrom(Room room);
+        public Room? GetFromString(string? roomFromForm);
     }
 }

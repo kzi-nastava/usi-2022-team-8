@@ -12,7 +12,7 @@ public interface IPrescriptionNotificationSettingsRepository
     public void LoadFromFile();
 
     public void Save();
-
+    public List<PrescriptionNotificationSettings> GetAll();
     public PrescriptionNotificationSettings GetById(int id);
 
     public void Add(PrescriptionNotificationSettings recepieNotificationSettings);

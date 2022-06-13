@@ -16,8 +16,12 @@ namespace HealthInstitution.GUI.UserWindow
     /// </summary>
     public partial class CreatePatientDialog : Window
     { 
-        public CreatePatientDialog()
+        IPatientService _patientService;
+        IUserService _userService;
+        public CreatePatientDialog(IPatientService patientService, IUserService userService)
         {
+            _patientService = patientService;
+            _userService = userService;
             InitializeComponent();
         }
 
@@ -32,7 +36,7 @@ namespace HealthInstitution.GUI.UserWindow
                 System.Windows.MessageBox.Show("All fields excluding Allergens and Previous ilnesses must be filled!", "Create patient error", MessageBoxButton.OK, MessageBoxImage.Error);
                 throw new Exception();
             }
-            else if (UserService.IsUsernameExist(username))
+            else if (_userService.IsExist(username))
             {
                 System.Windows.MessageBox.Show("This username is already used!", "Create patient error", MessageBoxButton.OK, MessageBoxImage.Error);
                 throw new Exception();
@@ -72,7 +76,7 @@ namespace HealthInstitution.GUI.UserWindow
             try {
                 UserDTO userDTO = CreateUserDTOFromInputData();
                 MedicalRecordDTO medicalRecordDTO = CreateMedicalRecordDTOFromInputData();
-                PatientService.Add(userDTO, medicalRecordDTO);
+                _patientService.Add(userDTO, medicalRecordDTO);
                 this.Close();
             }
             catch

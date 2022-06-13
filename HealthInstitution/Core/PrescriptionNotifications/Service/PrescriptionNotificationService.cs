@@ -108,6 +108,6 @@ public class PrescriptionNotificationService : IPrescriptionNotificationService
 
     public void UpdateSettings(int id, PrescriptionNotificationSettings settings)
     {
-        _prescriptionNotificationRepository.Update(id, settings);
+        _prescriptionNotificationSettingsRepository.Update(id, settings);
     }
 }

@@ -18,8 +18,15 @@ namespace HealthInstitution.GUI.SecretaryView
     {
         Room _toRoom;
         string _equipmentName;
-        public DynamicEquipmentTransferDialog(Room toRoom, string equipmentName)
+        IEquipmentService _equipmentService;
+        IRoomService _roomService;
+        IEquipmentTransferService _equipmentTransferService;
+        public DynamicEquipmentTransferDialog(Room toRoom, string equipmentName,
+            IEquipmentService equipmentService, IRoomService roomService, IEquipmentTransferService equipmentTransferService)
         {
+            _equipmentService= equipmentService;
+            _roomService= roomService;
+            _equipmentTransferService= equipmentTransferService;
             _toRoom=toRoom;
             _equipmentName=equipmentName;
             InitializeComponent();
@@ -33,11 +40,11 @@ namespace HealthInstitution.GUI.SecretaryView
         }
         private void RoomComboBox_Loaded(object sender, RoutedEventArgs e)
         {
-            List<Room> rooms = RoomService.GetAll();
+            List<Room> rooms = _roomService.GetAll();
 
             foreach (Room fromRoom in rooms)
             {
-                Equipment? equipment = EquipmentService.GetEquipmentFromRoom(fromRoom, _equipmentName);
+                Equipment? equipment = _equipmentService.GetEquipmentFromRoom(fromRoom, _equipmentName);
                 if (fromRoom != _toRoom && equipment != null && equipment.Quantity > 5)
                 {
                     roomComboBox.Items.Add(fromRoom + " (has " + equipment.Quantity + ")");
@@ -49,7 +56,7 @@ namespace HealthInstitution.GUI.SecretaryView
             try
             {
                 string? roomText = (string)roomComboBox.SelectedItem;
-                Room? fromRoom = RoomService.GetRoomFromString(roomText);
+                Room? fromRoom = _roomService.GetFromString(roomText);
                 if (fromRoom != null)
                 {
                     TransferDynamicEquipment(fromRoom);
@@ -67,9 +74,9 @@ namespace HealthInstitution.GUI.SecretaryView
         }
         private void TransferDynamicEquipment(Room fromRoom)
         {
-            int quantity = EquipmentService.GetQuantityForTransfer(quantityBox.Text, fromRoom, _equipmentName);
-            Equipment equipment = EquipmentService.GetEquipmentFromRoom(fromRoom, _equipmentName);
-            EquipmentTransferService.Transfer(_toRoom, equipment, quantity);
+            int quantity = _equipmentService.GetQuantityForTransfer(quantityBox.Text, fromRoom, _equipmentName);
+            Equipment equipment = _equipmentService.GetEquipmentFromRoom(fromRoom, _equipmentName);
+            _equipmentTransferService.Transfer(_toRoom, equipment, quantity);
 
         }
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)

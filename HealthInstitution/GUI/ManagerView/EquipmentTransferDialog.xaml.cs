@@ -33,9 +33,18 @@ namespace HealthInstitution.GUI.ManagerView
     /// </summary>
     public partial class EquipmentTransferDialog : Window
     {
-        public EquipmentTransferDialog()
+        IRenovationService _renovationService;
+        IEquipmentService _equipmentService;
+        IEquipmentTransferService _equipmentTransferService;
+        IRoomService _roomService;
+        public EquipmentTransferDialog(IRenovationService renovationService, IEquipmentService equipmentService, 
+            IEquipmentTransferService equipmentTransferService, IRoomService roomService)
         {
             InitializeComponent();
+            _renovationService = renovationService;
+            _equipmentService = equipmentService;
+            _roomService = roomService;
+            _equipmentTransferService= equipmentTransferService;
         }
 
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
@@ -46,13 +55,13 @@ namespace HealthInstitution.GUI.ManagerView
 
         private void FromRoomComboBox_Loaded(object sender, RoutedEventArgs e)
         {         
-            fromRoomComboBox.ItemsSource = RoomService.GetNotRenovating();
+            fromRoomComboBox.ItemsSource = _roomService.GetNotRenovating();
             fromRoomComboBox.SelectedItem = null;
         }
 
         private void ToRoomComboBox_Loaded(object sender, RoutedEventArgs e)
         {
-            toRoomComboBox.ItemsSource = RoomService.GetNotRenovating();
+            toRoomComboBox.ItemsSource = _roomService.GetNotRenovating();
             toRoomComboBox.SelectedItem = null;
         }
 
@@ -106,16 +115,16 @@ namespace HealthInstitution.GUI.ManagerView
 
             if (date == DateTime.Today)
             {
-                EquipmentTransferService.Transfer(toRoom, equipment, quantity);
+                _equipmentTransferService.Transfer(toRoom, equipment, quantity);
                 System.Windows.MessageBox.Show("Equipment transfer completed!", "Equipment transfer", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             else
             {
                 EquipmentDTO equipmentDTO = new EquipmentDTO(quantity, equipment.Name, equipment.Type, equipment.IsDynamic);
-                Equipment newEquipment = EquipmentService.Add(equipmentDTO);
+                Equipment newEquipment = _equipmentService.Add(equipmentDTO);
 
                 EquipmentTransferDTO equipmentTransferDTO = new EquipmentTransferDTO(newEquipment, fromRoom, toRoom, date);
-                EquipmentTransferService.Add(equipmentTransferDTO);
+                _equipmentTransferService.Add(equipmentTransferDTO);
 
                 System.Windows.MessageBox.Show("Equipment transfer scheduled!", "Equipment transfer", MessageBoxButton.OK, MessageBoxImage.Information);
             }
@@ -133,7 +142,7 @@ namespace HealthInstitution.GUI.ManagerView
                 return false;
             }
 
-            int projectedQuantityLoss = EquipmentTransferService.CalculateProjectedQuantityLoss(fromRoom, equipment);
+            int projectedQuantityLoss = _equipmentTransferService.CalculateProjectedQuantityLoss(fromRoom, equipment);
             if (quantity > equipment.Quantity - projectedQuantityLoss)
             {
                 System.Windows.MessageBox.Show("You cant transfer more equipment than room has because of projected transfers!", "Failed transfer", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -154,7 +163,7 @@ namespace HealthInstitution.GUI.ManagerView
                 return false;
             }
 
-            if (!RenovationService.CheckRenovationStatusForRoom(fromRoom, date) || !RenovationService.CheckRenovationStatusForRoom(toRoom, date))
+            if (!_renovationService.CheckRenovationStatusForRoom(fromRoom, date) || !_renovationService.CheckRenovationStatusForRoom(toRoom, date))
             {
                 System.Windows.MessageBox.Show("You cant transfer equipment between rooms with renovation on that date span!", "Failed transfer", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;

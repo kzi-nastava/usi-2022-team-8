@@ -12,6 +12,8 @@ using HealthInstitution.Core.Operations.Model;
 using HealthInstitution.Core.Operations.Repository;
 using HealthInstitution.Core.TrollCounters;
 using HealthInstitution.Core.Notifications.Model;
+using HealthInstitution.Core.Examinations;
+using HealthInstitution.Core.Operations;
 
 namespace HealthInstitution.Core.SystemUsers.Patients
 {
@@ -21,6 +23,8 @@ namespace HealthInstitution.Core.SystemUsers.Patients
         IUserService _userService;
         ITrollCounterService _trollCounterService;
         IMedicalRecordService _medicalRecordService;
+        IExaminationService _examinationService;
+        IOperationService _operationService;
         public PatientService(IPatientRepository patientRepository, IUserService userService, ITrollCounterService trollCounterService, IMedicalRecordService medicalRecordService)
         {
             _patientRepository = patientRepository;
@@ -67,6 +71,10 @@ namespace HealthInstitution.Core.SystemUsers.Patients
         public void DeleteNotifications(Patient patient)
         {
             _patientRepository.DeleteNotifications(patient);
+        }
+        public bool IsAvailableForDeletion(Patient patient)
+        {
+            return _examinationService.GetByPatient(patient.Username).Count == 0 && _operationService.GetByPatient(patient.Username).Count() == 0;
         }
     } 
 }

@@ -26,15 +26,19 @@ namespace HealthInstitution.GUI.ManagerView.DrugView
     public partial class AddDrugDialog : Window
     {
         private List<Ingredient> _ingredientsForDrug;
-        public AddDrugDialog()
+        IDrugService _drugService;
+        IIngredientService _ingredientService;
+        public AddDrugDialog(IDrugService drugService, IIngredientService ingredientService)
         {
             InitializeComponent();
+            _drugService = drugService;
+            _ingredientService = ingredientService;
             _ingredientsForDrug = new List<Ingredient>();
             addIngredient.IsEnabled = false;
         }
         private void IngredientsComboBox_Loaded(object sender, RoutedEventArgs e)
         {
-            List<Ingredient> ingredients = IngredientService.GetAll();
+            List<Ingredient> ingredients = _ingredientService.GetAll();
             ingredientsComboBox.ItemsSource = ingredients;
             ingredientsComboBox.SelectedItem = null;
         }
@@ -91,7 +95,7 @@ namespace HealthInstitution.GUI.ManagerView.DrugView
             }
 
             DrugDTO drugDTO = new DrugDTO(name, DrugState.Created, _ingredientsForDrug);
-            DrugService.Add(drugDTO);
+            _drugService.Add(drugDTO);
             System.Windows.MessageBox.Show("Drug created and waiting on verification!", "Ingredient creation", MessageBoxButton.OK, MessageBoxImage.Information);
 
             this.Close();
@@ -105,7 +109,7 @@ namespace HealthInstitution.GUI.ManagerView.DrugView
                 return false;
             }
 
-            if (DrugService.Contains(name))
+            if (_drugService.Contains(name))
             {
                 System.Windows.MessageBox.Show("This drug name already exist!", "Create error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;

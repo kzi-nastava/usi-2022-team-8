@@ -23,7 +23,7 @@ namespace HealthInstitution.GUI.DoctorView
     {
         private Drug _selectedDrug;
         IDrugVerificationService _drugVerificationService;
-        public RejectionReasonDialog(Drug drug, IDrugVerificationService drugVerificationService)
+        public DrugRejectionReasonDialog(Drug drug, IDrugVerificationService drugVerificationService)
         {
             this._selectedDrug = drug;
             this._drugVerificationService = drugVerificationService;

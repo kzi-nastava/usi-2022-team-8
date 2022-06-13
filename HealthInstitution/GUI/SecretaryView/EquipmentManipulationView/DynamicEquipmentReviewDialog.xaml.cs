@@ -1,6 +1,8 @@
 ﻿using HealthInstitution.Core.Equipments;
 using HealthInstitution.Core.Equipments.Model;
 using HealthInstitution.Core.Equipments.Repository;
+using HealthInstitution.Core.EquipmentTransfers;
+using HealthInstitution.Core.Rooms;
 using HealthInstitution.Core.Rooms.Model;
 using HealthInstitution.Core.Rooms.Repository;
 using System.Dynamic;
@@ -13,9 +15,11 @@ namespace HealthInstitution.GUI.SecretaryView
     /// </summary>
     public partial class DynamicEquipmentReviewDialog : Window
     {
-        public DynamicEquipmentReviewDialog()
+        IEquipmentService _equipmentService;
+        public DynamicEquipmentReviewDialog(IEquipmentService equipmentService)
         {
             InitializeComponent();
+            _equipmentService = equipmentService;
             LoadRows();
         }
         private void ProcessDialog()
@@ -25,7 +29,7 @@ namespace HealthInstitution.GUI.SecretaryView
         }
         private void LoadRows()
         {
-            List<dynamic> rows = EquipmentService.GetMissingEquipment();
+            List<dynamic> rows = _equipmentService.GetMissingEquipment();
             foreach(dynamic row in rows)
             {
                 dataGrid.Items.Add(row);

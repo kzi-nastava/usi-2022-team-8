@@ -13,7 +13,6 @@ namespace HealthInstitution.Core.PrescriptionNotifications.Repository
         public void Save();
         public void Add(PrescriptionNotification recepieNotification);
         public void Delete(int id);
-        public void Update(int id, PrescriptionNotificationSettings settings);
         public List<PrescriptionNotification> GetPatientPresctiptionNotification(string username, int prescription);
         public List<PrescriptionNotification> GetPatientActiveNotification(string username);
     }

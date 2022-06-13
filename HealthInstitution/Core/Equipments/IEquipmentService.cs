@@ -20,5 +20,10 @@ namespace HealthInstitution.Core.Equipments
         public Equipment GetEquipmentFromRoom(Room room, string equipmentName);
         public List<dynamic> GetMissingEquipment();
         public void RemoveConsumed(Equipment equipment, int consumedQuantity);
+        public int GetQuantityForTransfer(string quantityFromForm, Room room, string equipmentName);
+        public Dictionary<string, int> GetEquipmentPerQuantity();
+        public bool IsEmpty(List<Equipment> list);
+        public List<Equipment> CopyEquipments(List<Equipment> availableEquipment);
+        public void RemoveEquipmentFrom(List<Equipment> equipments);
     }
 }
