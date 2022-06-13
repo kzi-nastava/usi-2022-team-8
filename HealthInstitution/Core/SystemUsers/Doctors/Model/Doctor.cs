@@ -25,16 +25,6 @@ public class Doctor : User
         AvgRating = 0;
     }
 
-    public Doctor(string username, string password, string name, string surname, SpecialtyType specialty, double avgRating) : base(UserType.Doctor, username, password, name, surname)
-    {
-        this.Specialty = specialty;
-        this.Examinations = new List<Examination>();
-        this.Operations = new List<Operation>();
-        this.RestRequests = new List<RestRequest>();
-        this.Notifications = new List<AppointmentNotification>();
-        AvgRating = avgRating;
-    }
-
     public override string? ToString()
     {
         return this.Name + " " + this.Surname;
