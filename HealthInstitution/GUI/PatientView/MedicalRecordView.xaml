@@ -30,5 +30,6 @@
         <Button Content="Doctor specialization" HorizontalAlignment="Center" Height="23" Margin="0,342,0,0" VerticalAlignment="Top" Width="143" Click="SpecializationButton_Click" />
         <Label Content="Sorts:" HorizontalAlignment="Left" Height="25" Margin="45,296,0,0" VerticalAlignment="Top" Width="101" />
         <Label Content="Search:" HorizontalAlignment="Left" Height="25" Margin="600,296,0,0" VerticalAlignment="Top" Width="101" />
+        <Button Content="Rate Doctor" HorizontalAlignment="Left" Height="26" Margin="44,370,0,0" VerticalAlignment="Top" Width="428" Click="RateDoctorButton_Click" />
     </Grid>
 </Window>

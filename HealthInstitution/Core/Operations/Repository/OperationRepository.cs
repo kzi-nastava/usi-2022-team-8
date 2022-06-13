@@ -139,7 +139,6 @@ namespace HealthInstitution.Core.Operations.Repository
             OperationsById.Add(operation.Id, operation);
         }
 
-        //greska ne sme pozivati ovaj save.
         public void Add(Operation operation)
         {
             int id = ++this._maxId;
