@@ -1,6 +1,7 @@
 ﻿using HealthInstitution.Core.MedicalRecords.Model;
 using HealthInstitution.Core.Referrals.Model;
 using HealthInstitution.Core.Referrals.Repository;
+using HealthInstitution.Core.Scheduling;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,9 +24,11 @@ namespace HealthInstitution.GUI.SecretaryView
     public partial class PatientReferralsDialog : Window
     {
         MedicalRecord _medicalRecord;
-        public PatientReferralsDialog(MedicalRecord medicalRecord)
+        ISchedulingService _schedulingService;
+        public PatientReferralsDialog(MedicalRecord medicalRecord, ISchedulingService schedulingService)
         {
             _medicalRecord=medicalRecord;
+            _schedulingService=schedulingService;
             InitializeComponent();
             LoadRows();
         }

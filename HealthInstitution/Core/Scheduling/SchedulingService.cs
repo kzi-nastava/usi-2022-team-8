@@ -20,20 +20,35 @@ namespace HealthInstitution.Core.Scheduling
         private static Random rnd = new Random();
         IExaminationRepository _examinationRepository;
         IOperationRepository _operationRepository;
-        
-        public SchedulingService(IExaminationRepository examinationRepository, IOperationRepository operationRepository)
+        IDoctorOperationAvailabilityService _doctorOperationAvailabilityService;
+        IPatientOperationAvailabilityService _patientOperationAvailabilityService;
+        IDoctorExaminationAvailabilityService _doctorExaminationAvailabilityService;
+        IPatientExaminationAvailabilityService _patientExaminationAvailabilityService;
+        IOperationService _operationService;
+        IExaminationService _examinationService;
+        IRoomService _roomService;
+
+        public SchedulingService(IExaminationRepository examinationRepository, IOperationRepository operationRepository, 
+            IDoctorOperationAvailabilityService doctorOperationAvailabilityService, IPatientOperationAvailabilityService patientOperationAvailabilityService, 
+            IDoctorExaminationAvailabilityService doctorExaminationAvailabilityService, IPatientExaminationAvailabilityService patientExaminationAvailabilityService,
+            IOperationService operationService, IExaminationService examinationService, IRoomService roomService)
         {
             _examinationRepository = examinationRepository;
             _operationRepository = operationRepository;
+            _doctorOperationAvailabilityService = doctorOperationAvailabilityService;
+            _patientOperationAvailabilityService = patientOperationAvailabilityService;
+            _doctorExaminationAvailabilityService = doctorExaminationAvailabilityService;
+            _patientExaminationAvailabilityService = patientExaminationAvailabilityService;
+            _operationService = operationService;
+            _examinationService = examinationService;
+            _roomService = roomService;
         }
 
-        //hm da li ova treba u schedule service
-        //mmmmm :D> moguce
         public bool CheckOccurrenceOfRoom(Room room)
         {
-            if (_examinationRepository.Examinations.Find(examination => examination.Room == room) == null)
+            if (_examinationRepository.GetAll().Find(examination => examination.Room == room) == null)
                 return false;
-            if (_operationRepository.Operations.Find(operation => operation.Room == room) == null)
+            if (_operationRepository.GetAll().Find(operation => operation.Room == room) == null)
                 return false;
             return true;
         }
@@ -105,23 +120,23 @@ namespace HealthInstitution.Core.Scheduling
         {
             operationDTO.Validate();
             operationDTO.Room = FindAvailableOperationRoom(operationDTO);
-            DoctorOperationAvailabilityService.CheckIfDoctorIsAvailable(operationDTO);
-            PatientOperationAvailabilityService.CheckIfPatientIsAvailable(operationDTO);
-            OperationService.Add(operationDTO);
+            _doctorOperationAvailabilityService.CheckIfDoctorIsAvailable(operationDTO);
+            _patientOperationAvailabilityService.CheckIfPatientIsAvailable(operationDTO);
+            _operationService.Add(operationDTO);
         }
 
         public void ReserveExamination(ExaminationDTO examinationDTO)
         {
             examinationDTO.Validate();
             examinationDTO = CheckExaminationAvailable(examinationDTO);
-            ExaminationService.Add(examinationDTO);
+            _examinationService.Add(examinationDTO);
         }
 
         public Room FindAvailableOperationRoom(OperationDTO operationDTO, int id = 0)
         {
             bool isAvailable;
             List<Room> availableRooms = new List<Room>();
-            var rooms = RoomService.GetNotRenovating();
+            var rooms = _roomService.GetNotRenovating();
             DateTime appointment = operationDTO.Appointment;
             int duration = operationDTO.Duration;
 
@@ -129,7 +144,7 @@ namespace HealthInstitution.Core.Scheduling
             {
                 if (room.Type != RoomType.OperatingRoom) continue;
                 isAvailable = true;
-                foreach (var operation in OperationService.GetAll())
+                foreach (var operation in _operationService.GetAll())
                 {
                     if (operation.Room.Id == room.Id && operation.Id != id)
                     {
@@ -163,11 +178,11 @@ namespace HealthInstitution.Core.Scheduling
         {
             bool isAvailable;
             List<Room> availableRooms = new List<Room>();
-            foreach (var room in RoomService.GetNotRenovating())
+            foreach (var room in _roomService.GetNotRenovating())
             {
                 if (room.Type != roomType) continue;
                 isAvailable = true;
-                foreach (var examination in ExaminationService.GetAll())
+                foreach (var examination in _examinationService.GetAll())
                 {
                     if (examination.Appointment == appointment && examination.Room.Id == room.Id)
                     {
@@ -184,8 +199,8 @@ namespace HealthInstitution.Core.Scheduling
         public ExaminationDTO CheckExaminationAvailable(ExaminationDTO examinationDTO)
         {
             examinationDTO.Room = FindAvailableExaminationRoom(examinationDTO.Appointment);
-            DoctorExaminationAvailabilityService.CheckIfDoctorIsAvailable(examinationDTO);
-            PatientExaminationAvailabilityService.CheckIfPatientIsAvailable(examinationDTO);
+            _doctorExaminationAvailabilityService.CheckIfDoctorIsAvailable(examinationDTO);
+            _patientExaminationAvailabilityService.CheckIfPatientIsAvailable(examinationDTO);
             return examinationDTO;
         }
 

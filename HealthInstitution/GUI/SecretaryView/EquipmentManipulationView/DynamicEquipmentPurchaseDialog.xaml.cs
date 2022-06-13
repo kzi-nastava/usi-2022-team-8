@@ -17,8 +17,12 @@ namespace HealthInstitution.GUI.SecretaryView
     /// </summary>
     public partial class DynamicEquipmentPurchaseDialog : Window
     {
-        public DynamicEquipmentPurchaseDialog()
+        IEquipmentTransferService _equipmentTransferService;
+        IEquipmentService _equipmentService;
+        public DynamicEquipmentPurchaseDialog(IEquipmentTransferService equipmentTransferService, IEquipmentService equipmentService)
         {
+            _equipmentService = equipmentService;
+            _equipmentTransferService = equipmentTransferService;
             InitializeComponent();
         }
         private void ProcessDialog()
@@ -36,7 +40,7 @@ namespace HealthInstitution.GUI.SecretaryView
                 string? equipmentName = (string)equipmentComboBox.SelectedItem;
                 if (equipmentName != null)
                 {
-                    EquipmentTransferService.ScheduleWarehouseRefill(equipmentName, quantity);
+                    _equipmentTransferService.ScheduleWarehouseRefill(equipmentName, quantity);
                     ProcessDialog();
                 }
                 else
@@ -59,7 +63,7 @@ namespace HealthInstitution.GUI.SecretaryView
         private void LoadEquipmentComboBox()
         {
             equipmentComboBox.Items.Clear();
-            Dictionary<string, int> equipmentPerQuantity = EquipmentService.EquipmentPerQuantity();
+            Dictionary<string, int> equipmentPerQuantity = _equipmentService.GetEquipmentPerQuantity();
             foreach (var equipment in equipmentPerQuantity)
             {
                 if (equipment.Value == 0)

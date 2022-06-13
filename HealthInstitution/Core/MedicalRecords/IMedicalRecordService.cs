@@ -1,4 +1,5 @@
-﻿using HealthInstitution.Core.MedicalRecords.Model;
+﻿using HealthInstitution.Core.Ingredients.Model;
+using HealthInstitution.Core.MedicalRecords.Model;
 using HealthInstitution.Core.Prescriptions.Model;
 using HealthInstitution.Core.Referrals.Model;
 using HealthInstitution.Core.SystemUsers.Patients.Model;

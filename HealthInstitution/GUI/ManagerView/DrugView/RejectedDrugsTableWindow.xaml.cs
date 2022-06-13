@@ -23,9 +23,13 @@ namespace HealthInstitution.GUI.ManagerView.DrugView
     /// </summary>
     public partial class RejectedDrugsTableWindow : Window
     {
-        public RejectedDrugsTableWindow()
+        IDrugService _drugService;
+        IDrugVerificationService _drugVerificationService;
+        public RejectedDrugsTableWindow(IDrugService drugService, IDrugVerificationService drugVerificationService)
         {
             InitializeComponent();
+            _drugService = drugService;
+            _drugVerificationService = drugVerificationService;
             LoadRows();
             reasonButton.IsEnabled = false;
             reviseButton.IsEnabled = false;
@@ -35,7 +39,7 @@ namespace HealthInstitution.GUI.ManagerView.DrugView
         private void LoadRows()
         {
             drugsDataGrid.Items.Clear();
-            List<Drug> drugs = DrugService.GetAllRejected();
+            List<Drug> drugs = _drugService.GetAllRejected();
             foreach (Drug drug in drugs)
             {
                 drugsDataGrid.Items.Add(drug);
@@ -55,7 +59,7 @@ namespace HealthInstitution.GUI.ManagerView.DrugView
 
                 ingredientsDataGrid.Items.Clear();
                 Drug selectedDrug = (Drug)drugsDataGrid.SelectedItem;
-                List<Ingredient> ingredients = DrugService.GetIngredients(selectedDrug);
+                List<Ingredient> ingredients = _drugService.GetIngredients(selectedDrug);
                 foreach (Ingredient ingredient in ingredients)
                 {
                     ingredientsDataGrid.Items.Add(ingredient);
@@ -77,7 +81,7 @@ namespace HealthInstitution.GUI.ManagerView.DrugView
         {
             Drug selectedDrug = (Drug)drugsDataGrid.SelectedItem;
 
-            reasonLabel.Content = "Reject reason: " + DrugVerificationService.ReasonForRejection(selectedDrug);
+            reasonLabel.Content = "Reject reason: " + _drugVerificationService.ReasonForRejection(selectedDrug);
         }
 
         private void ReviseButton_Click(object sender, RoutedEventArgs e)
@@ -100,7 +104,7 @@ namespace HealthInstitution.GUI.ManagerView.DrugView
             if (System.Windows.MessageBox.Show("Are you sure you want to delete selected drug", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
             {
                 drugsDataGrid.Items.Remove(selectedDrug);
-                DrugService.Delete(selectedDrug.Id);
+                _drugService.Delete(selectedDrug.Id);
 
             }
         }

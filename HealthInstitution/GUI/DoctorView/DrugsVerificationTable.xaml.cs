@@ -53,8 +53,8 @@ namespace HealthInstitution.GUI.DoctorView
         private void RejectButton_Click(object sender, RoutedEventArgs e)
         {
             Drug selectedDrug = (Drug)dataGrid.SelectedItem;
-            RejectionReasonDialog rejectionReasonDialog = new RejectionReasonDialog(selectedDrug);
-            rejectionReasonDialog.ShowDialog();
+            DrugRejectionReasonDialog drugRejectionReasonDialog = new DrugRejectionReasonDialog(selectedDrug);
+            drugRejectionReasonDialog.ShowDialog();
             LoadRows();
             dataGrid.Items.Refresh();
         }

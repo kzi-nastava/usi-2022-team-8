@@ -32,12 +32,15 @@ namespace HealthInstitution.GUI.SecretaryView
         List<ScheduleEditRequest> _delayedAppointments;
         Examination? _examination;
         Operation? _operation;
-        public DelayExaminationOperationDialog(List<ScheduleEditRequest> delayedAppointments, Examination? examination, Operation? operation)
+        IAppointmentDelayingService _appointmentDelayingService;
+        public DelayExaminationOperationDialog(List<ScheduleEditRequest> delayedAppointments, Examination? examination, Operation? operation,
+            IAppointmentDelayingService appointmentDelayingService)
         {
             InitializeComponent();
             _delayedAppointments=delayedAppointments;
             _examination = examination;
             _operation = operation;
+            _appointmentDelayingService = appointmentDelayingService;
             LoadRows();
         }
         private void LoadRows()
@@ -55,9 +58,9 @@ namespace HealthInstitution.GUI.SecretaryView
             if (selectedAppointment != null)
             {
                 if (_examination != null)
-                    AppointmentDelayingService.DelayExamination(selectedAppointment,_examination);
+                    _appointmentDelayingService.DelayExamination(selectedAppointment,_examination);
                 else if(_operation != null)
-                    AppointmentDelayingService.DelayOperation(selectedAppointment, _operation);
+                    _appointmentDelayingService.DelayOperation(selectedAppointment, _operation);
             }
         }
     }

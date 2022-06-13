@@ -6,7 +6,6 @@ using HealthInstitution.Core.SystemUsers.Patients.Model;
 using HealthInstitution.Core.TrollCounters;
 using HealthInstitution.GUI.PatientView;
 using System.Windows;
-using HealthInstitution.Core.Examinations;
 
 namespace HealthInstitution.GUI.PatientWindows;
 

@@ -152,9 +152,9 @@ namespace HealthInstitution.Core.Rooms
             }
             equipments.Clear();
         }
-        public Room? GetRoomFromString(string? roomFromForm)
+        public Room? GetFromString(string? roomFromForm)
         {
-            return _roomRepository.GetRoomFromString(roomFromForm);
+            return _roomRepository.GetFromString(roomFromForm);
         }
     }
 }

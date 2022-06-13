@@ -2,6 +2,7 @@
 using HealthInstitution.Core.Examinations.Repository;
 using HealthInstitution.Core.Notifications.Model;
 using HealthInstitution.Core.Operations.Model;
+using HealthInstitution.Core.RestRequests.Model;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using Newtonsoft.Json.Linq;
 using System.IO;
@@ -110,6 +111,12 @@ public class DoctorRepository : IDoctorRepository
         Save();
     }
 
+    public void DeleteRestRequest(RestRequest restRequest)
+    {
+        restRequest.Doctor.RestRequests.Remove(restRequest);
+        Save();
+    }
+
     public List<Examination> GetScheduledExaminations(Doctor doctor)
     {
         var scheduledExaminations = new List<Examination>();
@@ -212,7 +219,7 @@ public class DoctorRepository : IDoctorRepository
         return found;
     }
 
-    public List<Doctor> GetSearchSpeciality(string keyword)
+    public List<Doctor> GetSearchSpecialty(string keyword)
     {
         keyword = keyword.Trim();
         List<Doctor> found = new List<Doctor>();

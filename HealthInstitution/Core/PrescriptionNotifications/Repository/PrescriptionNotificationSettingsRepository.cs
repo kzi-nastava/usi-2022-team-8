@@ -52,7 +52,10 @@ public class PrescriptionNotificationSettingsRepository : IPrescriptionNotificat
             this.SettingsById.Add(setting.Id, setting);
         }
     }
-
+    public List<PrescriptionNotificationSettings> GetAll()
+    {
+        return Settings;
+    }
     public void Save()
     {
         var allRatings = JsonSerializer.Serialize(this.Settings, _options);
@@ -96,10 +99,5 @@ public class PrescriptionNotificationSettingsRepository : IPrescriptionNotificat
             this.Settings.Remove(setting);
             Save();
         }
-    }
-
-    public List<PrescriptionNotificationSettings> GetAll()
-    {
-        return Settings;
     }
 }

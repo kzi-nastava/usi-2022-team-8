@@ -25,15 +25,17 @@ namespace HealthInstitution.GUI.SecretaryView
     /// </summary>
     public partial class PatientSelectionDialog : Window
     {
-        public PatientSelectionDialog()
+        IMedicalRecordService _medicalRecordService;
+        public PatientSelectionDialog(IMedicalRecordService medicalRecordService)
         {
+            _medicalRecordService = medicalRecordService;
             InitializeComponent();
             LoadRows();
         }
         private void LoadRows()
         {
             dataGrid.Items.Clear();
-            List<MedicalRecord> medicalRecords = MedicalRecordService.GetAll();
+            List<MedicalRecord> medicalRecords = _medicalRecordService.GetAll();
             foreach (MedicalRecord medicalRecord in medicalRecords)
             {
                 if(medicalRecord.Patient.Blocked==BlockState.NotBlocked)

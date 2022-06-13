@@ -60,7 +60,7 @@ namespace HealthInstitution.Core.Equipments
             return items;
         }
 
-        public Dictionary<string, int> EquipmentPerQuantity()
+        public Dictionary<string, int> GetEquipmentPerQuantity()
         {
             return _equipmentRepository.GetEquipmentPerQuantity();
         }

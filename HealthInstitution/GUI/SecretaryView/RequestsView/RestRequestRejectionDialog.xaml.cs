@@ -1,6 +1,5 @@
-﻿using HealthInstitution.Core.Drugs;
-using HealthInstitution.Core.Drugs.Model;
-using HealthInstitution.Core.Drugs.Repository;
+﻿using HealthInstitution.Core.RestRequests;
+using HealthInstitution.Core.RestRequests.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,19 +14,17 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 
-namespace HealthInstitution.GUI.DoctorView
+namespace HealthInstitution.GUI.SecretaryView.RequestsView
 {
     /// <summary>
-    /// Interaction logic for RejectionReasonDialog.xaml
+    /// Interaction logic for RestRequestRejectionDialog.xaml
     /// </summary>
-    public partial class RejectionReasonDialog : Window
+    public partial class RestRequestRejectionDialog : Window
     {
-        private Drug _selectedDrug;
-        IDrugVerificationService _drugVerificationService;
-        public RejectionReasonDialog(Drug drug, IDrugVerificationService drugVerificationService)
+        RestRequest _selectedRestRequest;
+        public RestRequestRejectionDialog(RestRequest selectedRestRequest)
         {
-            this._selectedDrug = drug;
-            this._drugVerificationService = drugVerificationService;
+            _selectedRestRequest = selectedRestRequest;
             InitializeComponent();
         }
 
@@ -40,7 +37,7 @@ namespace HealthInstitution.GUI.DoctorView
             }
             else
             {
-                _drugVerificationService.Reject(_selectedDrug, rejectionReason);
+                RestRequestService.RejectRestRequest(_selectedRestRequest, rejectionReason);
                 System.Windows.MessageBox.Show("Successfull rejection!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 Close();
             }

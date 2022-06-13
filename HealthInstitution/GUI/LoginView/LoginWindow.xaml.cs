@@ -40,6 +40,7 @@ namespace HealthInstitution.GUI.LoginView
         IEquipmentTransferRefreshingService _equipmentTransferRefreshingService;
         IRenovationRefreshingService _renovationRefreshingService;
         IPrescriptionNotificationService _prescriptionNotificationService;
+        IRestRequestService _restRequestService;
         IDoctorRatingsService _doctorRatingsService;
 
         public LoginWindow(IUserService userService, 
@@ -106,6 +107,7 @@ namespace HealthInstitution.GUI.LoginView
 
         private void RedirectSecretary()
         {
+            _restRequestService.LoadRequests();
             SecretaryWindow secretaryWindow = new SecretaryWindow();
             secretaryWindow.ShowDialog();
         }

@@ -16,5 +16,6 @@ namespace HealthInstitution.Core.SystemUsers.Users
         public void ChangeBlockedStatus(User user);
         public bool IsUserFound(User user, string passwordInput);
         public bool IsUserBlocked(User user);
+        public bool IsExist(string username);
     }
 }

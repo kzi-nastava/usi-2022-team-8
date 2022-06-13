@@ -11,7 +11,7 @@ namespace HealthInstitution.Core.SystemUsers.Users
         {
             _userRepository = userRepository;
         }
-        public bool IsUsernameExist(string username)
+        public bool IsExist(string username)
         {
             return _userRepository.GetByUsername(username) != null;
         }

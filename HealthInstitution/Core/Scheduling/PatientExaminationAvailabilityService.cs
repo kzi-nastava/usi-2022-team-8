@@ -11,12 +11,20 @@ namespace HealthInstitution.Core.Scheduling
 {
     public class PatientExaminationAvailabilityService : IPatientExaminationAvailabilityService
     {
-        public PatientExaminationAvailabilityService() { }
+        IExaminationService _examinationService;
+        IOperationService _operationService;
+
+        public PatientExaminationAvailabilityService(IExaminationService examinationService, IOperationService operationService)
+        {
+            _examinationService = examinationService;
+            _operationService = operationService;
+        }
+
         private void CheckIfPatientHasExaminations(ExaminationDTO examinationDTO)
         {
             var patient = examinationDTO.MedicalRecord.Patient;
             DateTime appointment = examinationDTO.Appointment;
-            var patientExaminations = ExaminationService.GetByPatient(patient.Username);
+            var patientExaminations = _examinationService.GetByPatient(patient.Username);
 
             foreach (var examination in patientExaminations)
             {
@@ -31,7 +39,7 @@ namespace HealthInstitution.Core.Scheduling
         {
             var patient = examinationDTO.MedicalRecord.Patient;
             DateTime appointment = examinationDTO.Appointment;
-            var patientOperations = OperationService.GetByPatient(patient.Username);
+            var patientOperations = _operationService.GetByPatient(patient.Username);
 
             foreach (var operation in patientOperations)
             {

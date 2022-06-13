@@ -19,10 +19,15 @@ namespace HealthInstitution.Core.EquipmentTransfers
     {
         IEquipmentRepository _equipmentRepository;
         IEquipmentTransferRepository _equipmentTransferRepository;
+        IRoomService _roomService;
+        IEquipmentService _equipmentService;
         public EquipmentTransferService(IEquipmentRepository equipmentRepository, 
-            IEquipmentTransferRepository equipmentTransferRepository,
+            IEquipmentTransferRepository equipmentTransferRepository, IRoomService roomService,
+        IEquipmentService equipmentService
             )
         {
+            _equipmentService = equipmentService;
+            _roomService = roomService;
             _equipmentRepository = equipmentRepository;
             _equipmentTransferRepository = equipmentTransferRepository;
         }
@@ -50,7 +55,7 @@ namespace HealthInstitution.Core.EquipmentTransfers
         }
         public bool CheckOccurrenceOfRoom(Room room)
         {
-            if (_equipmentTransferRepository.EquipmentTransfers.Find(eqTransfer => eqTransfer.FromRoom == room || eqTransfer.ToRoom == room) == null)
+            if (_equipmentTransferRepository.GetAll().Find(eqTransfer => eqTransfer.FromRoom == room || eqTransfer.ToRoom == room) == null)
             {
                 return false;
             }
@@ -69,8 +74,8 @@ namespace HealthInstitution.Core.EquipmentTransfers
             else
             {
                 EquipmentDTO equipmentDTO = new EquipmentDTO(quantity, equipment.Name, equipment.Type, equipment.IsDynamic);
-                Equipment newEquipment = (toRoom.IsWarehouse()) ? equipment : EquipmentService.Add(equipmentDTO);
-                RoomService.AddToRoom(toRoom.Id, newEquipment);
+                Equipment newEquipment = (toRoom.IsWarehouse()) ? equipment : _equipmentService.Add(equipmentDTO);
+                _roomService.AddToRoom(toRoom.Id, newEquipment);
             }
         }
 
@@ -86,7 +91,7 @@ namespace HealthInstitution.Core.EquipmentTransfers
             else
             {
                 EquipmentDTO equipmentDTO = new EquipmentDTO(quantity, equipment.Name, equipment.Type, equipment.IsDynamic);
-                Equipment newEquipment = EquipmentService.Add(equipmentDTO);
+                Equipment newEquipment = _equipmentService.Add(equipmentDTO);
                 toRoomEquipments.Add(newEquipment);
             }
         }
@@ -111,7 +116,7 @@ namespace HealthInstitution.Core.EquipmentTransfers
         {
             EquipmentType equipmentType = _equipmentRepository.GetEquipmentType(equipmentName);
             EquipmentDTO selectedEquipmentDTO = new EquipmentDTO(quantity, equipmentName, equipmentType, true);
-            Equipment newEquipment = EquipmentService.Add(selectedEquipmentDTO);
+            Equipment newEquipment = _equipmentService.Add(selectedEquipmentDTO);
             DateTime tomorrowSameTime = DateTime.Now + new TimeSpan(1, 0, 0, 0);
             EquipmentTransferDTO equipmentTransferDTO = new EquipmentTransferDTO(newEquipment, null, RoomRepository.GetInstance().RoomById[1], tomorrowSameTime);
             Add(equipmentTransferDTO);

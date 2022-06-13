@@ -28,16 +28,18 @@ namespace HealthInstitution.GUI.ManagerView
     /// </summary>
     public partial class RoomsTableWindow : Window
     {
-        public RoomsTableWindow()
+        IRoomService _roomService;
+        public RoomsTableWindow(IRoomService roomService)
         {
             InitializeComponent();
+            _roomService = roomService;
             LoadRows();
         }
 
         private void LoadRows()
         {
             dataGrid.Items.Clear();
-            List<Room> rooms = RoomService.GetActive();
+            List<Room> rooms = _roomService.GetActive();
             foreach (Room room in rooms)
             {
                 dataGrid.Items.Add(room);
@@ -78,7 +80,7 @@ namespace HealthInstitution.GUI.ManagerView
                 dataGrid.SelectedItem = null;
                 return;
             }
-            if (RoomService.CheckImportantOccurrenceOfRoom(selectedRoom))
+            if (_roomService.CheckImportantOccurrenceOfRoom(selectedRoom))
             {
                 System.Windows.MessageBox.Show("You cant delete room because of scheduled connections!", "Delete error", MessageBoxButton.OK, MessageBoxImage.Error);
                 dataGrid.SelectedItem = null;
@@ -88,7 +90,7 @@ namespace HealthInstitution.GUI.ManagerView
             if (System.Windows.MessageBox.Show("Are you sure you want to delete selected room", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
             {
                 dataGrid.Items.Remove(selectedRoom);
-                RoomService.MoveRoomToRenovationHistory(selectedRoom);
+                _roomService.MoveRoomToRenovationHistory(selectedRoom);
                 
             }
         }
