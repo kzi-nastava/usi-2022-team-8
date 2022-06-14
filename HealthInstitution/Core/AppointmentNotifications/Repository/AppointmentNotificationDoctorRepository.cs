@@ -14,30 +14,21 @@ namespace HealthInstitution.Core.Notifications.Repository
 {
     public class AppointmentNotificationDoctorRepository : IAppointmentNotificationDoctorRepository
     {
-        private String _fileName;
-        private AppointmentNotificationDoctorRepository(String fileName)
+        private String _fileName = @"..\..\..\Data\JSON\appointmentNotificationDoctor.json";
+        private IDoctorRepository _doctorRepository;
+        private IAppointmentNotificationRepository _appointmentNotificationRepository;
+
+        public AppointmentNotificationDoctorRepository(IDoctorRepository doctorRepository, IAppointmentNotificationRepository appointmentNotificationRepository)
         {
-            this._fileName = fileName;
+            _doctorRepository = doctorRepository;
+            _appointmentNotificationRepository = appointmentNotificationRepository;
             this.LoadFromFile();
-        }
-
-        private static AppointmentNotificationDoctorRepository s_instance = null;
-
-        public static AppointmentNotificationDoctorRepository GetInstance()
-        {
-            {
-                if (s_instance == null)
-                {
-                    s_instance = new AppointmentNotificationDoctorRepository(@"..\..\..\Data\JSON\appointmentNotificationDoctor.json");
-                }
-                return s_instance;
-            }
         }
 
         public void LoadFromFile()
         {
-            var doctorsByUsername = DoctorRepository.GetInstance().DoctorsByUsername;
-            var notificationsById = AppointmentNotificationRepository.GetInstance().NotificationsById;
+            var doctorsByUsername = _doctorRepository.GetAllById();
+            var notificationsById = _appointmentNotificationRepository.GetAllById();
             
             var doctorUseranamesNotificationIds = JArray.Parse(File.ReadAllText(this._fileName));
             foreach (var pair in doctorUseranamesNotificationIds)
@@ -54,7 +45,7 @@ namespace HealthInstitution.Core.Notifications.Repository
         public void Save()
         {
             List<dynamic> doctorUseranamesNotificationIds = new List<dynamic>();
-            var notifications = AppointmentNotificationRepository.GetInstance().Notifications;
+            var notifications = _appointmentNotificationRepository.GetAll();
             foreach (var notification in notifications)
             {
                 Doctor doctor = notification.Doctor;

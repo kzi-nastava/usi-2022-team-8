@@ -13,6 +13,7 @@ namespace HealthInstitution.Core.Operations.Repository
         public void LoadFromFile();
         public void Save();
         public List<Operation> GetAll();
+        public Dictionary<int, Operation> GetAllById();
         public Operation GetById(int id);
         public void Add(Operation operation);
         public void Update(int id, Operation byOperation);

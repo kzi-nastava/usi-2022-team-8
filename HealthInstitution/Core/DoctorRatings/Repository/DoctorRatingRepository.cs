@@ -14,36 +14,22 @@ namespace HealthInstitution.Core.DoctorRatings.Repository;
 
 public class DoctorRatingRepository : IDoctorRatingRepository
 {
-    private String _fileName;
+    private String _fileName = @"..\..\..\Data\JSON\doctorRatings.json";
     public List<DoctorRating> Ratings { get; set; }
     public Dictionary<String, DoctorRating> RatingsById { get; set; }
+
+    public DoctorRatingRepository()
+    {
+        this.Ratings = new List<DoctorRating>();
+        this.RatingsById = new Dictionary<String, DoctorRating>();
+        this.LoadFromFile();
+    }
 
     private JsonSerializerOptions _options = new JsonSerializerOptions
     {
         Converters = { new JsonStringEnumConverter() },
         PropertyNameCaseInsensitive = true
     };
-
-    private DoctorRatingRepository(String fileName)
-    {
-        this._fileName = fileName;
-        this.Ratings = new List<DoctorRating>();
-        this.RatingsById = new Dictionary<String, DoctorRating>();
-        this.LoadFromFile();
-    }
-
-    private static DoctorRatingRepository s_instance = null;
-
-    public static DoctorRatingRepository GetInstance()
-    {
-        {
-            if (s_instance == null)
-            {
-                s_instance = new DoctorRatingRepository(@"..\..\..\Data\JSON\doctorRatings.json");
-            }
-            return s_instance;
-        }
-    }
 
     public void LoadFromFile()
     {
@@ -89,6 +75,11 @@ public class DoctorRatingRepository : IDoctorRatingRepository
     public List<DoctorRating> GetAll()
     {
         return Ratings;
+    }
+
+    public Dictionary<String, DoctorRating> GetAllById()
+    {
+        return RatingsById;
     }
 
 }

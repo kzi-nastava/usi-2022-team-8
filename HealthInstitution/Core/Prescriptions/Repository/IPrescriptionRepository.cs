@@ -13,6 +13,7 @@ namespace HealthInstitution.Core.Prescriptions.Repository
         public void LoadFromFile();
         public void Save();
         public List<Prescription> GetAll();
+        public Dictionary<int, Prescription> GetAllById();
         public Prescription GetById(int id);
         public Prescription Add(Prescription prescription);
         public void Update(int id, Prescription byPrescription);

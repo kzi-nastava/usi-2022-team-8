@@ -12,6 +12,10 @@ namespace HealthInstitution.Core.Equipments.Repository
         public void LoadFromFile();
         public void Save();
         public List<Equipment> GetAll();
+
+        public Dictionary<int, Equipment> GetAllById();
+
+        public Dictionary<string, int> GetAllByQuantity();
         public Equipment GetById(int id);
         public Equipment Add(Equipment equipment);
         public void Update(int id, Equipment byEquipment);

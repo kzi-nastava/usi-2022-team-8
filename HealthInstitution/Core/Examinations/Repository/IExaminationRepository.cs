@@ -13,6 +13,7 @@ namespace HealthInstitution.Core.Examinations.Repository
         public void LoadFromFile();
         public void Save();
         public List<Examination> GetAll();
+        public Dictionary<int, Examination> GetAllById();
         public Examination GetById(int id);
         public void Add(Examination examination);
         public void Update(int id, Examination byExamination);

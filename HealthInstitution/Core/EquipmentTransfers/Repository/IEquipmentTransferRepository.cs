@@ -13,6 +13,7 @@ namespace HealthInstitution.Core.EquipmentTransfers.Repository
         public void LoadFromFile();
         public void Save();
         public List<EquipmentTransfer> GetAll();
+        public Dictionary<int, EquipmentTransfer> GetAllById();
         public EquipmentTransfer GetById(int id);
         public void Add(EquipmentTransfer equipmentTransfer);
         public void Update(int id, EquipmentTransfer byEquipmentTransfer);

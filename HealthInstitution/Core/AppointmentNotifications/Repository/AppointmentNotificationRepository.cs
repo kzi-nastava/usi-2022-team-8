@@ -20,35 +20,30 @@ namespace HealthInstitution.Core.Notifications.Repository
 {
     public class AppointmentNotificationRepository : IAppointmentNotificationRepository
     {
-        private String _fileName;
+        private String _fileName = @"..\..\..\Data\JSON\appointmentNotifications.json";
+        private IAppointmentNotificationPatientRepository _appointmentNotificationPatientRepository;
+        private IAppointmentNotificationDoctorRepository _appointmentNotificationDoctorRepository;
+
         public int _maxId { get; set; }
         public List<AppointmentNotification> Notifications { get; set; }
         public Dictionary<int, AppointmentNotification> NotificationsById { get; set; }
+
+        public AppointmentNotificationRepository(IAppointmentNotificationPatientRepository appointmentNotificationPatientRepository, IAppointmentNotificationDoctorRepository appointmentNotificationDoctorRepository)
+        {
+            _appointmentNotificationPatientRepository = appointmentNotificationPatientRepository;
+            _appointmentNotificationDoctorRepository = appointmentNotificationDoctorRepository;
+            this.Notifications = new List<AppointmentNotification>();
+            this.NotificationsById = new Dictionary<int, AppointmentNotification>();
+            this._maxId = 0;
+            this.LoadFromFile();
+        }  
 
         private JsonSerializerOptions _options = new JsonSerializerOptions
         {
             Converters = { new JsonStringEnumConverter() },
             PropertyNameCaseInsensitive = true
         };
-        private AppointmentNotificationRepository(String fileName)
-        {
-            this._fileName = fileName;
-            this.Notifications = new List<AppointmentNotification>();
-            this.NotificationsById = new Dictionary<int, AppointmentNotification>();
-            this._maxId = 0;
-            this.LoadFromFile();
-        }
-        private static AppointmentNotificationRepository s_instance = null;
-        public static AppointmentNotificationRepository GetInstance()
-        {
-            {
-                if (s_instance == null)
-                {
-                    s_instance = new AppointmentNotificationRepository(@"..\..\..\Data\JSON\appointmentNotifications.json");
-                }
-                return s_instance;
-            }
-        }
+        
         public void LoadFromFile()
         { 
             var allNotifications = JArray.Parse(File.ReadAllText(this._fileName));
@@ -93,6 +88,11 @@ namespace HealthInstitution.Core.Notifications.Repository
             return this.Notifications;
         }
 
+        public Dictionary<int, AppointmentNotification> GetAllById()
+        {
+            return NotificationsById;
+        }
+
         public AppointmentNotification GetById(int id)
         {
             if (NotificationsById.ContainsKey(id))
@@ -111,8 +111,8 @@ namespace HealthInstitution.Core.Notifications.Repository
         private void SaveAll()
         {
             Save();
-            AppointmentNotificationPatientRepository.GetInstance().Save();
-            AppointmentNotificationDoctorRepository.GetInstance().Save();
+            _appointmentNotificationPatientRepository.Save();
+            _appointmentNotificationDoctorRepository.Save();           
         }
         public void Add(AppointmentNotification appointmentNotification)
         {

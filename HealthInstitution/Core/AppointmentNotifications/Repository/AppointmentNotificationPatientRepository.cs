@@ -14,30 +14,22 @@ namespace HealthInstitution.Core.Notifications.Repository
 {
     public class AppointmentNotificationPatientRepository : IAppointmentNotificationPatientRepository
     {
-        private String _fileName;
-        private AppointmentNotificationPatientRepository(String fileName)
+        private String _fileName = @"..\..\..\Data\JSON\appointmentNotificationPatient.json";
+        private IPatientRepository _patientRepository;
+        private IAppointmentNotificationRepository _appointmentNotificationRepository;
+
+        public AppointmentNotificationPatientRepository(IPatientRepository patientRepository, IAppointmentNotificationRepository appointmentNotificationRepository)
         {
-            this._fileName = fileName;
-            this.LoadFromFile();
+            _patientRepository = patientRepository;
+            _appointmentNotificationRepository = appointmentNotificationRepository;
+            LoadFromFile();
         }
 
-        private static AppointmentNotificationPatientRepository s_instance = null;
-
-        public static AppointmentNotificationPatientRepository GetInstance()
-        {
-            {
-                if (s_instance == null)
-                {
-                    s_instance = new AppointmentNotificationPatientRepository(@"..\..\..\Data\JSON\appointmentNotificationPatient.json");
-                }
-                return s_instance;
-            }
-        }
-
+        
         public void LoadFromFile()
         {
-            var patientsByUsername = PatientRepository.GetInstance().PatientByUsername;
-            var notificationsById = AppointmentNotificationRepository.GetInstance().NotificationsById;
+            var patientsByUsername = _patientRepository.GetAllById();
+            var notificationsById = _appointmentNotificationRepository.GetAllById();
             var patientUseranamesNotificationIds = JArray.Parse(File.ReadAllText(this._fileName));
             foreach (var pair in patientUseranamesNotificationIds)
             {
@@ -53,7 +45,7 @@ namespace HealthInstitution.Core.Notifications.Repository
         public void Save()
         {
             List<dynamic> patientUseranamesNotificationIds = new List<dynamic>();
-            var notifications = AppointmentNotificationRepository.GetInstance().Notifications;
+            var notifications = _appointmentNotificationRepository.GetAll();
             foreach (var notification in notifications)
             {
                 Patient patient=notification.Patient;

@@ -15,7 +15,8 @@ namespace HealthInstitution.Core.Polls.Repository
 {
     public class PollQuestionRepository : IPollQuestionRepository
     {
-        private String _fileName;
+        private String _fileName = @"..\..\..\Data\JSON\pollQuestions.json";
+        private IDoctorRepository _doctorRepository;
 
         public List<string> HospitalQuestions { get; set; }
         public List<string> DoctorQuestions { get; set; }
@@ -29,9 +30,10 @@ namespace HealthInstitution.Core.Polls.Repository
             Converters = { new JsonStringEnumConverter() },
             PropertyNameCaseInsensitive = true
         };
-        private PollQuestionRepository(String fileName)
+
+        public PollQuestionRepository(IDoctorRepository doctorRepository)
         {
-            this._fileName = fileName;
+            _doctorRepository = doctorRepository;
             this.PollQuestions = new List<PollQuestion>();
             this.PollQuestionById = new Dictionary<int, PollQuestion>();
             this._maxId = 0;
@@ -47,18 +49,8 @@ namespace HealthInstitution.Core.Polls.Repository
                                                           "Rate overall experience" };
             this.LoadFromFile();
         }
-        private static PollQuestionRepository s_instance = null;
-        public static PollQuestionRepository GetInstance()
-        {
-            {
-                if (s_instance == null)
-                {
-                    s_instance = new PollQuestionRepository(@"..\..\..\Data\JSON\pollQuestions.json");
-                }
-                return s_instance;
-            }
-        }
 
+       
         private List<int> JToken2Ints(JToken tokens)
         {
             List<int> items = new List<int>();
@@ -69,7 +61,7 @@ namespace HealthInstitution.Core.Polls.Repository
 
         private PollQuestion Parse(JToken? pollQuestion)
         {
-            Dictionary<string, Doctor> doctorByUsername = DoctorRepository.GetInstance().DoctorsByUsername;
+            Dictionary<string, Doctor> doctorByUsername = _doctorRepository.GetAllByUsername();
             
             int id = (int)pollQuestion["id"];
             string question = (string)pollQuestion["question"];
@@ -128,6 +120,10 @@ namespace HealthInstitution.Core.Polls.Repository
             return this.PollQuestions;
         }
 
+        public Dictionary<int, PollQuestion> GetAllById()
+        {
+            return this.PollQuestionById;
+        }
         public PollQuestion GetById(int id)
         {
             if (PollQuestionById.ContainsKey(id))

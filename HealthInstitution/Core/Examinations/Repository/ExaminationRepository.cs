@@ -18,7 +18,13 @@ namespace HealthInstitution.Core.Examinations.Repository;
 
 public class ExaminationRepository : IExaminationRepository
 {
-    private String _fileName;
+    private String _fileName = @"..\..\..\Data\JSON\examinations.json";
+
+    private IRoomRepository _roomRepository;
+
+    private IMedicalRecordRepository _medicalRecordRepository;
+
+    private IExaminationDoctorRepository _examinationDoctorRepository;
     public int _maxId { get; set; }
     public List<Examination> Examinations { get; set; }
     public Dictionary<int, Examination> ExaminationsById { get; set; }
@@ -29,32 +35,21 @@ public class ExaminationRepository : IExaminationRepository
         PropertyNameCaseInsensitive = true
     };
 
-    private ExaminationRepository(String fileName)
+    public ExaminationRepository(IRoomRepository roomRepository, IMedicalRecordRepository medicalRecordRepository, IExaminationDoctorRepository examinationDoctorRepository)
     {
-        _fileName = fileName;
+        _roomRepository = roomRepository;
+        _medicalRecordRepository = medicalRecordRepository;
+        _examinationDoctorRepository = examinationDoctorRepository;
         Examinations = new List<Examination>();
         ExaminationsById = new Dictionary<int, Examination>();
         _maxId = 0;
         LoadFromFile();
     }
 
-    private static ExaminationRepository s_instance = null;
-
-    public static ExaminationRepository GetInstance()
-    {
-        {
-            if (s_instance == null)
-            {
-                s_instance = new ExaminationRepository(@"..\..\..\Data\JSON\examinations.json");
-            }
-            return s_instance;
-        }
-    }
-
     private Examination Parse(JToken? examination)
     {
-        Dictionary<int, Room> roomsById = RoomRepository.GetInstance().RoomById;
-        Dictionary<String, MedicalRecord> medicalRecordsByUsername = MedicalRecordRepository.GetInstance().MedicalRecordByUsername;
+        Dictionary<int, Room> roomsById = _roomRepository.GetAllById();
+        Dictionary<String, MedicalRecord> medicalRecordsByUsername = _medicalRecordRepository.GetAllByUsername();
 
         int id = (int)examination["id"];
         ExaminationStatus status;
@@ -114,6 +109,11 @@ public class ExaminationRepository : IExaminationRepository
         return Examinations;
     }
 
+    public Dictionary<int, Examination> GetAllById()
+    {
+        return this.ExaminationsById;
+    }
+
     public Examination GetById(int id)
     {
         if (ExaminationsById.ContainsKey(id))
@@ -133,7 +133,7 @@ public class ExaminationRepository : IExaminationRepository
     private void SaveAll()
     {
         Save();
-        ExaminationDoctorRepository.GetInstance().Save();
+        _examinationDoctorRepository.Save();
     }
 
     public void Add(Examination examination)

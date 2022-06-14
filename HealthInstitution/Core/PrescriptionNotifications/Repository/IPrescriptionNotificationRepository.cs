@@ -15,5 +15,8 @@ namespace HealthInstitution.Core.PrescriptionNotifications.Repository
         public void Delete(int id);
         public List<PrescriptionNotification> GetPatientPresctiptionNotification(string username, int prescription);
         public List<PrescriptionNotification> GetPatientActiveNotification(string username);
+
+        public List<PrescriptionNotification> GetAll();
+        public Dictionary<int, PrescriptionNotification> GetAllById();
     }
 }

@@ -7,7 +7,7 @@ namespace HealthInstitution.Core.Ingredients.Repository;
 public class IngredientRepository : IIngredientRepository
 {
     private int _maxId;
-    private String _fileName;
+    private String _fileName = @"..\..\..\Data\JSON\ingredients.json";
     public List<Ingredient> Ingredients { get; set; }
     public Dictionary<int, Ingredient> IngredientById { get; set; }
 
@@ -16,25 +16,14 @@ public class IngredientRepository : IIngredientRepository
         PropertyNameCaseInsensitive = true
     };
 
-    private IngredientRepository(string fileName) 
+    public IngredientRepository() 
     {
-        this._fileName = fileName;
         this.Ingredients = new List<Ingredient>();
         this.IngredientById = new Dictionary<int, Ingredient>();
         this._maxId = 0;
         this.LoadFromFile();
     }
-    private static IngredientRepository s_instance = null;
-    public static IngredientRepository GetInstance()
-    {
-        {
-            if (s_instance == null)
-            {
-                s_instance = new IngredientRepository(@"..\..\..\Data\JSON\ingredients.json");
-            }
-            return s_instance;
-        }
-    }
+    
     public void LoadFromFile()
     {
         var ingredients = JsonSerializer.Deserialize<List<Ingredient>>(File.ReadAllText(@"..\..\..\Data\JSON\ingredients.json"), _options);
@@ -59,6 +48,10 @@ public class IngredientRepository : IIngredientRepository
         return this.Ingredients;
     }
 
+    public Dictionary<int, Ingredient> GetAllById()
+    {
+        return this.IngredientById;
+    }
     public Ingredient GetById(int id)
     {
         if (this.IngredientById.ContainsKey(id))

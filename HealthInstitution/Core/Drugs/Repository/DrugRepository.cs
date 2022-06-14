@@ -11,37 +11,28 @@ namespace HealthInstitution.Core.Drugs.Repository;
 public class DrugRepository : IDrugRepository
 {
     private int _maxId;
-    private String _fileName;
+    private String _fileName = @"..\..\..\Data\JSON\drugs.json";
+    private IIngredientRepository _ingredientRepository;
     public List<Drug> Drugs { get; set; }
     public Dictionary<int, Drug> DrugById { get; set; }
+
+    public DrugRepository(IIngredientRepository ingredientRepository)
+    {
+        _ingredientRepository = ingredientRepository;
+        this.Drugs = new List<Drug>();
+        this.DrugById = new Dictionary<int, Drug>();
+        this._maxId = 0;
+        this.LoadFromFile();
+    }
 
     private JsonSerializerOptions _options = new JsonSerializerOptions
     {
         Converters = { new JsonStringEnumConverter() },
         PropertyNameCaseInsensitive = true
     };
-    private DrugRepository(string fileName) 
-    {
-        this._fileName = fileName;
-        this.Drugs = new List<Drug>();
-        this.DrugById = new Dictionary<int, Drug>();
-        this._maxId = 0;
-        this.LoadFromFile();
-    }
-    private static DrugRepository s_instance = null;
-    public static DrugRepository GetInstance()
-    {
-        {
-            if (s_instance == null)
-            {
-                s_instance = new DrugRepository(@"..\..\..\Data\JSON\drugs.json");
-            }
-            return s_instance;
-        }
-    }
     private List<Ingredient> JToken2Ingredients(JToken tokens)
     {
-        Dictionary<int, Ingredient> ingredientById = IngredientRepository.GetInstance().IngredientById;
+        Dictionary<int, Ingredient> ingredientById = _ingredientRepository.GetAllById();
         List<Ingredient> items = new List<Ingredient>();
         foreach (int token in tokens)
             items.Add(ingredientById[token]);
@@ -103,6 +94,11 @@ public class DrugRepository : IDrugRepository
     public List<Drug> GetAll()
     {
         return this.Drugs;
+    }
+
+    public Dictionary<int, Drug> GetAllById()
+    {
+        return DrugById;
     }
 
     public List<Drug> GetAllAccepted()
