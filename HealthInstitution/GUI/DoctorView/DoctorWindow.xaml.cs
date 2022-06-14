@@ -16,6 +16,8 @@ using HealthInstitution.GUI.LoginView;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using HealthInstitution.Core.Examinations.Repository;
 using HealthInstitution.Core.Notifications.Model;
+using HealthInstitution.Core.RestRequestNotifications.Model;
+using HealthInstitution.Core.SystemUsers.Doctors;
 
 namespace HealthInstitution.GUI.DoctorView
 {
@@ -33,13 +35,7 @@ namespace HealthInstitution.GUI.DoctorView
         }
         private void ShowNotificationsDialog()
         {
-            int activeNotifications = 0;
-            foreach (AppointmentNotification notification in this._loggedDoctor.Notifications)
-            {
-                if (notification.ActiveForDoctor)
-                    activeNotifications++;
-            }
-            if (activeNotifications > 0)
+            if (DoctorService.GetActiveAppointmentNotification(_loggedDoctor).Count + DoctorService.GetActiveRestRequestNotification(_loggedDoctor).Count > 0)
             {
                 DoctorNotificationsDialog doctorNotificationsDialog = new DoctorNotificationsDialog(this._loggedDoctor);
                 doctorNotificationsDialog.ShowDialog();

@@ -5,6 +5,7 @@ using HealthInstitution.GUI.LoginView;
 using HealthInstitution.GUI.PatientView;
 using HealthInstitution.Core.SystemUsers.Patients.Model;
 using HealthInstitution.Core.Notifications.Model;
+using HealthInstitution.Core.SystemUsers.Patients;
 
 namespace HealthInstitution.GUI.UserWindow
 {
@@ -25,13 +26,7 @@ namespace HealthInstitution.GUI.UserWindow
 
         private void ShowNotificationsDialog()
         {
-            int activeNotifications = 0;
-            foreach (AppointmentNotification notification in this._loggedPatient.Notifications)
-            {
-                if (notification.ActiveForPatient)
-                    activeNotifications++;
-            }
-            if (activeNotifications > 0)
+            if (PatientService.GetActiveAppointmentNotification(_loggedPatient).Count>0)
             {
                 PatientNotificationsDialog patientNotificationsDialog = new PatientNotificationsDialog(this._loggedPatient);
                 patientNotificationsDialog.ShowDialog();

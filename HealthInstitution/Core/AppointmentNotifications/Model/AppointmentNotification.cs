@@ -31,4 +31,13 @@ public class AppointmentNotification
         ActiveForDoctor = activeForDoctor;
         ActiveForPatient = activeForPatient;
     }
+    public AppointmentNotification(AppointmentNotificationDTO appointmentNotificationDTO)
+    {
+        OldAppointment = appointmentNotificationDTO.OldAppointment;
+        NewAppointment = appointmentNotificationDTO.NewAppointment;
+        Doctor = appointmentNotificationDTO.Doctor;
+        Patient = appointmentNotificationDTO.Patient;
+        ActiveForDoctor = true;
+        ActiveForPatient = true;
+    }
 }

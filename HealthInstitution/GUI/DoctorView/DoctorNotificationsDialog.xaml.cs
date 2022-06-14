@@ -1,6 +1,8 @@
 ﻿using HealthInstitution.Core.Notifications;
 using HealthInstitution.Core.Notifications.Model;
 using HealthInstitution.Core.Notifications.Repository;
+using HealthInstitution.Core.RestRequestNotifications;
+using HealthInstitution.Core.RestRequestNotifications.Model;
 using HealthInstitution.Core.SystemUsers.Doctors;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using HealthInstitution.Core.SystemUsers.Doctors.Repository;
@@ -34,14 +36,20 @@ namespace HealthInstitution.GUI.DoctorView
         }
         private void LoadRows()
         {
-            dataGrid.Items.Clear();
-            List<AppointmentNotification> doctorsNotifications = _loggedDoctor.Notifications;
-            foreach (AppointmentNotification notification in doctorsNotifications)
+            appointmentGrid.Items.Clear();
+            restRequestGrid.Items.Clear();
+            foreach (AppointmentNotification notification in DoctorService.GetActiveAppointmentNotification(_loggedDoctor))
             {
-                dataGrid.Items.Add(notification);
+                appointmentGrid.Items.Add(notification);
                 AppointmentNotificationService.ChangeActiveStatus(notification,true);
             }
-            dataGrid.Items.Refresh();
+            foreach (RestRequestNotification notification in DoctorService.GetActiveRestRequestNotification(_loggedDoctor))
+            {
+                restRequestGrid.Items.Add(notification.RestRequest);
+                RestRequestNotificationService.ChangeActiveStatus(notification);
+            }
+            appointmentGrid.Items.Refresh();
+            restRequestGrid.Items.Refresh();
             DoctorService.DeleteNotifications(_loggedDoctor);
         }
     }

@@ -11,10 +11,10 @@
     <Compile Update="GUI\DoctorView\AddReferralDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="GUI\DoctorView\DrugsVerificationTable.xaml.cs">
+    <Compile Update="GUI\DoctorView\DrugRejectionReasonDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="GUI\DoctorView\RejectionReasonDialog.xaml.cs">
+    <Compile Update="GUI\DoctorView\DrugsVerificationTable.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="GUI\DoctorView\ConsumedEquipmentDialog.xaml.cs">
@@ -105,6 +105,12 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="GUI\PatientView\PrescriptionNotifications\PrescriptionNotificationSettingsDialog.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="GUI\SecretaryView\RequestsView\RestRequestRejectionDialog.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="GUI\SecretaryView\RequestsView\RestRequestsReview.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="GUI\SecretaryView\UrgentAppointmentView\AddUrgentExaminationDialog.xaml.cs">
@@ -205,7 +211,7 @@
     <Compile Update="GUI\UserWindow\ManagerWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="GUI\SecretaryView\ExaminationRequestsReview.xaml.cs">
+    <Compile Update="GUI\SecretaryView\RequestsView\ExaminationRequestsReview.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="GUI\UserWindow\ManagerWindow.xaml.cs">
@@ -234,6 +240,9 @@
     <Page Update="GUI\DoctorView\DoctorWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="GUI\DoctorView\DrugRejectionReasonDialog.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="GUI\DoctorView\DrugsVerificationTable.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -253,9 +262,6 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Update="GUI\DoctorView\PerformExaminationDialog.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="GUI\DoctorView\RejectionReasonDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="GUI\DoctorView\ScheduledExaminationTable.xaml">
@@ -345,6 +351,12 @@
     <Page Update="GUI\PatientView\PrescriptionNotifications\PrescriptionNotificationSettingsDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="GUI\SecretaryView\RequestsView\RestRequestRejectionDialog.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="GUI\SecretaryView\RequestsView\RestRequestsReview.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="GUI\SecretaryView\UrgentAppointmentView\AddUrgentExaminationDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -419,7 +431,7 @@
     <Page Update="GUI\UserWindow\ManagerWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="GUI\SecretaryView\ExaminationRequestsReview.xaml">
+    <Page Update="GUI\SecretaryView\RequestsView\ExaminationRequestsReview.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="GUI\UserWindow\ManagerWindow.xaml">
