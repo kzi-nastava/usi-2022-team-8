@@ -90,10 +90,10 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
             Room selectedRoom = (Room)roomComboBox.SelectedItem;
 
             RenovationDTO renovationDTO = new RenovationDTO(selectedRoom, startDate, endDate);
-            RenovationService.AddRenovation(renovationDTO);
+            Renovation renovation = RenovationService.AddRenovation(renovationDTO);
             if (startDate == DateTime.Today)
             {
-                RenovationService.StartRenovation(selectedRoom);
+                RenovationService.Start(renovation);
                 System.Windows.MessageBox.Show("Renovation scheduled!", "Room renovation", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             else
