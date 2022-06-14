@@ -3,6 +3,7 @@ using HealthInstitution.Core.Examinations.Model;
 using HealthInstitution.Core.SystemUsers.Users.Model;
 using System.Windows;
 using HealthInstitution.GUI.PatientView.Polls;
+using HealthInstitution.GUI.PatientViewModel;
 
 namespace HealthInstitution.GUI.PatientView;
 
@@ -18,8 +19,9 @@ public partial class MedicalRecordView : Window
     {
         InitializeComponent();
         _loggedPatient = loggedPatient;
+        DataContext = new MedicalRecordViewModel(loggedPatient);
 
-        LoadAllRows();
+        //LoadAllRows();
     }
 
     private void DoctorButton_Click(object sender, RoutedEventArgs e)

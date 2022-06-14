@@ -83,13 +83,7 @@
     <Compile Update="GUI\PatientView\RecommendedScheduling\ClosestFit.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="GUI\PatientView\DoctorPickExamination.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Update="GUI\PatientView\Scheduling\EditExaminationDialog.xaml.cs">
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Update="GUI\PatientView\PatientNotificationsDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="GUI\PatientView\MedicalRecordView.xaml.cs">
@@ -321,16 +315,10 @@
     <Page Update="GUI\PatientView\RecommendedScheduling\ClosestFit.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="GUI\PatientView\DoctorPickExamination.xaml">
-      <SubType>Designer</SubType>
-    </Page>
     <Page Update="GUI\PatientView\Scheduling\EditExaminationDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="GUI\PatientView\MedicalRecordView.xaml">
-      <SubType>Designer</SubType>
-    </Page>
-    <Page Update="GUI\PatientView\PatientNotificationsDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="GUI\PatientView\Scheduling\PatientScheduleWindow.xaml">
