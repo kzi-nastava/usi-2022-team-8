@@ -8,6 +8,9 @@ using HealthInstitution.Core.SystemUsers.Users.Model;
 using HealthInstitution.Core.SystemUsers.Patients.Model;
 using HealthInstitution.GUI.LoginView;
 using HealthInstitution.Core.DIContainer;
+using HealthInstitution.Core.Drugs;
+using HealthInstitution.Core.Drugs.Repository;
+using HealthInstitution.GUI.DoctorView;
 
 namespace HealthInstitution
 {
@@ -20,16 +23,17 @@ namespace HealthInstitution
             //services.RegisterSingleton<Random>();
             //services.RegisterTransient<Random>();
 
-            services.RegisterTransient<ISomeService, SomeService>();
-            services.RegisterTransient<IServiceInConstructorOfSomeService, ServiceInConstructorOfSomeService>();
+            services.RegisterTransient<IDrugService, DrugService>();
+            services.RegisterTransient<IDrugVerificationService, DrugVerificationService >();
+            services.RegisterTransient<IDrugRepository, DrugRepository>();
 
+            services.RegisterTransient<DrugsVerificationTable>();
             services.RegisterSingleton<LoginWindow>();
 
 
             var container = services.BuildContainer();
 
-            var service1 = container.GetService<ISomeService>();
-            var service2 = container.GetService<ISomeService>();
+            
 
             var loginWindow = container.GetService<LoginWindow>();
 
