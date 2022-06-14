@@ -1,4 +1,5 @@
-﻿using HealthInstitution.Core;
+﻿using HealthInstitution.Commands.Patient;
+using HealthInstitution.Core;
 using HealthInstitution.Core.Examinations;
 using HealthInstitution.Core.Examinations.Model;
 using HealthInstitution.Core.SystemUsers.Patients.Model;
@@ -15,17 +16,20 @@ namespace HealthInstitution.GUI.PatientViewModel;
 
 public class MedicalRecordViewModel : ViewModelBase
 {
-    private ObservableCollection<ExaminationViewModel> _examinations;
+    //TODO all other commands
+    public List<Examination> Examinations { get; set; }
+
+    private ObservableCollection<ExaminationViewModel> _examinationVMs;
 
     public ObservableCollection<ExaminationViewModel> CompletedExaminations
     {
         get
         {
-            return _examinations;
+            return _examinationVMs;
         }
         set
         {
-            _examinations = value;
+            _examinationVMs = value;
             OnPropertyChanged(nameof(CompletedExaminations));
         }
     }
@@ -51,16 +55,25 @@ public class MedicalRecordViewModel : ViewModelBase
     public ICommand DateSortCommand { get; }
     public ICommand SpecializationSortCommand { get; }
 
-    private User _loggedPatient;
+    public User LoggedPatient { get; set; }
 
     public MedicalRecordViewModel(User patient)
     {
-        this._examinations = new();
-        _loggedPatient = patient;
-        foreach (Examination examination in ExaminationService.GetCompletedByPatient(_loggedPatient.Username))
+        this._examinationVMs = new();
+        LoggedPatient = patient;
+        this.Examinations = ExaminationService.GetCompletedByPatient(LoggedPatient.Username);
+        PutIntoGrid();
+        DoctorSortCommand = new DoctorSortCommand(this);
+        SearchKeywordCommand = new SearchAnamnesisCommand(this);
+    }
+
+    public void PutIntoGrid()
+    {
+        _examinationVMs.Clear();
+        foreach (Examination examination in Examinations)
         {
             var vm = new ExaminationViewModel(examination);
-            _examinations.Add(vm);
+            _examinationVMs.Add(vm);
         }
     }
 }
