@@ -55,7 +55,7 @@ public class PrescriptionNotificationCronJobService : IPrescriptionNotificationC
     {
         return TriggerBuilder.Create()
       .WithIdentity("trigger" + settings.Id + dateTime, "group1")
-      .WithCronSchedule("0 0/1 * * * ?", x => x
+      .WithCronSchedule("0 " + dateTime.Minute + " " + dateTime.Hour + " * * ?", x => x
           .InTimeZone(TimeZoneInfo.FindSystemTimeZoneById("Central Europe Standard Time")))
       .ForJob(job)
       .Build();

@@ -1,4 +1,5 @@
-﻿using HealthInstitution.Core.SystemUsers.Patients.Model;
+﻿using HealthInstitution.Core.Notifications.Model;
+using HealthInstitution.Core.SystemUsers.Patients.Model;
 using HealthInstitution.Core.SystemUsers.Users.Model;
 using System;
 using System.Collections.Generic;
@@ -19,5 +20,6 @@ namespace HealthInstitution.Core.SystemUsers.Patients
         public void DeleteNotifications(Patient patient);
         public bool IsAvailableForDeletion(Patient patient);
         public void LoadNotifications();
+        public List<AppointmentNotification> GetActiveAppointmentNotification(Patient patient);
     }
 }

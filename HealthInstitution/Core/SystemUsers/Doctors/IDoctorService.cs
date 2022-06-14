@@ -1,5 +1,7 @@
 ﻿using HealthInstitution.Core.Examinations.Model;
+using HealthInstitution.Core.Notifications.Model;
 using HealthInstitution.Core.Operations.Model;
+using HealthInstitution.Core.RestRequestNotifications.Model;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
 
 namespace HealthInstitution.Core.SystemUsers.Doctors
@@ -21,6 +23,9 @@ namespace HealthInstitution.Core.SystemUsers.Doctors
         public void LoadAppointments();
         public void LoadNotifications();
         public void DeleteNotifications(Doctor doctor);
+        public List<AppointmentNotification> GetActiveAppointmentNotification(Doctor doctor);
+        public List<RestRequestNotification> GetActiveRestRequestNotification(Doctor doctor);
+        public List<Doctor> GetDoctorsOrderByRating();
 
     }
 }

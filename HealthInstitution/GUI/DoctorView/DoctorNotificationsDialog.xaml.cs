@@ -44,12 +44,12 @@ namespace HealthInstitution.GUI.DoctorView
         {
             appointmentGrid.Items.Clear();
             restRequestGrid.Items.Clear();
-            foreach (AppointmentNotification notification in DoctorService.GetActiveAppointmentNotification(_loggedDoctor))
+            foreach (AppointmentNotification notification in _doctorService.GetActiveAppointmentNotification(_loggedDoctor))
             {
                 appointmentGrid.Items.Add(notification);
                 _appointmentNotificationService.ChangeActiveStatus(notification,true);
             }
-            foreach (RestRequestNotification notification in DoctorService.GetActiveRestRequestNotification(_loggedDoctor))
+            foreach (RestRequestNotification notification in _doctorService.GetActiveRestRequestNotification(_loggedDoctor))
             {
                 restRequestGrid.Items.Add(notification.RestRequest);
                 _restRequestNotificationService.ChangeActiveStatus(notification);

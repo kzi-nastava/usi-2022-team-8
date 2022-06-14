@@ -100,7 +100,7 @@ public class DoctorService : IDoctorService
         GetById(username).AvgRating = avgRating;
         _doctorRepository.Save();
     }
-    public static List<AppointmentNotification> GetActiveAppointmentNotification(Doctor doctor)
+    public List<AppointmentNotification> GetActiveAppointmentNotification(Doctor doctor)
     {
         List<AppointmentNotification> appointmentNotifications = new List<AppointmentNotification>();
         foreach (AppointmentNotification appointmentNotification in doctor.AppointmentNotifications)
@@ -108,12 +108,17 @@ public class DoctorService : IDoctorService
                 appointmentNotifications.Add(appointmentNotification);
         return appointmentNotifications;
     }
-    public static List<RestRequestNotification> GetActiveRestRequestNotification(Doctor doctor)
+    public List<RestRequestNotification> GetActiveRestRequestNotification(Doctor doctor)
     {
         List<RestRequestNotification> restRequestNotifications = new List<RestRequestNotification>();
         foreach (RestRequestNotification restRequestNotification in doctor.RestRequestNotifications)
             if (restRequestNotification.Active)
                 restRequestNotifications.Add(restRequestNotification);
         return restRequestNotifications;
+    }
+
+    public List<Doctor> GetDoctorsOrderByRating()
+    {
+        return _doctorRepository.GetAll().OrderBy(d => d.AvgRating).ToList();
     }
 }

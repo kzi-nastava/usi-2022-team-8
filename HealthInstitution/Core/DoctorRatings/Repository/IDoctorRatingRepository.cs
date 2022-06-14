@@ -14,6 +14,7 @@ public interface IDoctorRatingRepository
     public void Save();
 
     public DoctorRating GetById(string id);
+    public List<DoctorRating> GetAll();
 
     public void Add(string username);
 

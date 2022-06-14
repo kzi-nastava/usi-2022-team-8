@@ -90,4 +90,5 @@ public class DoctorRatingRepository : IDoctorRatingRepository
     {
         return Ratings;
     }
+
 }

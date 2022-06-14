@@ -15,18 +15,19 @@ namespace HealthInstitution.GUI.UserWindow
     public partial class PatientWindow : Window
     {
         private Patient _loggedPatient;
-
-        public PatientWindow(Patient loggedPatient)
+        IPatientService _patientService;
+        public PatientWindow(Patient loggedPatient, IPatientService patientService)
         {
             InitializeComponent();
             this._loggedPatient = loggedPatient;
+            this._patientService = patientService;
             ShowNotificationsDialog();
             new RecepieNotificationDialog(loggedPatient.Username).ShowDialog();
         }
 
         private void ShowNotificationsDialog()
         {
-            if (PatientService.GetActiveAppointmentNotification(_loggedPatient).Count>0)
+            if (_patientService.GetActiveAppointmentNotification(_loggedPatient).Count>0)
             {
                 PatientNotificationsDialog patientNotificationsDialog = new PatientNotificationsDialog(this._loggedPatient);
                 patientNotificationsDialog.ShowDialog();
@@ -66,6 +67,11 @@ namespace HealthInstitution.GUI.UserWindow
         private void RecepieNotificationSettings_button_Click(object sender, RoutedEventArgs e)
         {
             new RecepieNotificationSettingsDialog(_loggedPatient.Username).ShowDialog();
+        }
+
+        private void rateHospital_button_Click(object sender, RoutedEventArgs e)
+        {
+            new PatientHospitalPollDialog().ShowDialog();
         }
     }
 }

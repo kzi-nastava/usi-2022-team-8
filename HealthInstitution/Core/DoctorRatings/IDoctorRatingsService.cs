@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.DoctorRatings;
 
-public interface IDoctorRatingService
+public interface IDoctorRatingsService
 {
     public void Add(string username);
 

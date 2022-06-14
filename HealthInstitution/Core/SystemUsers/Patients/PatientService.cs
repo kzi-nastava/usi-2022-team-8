@@ -33,7 +33,6 @@ namespace HealthInstitution.Core.SystemUsers.Patients
             _userService = userService;
             _trollCounterService = trollCounterService;
         }
-        static PatientRepository s_patientRepository = PatientRepository.GetInstance();
         public void LoadNotifications()
         {
             AppointmentNotificationPatientRepository.GetInstance();
@@ -83,7 +82,7 @@ namespace HealthInstitution.Core.SystemUsers.Patients
         {
             return _examinationService.GetByPatient(patient.Username).Count == 0 && _operationService.GetByPatient(patient.Username).Count() == 0;
         }
-        public static List<AppointmentNotification> GetActiveAppointmentNotification(Patient patient)
+        public List<AppointmentNotification> GetActiveAppointmentNotification(Patient patient)
         {
             List<AppointmentNotification> appointmentNotifications=new List<AppointmentNotification>();
             foreach (AppointmentNotification appointmentNotification in patient.Notifications)

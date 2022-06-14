@@ -21,6 +21,7 @@ using HealthInstitution.Core.SystemUsers.Patients;
 using HealthInstitution.Core.DoctorRatings;
 using HealthInstitution.Core.EquipmentTransfers;
 using HealthInstitution.Core.Renovations;
+using HealthInstitution.Core.RestRequests;
 
 namespace HealthInstitution.GUI.LoginView
 {
@@ -120,15 +121,11 @@ namespace HealthInstitution.GUI.LoginView
             managerWindow.ShowDialog();
         }
 
-        private void UpdateEquipmentOnStartup()
+        public async Task StartAsync()
         {
-            _equipmentTransferRefreshingService.UpdateByTransfer();
-            _renovationRefreshingService.UpdateByRenovation();
-        }
+            EquipmentTransferRefreshingService.UpdateByTransfer();
+            RenovationRefreshingService.UpdateByRenovation();
 
-        [STAThread]
-        private static void Main(string[] args)
-        {   
             LoginWindow window = new LoginWindow();
             window.ShowDialog();
         }

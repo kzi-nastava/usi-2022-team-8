@@ -15,6 +15,7 @@ using System.Windows.Shapes;
 using HealthInstitution.GUI.LoginView;
 using HealthInstitution.GUI.ManagerView.RenovationView;
 using HealthInstitution.GUI.ManagerView.DrugView;
+using HealthInstitution.GUI.ManagerView.PollView;
 
 namespace HealthInstitution.GUI.UserWindow
 {
@@ -79,6 +80,18 @@ namespace HealthInstitution.GUI.UserWindow
         {
             RejectedDrugsTableWindow rejectedDrugsTableWindow = new RejectedDrugsTableWindow();
             rejectedDrugsTableWindow.ShowDialog();
+        }
+
+        private void HospitalPoll_Click(object sender, RoutedEventArgs e)
+        {
+            HospitalPollWindow hospitalPollWindow = new HospitalPollWindow();
+            hospitalPollWindow.ShowDialog();
+        }
+
+        private void DoctorPoll_Click(object sender, RoutedEventArgs e)
+        {
+            DoctorPollWindow doctorPollWindow = new DoctorPollWindow();
+            doctorPollWindow.ShowDialog();
         }
     }
 }
