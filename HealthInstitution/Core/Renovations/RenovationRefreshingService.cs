@@ -22,7 +22,7 @@ namespace HealthInstitution.Core.Renovations.Functionality
         {
             foreach (Renovation renovation in s_renovationRepository.Renovations)
             { 
-                if (renovation.Room.IsActive)
+                if (renovation.HasActiveRooms())
                 {
                     Update(renovation);
                 }                   
@@ -33,52 +33,14 @@ namespace HealthInstitution.Core.Renovations.Functionality
         {
             if (renovation.ShouldStart())
             {
-                RenovationService.StartRenovation(renovation);
+                RenovationService.Start(renovation);
             }
 
             if (renovation.ShouldEnd())
             {
-                RenovationService.EndRenovation(renovation);
+                RenovationService.End(renovation);
             }
         }
 
-        private static void UpdateSeparationRenovation(RoomSeparation roomSeparation)
-        {
-            if (roomSeparation.StartDate <= DateTime.Today.AddDays(-1))
-            {
-                RenovationService.StartSeparation(roomSeparation.Room, roomSeparation.FirstRoom, roomSeparation.SecondRoom);
-            }
-
-            if (roomSeparation.EndDate <= DateTime.Today.AddDays(-1))
-            {
-                RenovationService.EndSeparation(roomSeparation.Room, roomSeparation.FirstRoom, roomSeparation.SecondRoom);
-            }
-        }
-
-        private static void UpdateMergeRenovation(RoomMerger roomMerger)
-        {
-            if (roomMerger.StartDate <= DateTime.Today.AddDays(-1))
-            {
-                RenovationService.StartMerge(roomMerger.Room, roomMerger.RoomForMerge, roomMerger.MergedRoom);
-            }
-
-            if (roomMerger.EndDate <= DateTime.Today.AddDays(-1))
-            {
-                RenovationService.EndMerge(roomMerger.Room, roomMerger.RoomForMerge, roomMerger.MergedRoom);
-            }
-        }
-
-        private static void UpdateSimpleRenovation(Renovation renovation)
-        {
-            if (renovation.StartDate <= DateTime.Today.AddDays(-1))
-            {
-                RenovationService.StartRenovation(renovation.Room);
-            }
-
-            if (renovation.EndDate <= DateTime.Today.AddDays(-1))
-            {
-                RenovationService.EndRenovation(renovation.Room);
-            }
-        }
     }
 }

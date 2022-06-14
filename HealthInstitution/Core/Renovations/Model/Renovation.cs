@@ -64,4 +64,25 @@ public class Renovation
     {
         return this.GetType() == typeof(RoomSeparation);
     }
+
+    public virtual void RemoveOldRoomEquipment(){}
+
+    public virtual bool CheckHistoryDelete(Room room)
+    {
+        if (this.Room == room)
+        {
+            room.IsActive = false;
+            return true;
+        }
+        return false;
+    }
+
+    public virtual bool CheckRenovationStatus(Room room)
+    {
+        if (this.Room == room)
+        {
+            return true;
+        }
+        return false;
+    }
 }

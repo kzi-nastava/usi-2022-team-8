@@ -21,7 +21,7 @@ public class RoomMerger : Renovation
 
     public override bool HasActiveRooms()
     {
-        return this.Room.IsActive && this.MergedRoom.IsActive;
+        return this.Room.IsActive && this.RoomForMerge.IsActive;
     }
 
     public override void Start()
@@ -36,17 +36,22 @@ public class RoomMerger : Renovation
         {
             this.MergedRoom.AvailableEquipment.Add(equipment);
         }
-        this.Room.AvailableEquipment.Clear();
-
+        
         foreach (Equipment equipment in this.RoomForMerge.AvailableEquipment)
         {
             UpdateEquipmentQuantity(equipment);
         }
-        this.RoomForMerge.AvailableEquipment.Clear();
+        
 
-        this.Room.IsRenovating = false;
-        this.Room.IsActive = false;
-        this.RoomForMerge.IsRenovating = false;
+        this.Room.ExcludeByRenovation();
+        this.RoomForMerge.ExcludeByRenovation();
+        this.MergedRoom.ActivateByRenovation();
+    }
+
+    public override void RemoveOldRoomEquipment()
+    {
+        this.Room.AvailableEquipment.Clear();
+        this.RoomForMerge.AvailableEquipment.Clear();
     }
 
     private void UpdateEquipmentQuantity(Equipment equipment)
@@ -61,4 +66,24 @@ public class RoomMerger : Renovation
             MergedRoom.AvailableEquipment.Add(equipment);
         }
     }
+
+    public override bool CheckHistoryDelete(Room room)
+    {
+        if (this.Room == room || this.RoomForMerge == room)
+        {
+            room.IsActive = false;
+            return true;
+        }
+        return false;
+    }
+
+    public override bool CheckRenovationStatus(Room room)
+    {
+        if (this.Room == room || this.RoomForMerge == room)
+        {
+            return true;
+        }
+        return false;
+    }
+
 }
