@@ -57,6 +57,7 @@ public static class ExaminationService
 
     public static List<Examination> GetCompletedByPatient(string patientUsername)
     {
+        ExaminationDoctorRepository.GetInstance().LoadFromFile();
         return s_examinationRepository.GetCompletedByPatient(patientUsername);
     }
 

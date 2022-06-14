@@ -112,4 +112,9 @@ public static class DoctorService
                 restRequestNotifications.Add(restRequestNotification);
         return restRequestNotifications;
     }
+
+    public static List<Doctor> GetDoctorsOrderByRating()
+    {
+        return s_doctorRepository.Doctors.OrderBy(d => d.AvgRating).ToList();
+    }
 }

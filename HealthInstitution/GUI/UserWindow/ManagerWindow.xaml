@@ -15,6 +15,10 @@
                 <MenuItem Header="On verification" Click="OnVerificationDrugs_Click"/>
                 <MenuItem Header="Rejected" Click="RejectedDrugs_Click"/>
             </MenuItem>
+            <MenuItem Header="Polls" FontSize="14" Height="30" Width="111">
+                <MenuItem Header="Hospital poll" Click="HospitalPoll_Click"/>
+                <MenuItem Header="Doctor poll" Click="DoctorPoll_Click"/>
+            </MenuItem>
         </Menu>
         <Button Content="Equipment inspection" Click="EquipmentInspection_Click" Height="28" HorizontalAlignment="Center" Margin="0,200,0,0" VerticalAlignment="Top" FontSize="18"/>
         <Button Content="Equipment transfer" Click="EquipmentTransfer_Click"  Height="28" HorizontalAlignment="Center" Margin="0,250,0,0" VerticalAlignment="Top" FontSize="18"/>

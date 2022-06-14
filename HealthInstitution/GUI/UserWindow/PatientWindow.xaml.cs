@@ -67,5 +67,10 @@ namespace HealthInstitution.GUI.UserWindow
         {
             new RecepieNotificationSettingsDialog(_loggedPatient.Username).ShowDialog();
         }
+
+        private void rateHospital_button_Click(object sender, RoutedEventArgs e)
+        {
+            new PatientHospitalPollDialog().ShowDialog();
+        }
     }
 }

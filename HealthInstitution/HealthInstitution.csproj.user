@@ -44,6 +44,15 @@
     <Compile Update="GUI\ManagerView\IngredientView\IngredientsTableWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Update="GUI\ManagerView\PollView\DoctorPollWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="GUI\ManagerView\PollView\HospitalPollWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="GUI\ManagerView\PollView\RatedDoctorsWindow.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Update="GUI\ManagerView\RenovationView\ArrangeEquipmentForSplitWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -62,16 +71,22 @@
     <Compile Update="GUI\DoctorView\DoctorNotificationsDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="GUI\PatientView\AddExaminationDialog.xaml.cs">
+    <Compile Update="GUI\PatientView\Polls\DoctorPollDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="GUI\PatientView\ClosestFit.xaml.cs">
+    <Compile Update="GUI\PatientView\Polls\HospitalPollDialog.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="GUI\PatientView\Scheduling\AddExaminationDialog.xaml.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Update="GUI\PatientView\RecommendedScheduling\ClosestFit.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="GUI\PatientView\DoctorPickExamination.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="GUI\PatientView\EditExaminationDialog.xaml.cs">
+    <Compile Update="GUI\PatientView\Scheduling\EditExaminationDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="GUI\PatientView\PatientNotificationsDialog.xaml.cs">
@@ -80,16 +95,16 @@
     <Compile Update="GUI\PatientView\MedicalRecordView.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="GUI\PatientView\PatientScheduleWindow.xaml.cs">
+    <Compile Update="GUI\PatientView\Scheduling\PatientScheduleWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="GUI\SecretaryView\ReferralSchedulingView\AddExaminationWithReferralDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="GUI\PatientView\RecepieNotificationDialog.xaml.cs">
+    <Compile Update="GUI\PatientView\PrescriptionNotifications\PrescriptionNotificationDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="GUI\PatientView\RecepieNotificationSettingsDialog.xaml.cs">
+    <Compile Update="GUI\PatientView\PrescriptionNotifications\PrescriptionNotificationSettingsDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="GUI\SecretaryView\RequestsView\RestRequestRejectionDialog.xaml.cs">
@@ -104,7 +119,7 @@
     <Compile Update="GUI\SecretaryView\UrgentAppointmentView\AddUrgentOperationDialog.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Update="GUI\PatientView\RecommendedWindow.xaml.cs">
+    <Compile Update="GUI\PatientView\RecommendedScheduling\RecommendedWindow.xaml.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Update="GUI\SecretaryView\PatientManipulationView\CreatePatientDialog.xaml.cs">
@@ -276,6 +291,15 @@
     <Page Update="GUI\ManagerView\IngredientView\IngredientsTableWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
+    <Page Update="GUI\ManagerView\PollView\DoctorPollWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="GUI\ManagerView\PollView\HospitalPollWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="GUI\ManagerView\PollView\RatedDoctorsWindow.xaml">
+      <SubType>Designer</SubType>
+    </Page>
     <Page Update="GUI\ManagerView\RenovationView\ArrangeEquipmentForSplitWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
@@ -291,16 +315,22 @@
     <Page Update="GUI\ManagerView\RenovationView\SimpleRenovationWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="GUI\PatientView\AddExaminationDialog.xaml">
+    <Page Update="GUI\PatientView\Polls\DoctorPollDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="GUI\PatientView\ClosestFit.xaml">
+    <Page Update="GUI\PatientView\Polls\HospitalPollDialog.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="GUI\PatientView\Scheduling\AddExaminationDialog.xaml">
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Update="GUI\PatientView\RecommendedScheduling\ClosestFit.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="GUI\PatientView\DoctorPickExamination.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="GUI\PatientView\EditExaminationDialog.xaml">
+    <Page Update="GUI\PatientView\Scheduling\EditExaminationDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="GUI\PatientView\MedicalRecordView.xaml">
@@ -309,16 +339,16 @@
     <Page Update="GUI\PatientView\PatientNotificationsDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="GUI\PatientView\PatientScheduleWindow.xaml">
+    <Page Update="GUI\PatientView\Scheduling\PatientScheduleWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="GUI\SecretaryView\ReferralSchedulingView\AddExaminationWithReferralDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="GUI\PatientView\RecepieNotificationDialog.xaml">
+    <Page Update="GUI\PatientView\PrescriptionNotifications\PrescriptionNotificationDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="GUI\PatientView\RecepieNotificationSettingsDialog.xaml">
+    <Page Update="GUI\PatientView\PrescriptionNotifications\PrescriptionNotificationSettingsDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="GUI\SecretaryView\RequestsView\RestRequestRejectionDialog.xaml">
@@ -333,7 +363,7 @@
     <Page Update="GUI\SecretaryView\UrgentAppointmentView\AddUrgentOperationDialog.xaml">
       <SubType>Designer</SubType>
     </Page>
-    <Page Update="GUI\PatientView\RecommendedWindow.xaml">
+    <Page Update="GUI\PatientView\RecommendedScheduling\RecommendedWindow.xaml">
       <SubType>Designer</SubType>
     </Page>
     <Page Update="GUI\SecretaryView\PatientManipulationView\CreatePatientDialog.xaml">

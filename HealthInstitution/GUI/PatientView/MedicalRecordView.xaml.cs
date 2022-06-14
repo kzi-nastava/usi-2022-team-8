@@ -2,6 +2,7 @@
 using HealthInstitution.Core.Examinations.Model;
 using HealthInstitution.Core.SystemUsers.Users.Model;
 using System.Windows;
+using HealthInstitution.GUI.PatientView.Polls;
 
 namespace HealthInstitution.GUI.PatientView;
 
@@ -17,6 +18,7 @@ public partial class MedicalRecordView : Window
     {
         InitializeComponent();
         _loggedPatient = loggedPatient;
+
         LoadAllRows();
     }
 
@@ -60,5 +62,11 @@ public partial class MedicalRecordView : Window
     private void SearchParameter_GotFocus(object sender, RoutedEventArgs e)
     {
         searchParameter.Clear();
+    }
+
+    private void RateDoctorButton_Click(object sender, RoutedEventArgs e)
+    {
+        Examination selectedExamination = (Examination)dataGrid.SelectedItem;
+        new DoctorPollDialog(selectedExamination.Doctor).ShowDialog();
     }
 }
