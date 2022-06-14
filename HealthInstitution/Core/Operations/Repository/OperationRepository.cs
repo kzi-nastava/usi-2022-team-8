@@ -22,7 +22,11 @@ namespace HealthInstitution.Core.Operations.Repository
 {
     public class OperationRepository : IOperationRepository
     {
-        private String _fileName;
+        private String _fileName = @"..\..\..\Data\JSON\operations.json";
+
+        private IRoomRepository _roomRepository;
+        private IMedicalRecordRepository _medicalRecordRepository;
+        private IOperationDoctorRepository _operationDoctorRepository;
         public int _maxId { get; set; }
         public List<Operation> Operations { get; set; }
         public Dictionary<int, Operation> OperationsById { get; set; }
@@ -32,31 +36,23 @@ namespace HealthInstitution.Core.Operations.Repository
             Converters = { new JsonStringEnumConverter() },
             PropertyNameCaseInsensitive = true
         };
-        private OperationRepository(String fileName)
+
+        public OperationRepository(IRoomRepository roomRepository, IMedicalRecordRepository medicalRecordRepository, IOperationDoctorRepository operationDoctorRepository)
         {
-            this._fileName = fileName;
+            _roomRepository = roomRepository;
+            _medicalRecordRepository = medicalRecordRepository;
+            _operationDoctorRepository = operationDoctorRepository;
             this.Operations = new List<Operation>();
             this.OperationsById = new Dictionary<int, Operation>();
             this._maxId = 0;
             this.LoadFromFile();
             this.ChangeStatus();
         }
-        private static OperationRepository s_instance = null;
-        public static OperationRepository GetInstance()
-        {
-            {
-                if (s_instance == null)
-                {
-                    s_instance = new OperationRepository(@"..\..\..\Data\JSON\operations.json");
-                }
-                return s_instance;
-            }
-        }
 
         private Operation Parse(JToken? operation)
         {
-            Dictionary<int, Room> roomsById = RoomRepository.GetInstance().RoomById;
-            Dictionary<String, MedicalRecord> medicalRecordsByUsername = MedicalRecordRepository.GetInstance().MedicalRecordByUsername;
+            Dictionary<int, Room> roomsById = _roomRepository.GetAllById();
+            Dictionary<String, MedicalRecord> medicalRecordsByUsername = _medicalRecordRepository.GetAllByUsername();
 
             int id = (int)operation["id"];
             ExaminationStatus status;
@@ -123,6 +119,10 @@ namespace HealthInstitution.Core.Operations.Repository
             return this.Operations;
         }
 
+        public Dictionary<int, Operation> GetAllById()
+        {
+            return this.OperationsById;
+        }
         public Operation GetById(int id)
         {
             if (OperationsById.ContainsKey(id))
@@ -145,7 +145,7 @@ namespace HealthInstitution.Core.Operations.Repository
             operation.Id = id;
             AddToCollections(operation);
             Save();
-            OperationDoctorRepository.GetInstance().Save();
+            _operationDoctorRepository.Save();
         }
 
         public void Update(int id, Operation byOperation)
@@ -165,7 +165,7 @@ namespace HealthInstitution.Core.Operations.Repository
             this.Operations.Remove(operation);
             this.OperationsById.Remove(id);
             Save();
-            OperationDoctorRepository.GetInstance().Save();
+            _operationDoctorRepository.Save();
         }
 
         public void SwapOperationValue(Operation operation)

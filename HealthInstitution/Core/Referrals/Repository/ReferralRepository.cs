@@ -10,7 +10,8 @@ namespace HealthInstitution.Core.Referrals.Repository
 {
     public class ReferralRepository : IReferralRepository
     {
-        private String _fileName;
+        private String _fileName = @"..\..\..\Data\JSON\referrals.json";
+        private IDoctorRepository _doctorRepository;
         public int maxId;
         public List<Referral> Referrals { get; set; }
         public Dictionary<int, Referral> ReferralById { get; set; }
@@ -21,31 +22,18 @@ namespace HealthInstitution.Core.Referrals.Repository
             PropertyNameCaseInsensitive = true
         };
 
-        private ReferralRepository(string fileName)
+        public ReferralRepository(IDoctorRepository doctorRepository)
         {
+            _doctorRepository = doctorRepository;
             this.maxId = 0;
-            this._fileName = fileName;
             this.Referrals = new List<Referral>();
             this.ReferralById = new Dictionary<int, Referral>();
             this.LoadFromFile();
         }
 
-        private static ReferralRepository s_instance = null;
-
-        public static ReferralRepository GetInstance()
-        {
-            {
-                if (s_instance == null)
-                {
-                    s_instance = new ReferralRepository(@"..\..\..\Data\JSON\referrals.json");
-                }
-                return s_instance;
-            }
-        }
-
         private Referral Parse(JToken? referral)
         {
-            Dictionary<string, Doctor> doctorByUsername = DoctorRepository.GetInstance().DoctorsByUsername;
+            Dictionary<string, Doctor> doctorByUsername = _doctorRepository.GetAllByUsername();
             ReferralType referralType;
             Enum.TryParse(referral["type"].ToString(), out referralType);
             SpecialtyType specialtyTypeTemp;
@@ -114,6 +102,10 @@ namespace HealthInstitution.Core.Referrals.Repository
             return this.Referrals;
         }
 
+        public Dictionary<int, Referral> GetAllById()
+        {
+            return this.ReferralById;
+        }
         public Referral GetById(int id)
         {
             if (ReferralById.ContainsKey(id))

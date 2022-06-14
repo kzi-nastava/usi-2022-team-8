@@ -13,6 +13,8 @@ public interface IPrescriptionNotificationSettingsRepository
 
     public void Save();
     public List<PrescriptionNotificationSettings> GetAll();
+
+    public Dictionary<int, PrescriptionNotificationSettings> GetAllById();
     public PrescriptionNotificationSettings GetById(int id);
 
     public void Add(PrescriptionNotificationSettings recepieNotificationSettings);

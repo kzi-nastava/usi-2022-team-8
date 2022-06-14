@@ -19,4 +19,5 @@ public interface IDoctorRatingRepository
     public void Add(string username);
 
     public void Delete(string id);
+    public Dictionary<String, DoctorRating> GetAllById()
 }

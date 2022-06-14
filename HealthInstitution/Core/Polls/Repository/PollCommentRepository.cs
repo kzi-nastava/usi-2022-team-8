@@ -15,7 +15,8 @@ namespace HealthInstitution.Core.Polls.Repository
 {
     public class PollCommentRepository : IPollCommentRepository
     {
-        private String _fileName;
+        private String _fileName = @"..\..\..\Data\JSON\pollComments.json";
+        private IDoctorRepository _doctorRepository;
 
         private int _maxId;
         public List<PollComment> PollComments { get; set; }
@@ -26,29 +27,20 @@ namespace HealthInstitution.Core.Polls.Repository
             Converters = { new JsonStringEnumConverter() },
             PropertyNameCaseInsensitive = true
         };
-        private PollCommentRepository(String fileName)
+
+        public PollCommentRepository(IDoctorRepository doctorRepository)
         {
-            this._fileName = fileName;
+            _doctorRepository = doctorRepository;
             this.PollComments = new List<PollComment>();
             this.PollCommentById = new Dictionary<int, PollComment>();
             this._maxId = 0;
             this.LoadFromFile();
         }
-        private static PollCommentRepository s_instance = null;
-        public static PollCommentRepository GetInstance()
-        {
-            {
-                if (s_instance == null)
-                {
-                    s_instance = new PollCommentRepository(@"..\..\..\Data\JSON\pollComments.json");
-                }
-                return s_instance;
-            }
-        }
 
+        
         private PollComment Parse(JToken? pollComment)
         {
-            Dictionary<string, Doctor> doctorByUsername = DoctorRepository.GetInstance().DoctorsByUsername;
+            Dictionary<string, Doctor> doctorByUsername = _doctorRepository.GetAllByUsername();
 
             int id = (int)pollComment["id"];
             string comment = (string)pollComment["comment"];
@@ -105,6 +97,10 @@ namespace HealthInstitution.Core.Polls.Repository
             return this.PollComments;
         }
 
+        public Dictionary<int, PollComment> GetAllById()
+        {
+            return this.PollCommentById;
+        }
         public PollComment GetById(int id)
         {
             if (PollCommentById.ContainsKey(id))

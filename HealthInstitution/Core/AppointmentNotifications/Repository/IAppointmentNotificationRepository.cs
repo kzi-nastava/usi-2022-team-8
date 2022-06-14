@@ -14,5 +14,7 @@ namespace HealthInstitution.Core.Notifications.Repository
         public List<AppointmentNotification> GetAll();
         public AppointmentNotification GetById(int id);
         public void Add(AppointmentNotification appointmentNotification);
+
+        public Dictionary<int, AppointmentNotification> GetAllById();
     }
 }

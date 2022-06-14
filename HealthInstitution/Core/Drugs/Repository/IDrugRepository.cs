@@ -26,5 +26,6 @@ namespace HealthInstitution.Core.Drugs.Repository
         public void Delete(int id);
         public bool ContainsIngredient(Ingredient ingredient);
         public bool Contains(string name);
+        public Dictionary<int, Drug> GetAllById();
     }
 }
