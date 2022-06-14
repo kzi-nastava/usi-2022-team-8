@@ -3,15 +3,16 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using HealthInstitution.Core;
 using HealthInstitution.Core.Examinations.Model;
 
-namespace HealthInstitution.Core.Examinations;
+namespace HealthInstitution.ViewModels;
 
 public class ExaminationViewModel : ViewModelBase
 {
     private Examination _examination;
 
-    public String RoomNo => _examination.Room.Number.ToString();
+    public string RoomNo => _examination.Room.Number.ToString();
     public ExaminationStatus Status => _examination.Status;
     public DateTime Appointment => _examination.Appointment;
     public string Doctor => _examination.Doctor.Name + " " + _examination.Doctor.Surname;

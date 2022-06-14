@@ -1,6 +1,7 @@
 ﻿using HealthInstitution.Core;
 using HealthInstitution.GUI.LoginView;
 using HealthInstitution.GUI.UserWindow;
+using HealthInstitution.ViewModels.GUIViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;

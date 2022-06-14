@@ -2,6 +2,7 @@
 using HealthInstitution.Core.SystemUsers.Patients.Model;
 using HealthInstitution.Core.SystemUsers.Users.Model;
 using HealthInstitution.GUI.PatientView;
+using HealthInstitution.ViewModels.GUIViewModels.Patient;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,6 +22,9 @@ public class MedicalRecordViewCommand : CommandBase
 
     public override void Execute(object? parameter)
     {
-        new MedicalRecordView(_loggedPatient).ShowDialog();
+        new MedicalRecordView(_loggedPatient)
+        {
+            DataContext = new MedicalRecordViewViewModel(_loggedPatient)
+        }.ShowDialog();
     }
 }

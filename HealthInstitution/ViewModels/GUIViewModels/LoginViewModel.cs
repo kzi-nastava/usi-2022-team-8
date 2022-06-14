@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace HealthInstitution.GUI.LoginView;
+namespace HealthInstitution.ViewModels.GUIViewModels;
 
 public class LoginViewModel : ViewModelBase
 {

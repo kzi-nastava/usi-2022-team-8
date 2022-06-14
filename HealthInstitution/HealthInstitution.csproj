@@ -19,6 +19,7 @@
       <Folder Include="Core\RestRequests\Repository" />
       <Folder Include="Core\SystemUsers\Secretaries\Model" />
       <Folder Include="Core\SystemUsers\Secretaries\Repository" />
+      <Folder Include="GUI\PatientViewModel\" />
     </ItemGroup>
 
     <ItemGroup>

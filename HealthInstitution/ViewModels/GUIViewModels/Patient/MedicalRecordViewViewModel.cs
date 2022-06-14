@@ -1,4 +1,5 @@
 ﻿using HealthInstitution.Commands.PatientCommands;
+using HealthInstitution.Commands.PatientCommands.MedicalRecordViewCommands;
 using HealthInstitution.Core;
 using HealthInstitution.Core.Examinations;
 using HealthInstitution.Core.Examinations.Model;
@@ -12,7 +13,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace HealthInstitution.GUI.PatientViewModel;
+namespace HealthInstitution.ViewModels.GUIViewModels.Patient;
 
 public class MedicalRecordViewViewModel : ViewModelBase
 {
@@ -49,6 +50,21 @@ public class MedicalRecordViewViewModel : ViewModelBase
         }
     }
 
+    private int _selectedExaminationIndex;
+
+    public int SelectedExaminationIndex
+    {
+        get
+        {
+            return _selectedExaminationIndex;
+        }
+        set
+        {
+            _selectedExaminationIndex = value;
+            OnPropertyChanged(nameof(SelectedExaminationIndex));
+        }
+    }
+
     public ICommand SearchKeywordCommand { get; }
     public ICommand RateDoctorCommand { get; }
     public ICommand DoctorSortCommand { get; }
@@ -59,12 +75,15 @@ public class MedicalRecordViewViewModel : ViewModelBase
 
     public MedicalRecordViewViewModel(User patient)
     {
-        this._examinationVMs = new();
+        _examinationVMs = new();
         LoggedPatient = patient;
-        this.Examinations = ExaminationService.GetCompletedByPatient(LoggedPatient.Username);
+        Examinations = ExaminationService.GetCompletedByPatient(LoggedPatient.Username);
         PutIntoGrid();
         DoctorSortCommand = new DoctorSortCommand(this);
         SearchKeywordCommand = new SearchAnamnesisCommand(this);
+        SpecializationSortCommand = new SpecializationSortCommand(this);
+        DateSortCommand = new DateSortCommand(this);
+        RateDoctorCommand = new RateDoctorCommand(this);
     }
 
     public void ClosingHandle()

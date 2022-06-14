@@ -20,6 +20,7 @@ using HealthInstitution.Core.SystemUsers.Doctors;
 using HealthInstitution.Core.SystemUsers.Patients;
 using HealthInstitution.Core.DoctorRatings;
 using System.Windows.Controls;
+using HealthInstitution.ViewModels.GUIViewModels;
 
 namespace HealthInstitution.GUI.LoginView
 {
