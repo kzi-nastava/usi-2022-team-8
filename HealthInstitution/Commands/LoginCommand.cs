@@ -71,7 +71,10 @@ public class LoginCommand : CommandBase
         Patient loggedPatient = PatientService.GetByUsername(_loginViewModel.Username);
         PrescriptionNotificationService.GenerateAllSkippedNotifications(loggedPatient.Username);
         DoctorRatingsService.AssignScores();
-        new PatientWindow(loggedPatient).ShowDialog();
+        new PatientWindow(loggedPatient)
+        {
+            DataContext = new PatientWindowViewModel(loggedPatient)
+        }.ShowDialog();
     }
 
     private void RedirectDoctor()
