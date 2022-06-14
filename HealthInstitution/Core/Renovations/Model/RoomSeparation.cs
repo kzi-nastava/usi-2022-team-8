@@ -19,4 +19,9 @@ public class RoomSeparation : Renovation
         this.FirstRoom = roomSeparationDTO.FirstRoom;
         this.SecondRoom = roomSeparationDTO.SecondRoom;
     }
+
+    public override bool HasActiveRooms()
+    {
+        return base.HasActiveRooms();
+    }
 }

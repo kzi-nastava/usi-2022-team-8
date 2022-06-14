@@ -21,34 +21,24 @@ namespace HealthInstitution.Core.Renovations.Functionality
         public static void UpdateByRenovation()
         {
             foreach (Renovation renovation in s_renovationRepository.Renovations)
+            { 
+                if (renovation.Room.IsActive)
+                {
+                    Update(renovation);
+                }                   
+            }
+        }
+
+        private static void Update(Renovation renovation)
+        {
+            if (renovation.ShouldStart())
             {
+                RenovationService.StartRenovation(renovation);
+            }
 
-                if (renovation.IsSimpleRenovation())
-                {
-                    if (renovation.Room.IsActive)
-                    {
-                        UpdateSimpleRenovation(renovation);
-                    }                   
-                }
-                else if (renovation.IsRoomMerger())
-                {
-                    RoomMerger roomMerger = (RoomMerger)renovation;
-
-                    if (roomMerger.Room.IsActive && roomMerger.RoomForMerge.IsActive)
-                    {
-                        UpdateMergeRenovation(roomMerger);
-                    }  
-                }
-                else
-                {
-                    RoomSeparation roomSeparation = (RoomSeparation)renovation;
-
-                    if (roomSeparation.Room.IsActive)
-                    {
-                        UpdateSeparationRenovation(roomSeparation);
-                    }
-  
-                }
+            if (renovation.ShouldEnd())
+            {
+                RenovationService.EndRenovation(renovation);
             }
         }
 

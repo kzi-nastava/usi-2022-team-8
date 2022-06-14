@@ -64,6 +64,16 @@ namespace HealthInstitution.Core.Renovations
             s_renovationRepository.Delete(id);
         }
 
+        public static void StartRenovation(Renovation renovation)
+        {
+            renovation.Start();
+        }
+
+        public static void EndRenovation(Renovation renovation)
+        {
+            renovation.End();
+        }
+
         public static void StartRenovation(Room room)
         {
             RoomDTO roomDTO = new RoomDTO(room.Type, room.Number, true);

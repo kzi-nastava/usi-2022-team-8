@@ -25,6 +25,31 @@ public class Renovation
         this.EndDate = renovationDTO.EndDate;
     }
 
+    public virtual bool HasActiveRooms()
+    {
+        return this.Room.IsActive;
+    }
+
+    public bool ShouldStart()
+    {
+        return this.StartDate <= DateTime.Today.AddDays(-1);
+    }
+
+    public bool ShouldEnd()
+    {
+        return this.EndDate <= DateTime.Today.AddDays(-1);
+    }
+
+    public virtual void Start()
+    {
+        this.Room.IsRenovating = true;
+    }
+
+    public virtual void End()
+    {
+        this.Room.IsRenovating = false;
+    }
+
     public bool IsSimpleRenovation()
     {
         return this.GetType() == typeof(Renovation);

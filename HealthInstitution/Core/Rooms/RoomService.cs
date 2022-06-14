@@ -154,5 +154,7 @@ namespace HealthInstitution.Core.Rooms
         {
             return s_roomRepository.GetRoomFromString(roomFromForm);
         }
+
+        
     }
 }
