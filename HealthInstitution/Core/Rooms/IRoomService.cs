@@ -13,6 +13,7 @@ namespace HealthInstitution.Core.Rooms
     public interface IRoomService
     {
         public List<Room> GetAll();
+        public Room GetById(int id);
         public Room AddRoom(RoomDTO roomDTO);
         public void Update(int id, RoomDTO roomDTO);
         public void Delete(int id);

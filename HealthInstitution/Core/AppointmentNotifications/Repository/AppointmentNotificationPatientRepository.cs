@@ -28,7 +28,7 @@ namespace HealthInstitution.Core.Notifications.Repository
         
         public void LoadFromFile()
         {
-            var patientsByUsername = _patientRepository.GetAllById();
+            var patientsByUsername = _patientRepository.GetAllByUsername();
             var notificationsById = _appointmentNotificationRepository.GetAllById();
             var patientUseranamesNotificationIds = JArray.Parse(File.ReadAllText(this._fileName));
             foreach (var pair in patientUseranamesNotificationIds)

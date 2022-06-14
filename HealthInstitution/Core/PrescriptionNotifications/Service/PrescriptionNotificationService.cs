@@ -22,7 +22,11 @@ public class PrescriptionNotificationService : IPrescriptionNotificationService
         _prescriptionNotificationRepository = prescriptionNotificationRepository;
         _prescriptionNotificationCronJobService = prescriptionNotificationCronJobService;
         _prescriptionNotificationSettingsRepository = prescriptionNotificationSettingsRepository;
-}
+    }
+    public void Add(PrescriptionNotification notification)
+    {
+        _prescriptionNotificationRepository.Add(notification);
+    }
     public void GenerateAllSkippedNotifications(string loggedPatient)
     {
         _prescriptionNotificationCronJobService.GenerateScheduler();

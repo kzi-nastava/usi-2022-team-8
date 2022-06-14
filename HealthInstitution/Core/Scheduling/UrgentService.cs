@@ -110,7 +110,7 @@ namespace HealthInstitution.Core.Scheduling
             operationDTO.Room = _schedulingService.FindAvailableOperationRoom(operationDTO);
             Operation operation=_operationService.Add(operationDTO);
             _appointmentNotificationService.SendNotificationForNewOperation(operation);
-            int id = OperationRepository.GetInstance()._maxId;
+            int id = _operationService.GetMaxId();
             priorityExaminationsAndOperations.Add(new Tuple<int, int, DateTime>(id, 2, appointment));
         }
         public List<Tuple<int, int, DateTime>> ReserveUrgentOperation(string patientUsername, SpecialtyType specialtyType, int duration)
@@ -137,7 +137,8 @@ namespace HealthInstitution.Core.Scheduling
                     }
                 }
             }
-            priorityExaminationsAndOperations.Add(new Tuple<int, int, DateTime>(OperationRepository.GetInstance()._maxId + 1, 2, new DateTime(1, 1, 1)));
+            int id = _operationService.GetMaxId();
+            priorityExaminationsAndOperations.Add(new Tuple<int, int, DateTime>(id + 1, 2, new DateTime(1, 1, 1)));
             priorityExaminationsAndOperations.AddRange(_appointmentDelayingService.FindClosest(nextTwoHoursAppointments, specialtyType, Rooms.Model.RoomType.OperatingRoom));
             return priorityExaminationsAndOperations;
         }
@@ -149,7 +150,7 @@ namespace HealthInstitution.Core.Scheduling
             examinationDTO.Room = _schedulingService.FindAvailableExaminationRoom(appointment);
             Examination examination=_examinationService.Add(examinationDTO);
             _appointmentNotificationService.SendNotificationForNewExamination(examination);
-            int id = ExaminationRepository.GetInstance()._maxId;
+            int id = _examinationService.GetMaxId();
             priorityExaminationsAndOperations.Add(new Tuple<int, int, DateTime>(id, 2, appointment));
         }
         public List<Tuple<int, int, DateTime>> ReserveUrgentExamination(string patientUsername, SpecialtyType specialtyType)
@@ -176,7 +177,7 @@ namespace HealthInstitution.Core.Scheduling
                     }
                 }
             }
-            int id = ExaminationRepository.GetInstance()._maxId;
+            int id = _examinationService.GetMaxId();
             priorityExaminationsAndOperations.Add(new Tuple<int, int, DateTime>(id + 1, 2, new DateTime(1, 1, 1)));
             priorityExaminationsAndOperations.AddRange(_appointmentDelayingService.FindClosest(nextTwoHoursAppointments, specialtyType, Rooms.Model.RoomType.ExaminationRoom));
             return priorityExaminationsAndOperations;

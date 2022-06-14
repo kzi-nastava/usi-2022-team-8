@@ -20,6 +20,8 @@ namespace HealthInstitution.Core.Scheduling
     public class AppointmentDelayingService : IAppointmentDelayingService
     {
         ISchedulingService _schedulingService;
+        IExaminationRepository _examinationRepository;
+        IOperationRepository _operationRepository;
         IDoctorExaminationAvailabilityService _doctorExaminationAvailabilityService;
         IPatientExaminationAvailabilityService _patientExaminationAvailabilityService;
         IExaminationService _examinationService;
@@ -27,11 +29,13 @@ namespace HealthInstitution.Core.Scheduling
         IUrgentService _urgentService;
         IAppointmentNotificationService _appointmentNotificationService;
 
-        public AppointmentDelayingService(ISchedulingService schedulingService, IDoctorExaminationAvailabilityService doctorExaminationAvailabilityService, 
+        public AppointmentDelayingService(ISchedulingService schedulingService, IExaminationRepository examinationRepository, IOperationRepository operationRepository, IDoctorExaminationAvailabilityService doctorExaminationAvailabilityService, 
             IPatientExaminationAvailabilityService patientExaminationAvailabilityService, IExaminationService examinationService, 
             IOperationService operationService, IUrgentService urgentService, IAppointmentNotificationService appointmentNotificationService)
         {
             _schedulingService = schedulingService;
+            _examinationRepository = examinationRepository;
+            _operationRepository = operationRepository;
             _doctorExaminationAvailabilityService = doctorExaminationAvailabilityService;
             _patientExaminationAvailabilityService = patientExaminationAvailabilityService;
             _examinationService = examinationService;
@@ -154,7 +158,7 @@ namespace HealthInstitution.Core.Scheduling
         }
         public void DelayExamination(ScheduleEditRequest selectedAppointment, Examination examination)
         {
-            ExaminationRepository.GetInstance().SwapExaminationValue(selectedAppointment.NewExamination);
+            _examinationRepository.SwapExaminationValue(selectedAppointment.NewExamination);
             _urgentService.SetExaminationDetails(examination, selectedAppointment);
             ExaminationDTO examinationDTO = new ExaminationDTO(examination.Appointment, examination.Room, examination.Doctor, examination.MedicalRecord);
             _examinationService.Add(examinationDTO);
@@ -163,7 +167,7 @@ namespace HealthInstitution.Core.Scheduling
         }
         public void DelayOperation(ScheduleEditRequest selectedAppointment, Operation operation)
         {
-            OperationRepository.GetInstance().SwapOperationValue(selectedAppointment.NewOperation);
+            _operationRepository.SwapOperationValue(selectedAppointment.NewOperation);
             _urgentService.SetOperationDetails(operation, selectedAppointment);
             OperationDTO operationDTO = new OperationDTO(operation.Appointment, operation.Duration, operation.Room, operation.Doctor, operation.MedicalRecord);
             _operationService.Add(operationDTO);

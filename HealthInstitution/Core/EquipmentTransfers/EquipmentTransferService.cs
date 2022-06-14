@@ -118,7 +118,7 @@ namespace HealthInstitution.Core.EquipmentTransfers
             EquipmentDTO selectedEquipmentDTO = new EquipmentDTO(quantity, equipmentName, equipmentType, true);
             Equipment newEquipment = _equipmentService.Add(selectedEquipmentDTO);
             DateTime tomorrowSameTime = DateTime.Now + new TimeSpan(1, 0, 0, 0);
-            EquipmentTransferDTO equipmentTransferDTO = new EquipmentTransferDTO(newEquipment, null, RoomRepository.GetInstance().RoomById[1], tomorrowSameTime);
+            EquipmentTransferDTO equipmentTransferDTO = new EquipmentTransferDTO(newEquipment, null, _roomService.GetById(1), tomorrowSameTime);
             Add(equipmentTransferDTO);
         }
     }

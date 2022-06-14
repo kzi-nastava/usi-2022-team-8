@@ -28,6 +28,10 @@ namespace HealthInstitution.Core.Rooms
         {
             return _roomRepository.GetAll();
         }
+        public Room GetById(int id)
+        {
+            return _roomRepository.GetById(id);
+        }
 
         public Room AddRoom(RoomDTO roomDTO)
         {

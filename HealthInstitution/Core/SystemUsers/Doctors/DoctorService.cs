@@ -16,21 +16,32 @@ namespace HealthInstitution.Core.SystemUsers.Doctors;
 public class DoctorService : IDoctorService
 { 
     IDoctorRepository _doctorRepository;
-    public DoctorService(IDoctorRepository doctorRepository)
+    IOperationDoctorRepository _operationDoctorRepository;
+    IExaminationDoctorRepository _examinationDoctorRepository;
+    IAppointmentNotificationDoctorRepository _appointmentNotificationDoctorRepository;
+    IAppointmentNotificationPatientRepository _appointmentNotificationPatientRepository;
+    IRestRequestNotificationDoctorRepository _restRequestNotificationDoctorRepository;
+
+    public DoctorService(IDoctorRepository doctorRepository, IOperationDoctorRepository operationDoctorRepository, IExaminationDoctorRepository examinationDoctorRepository, IAppointmentNotificationDoctorRepository appointmentNotificationDoctorRepository, IAppointmentNotificationPatientRepository appointmentNotificationPatientRepository, IRestRequestNotificationDoctorRepository restRequestNotificationDoctorRepository)
     {
         _doctorRepository = doctorRepository;
+        _operationDoctorRepository = operationDoctorRepository;
+        _examinationDoctorRepository = examinationDoctorRepository;
+        _appointmentNotificationDoctorRepository = appointmentNotificationDoctorRepository;
+        _appointmentNotificationPatientRepository = appointmentNotificationPatientRepository;
+        _restRequestNotificationDoctorRepository = restRequestNotificationDoctorRepository;
     }
 
     public void LoadAppointments()
     {
-        OperationDoctorRepository.GetInstance();
-        ExaminationDoctorRepository.GetInstance();
+        _operationDoctorRepository.LoadFromFile();
+        _examinationDoctorRepository.LoadFromFile();
     }
     public void LoadNotifications()
     {
-        AppointmentNotificationDoctorRepository.GetInstance();
-        AppointmentNotificationPatientRepository.GetInstance();
-        RestRequestNotificationDoctorRepository.GetInstance();
+        _appointmentNotificationDoctorRepository.LoadFromFile();
+        _appointmentNotificationPatientRepository.LoadFromFile();
+        _restRequestNotificationDoctorRepository.LoadFromFile();
     }
     public List<Doctor> GetAll()
     {

@@ -50,7 +50,7 @@ namespace HealthInstitution.Core.Polls.Repository
             this.LoadFromFile();
         }
 
-       
+
         private List<int> JToken2Ints(JToken tokens)
         {
             List<int> items = new List<int>();
@@ -62,13 +62,13 @@ namespace HealthInstitution.Core.Polls.Repository
         private PollQuestion Parse(JToken? pollQuestion)
         {
             Dictionary<string, Doctor> doctorByUsername = _doctorRepository.GetAllByUsername();
-            
+
             int id = (int)pollQuestion["id"];
             string question = (string)pollQuestion["question"];
             string doctorUsername = (string)pollQuestion["forDoctor"];
             Doctor? forDoctor;
             if (doctorUsername == "")
-               forDoctor = null;
+                forDoctor = null;
             else forDoctor = doctorByUsername[doctorUsername];
             List<int> grades = JToken2Ints(pollQuestion["grades"]);
 

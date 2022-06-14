@@ -37,7 +37,7 @@ namespace HealthInstitution.Core.Polls.Repository
             this.LoadFromFile();
         }
 
-        
+
         private PollComment Parse(JToken? pollComment)
         {
             Dictionary<string, Doctor> doctorByUsername = _doctorRepository.GetAllByUsername();
@@ -49,7 +49,7 @@ namespace HealthInstitution.Core.Polls.Repository
             if (doctorUsername == "")
                 forDoctor = null;
             else forDoctor = doctorByUsername[doctorUsername];
-            
+
             return new PollComment(id, comment, forDoctor);
         }
 

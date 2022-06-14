@@ -14,9 +14,11 @@ namespace HealthInstitution.Core.ScheduleEditRequests
     public class ScheduleEditRequestService : IScheduleEditRequestsService
     {
         IScheduleEditRequestFileRepository _scheduleEditRequestRepository;
-        public ScheduleEditRequestService(IScheduleEditRequestFileRepository scheduleEditRequestRepository)
+        IExaminationRepository _examinationRepository;
+        public ScheduleEditRequestService(IScheduleEditRequestFileRepository scheduleEditRequestRepository, IExaminationRepository examinationRepository)
         {
             _scheduleEditRequestRepository = scheduleEditRequestRepository;
+            _examinationRepository = examinationRepository;
         }
         public List<ScheduleEditRequest> GetAll()
         {
@@ -31,14 +33,14 @@ namespace HealthInstitution.Core.ScheduleEditRequests
         public void AddEditRequest(Examination examination)
         {
             int unixTimestamp = (int)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
-            ScheduleEditRequest scheduleEditRequest = new ScheduleEditRequest(unixTimestamp, examination, examination.Id, RestRequestState.OnHold);
+            ScheduleEditRequest scheduleEditRequest = new ScheduleEditRequest(unixTimestamp, examination, examination.Id, _examinationRepository.GetById(examination.Id), RestRequestState.OnHold);
             _scheduleEditRequestRepository.AddEditRequest(scheduleEditRequest, unixTimestamp);
         }
 
         public void AddDeleteRequest(Examination examination)
         {
             Int32 unixTimestamp = (int)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
-            ScheduleEditRequest scheduleEditRequest = new ScheduleEditRequest(unixTimestamp, null, examination.Id, RestRequestState.OnHold);
+            ScheduleEditRequest scheduleEditRequest = new ScheduleEditRequest(unixTimestamp, null, examination.Id, _examinationRepository.GetById(examination.Id), RestRequestState.OnHold);
             _scheduleEditRequestRepository.AddDeleteRequest(scheduleEditRequest, unixTimestamp);
         }
 
@@ -56,7 +58,7 @@ namespace HealthInstitution.Core.ScheduleEditRequests
             ScheduleEditRequest scheduleEditRequest = GetById(id);
             if (scheduleEditRequest != null)
             {
-                ExaminationRepository.GetInstance().SwapExaminationValue(scheduleEditRequest.NewExamination);
+                _examinationRepository.SwapExaminationValue(scheduleEditRequest.NewExamination);
                 _scheduleEditRequestRepository.AcceptScheduleEditRequests(scheduleEditRequest);
             }
         }

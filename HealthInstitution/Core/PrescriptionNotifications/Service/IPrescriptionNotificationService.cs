@@ -9,6 +9,7 @@ namespace HealthInstitution.Core.PrescriptionNotifications.Service;
 
 public interface IPrescriptionNotificationService
 {
+    public void Add(PrescriptionNotification notification);
     public void GenerateAllSkippedNotifications(string loggedPatient);
 
     public List<PrescriptionNotification> GetPatientActiveNotification(string username);

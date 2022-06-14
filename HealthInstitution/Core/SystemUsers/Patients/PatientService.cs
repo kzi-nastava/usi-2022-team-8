@@ -26,17 +26,25 @@ namespace HealthInstitution.Core.SystemUsers.Patients
         IMedicalRecordService _medicalRecordService;
         IExaminationService _examinationService;
         IOperationService _operationService;
-        public PatientService(IPatientRepository patientRepository, IUserService userService, ITrollCounterService trollCounterService, IMedicalRecordService medicalRecordService)
+        IAppointmentNotificationPatientRepository _appointmentNotificationPatientRepository;
+        IAppointmentNotificationDoctorRepository _appointmentNotificationDoctorRepository;
+
+        public PatientService(IPatientRepository patientRepository, IUserService userService, ITrollCounterService trollCounterService, IMedicalRecordService medicalRecordService, IExaminationService examinationService, IOperationService operationService, IAppointmentNotificationPatientRepository appointmentNotificationPatientRepository, IAppointmentNotificationDoctorRepository appointmentNotificationDoctorRepository)
         {
             _patientRepository = patientRepository;
-            _medicalRecordService = medicalRecordService;
             _userService = userService;
             _trollCounterService = trollCounterService;
+            _medicalRecordService = medicalRecordService;
+            _examinationService = examinationService;
+            _operationService = operationService;
+            _appointmentNotificationPatientRepository = appointmentNotificationPatientRepository;
+            _appointmentNotificationDoctorRepository = appointmentNotificationDoctorRepository;
         }
+
         public void LoadNotifications()
         {
-            AppointmentNotificationPatientRepository.GetInstance();
-            AppointmentNotificationDoctorRepository.GetInstance();
+            _appointmentNotificationPatientRepository.LoadFromFile();
+            _appointmentNotificationDoctorRepository.LoadFromFile();
         }
         public List<Patient> GetAll()
         {

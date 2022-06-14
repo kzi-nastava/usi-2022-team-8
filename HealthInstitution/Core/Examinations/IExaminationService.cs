@@ -9,6 +9,7 @@ namespace HealthInstitution.Core.Examinations
 {
     public interface IExaminationService
     {
+        public int GetMaxId();
         public List<Examination> GetAll();
         public Examination GetById(int id);
         public Examination Add(ExaminationDTO examinationDTO);
@@ -24,5 +25,6 @@ namespace HealthInstitution.Core.Examinations
 
         public bool IsReadyForPerforming(Examination examination);
         public ExaminationDTO ParseExaminationToExaminationDTO(Examination examination);
+        public void Complete(Examination examination, string anamnesis);
     }
 }

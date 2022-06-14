@@ -20,6 +20,8 @@ namespace HealthInstitution.Core.Scheduling
         private static Random rnd = new Random();
         IExaminationRepository _examinationRepository;
         IOperationRepository _operationRepository;
+        IDoctorRepository _doctorRepository;
+        IReferralRepository _referralRepository;
         IDoctorOperationAvailabilityService _doctorOperationAvailabilityService;
         IPatientOperationAvailabilityService _patientOperationAvailabilityService;
         IDoctorExaminationAvailabilityService _doctorExaminationAvailabilityService;
@@ -28,13 +30,14 @@ namespace HealthInstitution.Core.Scheduling
         IExaminationService _examinationService;
         IRoomService _roomService;
 
-        public SchedulingService(IExaminationRepository examinationRepository, IOperationRepository operationRepository, 
-            IDoctorOperationAvailabilityService doctorOperationAvailabilityService, IPatientOperationAvailabilityService patientOperationAvailabilityService, 
+        public SchedulingService(IExaminationRepository examinationRepository, IOperationRepository operationRepository, IDoctorRepository doctorRepository, IReferralRepository referralRepository, IDoctorOperationAvailabilityService doctorOperationAvailabilityService, IPatientOperationAvailabilityService patientOperationAvailabilityService, 
             IDoctorExaminationAvailabilityService doctorExaminationAvailabilityService, IPatientExaminationAvailabilityService patientExaminationAvailabilityService,
             IOperationService operationService, IExaminationService examinationService, IRoomService roomService)
         {
             _examinationRepository = examinationRepository;
             _operationRepository = operationRepository;
+            _doctorRepository = doctorRepository;
+            _referralRepository = referralRepository;
             _doctorOperationAvailabilityService = doctorOperationAvailabilityService;
             _patientOperationAvailabilityService = patientOperationAvailabilityService;
             _doctorExaminationAvailabilityService = doctorExaminationAvailabilityService;
@@ -68,7 +71,7 @@ namespace HealthInstitution.Core.Scheduling
             System.Windows.MessageBox.Show("You have scheduled the examination!", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
 
             referral.Active = false;
-            ReferralRepository.GetInstance().Save(); //TODO
+            _referralRepository.Save();
         }
 
         private void ScheduleWithOrderedSpecialist(ExaminationDTO examination, Referral referral)
@@ -78,7 +81,7 @@ namespace HealthInstitution.Core.Scheduling
                 ReserveExamination(examination);
                 System.Windows.MessageBox.Show("You have scheduled the examination! Doctor: " + examination.Doctor.Name + " " + examination.Doctor.Surname, "Info", MessageBoxButton.OK, MessageBoxImage.Information);
                 referral.Active = false;
-                ReferralRepository.GetInstance().Save(); //TODO
+                _referralRepository.Save(); //TODO
             }
             catch (Exception ex)
             {
@@ -92,7 +95,7 @@ namespace HealthInstitution.Core.Scheduling
         private void ScheduleWithOrderedSpecialty(DateTime appointment, Referral referral, MedicalRecord medicalRecord)
         {
             SpecialtyType specialtyType = (SpecialtyType)referral.Type;
-            List<Doctor> doctors = DoctorRepository.GetInstance().Doctors;
+            List<Doctor> doctors = _doctorRepository.GetAll();
             bool successfulScheduling = false;
             foreach (Doctor doctor in doctors)
             {

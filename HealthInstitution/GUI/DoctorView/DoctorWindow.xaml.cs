@@ -27,15 +27,17 @@ namespace HealthInstitution.GUI.DoctorView
     public partial class DoctorWindow : Window
     {
         private Doctor _loggedDoctor;
-        public DoctorWindow(Doctor doctor)
+        IDoctorService _doctorService;
+        public DoctorWindow(Doctor doctor, IDoctorService doctorService)
         {
             InitializeComponent();
             this._loggedDoctor = doctor;
+            this._doctorService = doctorService;
             ShowNotificationsDialog();
         }
         private void ShowNotificationsDialog()
         {
-            if (DoctorService.GetActiveAppointmentNotification(_loggedDoctor).Count + DoctorService.GetActiveRestRequestNotification(_loggedDoctor).Count > 0)
+            if (_doctorService.GetActiveAppointmentNotification(_loggedDoctor).Count + _doctorService.GetActiveRestRequestNotification(_loggedDoctor).Count > 0)
             {
                 DoctorNotificationsDialog doctorNotificationsDialog = new DoctorNotificationsDialog(this._loggedDoctor);
                 doctorNotificationsDialog.ShowDialog();

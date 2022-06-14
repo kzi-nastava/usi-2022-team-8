@@ -21,6 +21,7 @@ public class ScheduleEditRequestFileRepository : IScheduleEditRequestFileReposit
     public List<ScheduleEditRequest> Requests { get; set; }
     public Dictionary<Int32, ScheduleEditRequest> RequestsById { get; set; }
     IDoctorRepository _doctorRepository;
+    IExaminationRepository _examinationRepository;
     IMedicalRecordRepository _medicalRecordRepository;
     IRoomRepository _roomRepository;
 
@@ -31,9 +32,10 @@ public class ScheduleEditRequestFileRepository : IScheduleEditRequestFileReposit
         PropertyNameCaseInsensitive = true
     };
 
-    public ScheduleEditRequestFileRepository(IDoctorRepository doctorRepository, IMedicalRecordRepository medicalRecordRepository, IRoomRepository roomRepository)
+    public ScheduleEditRequestFileRepository(IDoctorRepository doctorRepository, IExaminationRepository examinationRepository, IMedicalRecordRepository medicalRecordRepository, IRoomRepository roomRepository)
     {
         _doctorRepository = doctorRepository;
+        _examinationRepository = examinationRepository;
         _medicalRecordRepository = medicalRecordRepository;
         _roomRepository = roomRepository;
         this.Requests = new List<ScheduleEditRequest>();
@@ -83,7 +85,7 @@ public class ScheduleEditRequestFileRepository : IScheduleEditRequestFileReposit
             Enum.TryParse(request["state"].ToString(), out state);
             int examinationId = (int)request["examinationId"];
             loadedExamination = ParseLoadedExamination(request, id);
-            ScheduleEditRequest scheduleEditRequest = new ScheduleEditRequest(id, loadedExamination, examinationId, state);
+            ScheduleEditRequest scheduleEditRequest = new ScheduleEditRequest(id, loadedExamination, examinationId, _examinationRepository.GetById(examinationId), state);
             this.Requests.Add(scheduleEditRequest);
             this.RequestsById.Add(id, scheduleEditRequest);
         }

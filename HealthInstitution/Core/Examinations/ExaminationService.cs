@@ -15,14 +15,20 @@ public class ExaminationService : IExaminationService
     IExaminationRepository _examinationRepository;
     IDoctorExaminationAvailabilityService _doctorExaminationAvailabilityService;
     IPatientExaminationAvailabilityService _patientExaminationAvailabilityService;
-
+    IExaminationDoctorRepository _examinationDoctorRepository;
     public ExaminationService(IExaminationRepository examinationRepository,
         IDoctorExaminationAvailabilityService doctorExaminationAvailabilityService,
-        IPatientExaminationAvailabilityService patientExaminationAvailabilityService)
+        IPatientExaminationAvailabilityService patientExaminationAvailabilityService,
+        IExaminationDoctorRepository examinationDoctorRepository)
     {
         _examinationRepository = examinationRepository;
         _doctorExaminationAvailabilityService = doctorExaminationAvailabilityService;
         _patientExaminationAvailabilityService = patientExaminationAvailabilityService;
+        _examinationDoctorRepository = examinationDoctorRepository;
+    }
+    public int GetMaxId()
+    {
+        return _examinationRepository.GetMaxId();
     }
     public List<Examination> GetAll()
     {
@@ -77,7 +83,7 @@ public class ExaminationService : IExaminationService
 
     public List<Examination> OrderByDoctorSpeciality(List<Examination> examinations)
     {
-        ExaminationDoctorRepository.GetInstance().LoadFromFile();
+        _examinationDoctorRepository.LoadFromFile();
         return examinations.OrderBy(o => o.Doctor.Specialty).ToList();
     }
 

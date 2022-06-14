@@ -18,6 +18,10 @@ namespace HealthInstitution.Core.Operations
             _doctorOperationAvailabilityService = doctorOperationAvailabilityService;
             _patientOperationAvailabilityService = patientOperationAvailabilityService;
         }
+        public int GetMaxId()
+        {
+            return _operationRepository.GetMaxId();
+        }
         public List<Operation> GetAll()
         {
             return _operationRepository.GetAll();

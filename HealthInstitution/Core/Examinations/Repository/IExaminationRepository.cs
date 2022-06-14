@@ -10,6 +10,7 @@ namespace HealthInstitution.Core.Examinations.Repository
 {
     public interface IExaminationRepository
     {
+        public int GetMaxId();
         public void LoadFromFile();
         public void Save();
         public List<Examination> GetAll();

@@ -13,16 +13,17 @@ namespace HealthInstitution.Core.RestRequests
     {
         IRestRequestRepository _restRequestRepository;
         IRestRequestNotificationService _restRequestNotificationService;
-
-        public RestRequestService(IRestRequestRepository restRequestRepository, IRestRequestNotificationService restRequestNotificationService)
+        IRestRequestDoctorRepository _restRequestDoctorRepository;
+        public RestRequestService(IRestRequestRepository restRequestRepository, IRestRequestNotificationService restRequestNotificationService, IRestRequestDoctorRepository restRequestDoctorRepository)
         {
             _restRequestRepository = restRequestRepository;
             _restRequestNotificationService = restRequestNotificationService;
+            _restRequestDoctorRepository = restRequestDoctorRepository;
         }
 
         public void LoadRequests()
         {
-            RestRequestDoctorRepository.GetInstance();
+            _restRequestDoctorRepository.LoadFromFile();
         }
         private bool CheckRequestActivity(RestRequest restRequest)
         {

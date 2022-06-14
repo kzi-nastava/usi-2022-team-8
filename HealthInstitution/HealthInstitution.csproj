@@ -25,7 +25,6 @@
       <Folder Include="Core\Equipments\Repository" />
       <Folder Include="Core\RestRequests\Repository" />
       <Folder Include="Core\Notifications\" />
-      <Folder Include="Core\Polls\Repository\" />
       <Folder Include="Core\RestRequests\Repository" />
     </ItemGroup>
 

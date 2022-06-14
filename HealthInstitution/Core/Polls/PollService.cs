@@ -168,7 +168,7 @@ public class PollService : IPollService
     {
         if (pollQuestionDTO.ForDoctor != null)
         {
-            _doctorRatingsService.UpdateScore(pollQuestionDTO.ForDoctor.Username, pollQuestionDTO.Grades[0]);
+            _doctorRatingService.UpdateScore(pollQuestionDTO.ForDoctor.Username, pollQuestionDTO.Grades[0]);
         }
     }
 

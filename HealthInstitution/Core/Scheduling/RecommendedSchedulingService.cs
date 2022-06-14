@@ -17,15 +17,19 @@ namespace HealthInstitution.Core.Scheduling;
 
 public class RecommendedSchedulingService : IRecommendedSchedulingService
 {
+    IDoctorRepository _doctorRepository;
+    IPatientRepository _patientRepository;
     IMedicalRecordService _medicalRecordService;
     IPatientExaminationAvailabilityService patientExaminationAvailabilityService;
     IDoctorExaminationAvailabilityService _doctorExaminationAvailabilityService;
     ISchedulingService _schedulingService;
     IExaminationService _examinationService;
 
-    public RecommendedSchedulingService(IMedicalRecordService medicalRecordService, IPatientExaminationAvailabilityService patientExaminationAvailabilityService,
+    public RecommendedSchedulingService(IDoctorRepository doctorRepository, IPatientRepository patientRepository, IMedicalRecordService medicalRecordService, IPatientExaminationAvailabilityService patientExaminationAvailabilityService,
         IDoctorExaminationAvailabilityService doctorExaminationAvailabilityService, ISchedulingService schedulingService, IExaminationService examinationService)
     {
+        _doctorRepository = doctorRepository;
+        _patientRepository = patientRepository;
         _medicalRecordService = medicalRecordService;
         this.patientExaminationAvailabilityService = patientExaminationAvailabilityService;
         _doctorExaminationAvailabilityService = doctorExaminationAvailabilityService;
@@ -63,8 +67,8 @@ public class RecommendedSchedulingService : IRecommendedSchedulingService
     {
         bool found = false;
         DateTime fit = GenerateFitDateTime(firstFitDTO.MinHour, firstFitDTO.MinMinutes);
-        Doctor doctor = DoctorRepository.GetInstance().GetById(firstFitDTO.DoctorUsername);
-        Patient patient = PatientRepository.GetInstance().GetByUsername(firstFitDTO.PatientUsername);
+        Doctor doctor = _doctorRepository.GetById(firstFitDTO.DoctorUsername);
+        Patient patient = _patientRepository.GetByUsername(firstFitDTO.PatientUsername);
         var medicalRecord = _medicalRecordService.GetByPatientUsername(patient);
         ExaminationDTO examinationDTO = new ExaminationDTO(fit, null, doctor, medicalRecord);
         FindFitDTO findFitDTO = new FindFitDTO(fit, firstFitDTO.End, firstFitDTO.MinHour, firstFitDTO.MinMinutes, firstFitDTO.MaxHour, firstFitDTO.MaxMinutes);
@@ -88,8 +92,8 @@ public class RecommendedSchedulingService : IRecommendedSchedulingService
 
     public List<Examination> FindClosestFit(ClosestFitDTO closestFitDTO)
     {
-        Doctor pickedDoctor = DoctorRepository.GetInstance().GetById(closestFitDTO.DoctorUsername);
-        Patient patient = PatientRepository.GetInstance().GetByUsername(closestFitDTO.PatientUsername);
+        Doctor pickedDoctor = _doctorRepository.GetById(closestFitDTO.DoctorUsername);
+        Patient patient = _patientRepository.GetByUsername(closestFitDTO.PatientUsername);
         var medicalRecord = _medicalRecordService.GetByPatientUsername(patient);
         List<Examination> suggestions = new List<Examination>();
         List<Doctor> viableDoctors = new List<Doctor>();
@@ -104,7 +108,7 @@ public class RecommendedSchedulingService : IRecommendedSchedulingService
         }
         else
         {
-            viableDoctors = DoctorRepository.GetInstance().GetAll();
+            viableDoctors = _doctorRepository.GetAll();
             viableDoctors.Remove(pickedDoctor);
         }
 

@@ -113,7 +113,10 @@ namespace HealthInstitution.Core.Operations.Repository
             }
             Save();
         }
-
+        public int GetMaxId()
+        {
+            return _maxId;
+        }
         public List<Operation> GetAll()
         {
             return this.Operations;

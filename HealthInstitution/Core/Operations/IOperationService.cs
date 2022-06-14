@@ -10,6 +10,7 @@ namespace HealthInstitution.Core.Operations
 {
     public interface IOperationService
     {
+        public int GetMaxId();
         public List<Operation> GetAll();
         public Operation GetById(int id);
         public Operation Add(OperationDTO operationDTO);

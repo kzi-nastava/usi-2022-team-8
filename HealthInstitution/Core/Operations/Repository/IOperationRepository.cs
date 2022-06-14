@@ -10,6 +10,7 @@ namespace HealthInstitution.Core.Operations.Repository
 {
     public interface IOperationRepository
     {
+        public int GetMaxId();
         public void LoadFromFile();
         public void Save();
         public List<Operation> GetAll();

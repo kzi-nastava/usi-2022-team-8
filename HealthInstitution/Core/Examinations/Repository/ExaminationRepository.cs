@@ -103,7 +103,10 @@ public class ExaminationRepository : IExaminationRepository
         var allExaminations = JsonSerializer.Serialize(reducedExaminations, _options);
         File.WriteAllText(_fileName, allExaminations);
     }
-
+    public int GetMaxId()
+    {
+        return _maxId;
+    }
     public List<Examination> GetAll()
     {
         return Examinations;

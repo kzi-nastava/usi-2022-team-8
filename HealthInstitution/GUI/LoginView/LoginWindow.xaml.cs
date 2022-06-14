@@ -44,15 +44,17 @@ namespace HealthInstitution.GUI.LoginView
         IRestRequestService _restRequestService;
         IDoctorRatingsService _doctorRatingsService;
 
-        public LoginWindow(IUserService userService, 
-            ITrollCounterService trollCounterService, 
-            IPatientService patientService,
-            IDoctorService doctorService)
+        public LoginWindow(IUserService userService, ITrollCounterService trollCounterService, IPatientService patientService, IDoctorService doctorService, IEquipmentTransferRefreshingService equipmentTransferRefreshingService, IRenovationRefreshingService renovationRefreshingService, IPrescriptionNotificationService prescriptionNotificationService, IRestRequestService restRequestService, IDoctorRatingsService doctorRatingsService)
         {
-            InitializeComponent();
             _userService = userService;
-            _trollCounterService = trollCounterService; 
+            _trollCounterService = trollCounterService;
             _patientService = patientService;
+            _doctorService = doctorService;
+            _equipmentTransferRefreshingService = equipmentTransferRefreshingService;
+            _renovationRefreshingService = renovationRefreshingService;
+            _prescriptionNotificationService = prescriptionNotificationService;
+            _restRequestService = restRequestService;
+            _doctorRatingsService = doctorRatingsService;
         }
 
         private User GetUserFromInputData()
@@ -68,7 +70,6 @@ namespace HealthInstitution.GUI.LoginView
             if (_userService.IsUserFound(user, _passwordInput) && !_userService.IsUserBlocked(user))
             {
                 this.Close();
-                UpdateEquipmentOnStartup();
                 switch (user.Type)
                 {
                     case UserType.Patient:
@@ -123,8 +124,8 @@ namespace HealthInstitution.GUI.LoginView
 
         public async Task StartAsync()
         {
-            EquipmentTransferRefreshingService.UpdateByTransfer();
-            RenovationRefreshingService.UpdateByRenovation();
+            _equipmentTransferRefreshingService.UpdateByTransfer();
+            _renovationRefreshingService.UpdateByRenovation();
 
             LoginWindow window = new LoginWindow();
             window.ShowDialog();

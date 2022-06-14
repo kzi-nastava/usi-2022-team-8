@@ -59,7 +59,6 @@ public partial class PatientScheduleWindow : Window
     {
         Examination selectedExamination = (Examination)dataGrid.SelectedItem;
         _trollCounterService.TrollCheck(_loggedPatient.Username);
-        //ExaminationDoctorRepository.GetInstance().Save();
         GridRefresh();
         _trollCounterService.AppendEditDeleteDates(_loggedPatient.Username);
         ConfirmDelete(selectedExamination);
