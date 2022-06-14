@@ -6,18 +6,18 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.DIContainer
 {
-    public class DIContainer
+    public static class DIContainer
     {
-        private List<ServiceDescriptor> _serviceDescriptors;
+        private static List<ServiceDescriptor> s_serviceDescriptors;
 
-        public DIContainer(List<ServiceDescriptor> serviceDescriptors)
+        public static void UpdateDescriptor(List<ServiceDescriptor> serviceDescriptors)
         {
-            this._serviceDescriptors = serviceDescriptors;
+            s_serviceDescriptors = serviceDescriptors;
         }
 
-        public object GetService(Type serviceType)
+        public static object GetService(Type serviceType)
         {
-            var descriptor = _serviceDescriptors
+            var descriptor = s_serviceDescriptors
                 .SingleOrDefault(x => x.ServiceType == serviceType);
 
             if (descriptor == null)
@@ -51,7 +51,7 @@ namespace HealthInstitution.Core.DIContainer
             return implementation;
         }
 
-        public T GetService<T>()
+        public static T GetService<T>()
         {
             return (T)GetService(typeof(T));
         }

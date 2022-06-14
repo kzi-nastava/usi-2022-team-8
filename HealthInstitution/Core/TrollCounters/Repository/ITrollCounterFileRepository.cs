@@ -11,7 +11,9 @@ namespace HealthInstitution.Core.TrollCounters.Repository
     {
         public void LoadFromFile();
         public void Save();
+        public List<TrollCounter> GetAll();
         public TrollCounter GetById(string id);
+        public Dictionary<string, TrollCounter> GetAllById(string id);
         public void Add(TrollCounter trollCounter);
         public void Delete(TrollCounter trollCounter);
         public void CheckCreateTroll(string username);

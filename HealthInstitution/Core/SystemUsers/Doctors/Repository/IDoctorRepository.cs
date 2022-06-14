@@ -17,6 +17,7 @@ namespace HealthInstitution.Core.SystemUsers.Doctors.Repository
         public void LoadFromFile();
         public void Save();
         public List<Doctor> GetAll();
+        public Dictionary<string, Doctor> GetAllByUsername();
         public Doctor GetById(String username);
         public void DeleteExamination(Examination examination);
         public void DeleteOperation(Operation operation);

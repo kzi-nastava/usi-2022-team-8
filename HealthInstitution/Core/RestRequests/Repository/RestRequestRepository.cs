@@ -15,34 +15,26 @@ namespace HealthInstitution.Core.RestRequests.Repository
 {
     public class RestRequestRepository : IRestRequestRepository
     {
-        private String _fileName;
+        private String _fileName= @"..\..\..\Data\JSON\RestRequests.json";
         public int _maxId { get; set; }
         public List<RestRequest> RestRequests { get; set; }
         public Dictionary<int, RestRequest> RestRequestsById { get; set; }
+        IDoctorRepository _doctorRepository;
+        IRestRequestDoctorRepository _restRequestDoctorRepository;
 
         private JsonSerializerOptions _options = new JsonSerializerOptions
         {
             Converters = { new JsonStringEnumConverter() },
             PropertyNameCaseInsensitive = true
         };
-        private RestRequestRepository(String fileName)
+        public RestRequestRepository(IDoctorRepository doctorRepository, IRestRequestDoctorRepository restRequestDoctorRepository)
         {
-            this._fileName = fileName;
+            _doctorRepository = doctorRepository;
+            _restRequestDoctorRepository = restRequestDoctorRepository;
             this.RestRequests = new List<RestRequest>();
             this.RestRequestsById = new Dictionary<int, RestRequest>();
             this._maxId = 0;
             this.LoadFromFile();
-        }
-        private static RestRequestRepository s_instance = null;
-        public static RestRequestRepository GetInstance()
-        {
-            {
-                if (s_instance == null)
-                {
-                    s_instance = new RestRequestRepository(@"..\..\..\Data\JSON\RestRequests.json");
-                }
-                return s_instance;
-            }
         }
 
         private RestRequest Parse(JToken? RestRequest)
@@ -102,6 +94,10 @@ namespace HealthInstitution.Core.RestRequests.Repository
             return this.RestRequests;
         }
 
+        public Dictionary<int, RestRequest> GetAllById()
+        {
+            return RestRequestsById;
+        }
         public RestRequest GetById(int id)
         {
             if (RestRequestsById.ContainsKey(id))
@@ -124,7 +120,7 @@ namespace HealthInstitution.Core.RestRequests.Repository
             RestRequest.Id = id;
             AddToCollections(RestRequest);
             Save();
-            DoctorRepository.GetInstance().Save();
+            _doctorRepository.Save();
         }
 
         public void Update(int id, RestRequest byRestRequest)
@@ -142,7 +138,7 @@ namespace HealthInstitution.Core.RestRequests.Repository
             this.RestRequests.Remove(RestRequest);
             this.RestRequestsById.Remove(id);
             Save();
-            RestRequestDoctorRepository.GetInstance().Save();
+            _restRequestDoctorRepository.Save();
         }
         public void AcceptRestRequest(RestRequest restRequest)
         {

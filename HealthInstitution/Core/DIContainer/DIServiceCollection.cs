@@ -35,9 +35,10 @@ namespace HealthInstitution.Core.DIContainer
             _serviceDescriptors.Add(new ServiceDescriptor(typeof(TService), typeof(TImplementation), ServiceLifetime.Transient));
         }
 
-        public DIContainer BuildContainer()
+        public void BuildContainer()
         {
-            return new DIContainer(_serviceDescriptors);
+            DIContainer.UpdateDescriptor(_serviceDescriptors);
+            
         }
     }
 }

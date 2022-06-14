@@ -14,6 +14,7 @@ namespace HealthInstitution.Core.SystemUsers.Patients.Repository
         public void LoadFromFile();
         public void Save();
         public List<Patient> GetAll();
+        public Dictionary<string, Patient> GetAllByUsername();
         public Patient GetByUsername(string username);
         public void Add(Patient patient);
         public void Update(Patient byPatient);

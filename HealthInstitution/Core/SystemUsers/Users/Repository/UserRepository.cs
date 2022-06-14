@@ -8,7 +8,7 @@ namespace HealthInstitution.Core.SystemUsers.Users.Repository;
 
 public class UserRepository : IUserRepository
 {
-    private String _fileName;
+    private String _fileName= @"..\..\..\Data\JSON\users.json";
     public List<User> Users { get; set; }
     public Dictionary<String, User> UsersByUsername { get; set; }
 
@@ -17,23 +17,11 @@ public class UserRepository : IUserRepository
         Converters = { new JsonStringEnumConverter() },
         PropertyNameCaseInsensitive = true
     };
-    private UserRepository(String fileName)
+    public UserRepository()
     {
-        this._fileName = fileName;
         this.Users = new List<User>();
         this.UsersByUsername = new Dictionary<string, User>();
         this.LoadFromFile();
-    }
-    private static UserRepository s_instance = null;
-    public static UserRepository GetInstance()
-    {
-        {
-            if (s_instance == null)
-            {
-                s_instance = new UserRepository(@"..\..\..\Data\JSON\users.json");
-            }
-            return s_instance;
-        }
     }
     public void LoadFromFile()
     {
@@ -54,6 +42,10 @@ public class UserRepository : IUserRepository
     public List<User> GetAll()
     {
         return this.Users;
+    }
+    public Dictionary<string, User> GetAllByUsername()
+    {
+        return UsersByUsername;
     }
 
     public User GetByUsername(String username)

@@ -14,6 +14,7 @@ namespace HealthInstitution.Core.Rooms.Repository
         public void LoadFromFile();
         public void Save();
         public List<Room> GetAll();
+        public Dictionary<int, Room> GetAllById();
         public Room GetById(int id);
         public Room AddRoom(Room room);
         public void Update(int id, Room byRoom);

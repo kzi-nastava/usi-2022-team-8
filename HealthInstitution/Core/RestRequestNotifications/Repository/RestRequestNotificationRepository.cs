@@ -15,34 +15,26 @@ namespace HealthInstitution.Core.RestRequestNotifications.Repository
 {
     public class RestRequestNotificationRepository : IRestRequestNotificationRepository
     {
-        private String _fileName;
+        private String _fileName= @"..\..\..\Data\JSON\restRequestNotifications.json";
         public int _maxId { get; set; }
         public List<RestRequestNotification> Notifications { get; set; }
         public Dictionary<int, RestRequestNotification> NotificationsById { get; set; }
+        IRestRequestNotificationDoctorRepository _restRequestNotificationDoctorRepository;
+        IRestRequestRepository _restRequestRepository;
 
         private JsonSerializerOptions _options = new JsonSerializerOptions
         {
             Converters = { new JsonStringEnumConverter() },
             PropertyNameCaseInsensitive = true
         };
-        private RestRequestNotificationRepository(String fileName)
+        public RestRequestNotificationRepository(IRestRequestNotificationDoctorRepository restRequestNotificationDoctorRepository, IRestRequestRepository restRequestRepository)
         {
-            this._fileName = fileName;
+            _restRequestNotificationDoctorRepository = restRequestNotificationDoctorRepository;
+            _restRequestRepository = restRequestRepository;
             this.Notifications = new List<RestRequestNotification>();
             this.NotificationsById = new Dictionary<int, RestRequestNotification>();
             this._maxId = 0;
             this.LoadFromFile();
-        }
-        private static RestRequestNotificationRepository s_instance = null;
-        public static RestRequestNotificationRepository GetInstance()
-        {
-            {
-                if (s_instance == null)
-                {
-                    s_instance = new RestRequestNotificationRepository(@"..\..\..\Data\JSON\restRequestNotifications.json");
-                }
-                return s_instance;
-            }
         }
         public void LoadFromFile()
         {
@@ -51,7 +43,7 @@ namespace HealthInstitution.Core.RestRequestNotifications.Repository
             {
                 int id = (int)notification["id"];
                 int restRequestId = (int)notification["restRequestId"];
-                RestRequest restRequest = RestRequestRepository.GetInstance().GetById(restRequestId);
+                RestRequest restRequest = _restRequestRepository.GetById(restRequestId);
                 bool active = (bool)notification["active"];
 
                 RestRequestNotification loadedNotification = new RestRequestNotification(id, restRequest, active);
@@ -84,6 +76,10 @@ namespace HealthInstitution.Core.RestRequestNotifications.Repository
         {
             return this.Notifications;
         }
+        public Dictionary<int, RestRequestNotification> GetAllById()
+        {
+            return NotificationsById;
+        }
 
         public RestRequestNotification GetById(int id)
         {
@@ -102,7 +98,7 @@ namespace HealthInstitution.Core.RestRequestNotifications.Repository
         private void SaveAll()
         {
             Save();
-            RestRequestNotificationDoctorRepository.GetInstance().Save();
+            _restRequestNotificationDoctorRepository.Save();
         }
         public void Add(RestRequestNotification restRequestNotification)
         {

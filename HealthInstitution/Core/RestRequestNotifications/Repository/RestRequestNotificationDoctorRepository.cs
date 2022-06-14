@@ -15,30 +15,20 @@ namespace HealthInstitution.Core.RestRequestNotifications.Repository
 {
     public class RestRequestNotificationDoctorRepository : IRestRequestNotificationDoctorRepository
     {
-        private String _fileName;
-        private RestRequestNotificationDoctorRepository(String fileName)
+        private String _fileName= @"..\..\..\Data\JSON\restRequestNotificationDoctor.json";
+        IDoctorRepository _doctorRepository;
+        IRestRequestNotificationRepository _restRequestNotificationRepository;
+        public RestRequestNotificationDoctorRepository(IDoctorRepository doctorRepository, IRestRequestNotificationRepository restRequestNotificationRepository)
         {
-            this._fileName = fileName;
+            _doctorRepository = doctorRepository;
+            _restRequestNotificationRepository = restRequestNotificationRepository;
             this.LoadFromFile();
-        }
-
-        private static RestRequestNotificationDoctorRepository s_instance = null;
-
-        public static RestRequestNotificationDoctorRepository GetInstance()
-        {
-            {
-                if (s_instance == null)
-                {
-                    s_instance = new RestRequestNotificationDoctorRepository(@"..\..\..\Data\JSON\restRequestNotificationDoctor.json");
-                }
-                return s_instance;
-            }
         }
 
         public void LoadFromFile()
         {
-            var doctorsByUsername = DoctorRepository.GetInstance().DoctorsByUsername;
-            var notificationsById = RestRequestNotificationRepository.GetInstance().NotificationsById;
+            var doctorsByUsername = _doctorRepository.GetAllByUsername();
+            var notificationsById = _restRequestNotificationRepository.GetAllById();
             var doctorUseranamesNotificationIds = JArray.Parse(File.ReadAllText(this._fileName));
             foreach (var pair in doctorUseranamesNotificationIds)
             {
@@ -54,7 +44,7 @@ namespace HealthInstitution.Core.RestRequestNotifications.Repository
         public void Save()
         {
             List<dynamic> doctorUseranamesNotificationIds = new List<dynamic>();
-            var notifications = RestRequestNotificationRepository.GetInstance().Notifications;
+            var notifications = _restRequestNotificationRepository.GetAll();
             foreach (var notification in notifications)
             {
                 Doctor doctor = notification.RestRequest.Doctor;

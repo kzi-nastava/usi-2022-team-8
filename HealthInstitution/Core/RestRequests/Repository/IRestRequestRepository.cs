@@ -8,6 +8,7 @@ namespace HealthInstitution.Core.RestRequests.Repository
         void Add(RestRequest RestRequest);
         void Delete(int id);
         List<RestRequest> GetAll();
+        Dictionary<int, RestRequest> GetAllById();
         RestRequest GetById(int id);
         void LoadFromFile();
         void RejectRestRequest(RestRequest restRequest, string rejectionReason);

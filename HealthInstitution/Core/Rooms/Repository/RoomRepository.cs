@@ -17,40 +17,30 @@ namespace HealthInstitution.Core.Rooms.Repository
 {
     public class RoomRepository : IRoomRepository
     {
-        private String _fileName;
+        private String _fileName= @"..\..\..\Data\JSON\rooms.json";
 
         private int _maxId;
         public List<Room> Rooms { get; set; }
         public Dictionary<int, Room> RoomById { get; set; }
 
+        IEquipmentRepository _equipmentRepository;
         private JsonSerializerOptions _options = new JsonSerializerOptions
         {
             Converters = { new JsonStringEnumConverter() },
             PropertyNameCaseInsensitive = true
         };
-        private RoomRepository(String fileName)
+        public RoomRepository(IEquipmentRepository equipmentRepository)
         {
-            this._fileName = fileName;
+            _equipmentRepository = equipmentRepository;
             this.Rooms = new List<Room>();
             this.RoomById = new Dictionary<int, Room>();
             this._maxId = 0;
             this.LoadFromFile();
         }
-        private static RoomRepository s_instance = null;
-        public static RoomRepository GetInstance()
-        {
-            {
-                if (s_instance == null)
-                {
-                    s_instance = new RoomRepository(@"..\..\..\Data\JSON\rooms.json");
-                }
-                return s_instance;
-            }
-        }
 
         private List<Equipment> ConvertJTokenToEquipments(JToken tokens)
         {
-            var equipmentById = EquipmentRepository.GetInstance().EquipmentById;
+            var equipmentById = _equipmentRepository.GetAllById();
             List<Equipment> equipments = new List<Equipment>();
             foreach (JToken equipmentToken in tokens)
             {
@@ -124,6 +114,10 @@ namespace HealthInstitution.Core.Rooms.Repository
         public List<Room> GetAll()
         {
             return this.Rooms;
+        }
+        public Dictionary<int, Room> GetAllById()
+        {
+            return RoomById;
         }
 
         public Room GetById(int id)

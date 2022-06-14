@@ -166,12 +166,13 @@ namespace HealthInstitution
             services.RegisterSingleton<LoginWindow>();
 
 
-            var container = services.BuildContainer();
+            services.BuildContainer();
+            
 
-            var service1 = container.GetService<ISomeService>();
-            var service2 = container.GetService<ISomeService>();
+            var service1 = DIContainer.GetService<ISomeService>();
+            var service2 = DIContainer.GetService<ISomeService>();
 
-            var loginWindow = container.GetService<LoginWindow>();
+            var loginWindow = DIContainer.GetService<LoginWindow>();
 
             //Console.WriteLine(service1.Method());
             //Console.WriteLine(service2.Method());
