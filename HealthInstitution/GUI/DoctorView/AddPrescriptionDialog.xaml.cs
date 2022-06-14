@@ -30,10 +30,15 @@ namespace HealthInstitution.GUI.DoctorView
     public partial class AddPrescriptionDialog : Window
     {
         private MedicalRecord _medicalRecord;
-        public AddPrescriptionDialog(MedicalRecord medicalRecord)
+        IDrugService _drugService;
+        IMedicalRecordService _medicalRecordService;
+        public AddPrescriptionDialog(MedicalRecord medicalRecord, IDrugService drugService,
+                                    IMedicalRecordService medicalRecordService)
         {
             InitializeComponent();
-            this._medicalRecord = medicalRecord;
+            _medicalRecord = medicalRecord;
+            _drugService = drugService;
+            _medicalRecordService = medicalRecordService;
         }
 
         private void HourComboBox_Loaded(object sender, RoutedEventArgs e)
@@ -72,7 +77,7 @@ namespace HealthInstitution.GUI.DoctorView
         private void DrugComboBox_Loaded(object sender, RoutedEventArgs e)
         {
             var drugComboBox = sender as System.Windows.Controls.ComboBox;
-            List<Drug> drugs = DrugService.GetAll();
+            List<Drug> drugs = _drugService.GetAll();
             foreach (Drug drug in drugs)
             {
                 drugComboBox.Items.Add(drug);
@@ -84,7 +89,7 @@ namespace HealthInstitution.GUI.DoctorView
         private PrescriptionDTO CreatePrescriptionDTOFromInputData()
         {
             Drug drug = (Drug)drugComboBox.SelectedItem;
-            if (PrescriptionService.IsPatientAlergic(_medicalRecord,drug.Ingredients))
+            if (_medicalRecordService.IsPatientAlergic(_medicalRecord,drug.Ingredients))
                 throw new Exception("Patient is alergic to drug ingredients");
             int minutes = Int32.Parse(minuteComboBox.Text);
             int hours = Int32.Parse(hourComboBox.Text);
@@ -100,8 +105,8 @@ namespace HealthInstitution.GUI.DoctorView
             try
             {
                 PrescriptionDTO prescriptionDTO = CreatePrescriptionDTOFromInputData();
-                Prescription prescription = PrescriptionService.Add(prescriptionDTO);
-                MedicalRecordService.AddPrescription(_medicalRecord.Patient, prescription);
+                Prescription prescription = _prescriptionService.Add(prescriptionDTO);
+                _medicalRecordService.AddPrescription(_medicalRecord.Patient, prescription);
                 System.Windows.MessageBox.Show("You have created the prescription!", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
                 this.Close();
             }

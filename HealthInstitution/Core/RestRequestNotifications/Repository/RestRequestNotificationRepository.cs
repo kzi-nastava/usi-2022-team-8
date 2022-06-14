@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.RestRequestNotifications.Repository
 {
-    public class RestRequestNotificationRepository
+    public class RestRequestNotificationRepository : IRestRequestNotificationRepository
     {
         private String _fileName;
         public int _maxId { get; set; }
@@ -54,7 +54,7 @@ namespace HealthInstitution.Core.RestRequestNotifications.Repository
                 RestRequest restRequest = RestRequestRepository.GetInstance().GetById(restRequestId);
                 bool active = (bool)notification["active"];
 
-                RestRequestNotification loadedNotification = new RestRequestNotification(id,restRequest,active);
+                RestRequestNotification loadedNotification = new RestRequestNotification(id, restRequest, active);
 
                 if (id > _maxId) { _maxId = id; }
 
@@ -74,7 +74,7 @@ namespace HealthInstitution.Core.RestRequestNotifications.Repository
                     id = notification.Id,
                     restRequestId = notification.RestRequest.Id,
                     active = notification.Active
-                }) ;
+                });
             }
             var allNotifications = JsonSerializer.Serialize(reducedNotifications, _options);
             File.WriteAllText(this._fileName, allNotifications);

@@ -15,24 +15,45 @@ using System.Windows;
 
 namespace HealthInstitution.Core.Scheduling
 {
-    public static class SchedulingService
+    public class SchedulingService : ISchedulingService
     {
         private static Random rnd = new Random();
-        private static ExaminationRepository s_examinationRepository = ExaminationRepository.GetInstance();
-        private static OperationRepository s_operationRepository = OperationRepository.GetInstance();
+        IExaminationRepository _examinationRepository;
+        IOperationRepository _operationRepository;
+        IDoctorOperationAvailabilityService _doctorOperationAvailabilityService;
+        IPatientOperationAvailabilityService _patientOperationAvailabilityService;
+        IDoctorExaminationAvailabilityService _doctorExaminationAvailabilityService;
+        IPatientExaminationAvailabilityService _patientExaminationAvailabilityService;
+        IOperationService _operationService;
+        IExaminationService _examinationService;
+        IRoomService _roomService;
 
-        //hm da li ova treba u schedule service
-        //mmmmm :D> moguce
-        public static bool CheckOccurrenceOfRoom(Room room)
+        public SchedulingService(IExaminationRepository examinationRepository, IOperationRepository operationRepository, 
+            IDoctorOperationAvailabilityService doctorOperationAvailabilityService, IPatientOperationAvailabilityService patientOperationAvailabilityService, 
+            IDoctorExaminationAvailabilityService doctorExaminationAvailabilityService, IPatientExaminationAvailabilityService patientExaminationAvailabilityService,
+            IOperationService operationService, IExaminationService examinationService, IRoomService roomService)
         {
-            if (s_examinationRepository.Examinations.Find(examination => examination.Room == room) == null)
+            _examinationRepository = examinationRepository;
+            _operationRepository = operationRepository;
+            _doctorOperationAvailabilityService = doctorOperationAvailabilityService;
+            _patientOperationAvailabilityService = patientOperationAvailabilityService;
+            _doctorExaminationAvailabilityService = doctorExaminationAvailabilityService;
+            _patientExaminationAvailabilityService = patientExaminationAvailabilityService;
+            _operationService = operationService;
+            _examinationService = examinationService;
+            _roomService = roomService;
+        }
+
+        public bool CheckOccurrenceOfRoom(Room room)
+        {
+            if (_examinationRepository.GetAll().Find(examination => examination.Room == room) == null)
                 return false;
-            if (s_operationRepository.Operations.Find(operation => operation.Room == room) == null)
+            if (_operationRepository.GetAll().Find(operation => operation.Room == room) == null)
                 return false;
             return true;
         }
 
-        public static void RedirectByType(Referral referral, DateTime appointment, MedicalRecord medicalRecord)
+        public void RedirectByType(Referral referral, DateTime appointment, MedicalRecord medicalRecord)
         {
             if (referral.Type == ReferralType.SpecificDoctor)
                 ScheduleWithSpecificDoctor(appointment, referral, medicalRecord);
@@ -40,7 +61,7 @@ namespace HealthInstitution.Core.Scheduling
                 ScheduleWithOrderedSpecialty(appointment, referral, medicalRecord);
         }
 
-        private static void ScheduleWithSpecificDoctor(DateTime appointment, Referral referral, MedicalRecord medicalRecord)
+        private void ScheduleWithSpecificDoctor(DateTime appointment, Referral referral, MedicalRecord medicalRecord)
         {
             ExaminationDTO examination = new ExaminationDTO(appointment, null, referral.ReferredDoctor, medicalRecord);
             ReserveExamination(examination);
@@ -50,7 +71,7 @@ namespace HealthInstitution.Core.Scheduling
             ReferralRepository.GetInstance().Save(); //TODO
         }
 
-        private static void ScheduleWithOrderedSpecialist(ExaminationDTO examination, Referral referral)
+        private void ScheduleWithOrderedSpecialist(ExaminationDTO examination, Referral referral)
         {
             try
             {
@@ -68,7 +89,7 @@ namespace HealthInstitution.Core.Scheduling
             }
         }
 
-        private static void ScheduleWithOrderedSpecialty(DateTime appointment, Referral referral, MedicalRecord medicalRecord)
+        private void ScheduleWithOrderedSpecialty(DateTime appointment, Referral referral, MedicalRecord medicalRecord)
         {
             SpecialtyType specialtyType = (SpecialtyType)referral.Type;
             List<Doctor> doctors = DoctorRepository.GetInstance().Doctors;
@@ -95,27 +116,27 @@ namespace HealthInstitution.Core.Scheduling
             if (!successfulScheduling) throw new Exception("It is not possible to find a doctor with this specialty");
         }
 
-        public static void ReserveOperation(OperationDTO operationDTO, int id = 0)
+        public void ReserveOperation(OperationDTO operationDTO, int id = 0)
         {
             operationDTO.Validate();
             operationDTO.Room = FindAvailableOperationRoom(operationDTO);
-            DoctorOperationAvailabilityService.CheckIfDoctorIsAvailable(operationDTO);
-            PatientOperationAvailabilityService.CheckIfPatientIsAvailable(operationDTO);
-            OperationService.Add(operationDTO);
+            _doctorOperationAvailabilityService.CheckIfDoctorIsAvailable(operationDTO);
+            _patientOperationAvailabilityService.CheckIfPatientIsAvailable(operationDTO);
+            _operationService.Add(operationDTO);
         }
 
-        public static void ReserveExamination(ExaminationDTO examinationDTO)
+        public void ReserveExamination(ExaminationDTO examinationDTO)
         {
             examinationDTO.Validate();
             examinationDTO = CheckExaminationAvailable(examinationDTO);
-            ExaminationService.Add(examinationDTO);
+            _examinationService.Add(examinationDTO);
         }
 
-        public static Room FindAvailableOperationRoom(OperationDTO operationDTO, int id = 0)
+        public Room FindAvailableOperationRoom(OperationDTO operationDTO, int id = 0)
         {
             bool isAvailable;
             List<Room> availableRooms = new List<Room>();
-            var rooms = RoomService.GetNotRenovating();
+            var rooms = _roomService.GetNotRenovating();
             DateTime appointment = operationDTO.Appointment;
             int duration = operationDTO.Duration;
 
@@ -123,7 +144,7 @@ namespace HealthInstitution.Core.Scheduling
             {
                 if (room.Type != RoomType.OperatingRoom) continue;
                 isAvailable = true;
-                foreach (var operation in OperationService.GetAll())
+                foreach (var operation in _operationService.GetAll())
                 {
                     if (operation.Room.Id == room.Id && operation.Id != id)
                     {
@@ -143,7 +164,7 @@ namespace HealthInstitution.Core.Scheduling
             return availableRooms[index];
         }
 
-        public static Room FindAvailableExaminationRoom(DateTime appointment)
+        public Room FindAvailableExaminationRoom(DateTime appointment)
         {
             List<Room> availableRooms = FindAllAvailableRooms(RoomType.ExaminationRoom, appointment);
 
@@ -153,15 +174,15 @@ namespace HealthInstitution.Core.Scheduling
             return availableRooms[index];
         }
 
-        public static List<Room> FindAllAvailableRooms(RoomType roomType, DateTime appointment)
+        public List<Room> FindAllAvailableRooms(RoomType roomType, DateTime appointment)
         {
             bool isAvailable;
             List<Room> availableRooms = new List<Room>();
-            foreach (var room in RoomService.GetNotRenovating())
+            foreach (var room in _roomService.GetNotRenovating())
             {
                 if (room.Type != roomType) continue;
                 isAvailable = true;
-                foreach (var examination in ExaminationService.GetAll())
+                foreach (var examination in _examinationService.GetAll())
                 {
                     if (examination.Appointment == appointment && examination.Room.Id == room.Id)
                     {
@@ -175,12 +196,21 @@ namespace HealthInstitution.Core.Scheduling
             return availableRooms;
         }
 
-        public static ExaminationDTO CheckExaminationAvailable(ExaminationDTO examinationDTO)
+        public ExaminationDTO CheckExaminationAvailable(ExaminationDTO examinationDTO)
         {
             examinationDTO.Room = FindAvailableExaminationRoom(examinationDTO.Appointment);
-            DoctorExaminationAvailabilityService.CheckIfDoctorIsAvailable(examinationDTO);
-            PatientExaminationAvailabilityService.CheckIfPatientIsAvailable(examinationDTO);
+            _doctorExaminationAvailabilityService.CheckIfDoctorIsAvailable(examinationDTO);
+            _patientExaminationAvailabilityService.CheckIfPatientIsAvailable(examinationDTO);
             return examinationDTO;
         }
+
+        /*public void UpdateExamination(int id, ExaminationDTO examinationDTO)
+        {
+            examinationDTO.Validate();
+            Examination examination = new Examination(examinationDTO);
+            DoctorExaminationAvailabilityService.CheckIfDoctorIsAvailable(examinationDTO);
+            PatientExaminationAvailabilityService.CheckIfPatientIsAvailable(examinationDTO);
+            _examinationRepository.Update(id, examination);
+        }*/
     }
 }

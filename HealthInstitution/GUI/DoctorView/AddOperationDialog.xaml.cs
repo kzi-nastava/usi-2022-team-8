@@ -18,10 +18,18 @@ namespace HealthInstitution.GUI.DoctorView
     public partial class AddOperationDialog : Window
     {
         private Doctor _loggedDoctor;
-        public AddOperationDialog(Doctor doctor)
+        IPatientService _patientService;
+        IMedicalRecordService _medicalRecordService;
+        ISchedulingService _schedulingService;
+        public AddOperationDialog(Doctor doctor, IPatientService patientService,
+                                    IMedicalRecordService medicalRecordService,
+                                    ISchedulingService schedulingService)
         {
             this._loggedDoctor = doctor;
             InitializeComponent();
+            _patientService = patientService;
+            _medicalRecordService = medicalRecordService;
+            _schedulingService = schedulingService;
         }
 
         private void HourComboBox_Loaded(object sender, RoutedEventArgs e)
@@ -51,7 +59,7 @@ namespace HealthInstitution.GUI.DoctorView
         private void PatientComboBox_Loaded(object sender, RoutedEventArgs e)
         {
             patientComboBox.Items.Clear();
-            List<Patient> patients = PatientService.GetAll();
+            List<Patient> patients = _patientService.GetAll();
             foreach (Patient patient in patients)
             {
                 patientComboBox.Items.Add(patient);
@@ -68,7 +76,7 @@ namespace HealthInstitution.GUI.DoctorView
             appointment = appointment.AddMinutes(minutes);
             int duration = Int32.Parse(durationTextBox.Text);
             var patient = (Patient)patientComboBox.SelectedItem;
-            var medicalRecord = MedicalRecordService.GetByPatientUsername(patient);
+            var medicalRecord = _medicalRecordService.GetByPatientUsername(patient);
             return new OperationDTO(appointment, duration, null, _loggedDoctor, medicalRecord);
         }
 
@@ -77,7 +85,7 @@ namespace HealthInstitution.GUI.DoctorView
             try
             {
                 OperationDTO operationDTO = CreateOperationDTOFromInputData();
-                SchedulingService.ReserveOperation(operationDTO);
+                _schedulingService.ReserveOperation(operationDTO);
                 this.Close();
             }
             catch (Exception ex)

@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.Ingredients.Repository
 {
-    public interface IIngredientRepository : IRepository<Ingredient>
+    public interface IIngredientRepository
     {
         public void LoadFromFile();
         public void Save();

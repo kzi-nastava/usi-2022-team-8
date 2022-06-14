@@ -12,11 +12,11 @@ namespace HealthInstitution.GUI.SecretaryView
     /// </summary>
     public partial class UpdatePatientWindow : Window
     {
-        public Patient Patient { get; set; }
-        public UpdatePatientWindow(Patient patient)
+        IPatientService _patientService;
+        public UpdatePatientWindow(Patient patient, IPatientService patientService)
         {
             InitializeComponent();
-            this.Patient = patient;
+            _patientService = patientService;
             usernameBox.Text = patient.Username;
             passwordBox.Password = patient.Password;
             nameBox.Text = patient.Name;
@@ -41,7 +41,7 @@ namespace HealthInstitution.GUI.SecretaryView
             try 
             {
                 UserDTO userDTO = CreateUserDTOFromInputData();
-                PatientService.Update(userDTO);
+                _patientService.Update(userDTO);
                 Close();
             }
             catch

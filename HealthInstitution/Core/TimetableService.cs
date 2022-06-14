@@ -9,9 +9,10 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core
 {
-    public class TimetableService 
+    public class TimetableService : ITimetableService
     {
-        public static List<Examination> GetScheduledExaminations(Doctor doctor)
+        public TimetableService() { }
+        public List<Examination> GetScheduledExaminations(Doctor doctor)
         {
             var scheduledExaminations = new List<Examination>();
             foreach (var examination in doctor.Examinations)
@@ -22,7 +23,7 @@ namespace HealthInstitution.Core
             return scheduledExaminations;
         }
 
-        public static List<Operation> GetScheduledOperations(Doctor doctor)
+        public List<Operation> GetScheduledOperations(Doctor doctor)
         {
             var scheduledOperations = new List<Operation>();
             foreach (var operation in doctor.Operations)
@@ -33,7 +34,7 @@ namespace HealthInstitution.Core
             return scheduledOperations;
         }
 
-        public static List<Examination> GetExaminationsInThreeDays(List<Examination> examinations)
+        public List<Examination> GetExaminationsInThreeDays(List<Examination> examinations)
         {
             var upcomingExaminations = new List<Examination>();
             DateTime today = DateTime.Now;
@@ -45,7 +46,7 @@ namespace HealthInstitution.Core
             }
             return upcomingExaminations;
         }
-        public static List<Operation> GetOperationsInThreeDays(List<Operation> operations)
+        public List<Operation> GetOperationsInThreeDays(List<Operation> operations)
         {
             var upcomingOperations = new List<Operation>();
             DateTime today = DateTime.Now;
@@ -58,7 +59,7 @@ namespace HealthInstitution.Core
             return upcomingOperations;
         }
 
-        public static List<Examination> GetExaminationsByDate(List<Examination> examinations, DateTime date)
+        public List<Examination> GetExaminationsByDate(List<Examination> examinations, DateTime date)
         {
             var examinationsForDate = new List<Examination>();
             foreach (Examination examination in examinations)
@@ -68,7 +69,7 @@ namespace HealthInstitution.Core
             }
             return examinationsForDate;
         }
-        public static List<Operation> GetOperationsByDate(List<Operation> operations, DateTime date)
+        public List<Operation> GetOperationsByDate(List<Operation> operations, DateTime date)
         {
             var operationsForDate = new List<Operation>();
             foreach (Operation operation in operations)

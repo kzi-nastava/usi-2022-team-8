@@ -11,38 +11,41 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.Notifications
 {
-    public static class AppointmentNotificationService
+    public class AppointmentNotificationService : IAppointmentNotificationService
     {
-        private static AppointmentNotificationRepository s_appointmentNotificationRepository = AppointmentNotificationRepository.GetInstance();
-        public static void ChangeActiveStatus(AppointmentNotification notification, bool forDoctor)
+        IAppointmentNotificationRepository _appointmentNotificationRepository;
+        public AppointmentNotificationService(IAppointmentNotificationRepository appointmentNotificationRepository) {
+            _appointmentNotificationRepository = appointmentNotificationRepository;
+        }
+        public void ChangeActiveStatus(AppointmentNotification notification, bool forDoctor)
         {
             if (forDoctor)
                 notification.ActiveForDoctor = false;
             else
                 notification.ActiveForPatient = false;
-            s_appointmentNotificationRepository.Save();
+            _appointmentNotificationRepository.Save();
         }
-        private static void Add(AppointmentNotificationDTO appointmentNotificationDTO)
+        private void Add(AppointmentNotificationDTO appointmentNotificationDTO)
         {
             AppointmentNotification appointmentNotification = new AppointmentNotification(appointmentNotificationDTO);
-            s_appointmentNotificationRepository.Add(appointmentNotification);
+            _appointmentNotificationRepository.Add(appointmentNotification);
         }
-        public static void SendNotificationsForDelayedExamination(ScheduleEditRequest selectedAppointment)
+        public void SendNotificationsForDelayedExamination(ScheduleEditRequest selectedAppointment)
         {
             AppointmentNotificationDTO appointmentNotificationDTO = new AppointmentNotificationDTO(selectedAppointment.CurrentExamination.Appointment, selectedAppointment.NewExamination.Appointment, selectedAppointment.NewExamination.Doctor, selectedAppointment.NewExamination.MedicalRecord.Patient);
             Add(appointmentNotificationDTO);
         }
-        public static void SendNotificationForNewExamination(Examination examination)
+        public void SendNotificationForNewExamination(Examination examination)
         {
             AppointmentNotificationDTO appointmentNotificationDTO = new AppointmentNotificationDTO(null, examination.Appointment, examination.Doctor, examination.MedicalRecord.Patient);
             Add(appointmentNotificationDTO);
         }
-        public static void SendNotificationsForDelayedOperation(ScheduleEditRequest selectedAppointment)
+        public void SendNotificationsForDelayedOperation(ScheduleEditRequest selectedAppointment)
         {
             AppointmentNotificationDTO appointmentNotificationDTO = new AppointmentNotificationDTO(selectedAppointment.CurrentOperation.Appointment, selectedAppointment.NewOperation.Appointment, selectedAppointment.NewOperation.Doctor, selectedAppointment.NewOperation.MedicalRecord.Patient);
             Add(appointmentNotificationDTO);
         }
-        public static void SendNotificationForNewOperation(Operation operation)
+        public void SendNotificationForNewOperation(Operation operation)
         {
             AppointmentNotificationDTO appointmentNotificationDTO = new AppointmentNotificationDTO(null, operation.Appointment, operation.Doctor, operation.MedicalRecord.Patient);
             Add(appointmentNotificationDTO);

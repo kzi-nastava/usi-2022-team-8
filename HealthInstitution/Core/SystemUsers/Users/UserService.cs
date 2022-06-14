@@ -4,40 +4,44 @@ using System.Windows;
 
 namespace HealthInstitution.Core.SystemUsers.Users
 {
-    public static class UserService
+    public class UserService : IUserService
     {
-        static UserRepository s_userRepository = UserRepository.GetInstance();
-        public static bool IsUsernameExist(string username)
+        IUserRepository _userRepository;
+        public UserService(IUserRepository userRepository)
         {
-            return s_userRepository.GetByUsername(username) != null;
+            _userRepository = userRepository;
         }
-        public static void Add(UserDTO userDTO)
+        public bool IsExist(string username)
         {
-            User user = new User(userDTO);
-            s_userRepository.Add(user);
+            return _userRepository.GetByUsername(username) != null;
         }
-
-        public static void Update(UserDTO userDTO)
+        public void Add(UserDTO userDTO)
         {
             User user = new User(userDTO);
-            s_userRepository.Update(user);
+            _userRepository.Add(user);
         }
 
-        public static void Delete(string username)
+        public void Update(UserDTO userDTO)
         {
-            s_userRepository.Delete(username);
+            User user = new User(userDTO);
+            _userRepository.Update(user);
         }
 
-        public static User GetByUsername(String username)
+        public void Delete(string username)
         {
-            return s_userRepository.GetByUsername(username);
+            _userRepository.Delete(username);
         }
 
-        public static void ChangeBlockedStatus(User user)
+        public User GetByUsername(String username)
         {
-            s_userRepository.ChangeBlockedStatus(user);
+            return _userRepository.GetByUsername(username);
         }
-        public static bool IsUserFound(User user, string passwordInput)
+
+        public void ChangeBlockedStatus(User user)
+        {
+            _userRepository.ChangeBlockedStatus(user);
+        }
+        public bool IsUserFound(User user, string passwordInput)
         {
             if (user == null)
             {
@@ -52,7 +56,7 @@ namespace HealthInstitution.Core.SystemUsers.Users
             return true;
         }
 
-        public static bool IsUserBlocked(User user)
+        public bool IsUserBlocked(User user)
         {
             if (user.Blocked != BlockState.NotBlocked)
             {

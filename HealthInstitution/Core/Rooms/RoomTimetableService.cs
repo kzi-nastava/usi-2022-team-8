@@ -15,11 +15,22 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.Rooms
 {
-    public static class RoomTimetableService
+    public class RoomTimetableService : IRoomTimetableService
     {
-        private static OperationRepository s_operationRepository = OperationRepository.GetInstance();
-        private static ExaminationRepository s_examinationRepository = ExaminationRepository.GetInstance();
-        public static bool CheckRoomTimetable(Room selectedRoom, DateTime startDate, out string message)
+        IOperationRepository _operationRepository;
+        IExaminationRepository _examinationRepository;
+        IEquipmentTransferService _equipmentTransferService;
+        IRenovationService _renovationService;
+
+        public RoomTimetableService(IOperationRepository operationRepository, IExaminationRepository examinationRepository,
+            IEquipmentTransferService equipmentTransferService, IRenovationService renovationService)
+        {
+            _operationRepository = operationRepository;
+            _examinationRepository = examinationRepository;
+            _equipmentTransferService = equipmentTransferService;
+            _renovationService = renovationService;
+        }
+        public bool CheckRoomTimetable(Room selectedRoom, DateTime startDate, out string message)
         {
             if (CheckIfRoomHasScheduledExamination(selectedRoom))
             {
@@ -48,9 +59,9 @@ namespace HealthInstitution.Core.Rooms
             return false;
         }
 
-        private static bool CheckIfRoomHasScheduledEquipmentTransfer(Room selectedRoom, DateTime startDate)
+        private bool CheckIfRoomHasScheduledEquipmentTransfer(Room selectedRoom, DateTime startDate)
         {
-            foreach (EquipmentTransfer equipmentTransfer in EquipmentTransferService.GetAll())
+            foreach (EquipmentTransfer equipmentTransfer in _equipmentTransferService.GetAll())
             {
                 if (equipmentTransfer.TransferTime < startDate)
                 {
@@ -65,9 +76,9 @@ namespace HealthInstitution.Core.Rooms
             return false;
         }
 
-        private static bool CheckIfRoomHasScheduledRenovation(Room selectedRoom)
+        private bool CheckIfRoomHasScheduledRenovation(Room selectedRoom)
         {
-            foreach (Renovation renovation in RenovationService.GetAll())
+            foreach (Renovation renovation in _renovationService.GetAll())
             {
                 if (renovation.Room == selectedRoom)
                 {
@@ -81,9 +92,9 @@ namespace HealthInstitution.Core.Rooms
             return false;
         }
 
-        private static bool CheckIfRoomHasScheduledOperation(Room selectedRoom)
+        private bool CheckIfRoomHasScheduledOperation(Room selectedRoom)
         {
-            foreach (Operation operation in s_operationRepository.GetAll())
+            foreach (Operation operation in _operationRepository.GetAll())
             {
                 if (operation.Room == selectedRoom)
                 {
@@ -93,9 +104,9 @@ namespace HealthInstitution.Core.Rooms
             return false;
         }
 
-        private static bool CheckIfRoomHasScheduledExamination(Room selectedRoom)
+        private bool CheckIfRoomHasScheduledExamination(Room selectedRoom)
         {
-            foreach (Examination examination in s_examinationRepository.GetAll())
+            foreach (Examination examination in _examinationRepository.GetAll())
             {
                 if (examination.Room == selectedRoom)
                 {

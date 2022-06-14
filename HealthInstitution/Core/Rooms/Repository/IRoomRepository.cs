@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.Rooms.Repository
 {
-    public interface IRoomRepository : IRepository<Room>
+    public interface IRoomRepository
     {
         public void LoadFromFile();
         public void Save();
@@ -22,7 +22,7 @@ namespace HealthInstitution.Core.Rooms.Repository
         public List<Room> GetActive();
         public List<Room> GetNotRenovating();
         public List<Equipment> GetDynamicEquipment(Room room);
-        public Room? GetRoomFromString(string? roomFromForm);
+        public Room? GetFromString(string? roomFromForm);
         public bool RoomNumberIsTaken(int number);
         public int FindIndexWithRoomNumber(int number);
     }

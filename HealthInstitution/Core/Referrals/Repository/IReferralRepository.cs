@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.Referrals.Repository
 {
-    public interface IReferralRepository : IRepository<Referral>
+    public interface IReferralRepository
     {
         public void LoadFromFile();
         public void Save();

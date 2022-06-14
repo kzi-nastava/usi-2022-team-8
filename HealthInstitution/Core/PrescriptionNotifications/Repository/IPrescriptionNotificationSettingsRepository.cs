@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.PrescriptionNotifications.Repository;
 
-public interface IPrescriptionNotificationSettingsRepository : IRepository<PrescriptionNotificationSettings>
+public interface IPrescriptionNotificationSettingsRepository
 {
     public void LoadFromFile();
 
     public void Save();
-
+    public List<PrescriptionNotificationSettings> GetAll();
     public PrescriptionNotificationSettings GetById(int id);
 
     public void Add(PrescriptionNotificationSettings recepieNotificationSettings);

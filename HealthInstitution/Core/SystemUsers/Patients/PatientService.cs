@@ -13,57 +13,75 @@ using HealthInstitution.Core.Operations.Repository;
 using HealthInstitution.Core.TrollCounters;
 using HealthInstitution.Core.Notifications.Model;
 using HealthInstitution.Core.Notifications.Repository;
+using HealthInstitution.Core.Examinations;
+using HealthInstitution.Core.Operations;
 
 namespace HealthInstitution.Core.SystemUsers.Patients
 {
-    public static class PatientService
+    public class PatientService : IPatientService
     {
+        IPatientRepository _patientRepository;
+        IUserService _userService;
+        ITrollCounterService _trollCounterService;
+        IMedicalRecordService _medicalRecordService;
+        IExaminationService _examinationService;
+        IOperationService _operationService;
+        public PatientService(IPatientRepository patientRepository, IUserService userService, ITrollCounterService trollCounterService, IMedicalRecordService medicalRecordService)
+        {
+            _patientRepository = patientRepository;
+            _medicalRecordService = medicalRecordService;
+            _userService = userService;
+            _trollCounterService = trollCounterService;
+        }
         static PatientRepository s_patientRepository = PatientRepository.GetInstance();
-        public static void LoadNotifications()
+        public void LoadNotifications()
         {
             AppointmentNotificationPatientRepository.GetInstance();
             AppointmentNotificationDoctorRepository.GetInstance();
         }
-        public static List<Patient> GetAll()
+        public List<Patient> GetAll()
         {
-            return s_patientRepository.GetAll();
+            return _patientRepository.GetAll();
         }
-        public static Patient GetByUsername(string username)
+        public Patient GetByUsername(string username)
         {
-            return s_patientRepository.GetByUsername(username);
+            return _patientRepository.GetByUsername(username);
         }
-        public static void ChangeBlockedStatus(string username)
+        public void ChangeBlockedStatus(string username)
         {
             Patient patient = GetByUsername(username);
-            User user = UserService.GetByUsername(username);
-            s_patientRepository.ChangeBlockedStatus(patient);
-            UserService.ChangeBlockedStatus(user);
-            //dodati u usera
+            User user = _userService.GetByUsername(username);
+            _patientRepository.ChangeBlockedStatus(patient);
+            _userService.ChangeBlockedStatus(user);
         }
-        public static void Add(UserDTO userDTO, MedicalRecords.Model.MedicalRecordDTO medicalRecordDTO)
+        public void Add(UserDTO userDTO, MedicalRecords.Model.MedicalRecordDTO medicalRecordDTO)
         {
             Patient patient = new Patient(userDTO);
             medicalRecordDTO.Patient = patient;
-            MedicalRecordService.Add(medicalRecordDTO);
-            UserService.Add(userDTO);
-            TrollCounterService.Add(userDTO.Username);
-            s_patientRepository.Add(patient);
+            _medicalRecordService.Add(medicalRecordDTO);
+            _userService.Add(userDTO);
+            _trollCounterService.Add(userDTO.Username);
+            _patientRepository.Add(patient);
         }
-        public static void Update(UserDTO userDTO)
+        public void Update(UserDTO userDTO)
         {
             Patient patient = new Patient(userDTO);
-            s_patientRepository.Update(patient);
-            UserService.Update(userDTO);
+            _patientRepository.Update(patient);
+            _userService.Update(userDTO);
         }
-        public static void Delete(string username)
+        public void Delete(string username)
         {
-            s_patientRepository.Delete(username);
-            TrollCounterService.Delete(username);
-            UserService.Delete(username);
+            _patientRepository.Delete(username);
+            _trollCounterService.Delete(username);
+            _userService.Delete(username);
         }
-        public static void DeleteNotifications(Patient patient)
+        public void DeleteNotifications(Patient patient)
         {
-            s_patientRepository.DeleteNotifications(patient);
+            _patientRepository.DeleteNotifications(patient);
+        }
+        public bool IsAvailableForDeletion(Patient patient)
+        {
+            return _examinationService.GetByPatient(patient.Username).Count == 0 && _operationService.GetByPatient(patient.Username).Count() == 0;
         }
         public static List<AppointmentNotification> GetActiveAppointmentNotification(Patient patient)
         {

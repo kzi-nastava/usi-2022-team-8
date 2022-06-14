@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.RestRequests.Repository
 {
-    public class RestRequestDoctorRepository
+    public class RestRequestDoctorRepository : IRestRequestDoctorRepository
     {
         private String _fileName;
         private RestRequestDoctorRepository(String fileName)

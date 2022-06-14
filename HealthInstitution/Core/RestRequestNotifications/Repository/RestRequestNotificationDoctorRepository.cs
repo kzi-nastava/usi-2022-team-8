@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.RestRequestNotifications.Repository
 {
-    public class RestRequestNotificationDoctorRepository
+    public class RestRequestNotificationDoctorRepository : IRestRequestNotificationDoctorRepository
     {
         private String _fileName;
         private RestRequestNotificationDoctorRepository(String fileName)

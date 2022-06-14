@@ -25,11 +25,13 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
     {
         private List<Equipment> _firstRoomEquipments;
         private List<Equipment> _secondRoomEquipments;
-        public EquipmentTransferForSplitDialog(List<Equipment> firstRoomEquipment, List<Equipment> secondRoomEquipments)
+        IEquipmentTransferService _equipmentTransferService;
+        public EquipmentTransferForSplitDialog(List<Equipment> firstRoomEquipment, List<Equipment> secondRoomEquipments, IEquipmentTransferService equipmentTransferService)
         {
             InitializeComponent();
             _firstRoomEquipments = firstRoomEquipment;
             _secondRoomEquipments = secondRoomEquipments;
+            _equipmentTransferService = equipmentTransferService;
         }
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
         {
@@ -59,7 +61,7 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
                 return;
             }
  
-            EquipmentTransferService.Transfer(_secondRoomEquipments, equipment, quantity);
+            _equipmentTransferService.Transfer(_secondRoomEquipments, equipment, quantity);
             System.Windows.MessageBox.Show("Equipment transfer completed!", "Equipment transfer", MessageBoxButton.OK, MessageBoxImage.Information);
             
             this.Close();

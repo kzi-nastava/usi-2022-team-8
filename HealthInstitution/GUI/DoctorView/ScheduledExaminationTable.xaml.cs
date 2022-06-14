@@ -28,9 +28,13 @@ namespace HealthInstitution.GUI.DoctorView
     public partial class ScheduledExaminationTable : Window
     {
         private Doctor _loggedDoctor;
-        public ScheduledExaminationTable(Doctor doctor)
+        ITimetableService _timetableService;
+        IExaminationService _examinationService;
+        public ScheduledExaminationTable(Doctor doctor, ITimetableService timetableService, IExaminationService examinationService)
         {
             this._loggedDoctor = doctor;   
+            this._timetableService = timetableService;
+            this._examinationService = examinationService;
             InitializeComponent();
             examinationRadioButton.IsChecked = true;
             datePicker.SelectedDate = DateTime.Now;
@@ -39,16 +43,16 @@ namespace HealthInstitution.GUI.DoctorView
         private void LoadOperationRows()
         {
             dataGrid.Items.Clear();
-            List<Operation> scheduledOperations = TimetableService.GetScheduledOperations(_loggedDoctor);
+            List<Operation> scheduledOperations = _timetableService.GetScheduledOperations(_loggedDoctor);
             List<Operation> selectedOperations;
             if (upcomingDaysRadioButton.IsChecked == true)
             {
-                selectedOperations = TimetableService.GetOperationsInThreeDays(scheduledOperations);
+                selectedOperations = _timetableService.GetOperationsInThreeDays(scheduledOperations);
             }
             else
             {
                 DateTime date = datePicker.SelectedDate.Value.Date;
-                selectedOperations = TimetableService.GetOperationsByDate(scheduledOperations, date);
+                selectedOperations = _timetableService.GetOperationsByDate(scheduledOperations, date);
             }
             foreach (Operation operation in selectedOperations)
             {
@@ -59,15 +63,15 @@ namespace HealthInstitution.GUI.DoctorView
         public void LoadExaminationRows()
         {
             dataGrid.Items.Clear();
-            List<Examination> scheduledExaminations = TimetableService.GetScheduledExaminations(_loggedDoctor);
+            List<Examination> scheduledExaminations = _timetableService.GetScheduledExaminations(_loggedDoctor);
             List<Examination> selectedExaminations;
             if ((bool)upcomingDaysRadioButton.IsChecked)
             {
-                selectedExaminations = TimetableService.GetExaminationsInThreeDays(scheduledExaminations);
+                selectedExaminations = _timetableService.GetExaminationsInThreeDays(scheduledExaminations);
             } else
             {
                 DateTime date = datePicker.SelectedDate.Value.Date;
-                selectedExaminations = TimetableService.GetExaminationsByDate(scheduledExaminations, date);
+                selectedExaminations = _timetableService.GetExaminationsByDate(scheduledExaminations, date);
             }
             foreach (var examination in selectedExaminations)
             {
@@ -122,7 +126,7 @@ namespace HealthInstitution.GUI.DoctorView
             if (IsExaminationSelected())
             { 
                 Examination selectedExamination = (Examination)dataGrid.SelectedItem;
-                if (ExaminationService.IsReadyForPerforming(selectedExamination))
+                if (_examinationService.IsReadyForPerforming(selectedExamination))
                     new PerformExaminationDialog(selectedExamination).ShowDialog();
                 else
                     System.Windows.MessageBox.Show("Date of examination didn't pass!", "Error", MessageBoxButton.OKCancel, MessageBoxImage.Error);

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.TrollCounters.Repository
 {
-    public interface ITrollCounterFileRepository : IRepository<TrollCounter>
+    public interface ITrollCounterFileRepository
     {
         public void LoadFromFile();
         public void Save();

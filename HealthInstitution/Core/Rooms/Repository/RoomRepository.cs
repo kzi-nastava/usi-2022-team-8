@@ -201,7 +201,7 @@ namespace HealthInstitution.Core.Rooms.Repository
             }
             return dynamicEquipment;
         }
-        public Room? GetRoomFromString(string? roomFromForm)
+        public Room? GetFromString(string? roomFromForm)
         {
             if (roomFromForm != null)
             {

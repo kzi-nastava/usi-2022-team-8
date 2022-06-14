@@ -28,9 +28,15 @@ namespace HealthInstitution.GUI.DoctorView
     public partial class DoctorNotificationsDialog : Window
     {
         private Doctor _loggedDoctor;
-        public DoctorNotificationsDialog(Doctor doctor)
+        IDoctorService _doctorService;
+        IAppointmentNotificationService _appointmentNotificationService;
+        IRestRequestNotificationService _restRequestNotificationService;
+        public DoctorNotificationsDialog(Doctor doctor, IDoctorService doctorService, IAppointmentNotificationService appointmentNotificationService,IRestRequestNotificationService restRequestNotificationService)
         {
             _loggedDoctor = doctor;
+            _doctorService = doctorService;
+            _appointmentNotificationService = appointmentNotificationService;
+            _restRequestNotificationService = restRequestNotificationService;
             InitializeComponent();
             LoadRows();
         }
@@ -41,16 +47,16 @@ namespace HealthInstitution.GUI.DoctorView
             foreach (AppointmentNotification notification in DoctorService.GetActiveAppointmentNotification(_loggedDoctor))
             {
                 appointmentGrid.Items.Add(notification);
-                AppointmentNotificationService.ChangeActiveStatus(notification,true);
+                _appointmentNotificationService.ChangeActiveStatus(notification,true);
             }
             foreach (RestRequestNotification notification in DoctorService.GetActiveRestRequestNotification(_loggedDoctor))
             {
                 restRequestGrid.Items.Add(notification.RestRequest);
-                RestRequestNotificationService.ChangeActiveStatus(notification);
+                _restRequestNotificationService.ChangeActiveStatus(notification);
             }
             appointmentGrid.Items.Refresh();
             restRequestGrid.Items.Refresh();
-            DoctorService.DeleteNotifications(_loggedDoctor);
+            _doctorService.DeleteNotifications(_loggedDoctor);
         }
     }
 }

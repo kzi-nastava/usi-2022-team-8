@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.SystemUsers.Patients.Repository
 {
-    public interface IPatientRepository : IRepository<Patient>
+    public interface IPatientRepository
     {
         public void LoadFromFile();
         public void Save();

@@ -9,20 +9,26 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.RestRequestNotifications
 {
-    public static class RestRequestNotificationService
+    public class RestRequestNotificationService : IRestRequestNotificationService
     {
-        private static RestRequestNotificationRepository s_restRequestNotificationRepository = RestRequestNotificationRepository.GetInstance();
-        public static void ChangeActiveStatus(RestRequestNotification notification)
+        IRestRequestNotificationRepository _restRequestNotificationRepository;
+
+        public RestRequestNotificationService(IRestRequestNotificationRepository restRequestNotificationRepository)
+        {
+            _restRequestNotificationRepository = restRequestNotificationRepository;
+        }
+
+        public void ChangeActiveStatus(RestRequestNotification notification)
         {
             notification.Active = false;
-            s_restRequestNotificationRepository.Save();
+            _restRequestNotificationRepository.Save();
         }
-        private static void Add(RestRequestNotificationDTO restRequestNotificationDTO)
+        private void Add(RestRequestNotificationDTO restRequestNotificationDTO)
         {
             RestRequestNotification restRequestNotification = new RestRequestNotification(restRequestNotificationDTO);
-            s_restRequestNotificationRepository.Add(restRequestNotification);
+            _restRequestNotificationRepository.Add(restRequestNotification);
         }
-        public static void SendNotification(RestRequest restRequest)
+        public void SendNotification(RestRequest restRequest)
         {
             RestRequestNotificationDTO restRequestNotificationDTO = new RestRequestNotificationDTO(restRequest, true);
             Add(restRequestNotificationDTO);

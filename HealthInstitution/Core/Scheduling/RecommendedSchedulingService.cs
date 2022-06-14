@@ -15,20 +15,36 @@ using HealthInstitution.Core.Rooms;
 
 namespace HealthInstitution.Core.Scheduling;
 
-public class RecommendedSchedulingService
+public class RecommendedSchedulingService : IRecommendedSchedulingService
 {
-    private static ExaminationDTO FindFit(ExaminationDTO examinationDTO, FindFitDTO findFitDTO)
+    IMedicalRecordService _medicalRecordService;
+    IPatientExaminationAvailabilityService patientExaminationAvailabilityService;
+    IDoctorExaminationAvailabilityService _doctorExaminationAvailabilityService;
+    ISchedulingService _schedulingService;
+    IExaminationService _examinationService;
+
+    public RecommendedSchedulingService(IMedicalRecordService medicalRecordService, IPatientExaminationAvailabilityService patientExaminationAvailabilityService,
+        IDoctorExaminationAvailabilityService doctorExaminationAvailabilityService, ISchedulingService schedulingService, IExaminationService examinationService)
+    {
+        _medicalRecordService = medicalRecordService;
+        this.patientExaminationAvailabilityService = patientExaminationAvailabilityService;
+        _doctorExaminationAvailabilityService = doctorExaminationAvailabilityService;
+        _schedulingService = schedulingService;
+        _examinationService = examinationService;
+    }
+
+    private ExaminationDTO FindFit(ExaminationDTO examinationDTO, FindFitDTO findFitDTO)
     {
         bool found = false;
         while (findFitDTO.Fit <= findFitDTO.End)
         {
             try
             {
-                Room room = SchedulingService.FindAvailableExaminationRoom(findFitDTO.Fit);
+                Room room = _schedulingService.FindAvailableExaminationRoom(findFitDTO.Fit);
                 examinationDTO.Appointment = findFitDTO.Fit;
                 examinationDTO.Room = room;
-                PatientExaminationAvailabilityService.CheckIfPatientIsAvailable(examinationDTO);
-                DoctorExaminationAvailabilityService.CheckIfDoctorIsAvailable(examinationDTO);
+                patientExaminationAvailabilityService.CheckIfPatientIsAvailable(examinationDTO);
+                _doctorExaminationAvailabilityService.CheckIfDoctorIsAvailable(examinationDTO);
                 found = true;
                 break;
             }
@@ -43,26 +59,26 @@ public class RecommendedSchedulingService
             return null;
     }
 
-    public static bool FindFirstFit(RecommendedSchedulingDTOs firstFitDTO)
+    public bool FindFirstFit(RecommendedSchedulingDTOs firstFitDTO)
     {
         bool found = false;
         DateTime fit = GenerateFitDateTime(firstFitDTO.MinHour, firstFitDTO.MinMinutes);
         Doctor doctor = DoctorRepository.GetInstance().GetById(firstFitDTO.DoctorUsername);
         Patient patient = PatientRepository.GetInstance().GetByUsername(firstFitDTO.PatientUsername);
-        var medicalRecord = MedicalRecordService.GetByPatientUsername(patient);
+        var medicalRecord = _medicalRecordService.GetByPatientUsername(patient);
         ExaminationDTO examinationDTO = new ExaminationDTO(fit, null, doctor, medicalRecord);
         FindFitDTO findFitDTO = new FindFitDTO(fit, firstFitDTO.End, firstFitDTO.MinHour, firstFitDTO.MinMinutes, firstFitDTO.MaxHour, firstFitDTO.MaxMinutes);
         ExaminationDTO firstFit = FindFit(examinationDTO, findFitDTO);
         if (firstFit is not null)
         {
             found = true;
-            ExaminationService.Add(examinationDTO);
+            _examinationService.Add(examinationDTO);
             MessageBox.Show("Examination scheduled for: " + fit.ToString());
         }
         return found;
     }
 
-    public static DateTime GenerateFitDateTime(int minHour, int minMinutes)
+    public DateTime GenerateFitDateTime(int minHour, int minMinutes)
     {
         DateTime fit = DateTime.Today.AddDays(1);
         fit = fit.AddHours(minHour);
@@ -70,11 +86,11 @@ public class RecommendedSchedulingService
         return fit;
     }
 
-    public static List<Examination> FindClosestFit(ClosestFitDTO closestFitDTO)
+    public List<Examination> FindClosestFit(ClosestFitDTO closestFitDTO)
     {
         Doctor pickedDoctor = DoctorRepository.GetInstance().GetById(closestFitDTO.DoctorUsername);
         Patient patient = PatientRepository.GetInstance().GetByUsername(closestFitDTO.PatientUsername);
-        var medicalRecord = MedicalRecordService.GetByPatientUsername(patient);
+        var medicalRecord = _medicalRecordService.GetByPatientUsername(patient);
         List<Examination> suggestions = new List<Examination>();
         List<Doctor> viableDoctors = new List<Doctor>();
 
@@ -114,7 +130,7 @@ public class RecommendedSchedulingService
         return suggestions;
     }
 
-    public static DateTime IncrementFit(DateTime fit, int maxHour, int maxMinutes, int minHour, int minMinutes)
+    public DateTime IncrementFit(DateTime fit, int maxHour, int maxMinutes, int minHour, int minMinutes)
     {
         fit = fit.AddMinutes(15);
 

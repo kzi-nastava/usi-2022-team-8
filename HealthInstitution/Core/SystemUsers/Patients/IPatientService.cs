@@ -16,5 +16,8 @@ namespace HealthInstitution.Core.SystemUsers.Patients
         public void Add(UserDTO userDTO, MedicalRecords.Model.MedicalRecordDTO medicalRecordDTO);
         public void Update(UserDTO userDTO);
         public void Delete(string username);
+        public void DeleteNotifications(Patient patient);
+        public bool IsAvailableForDeletion(Patient patient);
+        public void LoadNotifications();
     }
 }

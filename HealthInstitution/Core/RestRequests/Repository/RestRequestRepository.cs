@@ -13,7 +13,7 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.RestRequests.Repository
 {
-    public class RestRequestRepository
+    public class RestRequestRepository : IRestRequestRepository
     {
         private String _fileName;
         public int _maxId { get; set; }
@@ -55,8 +55,8 @@ namespace HealthInstitution.Core.RestRequests.Repository
             Enum.TryParse(RestRequest["state"].ToString(), out state);
             bool urgent = (bool)RestRequest["urgent"];
             string rejectionReason = (string)RestRequest["rejectionReason"];
-            
-            return new RestRequest(id,null,reason,startDate, daysDuration,state,urgent,rejectionReason);
+
+            return new RestRequest(id, null, reason, startDate, daysDuration, state, urgent, rejectionReason);
         }
         public void LoadFromFile()
         {
@@ -84,8 +84,8 @@ namespace HealthInstitution.Core.RestRequests.Repository
                     startDate = RestRequest.StartDate,
                     daysDuration = RestRequest.DaysDuration,
                     state = RestRequest.State,
-                    urgent=RestRequest.IsUrgent,
-                    rejectionReason=RestRequest.RejectionReason
+                    urgent = RestRequest.IsUrgent,
+                    rejectionReason = RestRequest.RejectionReason
                 });
             }
             return reducedRestRequests;

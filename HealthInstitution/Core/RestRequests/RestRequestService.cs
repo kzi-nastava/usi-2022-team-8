@@ -9,57 +9,64 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.RestRequests
 {
-    public class RestRequestService
+    public class RestRequestService : IRestRequestService
     {
-        static RestRequestRepository s_restRequestRepository = RestRequestRepository.GetInstance();
+        IRestRequestRepository _restRequestRepository;
+        IRestRequestNotificationService _restRequestNotificationService;
 
-        public static void LoadRequests()
+        public RestRequestService(IRestRequestRepository restRequestRepository, IRestRequestNotificationService restRequestNotificationService)
+        {
+            _restRequestRepository = restRequestRepository;
+            _restRequestNotificationService = restRequestNotificationService;
+        }
+
+        public void LoadRequests()
         {
             RestRequestDoctorRepository.GetInstance();
         }
-        private static bool CheckRequestActivity(RestRequest restRequest)
+        private bool CheckRequestActivity(RestRequest restRequest)
         {
             return restRequest.StartDate.Date >= DateTime.Now.Date && restRequest.State == RestRequestState.OnHold;
         }
-        public static List<RestRequest> GetActive()
+        public List<RestRequest> GetActive()
         {
             List<RestRequest> activeRestRequests = new List<RestRequest>();
-            foreach(RestRequest restRequest in GetAll())
-                if(CheckRequestActivity(restRequest))
+            foreach (RestRequest restRequest in GetAll())
+                if (CheckRequestActivity(restRequest))
                     activeRestRequests.Add(restRequest);
             return activeRestRequests;
         }
-        public static List<RestRequest> GetAll()
+        public List<RestRequest> GetAll()
         {
-            return s_restRequestRepository.GetAll();
+            return _restRequestRepository.GetAll();
         }
 
-        public static RestRequest GetById(int id)
+        public RestRequest GetById(int id)
         {
-            return s_restRequestRepository.GetById(id);
+            return _restRequestRepository.GetById(id);
         }
 
-        public static void Add(RestRequestDTO restRequestDTO)
+        public void Add(RestRequestDTO restRequestDTO)
         {
             RestRequest RestRequest = new RestRequest(restRequestDTO);
-            s_restRequestRepository.Add(RestRequest);
+            _restRequestRepository.Add(RestRequest);
         }
 
-        public static void DeleteRequest(int id)
+        public void DeleteRequest(int id)
         {
-            s_restRequestRepository.Delete(id);
+            _restRequestRepository.Delete(id);
         }
 
-        public static void AcceptRestRequest(RestRequest restRequest)
+        public void AcceptRestRequest(RestRequest restRequest)
         {
-            s_restRequestRepository.AcceptRestRequest(restRequest);
-            RestRequestNotificationService.SendNotification(restRequest);
+            _restRequestRepository.AcceptRestRequest(restRequest);
+            _restRequestNotificationService.SendNotification(restRequest);
         }
 
-        public static void RejectRestRequest(RestRequest restRequest,string rejectionReason)
+        public void RejectRestRequest(RestRequest restRequest, string rejectionReason)
         {
-            s_restRequestRepository.RejectRestRequest(restRequest,rejectionReason);
-            RestRequestNotificationService.SendNotification(restRequest);
+            _restRequestRepository.RejectRestRequest(restRequest, rejectionReason);
+            _restRequestNotificationService.SendNotification(restRequest);
         }
     }
 }

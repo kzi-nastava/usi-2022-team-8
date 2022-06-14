@@ -14,27 +14,33 @@ using System.Windows;
 
 namespace HealthInstitution.Core.TrollCounters
 {
-    public static class TrollCounterService
+    public class TrollCounterService : ITrollCounterService
     {
-        static TrollCounterFileRepository s_trollCounterFileRepository = TrollCounterFileRepository.GetInstance();
-        public static TrollCounter GetById(string id)
+        ITrollCounterFileRepository _trollCounterFileRepository;
+        IPatientService _patientService;
+        public TrollCounterService(ITrollCounterFileRepository trollCounterFileRepository,IPatientService patientService)
         {
-            return s_trollCounterFileRepository.GetById(id);
+            _trollCounterFileRepository = trollCounterFileRepository;
+            _patientService = patientService;
         }
-        public static void Add(string username)
+        public TrollCounter GetById(string id)
+        {
+            return _trollCounterFileRepository.GetById(id);
+        }
+        public void Add(string username)
         {
             TrollCounter trollCounter = new TrollCounter(username);
-            s_trollCounterFileRepository.Add(trollCounter);
+            _trollCounterFileRepository.Add(trollCounter);
         }
-        public static void Delete(string id)
+        public void Delete(string id)
         {
             TrollCounter trollCounter = GetById(id);
             if (trollCounter != null)
             {
-                s_trollCounterFileRepository.Delete(trollCounter);
+                _trollCounterFileRepository.Delete(trollCounter);
             }
         }
-        public static void TrollCheck(string username)
+        public void TrollCheck(string username)
         {
             try
             {
@@ -48,25 +54,25 @@ namespace HealthInstitution.Core.TrollCounters
                 Environment.Exit(0);
             }
         }
-        public static void BlockPatient(string username)
+        public void BlockPatient(string username)
         {
-            PatientService.ChangeBlockedStatus(username);
+            _patientService.ChangeBlockedStatus(username);
         }
-        public static void CheckCreateTroll(string username)
+        public void CheckCreateTroll(string username)
         {
-            s_trollCounterFileRepository.CheckCreateTroll(username);
+            _trollCounterFileRepository.CheckCreateTroll(username);
         }
-        public static void CheckEditDeleteTroll(string username)
+        public void CheckEditDeleteTroll(string username)
         {
-            s_trollCounterFileRepository.CheckEditDeleteTroll(username);
+            _trollCounterFileRepository.CheckEditDeleteTroll(username);
         }
-        public static void AppendEditDeleteDates(string username)
+        public void AppendEditDeleteDates(string username)
         {
-            s_trollCounterFileRepository.AppendEditDeleteDates(username);
+            _trollCounterFileRepository.AppendEditDeleteDates(username);
         }
-        public static void AppendCreateDates(string username)
+        public void AppendCreateDates(string username)
         {
-            s_trollCounterFileRepository.AppendCreateDates(username);
+            _trollCounterFileRepository.AppendCreateDates(username);
         }
     }
 }

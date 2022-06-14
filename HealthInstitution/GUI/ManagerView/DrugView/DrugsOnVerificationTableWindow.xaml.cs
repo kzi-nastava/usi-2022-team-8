@@ -23,9 +23,11 @@ namespace HealthInstitution.GUI.ManagerView.DrugView
     /// </summary>
     public partial class DrugsOnVerificationTableWindow : Window
     {
-        public DrugsOnVerificationTableWindow()
+        IDrugService _drugService;
+        public DrugsOnVerificationTableWindow(IDrugService drugService)
         {
             InitializeComponent();
+            _drugService = drugService;
             LoadRows();
             editButton.IsEnabled = false;
             deleteButton.IsEnabled = false;
@@ -34,7 +36,7 @@ namespace HealthInstitution.GUI.ManagerView.DrugView
         private void LoadRows()
         {
             drugsDataGrid.Items.Clear();
-            List<Drug> drugs = DrugService.GetAllCreated();
+            List<Drug> drugs = _drugService.GetAllCreated();
             foreach (Drug drug in drugs)
             {
                 drugsDataGrid.Items.Add(drug);
@@ -51,7 +53,7 @@ namespace HealthInstitution.GUI.ManagerView.DrugView
 
                 ingredientsDataGrid.Items.Clear();
                 Drug selectedDrug = (Drug)drugsDataGrid.SelectedItem;
-                List<Ingredient> ingredients = DrugService.GetIngredients(selectedDrug);
+                List<Ingredient> ingredients = _drugService.GetIngredients(selectedDrug);
                 foreach (Ingredient ingredient in ingredients)
                 {
                     ingredientsDataGrid.Items.Add(ingredient);
@@ -91,7 +93,7 @@ namespace HealthInstitution.GUI.ManagerView.DrugView
             if (System.Windows.MessageBox.Show("Are you sure you want to delete selected drug", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
             {
                 drugsDataGrid.Items.Remove(selectedDrug);
-                DrugService.Delete(selectedDrug.Id);
+                _drugService.Delete(selectedDrug.Id);
 
             }
         }

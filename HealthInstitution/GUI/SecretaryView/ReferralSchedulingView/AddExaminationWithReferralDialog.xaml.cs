@@ -30,11 +30,13 @@ namespace HealthInstitution.GUI.SecretaryView
     {
         Referral _referral;
         MedicalRecord _medicalRecord;
-        public AddExaminationWithReferralDialog(Referral referral, MedicalRecord medicalRecord)
+        ISchedulingService _schedulingService;
+        public AddExaminationWithReferralDialog(Referral referral, MedicalRecord medicalRecord, ISchedulingService schedulingService)
         {
             InitializeComponent();
             _referral = referral;
             _medicalRecord = medicalRecord;
+            _schedulingService = schedulingService;
             doctorBox.Text= (referral.ReferredDoctor==null) ? "" : referral.ReferredDoctor.Name + " " + referral.ReferredDoctor.Surname;
             specialtyBox.Text = (referral.ReferredSpecialty == null) ? "" : referral.ReferredSpecialty.ToString();
             patientBox.Text = medicalRecord.Patient.Name + " " + medicalRecord.Patient.Surname;
@@ -85,7 +87,7 @@ namespace HealthInstitution.GUI.SecretaryView
                 try
                 {
                     DateTime appointment = (DateTime)appointmentFromForm;
-                    SchedulingService.RedirectByType(_referral, appointment, _medicalRecord);
+                    _schedulingService.RedirectByType(_referral, appointment, _medicalRecord);
                     Close();
                 }
                 catch(Exception ex)

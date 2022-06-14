@@ -14,12 +14,16 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.EquipmentTransfers.Functionality
 {
-    public static class EquipmentTransferRefreshingService
+    public class EquipmentTransferRefreshingService : IEquipmentTransferRefreshingService
     {
-        private static EquipmentRepository s_equipmentRepository = EquipmentRepository.GetInstance();
-        private static RoomRepository s_roomRepository = RoomRepository.GetInstance();
-        private static EquipmentTransferRepository s_equipmentTransferRepository = EquipmentTransferRepository.GetInstance();
-        public static void UpdateByTransfer()
+        IEquipmentRepository _equipmentRepository;
+        IEquipmentTransferRepository _equipmentTransferRepository;
+        public EquipmentTransferRefreshingService(IEquipmentRepository equipmentRepository, IEquipmentTransferRepository equipmentTransferRepository)
+        {
+            _equipmentRepository = equipmentRepository;
+            _equipmentTransferRepository = equipmentTransferRepository;
+        }
+        public  void UpdateByTransfer()
         {
             List<int> equipmentTransfersToRemove = new List<int>();
             
@@ -39,21 +43,19 @@ namespace HealthInstitution.Core.EquipmentTransfers.Functionality
             RemoveOldTransfers(equipmentTransfersToRemove);
             
         }
-        private static void FillWarehouse(EquipmentTransfer equipmentTransfer, List<int> equipmentTransfersToRemove)
+        private void FillWarehouse(EquipmentTransfer equipmentTransfer, List<int> equipmentTransfersToRemove)
         {
-            Equipment purchasedEquipment = s_equipmentRepository.EquipmentById[equipmentTransfer.Equipment.Id];
+            Equipment purchasedEquipment = _equipmentRepository.GetById(equipmentTransfer.Equipment.Id);
             EquipmentTransferService.Transfer(equipmentTransfer.ToRoom, purchasedEquipment, purchasedEquipment.Quantity);
             equipmentTransfersToRemove.Add(equipmentTransfer.Id);
         }
 
-        private static void RemoveOldTransfers(List<int> equipmentTransfersToRemove)
+        private void RemoveOldTransfers(List<int> equipmentTransfersToRemove)
         {
             foreach (int id in equipmentTransfersToRemove)
             {
                 EquipmentTransferService.Delete(id);
             }
         }
-
-        
     }
 }

@@ -19,10 +19,15 @@ namespace HealthInstitution.GUI.DoctorView
     {
         private Examination _selectedExamination;
         private MedicalRecord _medicalRecord;
-        public PerformExaminationDialog(Examination examination)
+        IMedicalRecordService _medicalRecordService;
+        IExaminationService _examinationService;
+        public PerformExaminationDialog(Examination examination, IExaminationService examinationService, 
+            IMedicalRecordService medicalRecordService)
         {
             InitializeComponent();
             this._selectedExamination = examination;
+            _examinationService = examinationService;
+            _medicalRecordService = medicalRecordService;
             Load();
         }
 
@@ -97,8 +102,8 @@ namespace HealthInstitution.GUI.DoctorView
             try
             {
                 MedicalRecordDTO medicalRecordDTO = CreateMedicalRecordDTOFromInputData();
-                MedicalRecordService.Update(medicalRecordDTO);
-                ExaminationService.Complete(_selectedExamination, anamnesisTextBox.Text);
+                _medicalRecordService.Update(medicalRecordDTO);
+                _examinationService.Complete(_selectedExamination, anamnesisTextBox.Text);
                 System.Windows.MessageBox.Show("You have finished the examination!", "Congrats", MessageBoxButton.OK, MessageBoxImage.Information);
                 this.Close();
                 new ConsumedEquipmentDialog(_selectedExamination.Room).ShowDialog();

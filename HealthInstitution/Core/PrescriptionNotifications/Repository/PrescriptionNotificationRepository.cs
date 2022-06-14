@@ -16,7 +16,6 @@ public class PrescriptionNotificationRepository : IPrescriptionNotificationRepos
         Converters = { new JsonStringEnumConverter() },
         PropertyNameCaseInsensitive = true
     };
-
     private PrescriptionNotificationRepository(String fileName)
     {
         this._fileName = fileName;

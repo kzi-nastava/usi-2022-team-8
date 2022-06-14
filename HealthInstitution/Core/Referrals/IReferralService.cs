@@ -9,7 +9,7 @@ namespace HealthInstitution.Core.Referrals
 {
     public interface IReferralService
     {
-        public Task<IEnumerable<Referral>> GetAll();
+        public List<Referral> GetAll();
         public Referral Add(ReferralDTO referralDTO);
         public void Update(int id, ReferralDTO referralDTO);
         public void Delete(int id);

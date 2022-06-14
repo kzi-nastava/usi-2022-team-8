@@ -14,13 +14,19 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.Renovations.Functionality
 {
-    public static class RenovationRefreshingService 
+    public class RenovationRefreshingService : IRenovationRefreshingService
     {
-        private static RenovationRepository s_renovationRepository = RenovationRepository.GetInstance();
-       
-        public static void UpdateByRenovation()
+        IRenovationRepository _renovationRepository;
+        IRenovationService _renovationService;
+        public RenovationRefreshingService(IRenovationRepository renovationRepository,
+            IRenovationService renovationService) 
         {
-            foreach (Renovation renovation in s_renovationRepository.Renovations)
+            _renovationRepository = renovationRepository;
+            _renovationService = renovationService;
+        }
+        public void UpdateByRenovation()
+        {
+            foreach (Renovation renovation in _renovationRepository.GetAll())
             {
 
                 if (renovation.IsSimpleRenovation())
@@ -52,42 +58,42 @@ namespace HealthInstitution.Core.Renovations.Functionality
             }
         }
 
-        private static void UpdateSeparationRenovation(RoomSeparation roomSeparation)
+        private void UpdateSeparationRenovation(RoomSeparation roomSeparation)
         {
             if (roomSeparation.StartDate <= DateTime.Today.AddDays(-1))
             {
-                RenovationService.StartSeparation(roomSeparation.Room, roomSeparation.FirstRoom, roomSeparation.SecondRoom);
+                _renovationService.StartSeparation(roomSeparation.Room, roomSeparation.FirstRoom, roomSeparation.SecondRoom);
             }
 
             if (roomSeparation.EndDate <= DateTime.Today.AddDays(-1))
             {
-                RenovationService.EndSeparation(roomSeparation.Room, roomSeparation.FirstRoom, roomSeparation.SecondRoom);
+                _renovationService.EndSeparation(roomSeparation.Room, roomSeparation.FirstRoom, roomSeparation.SecondRoom);
             }
         }
 
-        private static void UpdateMergeRenovation(RoomMerger roomMerger)
+        private void UpdateMergeRenovation(RoomMerger roomMerger)
         {
             if (roomMerger.StartDate <= DateTime.Today.AddDays(-1))
             {
-                RenovationService.StartMerge(roomMerger.Room, roomMerger.RoomForMerge, roomMerger.MergedRoom);
+                _renovationService.StartMerge(roomMerger.Room, roomMerger.RoomForMerge, roomMerger.MergedRoom);
             }
 
             if (roomMerger.EndDate <= DateTime.Today.AddDays(-1))
             {
-                RenovationService.EndMerge(roomMerger.Room, roomMerger.RoomForMerge, roomMerger.MergedRoom);
+                _renovationService.EndMerge(roomMerger.Room, roomMerger.RoomForMerge, roomMerger.MergedRoom);
             }
         }
 
-        private static void UpdateSimpleRenovation(Renovation renovation)
+        private void UpdateSimpleRenovation(Renovation renovation)
         {
             if (renovation.StartDate <= DateTime.Today.AddDays(-1))
             {
-                RenovationService.StartRenovation(renovation.Room);
+                _renovationService.StartRenovation(renovation.Room);
             }
 
             if (renovation.EndDate <= DateTime.Today.AddDays(-1))
             {
-                RenovationService.EndRenovation(renovation.Room);
+                _renovationService.EndRenovation(renovation.Room);
             }
         }
     }

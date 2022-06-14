@@ -220,7 +220,7 @@ public class DoctorRepository : IDoctorRepository
         return found;
     }
 
-    public List<Doctor> GetSearchSpeciality(string keyword)
+    public List<Doctor> GetSearchSpecialty(string keyword)
     {
         keyword = keyword.Trim();
         List<Doctor> found = new List<Doctor>();

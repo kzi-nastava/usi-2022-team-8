@@ -24,10 +24,12 @@ namespace HealthInstitution.GUI.ManagerView
     public partial class EditRoomDialog : Window
     {
         private Room _room;
-        public EditRoomDialog(Room room)
+        IRoomService _roomService;
+        public EditRoomDialog(Room room, IRoomService roomService)
         {
             InitializeComponent();
             this._room = room;
+            _roomService = roomService;
             SetRoomData();
         }
 
@@ -69,7 +71,7 @@ namespace HealthInstitution.GUI.ManagerView
             RoomType type = (RoomType)typeComboBox.SelectedItem;
 
             RoomDTO roomDTO = new RoomDTO(type, number, _room.IsRenovating);
-            RoomService.Update(_room.Id, roomDTO);
+            _roomService.Update(_room.Id, roomDTO);
             System.Windows.MessageBox.Show("Room edited!", "Room edit", MessageBoxButton.OK, MessageBoxImage.Information);
 
             this.Close();
@@ -96,7 +98,7 @@ namespace HealthInstitution.GUI.ManagerView
             }
             int number = Int32.Parse(numberInput);
 
-            if (RoomService.ExistsChangedRoomNumber(number, _room))
+            if (_roomService.ExistsChangedRoomNumber(number, _room))
             {
                 System.Windows.MessageBox.Show("This room number already exist!", "Create error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;

@@ -12,14 +12,23 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.Scheduling
 {
-    public static class PatientOperationAvailabilityService
+    public class PatientOperationAvailabilityService : IPatientOperationAvailabilityService
     {
-        private static void CheckIfPatientHasExaminations(OperationDTO operationDTO, int id)
+        IExaminationService _examinationService;
+        IOperationService _operationService;
+
+        public PatientOperationAvailabilityService(IExaminationService examinationService, IOperationService operationService)
+        {
+            _examinationService = examinationService;
+            _operationService = operationService;
+        }
+
+        private void CheckIfPatientHasExaminations(OperationDTO operationDTO, int id)
         {
             Patient patient = operationDTO.MedicalRecord.Patient;
             DateTime appointment = operationDTO.Appointment;
             int duration = operationDTO.Duration;
-            var patientExaminations = ExaminationService.GetByPatient(patient.Username);
+            var patientExaminations = _examinationService.GetByPatient(patient.Username);
 
             foreach (var examination in patientExaminations)
             {
@@ -32,12 +41,12 @@ namespace HealthInstitution.Core.Scheduling
             }
         }
 
-        private static void CheckIfPatientHasOperations(OperationDTO operationDTO, int id)
+        private void CheckIfPatientHasOperations(OperationDTO operationDTO, int id)
         {
             Patient patient = operationDTO.MedicalRecord.Patient;
             DateTime appointment = operationDTO.Appointment;
             int duration = operationDTO.Duration;
-            var patientOperations = OperationService.GetByPatient(patient.Username);
+            var patientOperations = _operationService.GetByPatient(patient.Username);
 
             foreach (var operation in patientOperations)
             {
@@ -50,7 +59,7 @@ namespace HealthInstitution.Core.Scheduling
             }
         }
 
-        public static void CheckIfPatientIsAvailable(OperationDTO operationDTO, int id = 0)
+        public void CheckIfPatientIsAvailable(OperationDTO operationDTO, int id = 0)
         {
             CheckIfPatientHasExaminations(operationDTO, id);
             CheckIfPatientHasOperations(operationDTO, id);
