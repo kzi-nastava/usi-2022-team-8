@@ -1,6 +1,7 @@
 using HealthInstitution.Core.Examinations.Model;
 using HealthInstitution.Core.Notifications.Model;
 using HealthInstitution.Core.Operations.Model;
+using HealthInstitution.Core.RestRequestNotifications.Model;
 using HealthInstitution.Core.RestRequests.Model;
 using HealthInstitution.Core.SystemUsers.Users.Model;
 
@@ -12,7 +13,8 @@ public class Doctor : User
     public List<Examination> Examinations { get; set; }
     public List<Operation> Operations { get; set; }
     public List<RestRequest> RestRequests { get; set; }
-    public List<AppointmentNotification> Notifications { get; set; }
+    public List<AppointmentNotification> AppointmentNotifications { get; set; }
+    public List<RestRequestNotification> RestRequestNotifications { get; set; }
     public double AvgRating { get; set; }
 
     public Doctor(string username, string password, string name, string surname, SpecialtyType specialty) : base(UserType.Doctor, username, password, name, surname)
@@ -21,7 +23,8 @@ public class Doctor : User
         this.Examinations = new List<Examination>();
         this.Operations = new List<Operation>();
         this.RestRequests = new List<RestRequest>();
-        this.Notifications = new List<AppointmentNotification>();
+        this.AppointmentNotifications = new List<AppointmentNotification>();
+        this.RestRequestNotifications = new List<RestRequestNotification>();
         AvgRating = 0;
     }
 

@@ -19,6 +19,7 @@ using HealthInstitution.Core.PrescriptionNotifications.Service;
 using HealthInstitution.Core.SystemUsers.Doctors;
 using HealthInstitution.Core.SystemUsers.Patients;
 using HealthInstitution.Core.DoctorRatings;
+using HealthInstitution.Core.RestRequests;
 
 namespace HealthInstitution.GUI.LoginView
 {
@@ -74,6 +75,7 @@ namespace HealthInstitution.GUI.LoginView
         {
             TrollCounterService.TrollCheck(foundUser.Username);
             Patient loggedPatient = PatientService.GetByUsername(_usernameInput);
+            PatientService.LoadNotifications();
             PrescriptionNotificationService.GenerateAllSkippedNotifications(loggedPatient.Username);
             DoctorRatingsService.AssignScores();
             new PatientWindow(loggedPatient).ShowDialog();
@@ -82,12 +84,14 @@ namespace HealthInstitution.GUI.LoginView
         private void RedirectDoctor()
         {
             DoctorService.LoadAppointments();
+            DoctorService.LoadNotifications();
             Doctor loggedDoctor = DoctorService.GetById(_usernameInput);
             new DoctorWindow(loggedDoctor).ShowDialog();
         }
 
         private void RedirectSecretary()
         {
+            RestRequestService.LoadRequests();
             SecretaryWindow secretaryWindow = new SecretaryWindow();
             secretaryWindow.ShowDialog();
         }

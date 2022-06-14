@@ -36,8 +36,7 @@ namespace HealthInstitution.GUI.PatientView
         private void LoadRows()
         {
             dataGrid.Items.Clear();
-            List<AppointmentNotification> patientsNotifications = _loggedPatient.Notifications;
-            foreach (AppointmentNotification notification in patientsNotifications)
+            foreach (AppointmentNotification notification in PatientService.GetActiveAppointmentNotification(_loggedPatient))
             {
                 dataGrid.Items.Add(notification);
                 AppointmentNotificationService.ChangeActiveStatus(notification, false);

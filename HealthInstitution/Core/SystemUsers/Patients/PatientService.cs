@@ -12,12 +12,18 @@ using HealthInstitution.Core.Operations.Model;
 using HealthInstitution.Core.Operations.Repository;
 using HealthInstitution.Core.TrollCounters;
 using HealthInstitution.Core.Notifications.Model;
+using HealthInstitution.Core.Notifications.Repository;
 
 namespace HealthInstitution.Core.SystemUsers.Patients
 {
     public static class PatientService
     {
         static PatientRepository s_patientRepository = PatientRepository.GetInstance();
+        public static void LoadNotifications()
+        {
+            AppointmentNotificationPatientRepository.GetInstance();
+            AppointmentNotificationDoctorRepository.GetInstance();
+        }
         public static List<Patient> GetAll()
         {
             return s_patientRepository.GetAll();
@@ -58,6 +64,14 @@ namespace HealthInstitution.Core.SystemUsers.Patients
         public static void DeleteNotifications(Patient patient)
         {
             s_patientRepository.DeleteNotifications(patient);
+        }
+        public static List<AppointmentNotification> GetActiveAppointmentNotification(Patient patient)
+        {
+            List<AppointmentNotification> appointmentNotifications=new List<AppointmentNotification>();
+            foreach (AppointmentNotification appointmentNotification in patient.Notifications)
+                if (appointmentNotification.ActiveForPatient)
+                    appointmentNotifications.Add(appointmentNotification);
+            return appointmentNotifications;
         }
     } 
 }

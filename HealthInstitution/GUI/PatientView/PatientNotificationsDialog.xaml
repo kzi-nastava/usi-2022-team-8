@@ -5,11 +5,11 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:HealthInstitution.GUI.PatientView"
         WindowStartupLocation="CenterScreen"
-        Title="Notifications - Delayed examinations and operations" Height="150" Width="500">
+        Title="Notifications - Delayed examinations and operations" Height="150" Width="550">
     <Grid>
         <DataGrid  ItemsSource="{Binding Notification}" AutoGenerateColumns="False" Name="dataGrid"  Height="250" VerticalAlignment="Top">
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Doctor" FontSize="18" Width ="140">
+                <DataGridTextColumn Header="Doctor" FontSize="18" Width ="130">
                     <DataGridTextColumn.Binding>
                         <MultiBinding StringFormat="{}{0} {1}">
                             <Binding Path="Doctor.Name" />
@@ -18,8 +18,8 @@
                     </DataGridTextColumn.Binding>
                 </DataGridTextColumn>
 
-                <DataGridTextColumn Header="Old appointment" FontSize="18" Binding="{Binding OldAppointment}" Width =" 180" />
-                <DataGridTextColumn Header="New appointment" FontSize="18" Binding="{Binding NewAppointment}" Width =" 180" />
+                <DataGridTextColumn Header="Old appointment" FontSize="18" Binding="{Binding OldAppointment}" Width =" 200" />
+                <DataGridTextColumn Header="New appointment" FontSize="18" Binding="{Binding NewAppointment}" Width =" 200" />
             </DataGrid.Columns>
         </DataGrid>
         </Grid>
