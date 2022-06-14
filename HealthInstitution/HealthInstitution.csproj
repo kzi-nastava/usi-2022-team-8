@@ -10,6 +10,13 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <Compile Remove="Core\SystemUsers\Secretaries\**" />
+      <EmbeddedResource Remove="Core\SystemUsers\Secretaries\**" />
+      <None Remove="Core\SystemUsers\Secretaries\**" />
+      <Page Remove="Core\SystemUsers\Secretaries\**" />
+    </ItemGroup>
+
+    <ItemGroup>
       <None Remove="Data\Images\Hospital.png" />
     </ItemGroup>
 
@@ -17,13 +24,9 @@
       <Folder Include="Controllers" />
       <Folder Include="Core\Equipments\Repository" />
       <Folder Include="Core\RestRequests\Repository" />
-      <Folder Include="Core\SystemUsers\Secretaries\Model" />
-      <Folder Include="Core\SystemUsers\Secretaries\Repository" />
       <Folder Include="Core\Notifications\" />
       <Folder Include="Core\Polls\Repository\" />
       <Folder Include="Core\RestRequests\Repository" />
-      <Folder Include="Core\SystemUsers\Secretaries\Model" />
-      <Folder Include="Core\SystemUsers\Secretaries\Repository" />
     </ItemGroup>
 
     <ItemGroup>
