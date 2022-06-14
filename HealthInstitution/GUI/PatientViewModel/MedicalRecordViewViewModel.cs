@@ -1,4 +1,4 @@
-﻿using HealthInstitution.Commands.Patient;
+﻿using HealthInstitution.Commands.PatientCommands;
 using HealthInstitution.Core;
 using HealthInstitution.Core.Examinations;
 using HealthInstitution.Core.Examinations.Model;
@@ -14,7 +14,7 @@ using System.Windows.Input;
 
 namespace HealthInstitution.GUI.PatientViewModel;
 
-public class MedicalRecordViewModel : ViewModelBase
+public class MedicalRecordViewViewModel : ViewModelBase
 {
     //TODO all other commands
     public List<Examination> Examinations { get; set; }
@@ -57,7 +57,7 @@ public class MedicalRecordViewModel : ViewModelBase
 
     public User LoggedPatient { get; set; }
 
-    public MedicalRecordViewModel(User patient)
+    public MedicalRecordViewViewModel(User patient)
     {
         this._examinationVMs = new();
         LoggedPatient = patient;
@@ -65,6 +65,11 @@ public class MedicalRecordViewModel : ViewModelBase
         PutIntoGrid();
         DoctorSortCommand = new DoctorSortCommand(this);
         SearchKeywordCommand = new SearchAnamnesisCommand(this);
+    }
+
+    public void ClosingHandle()
+    {
+        throw new NotImplementedException();
     }
 
     public void PutIntoGrid()

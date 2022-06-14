@@ -7,13 +7,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HealthInstitution.Commands.Patient;
+namespace HealthInstitution.Commands.PatientCommands;
 
 public class SearchAnamnesisCommand : CommandBase
 {
-    private MedicalRecordViewModel _medicalRecordViewModel;
+    private MedicalRecordViewViewModel _medicalRecordViewModel;
 
-    public SearchAnamnesisCommand(MedicalRecordViewModel medicalRecordViewModel)
+    public SearchAnamnesisCommand(MedicalRecordViewViewModel medicalRecordViewModel)
     {
         _medicalRecordViewModel = medicalRecordViewModel;
     }

@@ -7,13 +7,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HealthInstitution.Commands.Patient;
+namespace HealthInstitution.Commands.PatientCommands;
 
 public class DoctorSortCommand : CommandBase
 {
-    private MedicalRecordViewModel _medicalRecordViewModel;
+    private MedicalRecordViewViewModel _medicalRecordViewModel;
 
-    public DoctorSortCommand(MedicalRecordViewModel medicalRecordViewModel)
+    public DoctorSortCommand(MedicalRecordViewViewModel medicalRecordViewModel)
     {
         _medicalRecordViewModel = medicalRecordViewModel;
     }

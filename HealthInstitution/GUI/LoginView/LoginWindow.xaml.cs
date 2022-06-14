@@ -19,6 +19,7 @@ using HealthInstitution.Core.PrescriptionNotifications.Service;
 using HealthInstitution.Core.SystemUsers.Doctors;
 using HealthInstitution.Core.SystemUsers.Patients;
 using HealthInstitution.Core.DoctorRatings;
+using System.Windows.Controls;
 
 namespace HealthInstitution.GUI.LoginView
 {
@@ -36,66 +37,12 @@ namespace HealthInstitution.GUI.LoginView
             InitializeComponent();
         }
 
-        private User GetUserFromInputData()
+        private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
         {
-            _usernameInput = usernameBox.Text;
-            _passwordInput = passwordBox.Password.ToString();
-            return UserService.GetByUsername(_usernameInput);
-        }
-
-        private void LoginButton_click(object sender, RoutedEventArgs e)
-        {
-            User user = GetUserFromInputData();
-            if (UserService.IsUserFound(user, _passwordInput) && !UserService.IsUserBlocked(user))
+            if (this.DataContext != null)
             {
-                this.Close();
-                switch (user.Type)
-                {
-                    case UserType.Patient:
-                        RedirectPatient(user);
-                        break;
-
-                    case UserType.Doctor:
-                        RedirectDoctor();
-                        break;
-
-                    case UserType.Secretary:
-                        RedirectSecretary();
-                        break;
-
-                    case UserType.Manager:
-                        RedirectManager();
-                        break;
-                }
+                ((dynamic)this.DataContext).Password = ((PasswordBox)sender).SecurePassword;
             }
-        }
-
-        private void RedirectPatient(User foundUser)
-        {
-            TrollCounterService.TrollCheck(foundUser.Username);
-            Patient loggedPatient = PatientService.GetByUsername(_usernameInput);
-            PrescriptionNotificationService.GenerateAllSkippedNotifications(loggedPatient.Username);
-            DoctorRatingsService.AssignScores();
-            new PatientWindow(loggedPatient).ShowDialog();
-        }
-
-        private void RedirectDoctor()
-        {
-            DoctorService.LoadAppointments();
-            Doctor loggedDoctor = DoctorService.GetById(_usernameInput);
-            new DoctorWindow(loggedDoctor).ShowDialog();
-        }
-
-        private void RedirectSecretary()
-        {
-            SecretaryWindow secretaryWindow = new SecretaryWindow();
-            secretaryWindow.ShowDialog();
-        }
-
-        private void RedirectManager()
-        {
-            ManagerWindow managerWindow = new ManagerWindow();
-            managerWindow.ShowDialog();
         }
 
         [STAThread]
@@ -104,7 +51,10 @@ namespace HealthInstitution.GUI.LoginView
             EquipmentTransferRefreshingService.UpdateByTransfer();
             RenovationRefreshingService.UpdateByRenovation();
 
-            LoginWindow window = new LoginWindow();
+            LoginWindow window = new LoginWindow()
+            {
+                DataContext = new LoginViewModel()
+            };
             window.ShowDialog();
         }
     }

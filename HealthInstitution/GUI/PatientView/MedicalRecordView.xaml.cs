@@ -19,7 +19,7 @@ public partial class MedicalRecordView : Window
     {
         InitializeComponent();
         _loggedPatient = loggedPatient;
-        DataContext = new MedicalRecordViewModel(loggedPatient);
+        DataContext = new MedicalRecordViewViewModel(loggedPatient);
 
         //LoadAllRows();
     }

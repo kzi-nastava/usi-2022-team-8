@@ -6,7 +6,9 @@
         xmlns:local="clr-namespace:HealthInstitution.GUI.PatientView"
         mc:Ignorable="d"
         Title="MedicalRecordView" Height="450" Width="800">
+
     <Grid>
+
         <DataGrid  ItemsSource="{Binding CompletedExaminations}" AutoGenerateColumns="False" Name="dataGrid" Grid.ColumnSpan="3" Margin="0,0,0,0">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Time" FontSize="18" Binding="{Binding Appointment}" Width ="150" />
