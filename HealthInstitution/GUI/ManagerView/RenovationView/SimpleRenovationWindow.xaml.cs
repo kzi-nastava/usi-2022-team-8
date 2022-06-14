@@ -96,10 +96,10 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
             Room selectedRoom = (Room)roomComboBox.SelectedItem;
 
             RenovationDTO renovationDTO = new RenovationDTO(selectedRoom, startDate, endDate);
-            _renovationService.AddRenovation(renovationDTO);
+            Renovation renovation = _renovationService.AddRenovation(renovationDTO);
             if (startDate == DateTime.Today)
             {
-                _renovationService.StartRenovation(selectedRoom);
+                _renovationService.Start(renovation);
                 System.Windows.MessageBox.Show("Renovation scheduled!", "Room renovation", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             else

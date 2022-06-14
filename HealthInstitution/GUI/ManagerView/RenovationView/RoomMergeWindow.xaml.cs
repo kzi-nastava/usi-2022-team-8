@@ -134,10 +134,10 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
             Room mergedRoom = _roomService.AddRoom(roomDTO);
 
             RoomMergerDTO roomMergerDTO = new RoomMergerDTO(firstSelectedRoom, secondSelectedRoom, mergedRoom, startDate, endDate);
-            _renovationService.AddRoomMerger(roomMergerDTO);
+            Renovation renovation = _renovationService.AddRoomMerger(roomMergerDTO);
             if (startDate == DateTime.Today)
             {
-                _renovationService.StartMerge(firstSelectedRoom, secondSelectedRoom, mergedRoom);
+                _renovationService.Start(renovation);
                 System.Windows.MessageBox.Show("Renovation scheduled!", "Room renovation", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             else

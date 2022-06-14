@@ -21,21 +21,24 @@ namespace HealthInstitution.Core.Renovations
             return _renovationRepository.GetAll();
         }
 
-        public void AddRenovation(RenovationDTO renovationDTO)
+        public Renovation AddRenovation(RenovationDTO renovationDTO)
         {
             Renovation renovation = new Renovation(renovationDTO);
             _renovationRepository.AddRenovation(renovation);
+            return renovation;
         }
-        public void AddRoomMerger(RoomMergerDTO roomMergerDTO)
+        public Renovation AddRoomMerger(RoomMergerDTO roomMergerDTO)
         {
             Renovation renovation = new RoomMerger(roomMergerDTO);
             _renovationRepository.AddRenovation(renovation);
+            return renovation;
         }
-        
-        public void AddRoomSeparation(RoomSeparationDTO roomSeparationDTO)
+
+        public Renovation AddRoomSeparation(RoomSeparationDTO roomSeparationDTO)
         {
             Renovation renovation = new RoomSeparation(roomSeparationDTO);
             _renovationRepository.AddRenovation(renovation);
+            return renovation;
         }
 
         public void UpdateRenovation(int id, RenovationDTO renovationDTO)
@@ -58,84 +61,26 @@ namespace HealthInstitution.Core.Renovations
             _renovationRepository.Delete(id);
         }
 
-        public void StartRenovation(Room room)
+        public void Start(Renovation renovation)
         {
-            RoomDTO roomDTO = new RoomDTO(room.Type, room.Number, true);
-            _roomService.Update(room.Id, roomDTO);
+            renovation.Start();
+            _roomService.WriteIn();
         }
 
-        public void EndRenovation(Room room)
+        public void End(Renovation renovation)
         {
-            RoomDTO roomDTO = new RoomDTO(room.Type, room.Number, false);
-            _roomService.Update(room.Id, roomDTO);
+            renovation.End();
+            renovation.RemoveOldRoomEquipment();
+            _roomService.WriteIn();
         }
-
-        public void StartMerge(Room firstRoom, Room secondRoom, Room mergedRoom)
-        {
-            RoomDTO firstRoomDTO = new RoomDTO(firstRoom.Type, firstRoom.Number, true);
-            RoomDTO secondRoomDTO = new RoomDTO(secondRoom.Type, secondRoom.Number, true);
-            _roomService.Update(firstRoom.Id, firstRoomDTO);
-            _roomService.Update(secondRoom.Id, secondRoomDTO);
-        }
-
-        public void EndMerge(Room firstRoom, Room secondRoom, Room mergedRoom)
-        {
-            foreach (Equipment equipment in firstRoom.AvailableEquipment)
-            {
-                mergedRoom.AvailableEquipment.Add(equipment);
-            }
-            firstRoom.AvailableEquipment.Clear();
-
-            foreach (Equipment equipment in secondRoom.AvailableEquipment)
-            {
-                _roomService.UpdateEquipmentQuantity(mergedRoom, equipment);
-            }
-            secondRoom.AvailableEquipment.Clear();
-
-            RoomDTO mergedRoomDTO = new RoomDTO(mergedRoom.Type, mergedRoom.Number, false, true);
-            _roomService.Update(mergedRoom.Id, mergedRoomDTO);
-            RoomDTO firstRoomDTO = new RoomDTO(firstRoom.Type, firstRoom.Number, false, false);
-            _roomService.Update(firstRoom.Id, firstRoomDTO);
-            RoomDTO secondRoomDTO = new RoomDTO(secondRoom.Type, secondRoom.Number, false, false);
-            _roomService.Update(secondRoom.Id, secondRoomDTO);
-        }
-
-        public void StartSeparation(Room separationRoom, Room firstRoom, Room secondRoom)
-        {
-            RoomDTO separationRoomDTO = new RoomDTO(separationRoom.Type, separationRoom.Number, true);
-            _roomService.Update(separationRoom.Id, separationRoomDTO);
-        }
-
-        public void EndSeparation(Room separationRoom, Room firstRoom, Room secondRoom)
-        {
-            _roomService.RemoveEquipmentFrom(separationRoom);
-
-            RoomDTO separationRoomDTO = new RoomDTO(separationRoom.Type, separationRoom.Number, false, false);
-            _roomService.Update(separationRoom.Id, separationRoomDTO);
-            RoomDTO firstRoomDTO = new RoomDTO(firstRoom.Type, firstRoom.Number, false, true);
-            _roomService.Update(firstRoom.Id, firstRoomDTO);
-            RoomDTO secondRoomDTO = new RoomDTO(secondRoom.Type, secondRoom.Number, false, true);
-            _roomService.Update(secondRoom.Id, secondRoomDTO);
-        }
-
 
         public bool CheckRenovationStatusForHistoryDelete(Room room)
         {
             foreach (Renovation renovation in _renovationRepository.GetAll())
             {
-                if (renovation.Room == room)
+                if (renovation.CheckHistoryDelete(room))
                 {
-                    room.IsActive = false;
                     return false;
-                }
-                if (renovation.IsRoomMerger())
-                {
-                    RoomMerger roomMerger = (RoomMerger)renovation;
-                    if (roomMerger.RoomForMerge == room)
-                    {
-                        room.IsActive = false;
-                        return false;
-                    }
                 }
             }
             return true;
@@ -145,25 +90,21 @@ namespace HealthInstitution.Core.Renovations
         {
             foreach (Renovation renovation in _renovationRepository.GetAll())
             {
-                if (renovation.StartDate > date && renovation.IsRoomSeparation())
+                if (CheckForProjectedSeparation(renovation, date))
                 {
                     continue;
                 }
-                if (renovation.Room == room)
+                if (renovation.CheckRenovationStatus(room))
                 {
                     return false;
                 }
-
-                if (renovation.IsRoomMerger())
-                {
-                    RoomMerger merger = (RoomMerger)renovation;
-                    if (merger.RoomForMerge == room)
-                    {
-                        return false;
-                    }
-                }
             }
             return true;
+        }
+
+        private bool CheckForProjectedSeparation(Renovation renovation, DateTime date)
+        {
+            return renovation.StartDate > date && renovation.IsRoomSeparation();
         }
 
     }

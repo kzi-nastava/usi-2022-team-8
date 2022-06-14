@@ -69,9 +69,6 @@ public partial class RecepieNotificationSettingsDialog : Window
         int m = minuteComboBox.SelectedIndex;
         this._minutes = m;
     }
-   //NIJE DOBRO
-   //NIJE DOBRO
-   //NIJE DOBRO
     private void Button_Click(object sender, RoutedEventArgs e)
     {
         Prescription prescription = _prescriptions[dataGrid.SelectedIndex];

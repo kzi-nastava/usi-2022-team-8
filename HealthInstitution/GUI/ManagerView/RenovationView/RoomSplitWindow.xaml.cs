@@ -186,10 +186,10 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
             }
 
             RoomSeparationDTO roomSeparationDTO = new RoomSeparationDTO(selectedRoom, firstRoom, secondRoom, startDate, endDate);
-            _renovationService.AddRoomSeparation(roomSeparationDTO);
+            Renovation renovation = _renovationService.AddRoomSeparation(roomSeparationDTO);
             if (startDate == DateTime.Today)
             {
-                _renovationService.StartSeparation(selectedRoom, firstRoom, secondRoom);
+                _renovationService.Start(renovation);
                 System.Windows.MessageBox.Show("Renovation scheduled!", "Room renovation", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             else
