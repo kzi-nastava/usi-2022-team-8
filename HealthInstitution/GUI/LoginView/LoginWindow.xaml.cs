@@ -284,7 +284,7 @@ namespace HealthInstitution.GUI.LoginView
 
 
                 services.RegisterTransient<AddDrugDialog>();
-                services.RegisterTransient<DrugsVerificationTable>();
+                services.RegisterTransient<DrugsOnVerificationTableWindow>();
                 services.RegisterTransient<EditDrugDialog>();
                 services.RegisterTransient<RejectedDrugsTableWindow>();
                 services.RegisterTransient<ReviseDrugDialog>();
