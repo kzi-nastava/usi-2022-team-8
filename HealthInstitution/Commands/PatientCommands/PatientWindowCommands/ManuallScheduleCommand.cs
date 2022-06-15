@@ -1,6 +1,7 @@
 ﻿using HealthInstitution.Core;
 using HealthInstitution.Core.SystemUsers.Patients.Model;
 using HealthInstitution.GUI.PatientWindows;
+using HealthInstitution.ViewModels.GUIViewModels.Scheduling;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +21,9 @@ public class ManuallScheduleCommand : CommandBase
 
     public override void Execute(object? parameter)
     {
-        new PatientScheduleWindow(this._loggedPatient).ShowDialog();
+        new PatientScheduleWindow(this._loggedPatient)
+        {
+            DataContext = new PatientScheduleWindowViewModel(_loggedPatient)
+        }.ShowDialog();
     }
 }

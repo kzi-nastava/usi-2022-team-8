@@ -6,6 +6,7 @@ using HealthInstitution.Core.SystemUsers.Patients.Model;
 using HealthInstitution.Core.TrollCounters;
 using HealthInstitution.GUI.PatientView;
 using System.Windows;
+
 using HealthInstitution.Core.Examinations;
 
 namespace HealthInstitution.GUI.PatientWindows;
@@ -21,7 +22,7 @@ public partial class PatientScheduleWindow : Window
     {
         InitializeComponent();
         this._loggedPatient = loggedPatient;
-        LoadRows();
+        // LoadRows();
     }
 
     private void GridRefresh()

@@ -16,11 +16,13 @@ public static class ExaminationService
 
     public static List<Examination> GetAll()
     {
+        LinkDoctors();
         return s_examinationRepository.GetAll();
     }
 
     public static Examination GetById(int id)
     {
+        LinkDoctors();
         return s_examinationRepository.GetById(id);
     }
 
@@ -97,5 +99,11 @@ public static class ExaminationService
         examination.Anamnesis = anamnesis;
         examination.Status = ExaminationStatus.Completed;
         s_examinationRepository.Save();
+    }
+
+    public static void LinkDoctors()
+    {
+        ExaminationRepository.GetInstance();
+        ExaminationDoctorRepository.GetInstance().LoadFromFile();
     }
 }

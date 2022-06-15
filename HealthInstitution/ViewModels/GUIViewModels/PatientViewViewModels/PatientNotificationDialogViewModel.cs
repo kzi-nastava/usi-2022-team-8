@@ -37,6 +37,8 @@ public class PatientNotificationDialogViewModel : ViewModelBase
         _loggedPatient = loggedPatient;
         List<AppointmentNotification> _Notifications = _loggedPatient.Notifications;
         PatientService.DeleteNotifications(_loggedPatient);
+        _notificationVMs = new();
+        PutIntoGrid();
     }
 
     public void PutIntoGrid()
