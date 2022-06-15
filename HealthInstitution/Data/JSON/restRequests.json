@@ -1,1 +1,21 @@
-[{"id":1,"reason":"Sahranjuje psa","startDate":"2022-06-19T00:00:00","daysDuration":3,"state":"Accepted","urgent":false,"rejectionReason":""},{"id":2,"reason":"Trese kandilo","startDate":"2022-06-19T00:00:00","daysDuration":2,"state":"Rejected","urgent":false,"rejectionReason":"ne moze"}]
+[
+  
+  {
+    "id": 1,
+    "reason": "Sahranjuje psa",
+    "startDate": "2022-06-19T00:00:00",
+    "daysDuration": 3,
+    "state": "OnHold",
+    "urgent": false,
+    "rejectionReason": ""
+  },
+  {
+    "id": 2,
+    "reason": "Trese kandilo",
+    "startDate": "2022-06-19T00:00:00",
+    "daysDuration": 2,
+    "state": "Rejected",
+    "urgent": false,
+    "rejectionReason": "ne moze"
+  }
+]

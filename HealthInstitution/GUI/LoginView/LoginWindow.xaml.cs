@@ -89,6 +89,7 @@ namespace HealthInstitution.GUI.LoginView
 
         public LoginWindow(IUserService userService, ITrollCounterService trollCounterService, IPatientService patientService, IDoctorService doctorService, IEquipmentTransferRefreshingService equipmentTransferRefreshingService, IRenovationRefreshingService renovationRefreshingService, IPrescriptionNotificationService prescriptionNotificationService, IRestRequestService restRequestService, IDoctorRatingsService doctorRatingsService)
         {
+            InitializeComponent();
             _userService = userService;
             _trollCounterService = trollCounterService;
             _patientService = patientService;
@@ -165,6 +166,7 @@ namespace HealthInstitution.GUI.LoginView
 
             var secretaryWindow = DIContainer.GetService<SecretaryWindow>();
             secretaryWindow.ShowDialog();
+            this.Close();
         }
 
         private void RedirectManager()
@@ -352,7 +354,7 @@ namespace HealthInstitution.GUI.LoginView
                 services.RegisterSingleton<UrgentOperationDialog>();
             }
 
-            services.RegisterSingleton<LoginWindow>();
+            services.RegisterTransient<LoginWindow>();
 
 
             services.BuildContainer();
@@ -360,8 +362,8 @@ namespace HealthInstitution.GUI.LoginView
 
             //var loginWindow = DIContainer.GetService<LoginWindow>();
 
-            DIContainer.GetService<IEquipmentTransferRefreshingService>().UpdateByTransfer();
-            DIContainer.GetService<IRenovationRefreshingService>().UpdateByRenovation();
+            //DIContainer.GetService<IEquipmentTransferRefreshingService>().UpdateByTransfer();
+            //DIContainer.GetService<IRenovationRefreshingService>().UpdateByRenovation();
 
             //_equipmentTransferRefreshingService.UpdateByTransfer();
             //_renovationRefreshingService.UpdateByRenovation();

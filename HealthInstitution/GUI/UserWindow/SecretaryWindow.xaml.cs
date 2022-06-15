@@ -98,7 +98,6 @@ namespace HealthInstitution.GUI.UserWindow
 
                 LoginWindow window = DIContainer.GetService<LoginWindow>();               
                 window.ShowDialog();
-            
             }
         }
 
