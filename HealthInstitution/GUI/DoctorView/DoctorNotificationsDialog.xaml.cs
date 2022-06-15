@@ -31,14 +31,17 @@ namespace HealthInstitution.GUI.DoctorView
         IDoctorService _doctorService;
         IAppointmentNotificationService _appointmentNotificationService;
         IRestRequestNotificationService _restRequestNotificationService;
-        public DoctorNotificationsDialog(Doctor doctor, IDoctorService doctorService, IAppointmentNotificationService appointmentNotificationService,IRestRequestNotificationService restRequestNotificationService)
+        public DoctorNotificationsDialog(IDoctorService doctorService, IAppointmentNotificationService appointmentNotificationService,IRestRequestNotificationService restRequestNotificationService)
         {
-            _loggedDoctor = doctor;
             _doctorService = doctorService;
             _appointmentNotificationService = appointmentNotificationService;
             _restRequestNotificationService = restRequestNotificationService;
             InitializeComponent();
             LoadRows();
+        }
+        public void SetLoggedDoctor(Doctor doctor)
+        {
+            _loggedDoctor = doctor;
         }
         private void LoadRows()
         {

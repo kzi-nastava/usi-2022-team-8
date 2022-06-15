@@ -26,20 +26,22 @@ public partial class EditExaminationDialog : Window
     IEditSchedulingService _editSchedulingService;
     IScheduleEditRequestsService _scheduleEditRequestService;
 
-    public EditExaminationDialog(Examination selectedExamination, IDoctorService doctorService,
+    public EditExaminationDialog(IDoctorService doctorService,
                                        IExaminationService examinationService, 
                                          IEditSchedulingService editSchedulingService,
                                          IScheduleEditRequestsService scheduleEditRequestsService)
     {
-        _selectedExamination = selectedExamination;
-        _loggedPatient = selectedExamination.MedicalRecord.Patient;
         InitializeComponent();
         _doctorService = doctorService;
         _examinationService = examinationService;
         _editSchedulingService = editSchedulingService;
         _scheduleEditRequestService = scheduleEditRequestsService;
     }
-
+    public void SetLoggedPatient(Examination examination)
+    {
+        _selectedExamination = examination;
+        _loggedPatient = examination.MedicalRecord.Patient;
+    }
     private void GenerateRequest(DateTime dateTime)
     {
         ExaminationDTO examinationDTO = _examinationService.ParseExaminationToExaminationDTO(_selectedExamination);

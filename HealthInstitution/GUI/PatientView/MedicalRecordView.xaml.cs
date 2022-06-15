@@ -17,12 +17,15 @@ public partial class MedicalRecordView : Window
     private List<Examination> _currentExaminations;
     IExaminationService _examinationService;
 
-    public MedicalRecordView(User loggedPatient, IExaminationService examinationService)
+    public MedicalRecordView(IExaminationService examinationService)
     {
         InitializeComponent();
-        _loggedPatient = loggedPatient;
         _examinationService = examinationService;
         LoadAllRows();
+    }
+    public void SetLoggedPatient(User patient)
+    {
+        _loggedPatient = patient;
     }
 
     private void DoctorButton_Click(object sender, RoutedEventArgs e)

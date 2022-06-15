@@ -21,18 +21,18 @@ namespace HealthInstitution.GUI.DoctorView
         IPatientService _patientService;
         IMedicalRecordService _medicalRecordService;
         IOperationService _operationService;
-        public EditOperationDialog(Operation operation, IPatientService patientService,
-                                    IMedicalRecordService medicalRecordService,
-                                    IOperationService operationService)
+        public EditOperationDialog(IPatientService patientService, IMedicalRecordService medicalRecordService, IOperationService operationService)
         {
-            this._selectedOperation = operation;
             InitializeComponent();
             Load();
             _patientService = patientService;
             _medicalRecordService = medicalRecordService;
             _operationService = operationService;
         }
-
+        public void SetSelectedOperation(Operation operation)
+        {
+            _selectedOperation = operation;
+        }
         public void Load()
         {
             datePicker.SelectedDate = _selectedOperation.Appointment;

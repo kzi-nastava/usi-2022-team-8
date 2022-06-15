@@ -29,13 +29,16 @@ namespace HealthInstitution.GUI.PatientView
         private Patient _loggedPatient;
         IAppointmentNotificationService _appointmentNotificationService;
         IPatientService _patientService;
-        public PatientNotificationsDialog(Patient patient, IPatientService patientService, IAppointmentNotificationService appointmentNotificationService)
+        public PatientNotificationsDialog(IPatientService patientService, IAppointmentNotificationService appointmentNotificationService)
         {
-            _loggedPatient = patient;
             _patientService = patientService;   
             _appointmentNotificationService = appointmentNotificationService;
             InitializeComponent();
             LoadRows();
+        }
+        public void SetLoggedPatient(Patient patient)
+        {
+            _loggedPatient = patient;
         }
         private void LoadRows()
         {

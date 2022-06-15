@@ -25,12 +25,15 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
     {
         private List<Equipment> _firstRoomEquipments;
         private List<Equipment> _secondRoomEquipments;
-        public ArrangeEquipmentForSplitWindow(List<Equipment> firstRoomEquipment, List<Equipment> secondRoomEquipments)
+        public ArrangeEquipmentForSplitWindow()
         {
             InitializeComponent();
+            Load();
+        }
+        public void SetEquipmentCollections(List<Equipment> firstRoomEquipment, List<Equipment> secondRoomEquipments)
+        {
             _firstRoomEquipments = firstRoomEquipment;
             _secondRoomEquipments = secondRoomEquipments;
-            Load();
         }
 
         private void Load()

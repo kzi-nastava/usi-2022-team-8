@@ -32,14 +32,17 @@ namespace HealthInstitution.GUI.DoctorView
         private Doctor _loggedDoctor;
         ITimetableService _timetableService;
         IExaminationService _examinationService;
-        public ScheduledExaminationTable(Doctor doctor, ITimetableService timetableService, IExaminationService examinationService)
+        public ScheduledExaminationTable(ITimetableService timetableService, IExaminationService examinationService)
         {
-            this._loggedDoctor = doctor;   
             this._timetableService = timetableService;
             this._examinationService = examinationService;
             InitializeComponent();
             examinationRadioButton.IsChecked = true;
             datePicker.SelectedDate = DateTime.Now;
+        }
+        public void SetLoggedDoctor(Doctor doctor)
+        {
+            _loggedDoctor = doctor;
         }
 
         private void LoadOperationRows()

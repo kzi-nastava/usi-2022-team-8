@@ -33,15 +33,17 @@ namespace HealthInstitution.GUI.SecretaryView
         Examination? _examination;
         Operation? _operation;
         IAppointmentDelayingService _appointmentDelayingService;
-        public DelayExaminationOperationDialog(List<ScheduleEditRequest> delayedAppointments, Examination? examination, Operation? operation,
-            IAppointmentDelayingService appointmentDelayingService)
+        public DelayExaminationOperationDialog(IAppointmentDelayingService appointmentDelayingService)
         {
             InitializeComponent();
-            _delayedAppointments=delayedAppointments;
-            _examination = examination;
-            _operation = operation;
             _appointmentDelayingService = appointmentDelayingService;
             LoadRows();
+        }
+        public void SetSelectedAppointment(List<ScheduleEditRequest> delayedAppointments, Examination? examination, Operation? operation)
+        {
+            _delayedAppointments = delayedAppointments;
+            _examination = examination;
+            _operation = operation;
         }
         private void LoadRows()
         {

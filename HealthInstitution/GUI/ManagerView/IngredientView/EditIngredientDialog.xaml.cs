@@ -24,14 +24,16 @@ namespace HealthInstitution.GUI.ManagerView.IngredientView
     {
         private Ingredient _ingredient;
         IIngredientService _ingredientService;
-        public EditIngredientDialog(Ingredient ingredient,IIngredientService ingredientService)
+        public EditIngredientDialog(IIngredientService ingredientService)
         {
             InitializeComponent();
-            _ingredient = ingredient;
             _ingredientService = ingredientService;
             SetRoomData();
         }
-
+        public void SetSelectedIngredient(Ingredient ingredient)
+        {
+            _ingredient = ingredient;
+        }
         private void SetRoomData()
         {
             nameBox.Text = _ingredient.Name;

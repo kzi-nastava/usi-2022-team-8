@@ -16,15 +16,18 @@ namespace HealthInstitution.GUI.DoctorView
         IRoomService _roomService;
         IEquipmentService _equipmentService;
 
-        public ConsumedEquipmentDialog(Room room, IRoomService roomService, IEquipmentService equipmentService)
+        public ConsumedEquipmentDialog(IRoomService roomService, IEquipmentService equipmentService)
         {
-            this._room = room;
             _roomService = roomService;
             _equipmentService = equipmentService;
             InitializeComponent();
             roomLabel.Content = _room;
         }
 
+        public void SetSelectedRoom(Room room)
+        {
+            _room = room;
+        }
         private void EquipmentComboBox_Loaded(object sender, RoutedEventArgs e)
         {
             var equipmentComboBox = sender as System.Windows.Controls.ComboBox;

@@ -20,13 +20,16 @@ namespace HealthInstitution.GUI.DoctorView
         private Doctor _loggedDoctor;
         IOperationService _operationService;
         IDoctorService _doctorService;
-        public OperationTable(Doctor doctor, IOperationService operationService, IDoctorService doctorService)
+        public OperationTable(IOperationService operationService, IDoctorService doctorService)
         {
-            this._loggedDoctor = doctor;
             this._operationService = operationService;
             _doctorService = doctorService;
             InitializeComponent();
             LoadRows();
+        }
+        public void SetLoggedDoctor(Doctor doctor)
+        {
+            _loggedDoctor = doctor;
         }
         private void LoadRows()
         {

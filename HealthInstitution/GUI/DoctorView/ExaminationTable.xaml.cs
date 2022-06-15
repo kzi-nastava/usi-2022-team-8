@@ -32,15 +32,17 @@ namespace HealthInstitution.GUI.DoctorView
         private Doctor _loggedDoctor;
         IExaminationService _examinationService;
         IDoctorService _doctorService;
-        public ExaminationTable(Doctor doctor, IExaminationService examinationService, IDoctorService doctorService)
+        public ExaminationTable(IExaminationService examinationService, IDoctorService doctorService)
         {
-            this._loggedDoctor = doctor;
             _examinationService = examinationService;
             _doctorService = doctorService;
             InitializeComponent();
             LoadRows();
         }
-        
+        public void SetLoggedDoctor(Doctor doctor)
+        {
+            _loggedDoctor = doctor;
+        }
         private void LoadRows()
         {
             dataGrid.Items.Clear();

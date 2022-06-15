@@ -20,16 +20,20 @@ public partial class RecepieNotificationSettingsDialog : Window
     IMedicalRecordService _medicalRecordService;
     IPatientService _patientService;
     IPrescriptionNotificationService _prescriptionNotificationService;
-    public RecepieNotificationSettingsDialog(string loggedPatient, IMedicalRecordService medicalRecordService,
+    public RecepieNotificationSettingsDialog(IMedicalRecordService medicalRecordService,
         IPatientService patientService, IPrescriptionNotificationService prescriptionNotificationService)
     {
         InitializeComponent();
-        _loggedPatinet = loggedPatient;
         _medicalRecordService = medicalRecordService;   
         _patientService = patientService;
         _prescriptionNotificationService = prescriptionNotificationService;
-        _prescriptions = _medicalRecordService.GetByPatientUsername(_patientService.GetByUsername(loggedPatient)).Prescriptions;
         LoadRows();
+    }
+    public void SetLoggedPatient(string patient)
+    {
+        _loggedPatinet=patient;
+        _prescriptions = _medicalRecordService.GetByPatientUsername(_patientService.GetByUsername(_loggedPatinet)).Prescriptions;
+
     }
 
     private void HourComboBox_Loaded(object sender, RoutedEventArgs e)

@@ -31,17 +31,24 @@ namespace HealthInstitution.GUI.SecretaryView
         Referral _referral;
         MedicalRecord _medicalRecord;
         ISchedulingService _schedulingService;
-        public AddExaminationWithReferralDialog(Referral referral, MedicalRecord medicalRecord, ISchedulingService schedulingService)
+        public AddExaminationWithReferralDialog(ISchedulingService schedulingService)
         {
             InitializeComponent();
-            _referral = referral;
-            _medicalRecord = medicalRecord;
             _schedulingService = schedulingService;
-            doctorBox.Text= (referral.ReferredDoctor==null) ? "" : referral.ReferredDoctor.Name + " " + referral.ReferredDoctor.Surname;
-            specialtyBox.Text = (referral.ReferredSpecialty == null) ? "" : referral.ReferredSpecialty.ToString();
-            patientBox.Text = medicalRecord.Patient.Name + " " + medicalRecord.Patient.Surname;
         }
+        private void LoadInputBoxes()
+        {
+            doctorBox.Text = (_referral.ReferredDoctor == null) ? "" : _referral.ReferredDoctor.Name + " " + _referral.ReferredDoctor.Surname;
+            specialtyBox.Text = (_referral.ReferredSpecialty == null) ? "" : _referral.ReferredSpecialty.ToString();
+            patientBox.Text = _medicalRecord.Patient.Name + " " + _medicalRecord.Patient.Surname;
 
+        }
+        public void SetReferral(Referral referral, MedicalRecord medicalRecord)
+        {
+            _referral=referral;
+            _medicalRecord=medicalRecord;
+            LoadInputBoxes();
+        }
         private void HourComboBox_Loaded(object sender, RoutedEventArgs e)
         {
             var hourComboBox = sender as System.Windows.Controls.ComboBox;

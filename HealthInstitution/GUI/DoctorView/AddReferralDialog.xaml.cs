@@ -34,18 +34,20 @@ namespace HealthInstitution.GUI.DoctorView
         IDoctorService _doctorService;
         IReferralService _referralService;
         IMedicalRecordService _medicalRecordService;
-        public AddReferralDialog(Doctor doctor, Patient patient, IDoctorService doctorService,
+        public AddReferralDialog(IDoctorService doctorService,
             IReferralService referralService, IMedicalRecordService medicalRecordService)
         {
-            _patient = patient;
-            _doctor = doctor;
             _doctorService = doctorService;
             _referralService = referralService;
             _medicalRecordService = medicalRecordService;
             InitializeComponent();
             Load();
         }
-
+        public void SetReferralFields(Patient patient, Doctor doctor)
+        { 
+            _patient = patient;
+            _doctor = doctor;
+        }
         public void Load()
         {
             doctorRadioButton.IsChecked = true;

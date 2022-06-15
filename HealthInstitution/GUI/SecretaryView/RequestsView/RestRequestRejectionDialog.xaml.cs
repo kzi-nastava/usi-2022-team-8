@@ -23,11 +23,15 @@ namespace HealthInstitution.GUI.SecretaryView.RequestsView
     {
         RestRequest _selectedRestRequest;
         IRestRequestService _restRequestService;
-        public RestRequestRejectionDialog(RestRequest selectedRestRequest, IRestRequestService restRequestService)
+        public RestRequestRejectionDialog(IRestRequestService restRequestService)
         {
-            _selectedRestRequest = selectedRestRequest;
             _restRequestService = restRequestService;
             InitializeComponent();
+        }
+
+        public void SetSelectedRequest(RestRequest restRequest)
+        {
+            _selectedRestRequest = restRequest;
         }
 
         private void Submit_Click(object sender, RoutedEventArgs e)

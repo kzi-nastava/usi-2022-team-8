@@ -28,14 +28,17 @@ namespace HealthInstitution.GUI.DoctorView
         private MedicalRecord _medicalRecord;
         IMedicalRecordService _medicalRecordService;
         IExaminationService _examinationService;
-        public PerformExaminationDialog(Examination examination, IExaminationService examinationService, 
+        public PerformExaminationDialog(IExaminationService examinationService, 
             IMedicalRecordService medicalRecordService)
         {
             InitializeComponent();
-            this._selectedExamination = examination;
             _examinationService = examinationService;
             _medicalRecordService = medicalRecordService;
             Load();
+        }
+        public void SetSelectedExamination(Examination examination)
+        {
+            _selectedExamination = examination;
         }
 
         private void Load()

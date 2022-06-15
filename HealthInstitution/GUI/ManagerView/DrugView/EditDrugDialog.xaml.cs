@@ -29,17 +29,19 @@ namespace HealthInstitution.GUI.ManagerView.DrugView
         private Drug _drug;
         IDrugService _drugService;
         IIngredientService _ingredientService;
-        public EditDrugDialog(Drug drug, IDrugService drugService, IIngredientService ingredientService)
+        public EditDrugDialog(IDrugService drugService, IIngredientService ingredientService)
         {
             InitializeComponent();
             _drugService = drugService;
             _ingredientService = ingredientService;
-            _drug = drug;
             _ingredientsForDrug = new List<Ingredient>();
             addIngredient.IsEnabled = false;
             SetDrugData();
         }
-
+        public void SetDrug(Drug drug)
+        {
+            _drug = drug;
+        }
         private void SetDrugData()
         {
             nameBox.Text = _drug.Name;

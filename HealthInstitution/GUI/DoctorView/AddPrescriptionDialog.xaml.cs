@@ -33,16 +33,18 @@ namespace HealthInstitution.GUI.DoctorView
         IDrugService _drugService;
         IMedicalRecordService _medicalRecordService;
         IPrescriptionService _prescriptionService;
-        public AddPrescriptionDialog(MedicalRecord medicalRecord, IDrugService drugService,
+        public AddPrescriptionDialog(IDrugService drugService,
                                     IMedicalRecordService medicalRecordService, IPrescriptionService prescriptionService)
         {
             InitializeComponent();
-            _medicalRecord = medicalRecord;
             _drugService = drugService;
             _medicalRecordService = medicalRecordService;
             _prescriptionService = prescriptionService;
         }
-
+        public void SetMedicalRecord(MedicalRecord medicalRecord)
+        {
+            _medicalRecord = medicalRecord;
+        }
         private void HourComboBox_Loaded(object sender, RoutedEventArgs e)
         {
             var hourComboBox = sender as System.Windows.Controls.ComboBox;

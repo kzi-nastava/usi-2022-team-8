@@ -21,15 +21,18 @@ namespace HealthInstitution.GUI.SecretaryView
         IEquipmentService _equipmentService;
         IRoomService _roomService;
         IEquipmentTransferService _equipmentTransferService;
-        public DynamicEquipmentTransferDialog(Room toRoom, string equipmentName,
-            IEquipmentService equipmentService, IRoomService roomService, IEquipmentTransferService equipmentTransferService)
+        public DynamicEquipmentTransferDialog(IEquipmentService equipmentService, IRoomService roomService, IEquipmentTransferService equipmentTransferService)
         {
             _equipmentService= equipmentService;
             _roomService= roomService;
             _equipmentTransferService= equipmentTransferService;
-            _toRoom=toRoom;
-            _equipmentName=equipmentName;
+            
             InitializeComponent();
+        }
+        public void SetEquipmentData(Room toRoom, string equipmentName)
+        {
+            _toRoom = toRoom;
+            _equipmentName = equipmentName;
         }
         private void ProcessDialog()
         {

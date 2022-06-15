@@ -36,15 +36,17 @@ namespace HealthInstitution.GUI.PatientView
         IRecommendedSchedulingService _recommendedSchedulingService;
         IDoctorService _doctorService;
 
-        public RecommendedWindow(User loggedPatient, IRecommendedSchedulingService recommendedSchedulingService, 
+        public RecommendedWindow(IRecommendedSchedulingService recommendedSchedulingService, 
                                     IDoctorService doctorService)
         {
             InitializeComponent();
-            _loggedPatient = loggedPatient;
             _recommendedSchedulingService = recommendedSchedulingService;
             _doctorService = doctorService;
         }
-
+        public void SetLoggedPatient(User patient)
+        {
+            _loggedPatient = patient;
+        }
         private void DoctorComboBox_Loaded(object sender, RoutedEventArgs e)
         {
             var doctorComboBox = sender as System.Windows.Controls.ComboBox;

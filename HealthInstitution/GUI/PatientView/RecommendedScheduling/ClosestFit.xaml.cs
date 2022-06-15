@@ -24,12 +24,15 @@ namespace HealthInstitution.GUI.PatientView
         private List<Examination> _suggestions;
         IExaminationService _examinationService;
 
-        public ClosestFit(List<Examination> suggestions, IExaminationService examinationService)
+        public ClosestFit(IExaminationService examinationService)
         {
             InitializeComponent();
-            _suggestions = suggestions;
             _examinationService = examinationService;
             LoadRows();
+        }
+        public void SetSuggestions(List<Examination> suggestions)
+        {
+            _suggestions = suggestions;
         }
 
         private void AddButton_click(object sender, RoutedEventArgs e)

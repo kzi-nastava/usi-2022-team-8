@@ -57,7 +57,6 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
             _secondRoomEquipmentFromArranging = new List<Equipment>();
             arrangeEquipmentButton.IsEnabled = false;
         }
-
         private void SimpleRenovation_Click(object sender, RoutedEventArgs e)
         {
             this.Close();

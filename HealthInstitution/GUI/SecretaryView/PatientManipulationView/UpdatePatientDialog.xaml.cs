@@ -13,15 +13,26 @@ namespace HealthInstitution.GUI.SecretaryView
     public partial class UpdatePatientWindow : Window
     {
         IPatientService _patientService;
-        public UpdatePatientWindow(Patient patient, IPatientService patientService)
+        Patient _selectedPatient;
+        public UpdatePatientWindow(IPatientService patientService)
         {
             InitializeComponent();
             _patientService = patientService;
-            usernameBox.Text = patient.Username;
-            passwordBox.Password = patient.Password;
-            nameBox.Text = patient.Name;
-            surnameBox.Text = patient.Surname;
+            
         }
+        private void LoadInputBoxes()
+        {
+            usernameBox.Text = _selectedPatient.Username;
+            passwordBox.Password = _selectedPatient.Password;
+            nameBox.Text = _selectedPatient.Name;
+            surnameBox.Text = _selectedPatient.Surname;
+        }
+        public void SetSelectedPatient(Patient patient)
+        {
+            _selectedPatient= patient;
+            LoadInputBoxes();
+        }
+        
         private UserDTO CreateUserDTOFromInputData()
         {
             string username = usernameBox.Text.Trim();

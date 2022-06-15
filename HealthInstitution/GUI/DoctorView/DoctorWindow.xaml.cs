@@ -43,12 +43,15 @@ namespace HealthInstitution.GUI.DoctorView
     {
         private Doctor _loggedDoctor;
         IDoctorService _doctorService;
-        public DoctorWindow(Doctor doctor, IDoctorService doctorService)
+        public DoctorWindow(IDoctorService doctorService)
         {
             InitializeComponent();
-            this._loggedDoctor = doctor;
             this._doctorService = doctorService;
             ShowNotificationsDialog();
+        }
+        public void SetLoggedDoctor(Doctor doctor)
+        {
+            _loggedDoctor = doctor;
         }
         private void ShowNotificationsDialog()
         {

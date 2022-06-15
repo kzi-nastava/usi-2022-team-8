@@ -23,11 +23,14 @@ namespace HealthInstitution.GUI.DoctorView
     {
         private Drug _selectedDrug;
         IDrugVerificationService _drugVerificationService;
-        public DrugRejectionReasonDialog(Drug drug, IDrugVerificationService drugVerificationService)
+        public DrugRejectionReasonDialog(IDrugVerificationService drugVerificationService)
         {
-            this._selectedDrug = drug;
             this._drugVerificationService = drugVerificationService;
             InitializeComponent();
+        }
+        public void SetSelectedDrug(Drug drug)
+        {
+            _selectedDrug = drug;
         }
 
         private void Submit_Click(object sender, RoutedEventArgs e)

@@ -26,12 +26,15 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
         private List<Equipment> _firstRoomEquipments;
         private List<Equipment> _secondRoomEquipments;
         IEquipmentTransferService _equipmentTransferService;
-        public EquipmentTransferForSplitDialog(List<Equipment> firstRoomEquipment, List<Equipment> secondRoomEquipments, IEquipmentTransferService equipmentTransferService)
+        public EquipmentTransferForSplitDialog(IEquipmentTransferService equipmentTransferService)
         {
             InitializeComponent();
+            _equipmentTransferService = equipmentTransferService;
+        }
+        public void SetEquipmentCollections(List<Equipment> firstRoomEquipment, List<Equipment> secondRoomEquipments)
+        {
             _firstRoomEquipments = firstRoomEquipment;
             _secondRoomEquipments = secondRoomEquipments;
-            _equipmentTransferService = equipmentTransferService;
         }
         private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
         {

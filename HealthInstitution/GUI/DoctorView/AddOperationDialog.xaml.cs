@@ -21,17 +21,20 @@ namespace HealthInstitution.GUI.DoctorView
         IPatientService _patientService;
         IMedicalRecordService _medicalRecordService;
         ISchedulingService _schedulingService;
-        public AddOperationDialog(Doctor doctor, IPatientService patientService,
+        public AddOperationDialog(IPatientService patientService,
                                     IMedicalRecordService medicalRecordService,
                                     ISchedulingService schedulingService)
         {
-            this._loggedDoctor = doctor;
             InitializeComponent();
             _patientService = patientService;
             _medicalRecordService = medicalRecordService;
             _schedulingService = schedulingService;
         }
+        public void SetLoggedDoctor(Doctor doctor)
+        {
 
+            this._loggedDoctor = doctor;
+        }
         private void HourComboBox_Loaded(object sender, RoutedEventArgs e)
         {
             var hourComboBox = sender as System.Windows.Controls.ComboBox;

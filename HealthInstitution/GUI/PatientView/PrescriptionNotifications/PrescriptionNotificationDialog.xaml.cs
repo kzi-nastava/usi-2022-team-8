@@ -22,13 +22,16 @@ namespace HealthInstitution.GUI.PatientView;
 public partial class RecepieNotificationDialog : Window
 {
     IPrescriptionNotificationService _prescriptionNotificationService;
-    public RecepieNotificationDialog(string _loggedPatient, IPrescriptionNotificationService prescriptionNotificationService)
+    public RecepieNotificationDialog(IPrescriptionNotificationService prescriptionNotificationService)
     {
         InitializeComponent();
         _prescriptionNotificationService = prescriptionNotificationService;
+
+    }
+    public void SetLoggedPatient(string _loggedPatient)
+    {
         LoadRows(_prescriptionNotificationService.GetPatientActiveNotification(_loggedPatient));
     }
-
     private void LoadRows(List<PrescriptionNotification> recepieNotifications)
     {
         dataGrid.Items.Clear();

@@ -17,16 +17,18 @@ public partial class DoctorPickExamination : Window
     private List<Doctor> _currentDoctors;
     IDoctorService _doctorService;
 
-    public DoctorPickExamination(Patient loggedPatinent, IDoctorService doctorService)
+    public DoctorPickExamination(IDoctorService doctorService)
     {
         InitializeComponent();
-        _loggedPatient = loggedPatinent;
         dataGrid.SelectedIndex = 0;
         _doctorService = doctorService;
         _currentDoctors = _doctorService.GetAll();
         LoadRows();
     }
-
+    public void SetLoggedPatient(Patient patient)
+    {
+        _loggedPatient = patient;
+    }
     private void Button_Click(object sender, RoutedEventArgs e)
     {
         var doctor = dataGrid.SelectedItem as Doctor;

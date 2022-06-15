@@ -31,15 +31,18 @@ namespace HealthInstitution.GUI.UserWindow
     {
         private Patient _loggedPatient;
         IPatientService _patientService;
-        public PatientWindow(Patient loggedPatient, IPatientService patientService)
+        public PatientWindow(IPatientService patientService)
         {
             InitializeComponent();
-            this._loggedPatient = loggedPatient;
             this._patientService = patientService;
+            
+            }
+        public void SetLoggedPatient(Patient patient)
+        {
+            _loggedPatient = patient;
             ShowNotificationsDialog();
-            new RecepieNotificationDialog(loggedPatient.Username, DIContainer.GetService<IPrescriptionNotificationService>()).ShowDialog();
+            new RecepieNotificationDialog(_loggedPatient.Username, DIContainer.GetService<IPrescriptionNotificationService>()).ShowDialog();
         }
-
         private void ShowNotificationsDialog()
         {
             if (_patientService.GetActiveAppointmentNotification(_loggedPatient).Count>0)

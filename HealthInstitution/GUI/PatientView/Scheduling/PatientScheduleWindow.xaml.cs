@@ -24,18 +24,20 @@ public partial class PatientScheduleWindow : Window
     IScheduleEditRequestsService _scheduleEditRequestService;
 
 
-    public PatientScheduleWindow(Patient loggedPatient, IExaminationService examinationService,
+    public PatientScheduleWindow(IExaminationService examinationService,
                                  ITrollCounterService trollCounterService,
                                  IScheduleEditRequestsService scheduleEditRequestService)
     {
         InitializeComponent();
-        this._loggedPatient = loggedPatient;
         this._examinationService = examinationService;
         this._trollCounterService = trollCounterService;
         _scheduleEditRequestService = scheduleEditRequestService;
         LoadRows();
     }
-
+    public void SetLoggedPatient(Patient patient)
+    {
+        _loggedPatient = patient;
+    }
     private void GridRefresh()
     {
         dataGrid.Items.Clear();

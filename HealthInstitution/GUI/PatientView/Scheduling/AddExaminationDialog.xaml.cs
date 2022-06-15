@@ -24,15 +24,19 @@ namespace HealthInstitution.GUI.PatientView
         IMedicalRecordService _medicalRecordService;
         ISchedulingService _schedulingService;
 
-        public AddExaminationDialog(Patient loggedPatient, IDoctorService doctorService,
+        public AddExaminationDialog(IDoctorService doctorService,
                                     IMedicalRecordService medicalRecordService,
                                     ISchedulingService schedulingService)
         {
             InitializeComponent();
-            this._loggedPatient = loggedPatient;
             _doctorService = doctorService;
             _medicalRecordService = medicalRecordService;
             _schedulingService = schedulingService;
+        }
+        public void SetLoggedPatient(Patient patient)
+        {
+
+            _loggedPatient = patient;
         }
 
         private void HourComboBox_Loaded(object sender, RoutedEventArgs e)

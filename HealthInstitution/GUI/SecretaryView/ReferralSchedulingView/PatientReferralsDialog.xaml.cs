@@ -25,11 +25,14 @@ namespace HealthInstitution.GUI.SecretaryView
     public partial class PatientReferralsDialog : Window
     {
         MedicalRecord _medicalRecord;
-        public PatientReferralsDialog(MedicalRecord medicalRecord)
+        public PatientReferralsDialog()
         {
-            _medicalRecord=medicalRecord;
             InitializeComponent();
             LoadRows();
+        }
+        public void SetSelectedMedicalRecord(MedicalRecord medicalRecord)
+        {
+            _medicalRecord = medicalRecord;
         }
         private void LoadRows()
         {

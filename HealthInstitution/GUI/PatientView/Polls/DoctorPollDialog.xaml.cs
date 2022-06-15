@@ -24,14 +24,16 @@ public partial class DoctorPollDialog : Window
 {
     private Doctor _doctor;
     IPollService _pollService;
-    public DoctorPollDialog(Doctor doctor,IPollService pollService)
+    public DoctorPollDialog(IPollService pollService)
     {
         InitializeComponent();
-        _doctor = doctor;
         _pollService = pollService;
         LoadQuestionLabels();
     }
-
+    public void SetRatedDoctor(Doctor doctor)
+    {
+        _doctor = doctor;
+    }
     private void Button_Click(object sender, RoutedEventArgs e)
     {
         AddComment();

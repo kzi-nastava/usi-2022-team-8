@@ -20,18 +20,18 @@ namespace HealthInstitution.GUI.SecretaryView
     /// </summary>
     public partial class UrgentExaminationDialog : Window
     {
-        public Examination Examination { get; set; }
-        public UrgentExaminationDialog(Examination examination)
+        Examination _examination;
+        public UrgentExaminationDialog()
         {
             InitializeComponent();
-            Examination = examination;
             LoadRows();
         }
-
+        public void SetScheduledExamination(Examination examination)
+        { _examination = examination; }
         private void LoadRows()
         {
             dataGrid.Items.Clear();
-            dataGrid.Items.Add(Examination);
+            dataGrid.Items.Add(_examination);
             dataGrid.Items.Refresh();
         }
     }

@@ -25,14 +25,16 @@ namespace HealthInstitution.GUI.ManagerView
     {
         private Room _room;
         IRoomService _roomService;
-        public EditRoomDialog(Room room, IRoomService roomService)
+        public EditRoomDialog(IRoomService roomService)
         {
             InitializeComponent();
-            this._room = room;
             _roomService = roomService;
             SetRoomData();
         }
-
+        public void SetSelectedRoom(Room room)
+        {
+            _room = room;
+        }
         private void SetRoomData()
         {
             numberBox.Text = _room.Number.ToString();
