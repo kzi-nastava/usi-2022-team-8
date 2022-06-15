@@ -52,10 +52,8 @@ namespace HealthInstitution.GUI.LoginView
             EquipmentTransferRefreshingService.UpdateByTransfer();
             RenovationRefreshingService.UpdateByRenovation();
 
-            LoginWindow window = new LoginWindow()
-            {
-                DataContext = new LoginViewModel()
-            };
+            LoginWindow window = new LoginWindow();
+            window.DataContext = new LoginViewModel(window);
             window.ShowDialog();
         }
     }

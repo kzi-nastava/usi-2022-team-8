@@ -6,6 +6,7 @@ using System.Linq;
 using System.Security;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace HealthInstitution.ViewModels.GUIViewModels;
@@ -13,6 +14,7 @@ namespace HealthInstitution.ViewModels.GUIViewModels;
 public class LoginViewModel : ViewModelBase
 {
     public ICommand Login { get; }
+    public Window ThisWindow;
     private string _username;
 
     public string Username
@@ -43,8 +45,9 @@ public class LoginViewModel : ViewModelBase
         }
     }
 
-    public LoginViewModel()
+    public LoginViewModel(Window thisWindow)
     {
         Login = new LoginCommand(this);
+        ThisWindow = thisWindow;
     }
 }

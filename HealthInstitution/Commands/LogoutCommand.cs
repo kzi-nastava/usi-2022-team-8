@@ -13,17 +13,21 @@ namespace HealthInstitution.Commands
 {
     public class LogoutCommand : CommandBase
     {
-        public PatientWindow Window { get; set; }
+        public LogoutCommand(Window window)
+        {
+            Window = window;
+        }
+
+        public Window Window { get; set; }
 
         public override void Execute(object? parameter)
         {
             if (System.Windows.MessageBox.Show("Are you sure you want to log out?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
             {
                 Window.Close();
-                new LoginWindow()
-                {
-                    DataContext = new LoginViewModel()
-                }.ShowDialog();
+                var window = new LoginWindow();
+                window.DataContext = new LoginViewModel(window);
+                window.ShowDialog();
             }
         }
     }

@@ -11,6 +11,7 @@ using HealthInstitution.Core.TrollCounters;
 using HealthInstitution.GUI.DoctorView;
 using HealthInstitution.GUI.UserWindow;
 using HealthInstitution.ViewModels.GUIViewModels;
+using HealthInstitution.ViewModels.GUIViewModels.PatientViewViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -43,6 +44,7 @@ public class LoginCommand : CommandBase
             {
                 case UserType.Patient:
                     RedirectPatient(user);
+
                     break;
 
                 case UserType.Doctor:
@@ -51,6 +53,7 @@ public class LoginCommand : CommandBase
 
                 case UserType.Secretary:
                     RedirectSecretary();
+
                     break;
 
                 case UserType.Manager:
@@ -71,28 +74,31 @@ public class LoginCommand : CommandBase
         Patient loggedPatient = PatientService.GetByUsername(_loginViewModel.Username);
         PrescriptionNotificationService.GenerateAllSkippedNotifications(loggedPatient.Username);
         DoctorRatingsService.AssignScores();
-        new PatientWindow(loggedPatient)
-        {
-            DataContext = new PatientWindowViewModel(loggedPatient)
-        }.ShowDialog();
+        var window = new PatientWindow(loggedPatient);
+        window.DataContext = new PatientWindowViewModel(loggedPatient, window);
+        _loginViewModel.ThisWindow.Close();
+        window.ShowDialog();
     }
 
     private void RedirectDoctor()
     {
         DoctorService.LoadAppointments();
         Doctor loggedDoctor = DoctorService.GetById(_loginViewModel.Username);
+        _loginViewModel.ThisWindow.Close();
         new DoctorWindow(loggedDoctor).ShowDialog();
     }
 
     private void RedirectSecretary()
     {
         SecretaryWindow secretaryWindow = new SecretaryWindow();
+        _loginViewModel.ThisWindow.Close();
         secretaryWindow.ShowDialog();
     }
 
     private void RedirectManager()
     {
         ManagerWindow managerWindow = new ManagerWindow();
+        _loginViewModel.ThisWindow.Close();
         managerWindow.ShowDialog();
     }
 }

@@ -8,13 +8,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
-namespace HealthInstitution.GUI.UserWindow;
+namespace HealthInstitution.ViewModels.GUIViewModels.PatientViewViewModels;
 
 public class PatientWindowViewModel : ViewModelBase
 {
-    public PatientWindowViewModel(Patient loggedPatient)
+    public PatientWindowViewModel(Patient loggedPatient, Window thisWindow)
     {
         RateHospital = new RateHospitalCommand();
         MedicalRecordView = new MedicalRecordViewCommand(loggedPatient);
@@ -22,7 +23,7 @@ public class PatientWindowViewModel : ViewModelBase
         RecommendedSchedule = new RecommendedScheduleCommand(loggedPatient);
         PickDoctor = new PickDoctorCommand(loggedPatient);
         PrescriptionNotificationSettings = new PrescriptionNotificationSettingsCommand(loggedPatient.Username);
-        Logout = new LogoutCommand();
+        Logout = new LogoutCommand(thisWindow);
         PatientNotificationCommand = new PatientNotificationCommand(loggedPatient);
     }
 
