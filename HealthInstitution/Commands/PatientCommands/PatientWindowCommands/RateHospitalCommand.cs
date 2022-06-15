@@ -1,5 +1,6 @@
 ﻿using HealthInstitution.Core;
 using HealthInstitution.GUI.PatientView;
+using HealthInstitution.ViewModels.GUIViewModels.Polls;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,6 +13,9 @@ public class RateHospitalCommand : CommandBase
 {
     public override void Execute(object? parameter)
     {
-        new PatientHospitalPollDialog().ShowDialog();
+        new PatientHospitalPollDialog()
+        {
+            DataContext = new HospitalPollDialogViewModel()
+        }.ShowDialog();
     }
 }

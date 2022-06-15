@@ -10,11 +10,11 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Commands.PatientCommands.PollCommands;
 
-public class PollSubmitCommand : CommandBase
+public class DoctorPollSubmitCommand : CommandBase
 {
     private DoctorPollViewModel _doctorPollViewModel;
 
-    public PollSubmitCommand(DoctorPollViewModel doctorPollViewModel)
+    public DoctorPollSubmitCommand(DoctorPollViewModel doctorPollViewModel)
     {
         _doctorPollViewModel = doctorPollViewModel;
     }

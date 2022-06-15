@@ -1,7 +1,6 @@
 ﻿using HealthInstitution.Commands.PatientCommands.PollCommands;
 using HealthInstitution.Core;
 using HealthInstitution.Core.Polls;
-using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -11,7 +10,7 @@ using System.Windows.Input;
 
 namespace HealthInstitution.ViewModels.GUIViewModels.Polls;
 
-public class DoctorPollViewModel : ViewModelBase
+public class HospitalPollDialogViewModel : ViewModelBase
 {
     private string _q1Text;
 
@@ -165,6 +164,12 @@ public class DoctorPollViewModel : ViewModelBase
 
     private object _q5Answer;
 
+    public HospitalPollDialogViewModel()
+    {
+        SubmitCommand = new HospitalPollSubmitCommand(this);
+        LoadLabels();
+    }
+
     public object Q5Answer
     {
         get
@@ -179,18 +184,10 @@ public class DoctorPollViewModel : ViewModelBase
     }
 
     public ICommand SubmitCommand { get; }
-    public Doctor Doctor;
-
-    public DoctorPollViewModel(Doctor doctor)
-    {
-        Doctor = doctor;
-        SubmitCommand = new DoctorPollSubmitCommand(this);
-        LoadLabels();
-    }
 
     private void LoadLabels()
     {
-        var questions = PollService.GetDoctorQuestions();
+        var questions = PollService.GetHospitalQuestions();
         Q1Text = questions[0];
         Q2Text = questions[1];
         Q3Text = questions[2];

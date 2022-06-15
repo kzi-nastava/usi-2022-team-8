@@ -25,7 +25,7 @@ public partial class PatientHospitalPollDialog : Window
     {
         InitializeComponent();
 
-        LoadQuestionLabels();
+        //LoadQuestionLabels();
     }
 
     private void Button_Click(object sender, RoutedEventArgs e)
