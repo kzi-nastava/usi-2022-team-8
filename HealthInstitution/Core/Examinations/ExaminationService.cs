@@ -14,16 +14,13 @@ public class ExaminationService : IExaminationService
 {
     IExaminationRepository _examinationRepository;
     IDoctorExaminationAvailabilityService _doctorExaminationAvailabilityService;
-    IPatientExaminationAvailabilityService _patientExaminationAvailabilityService;
     IExaminationDoctorRepository _examinationDoctorRepository;
     public ExaminationService(IExaminationRepository examinationRepository,
         IDoctorExaminationAvailabilityService doctorExaminationAvailabilityService,
-        IPatientExaminationAvailabilityService patientExaminationAvailabilityService,
         IExaminationDoctorRepository examinationDoctorRepository)
     {
         _examinationRepository = examinationRepository;
         _doctorExaminationAvailabilityService = doctorExaminationAvailabilityService;
-        _patientExaminationAvailabilityService = patientExaminationAvailabilityService;
         _examinationDoctorRepository = examinationDoctorRepository;
     }
     public int GetMaxId()
@@ -52,7 +49,7 @@ public class ExaminationService : IExaminationService
         examinationDTO.Validate();
         Examination examination = new Examination(examinationDTO);
         _doctorExaminationAvailabilityService.CheckIfDoctorIsAvailable(examinationDTO);
-        _patientExaminationAvailabilityService.CheckIfPatientIsAvailable(examinationDTO);
+        DIContainer.DIContainer.GetService<PatientExaminationAvailabilityService>().CheckIfPatientIsAvailable(examinationDTO);
         _examinationRepository.Update(id, examination);
     }
 

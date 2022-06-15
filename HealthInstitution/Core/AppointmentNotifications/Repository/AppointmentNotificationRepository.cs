@@ -21,17 +21,13 @@ namespace HealthInstitution.Core.Notifications.Repository
     public class AppointmentNotificationRepository : IAppointmentNotificationRepository
     {
         private String _fileName = @"..\..\..\Data\JSON\appointmentNotifications.json";
-        private IAppointmentNotificationPatientRepository _appointmentNotificationPatientRepository;
-        private IAppointmentNotificationDoctorRepository _appointmentNotificationDoctorRepository;
 
         public int _maxId { get; set; }
         public List<AppointmentNotification> Notifications { get; set; }
         public Dictionary<int, AppointmentNotification> NotificationsById { get; set; }
 
-        public AppointmentNotificationRepository(IAppointmentNotificationPatientRepository appointmentNotificationPatientRepository, IAppointmentNotificationDoctorRepository appointmentNotificationDoctorRepository)
+        public AppointmentNotificationRepository()
         {
-            _appointmentNotificationPatientRepository = appointmentNotificationPatientRepository;
-            _appointmentNotificationDoctorRepository = appointmentNotificationDoctorRepository;
             this.Notifications = new List<AppointmentNotification>();
             this.NotificationsById = new Dictionary<int, AppointmentNotification>();
             this._maxId = 0;
@@ -111,8 +107,8 @@ namespace HealthInstitution.Core.Notifications.Repository
         private void SaveAll()
         {
             Save();
-            _appointmentNotificationPatientRepository.Save();
-            _appointmentNotificationDoctorRepository.Save();           
+            DIContainer.DIContainer.GetService<AppointmentNotificationPatientRepository>().Save();
+            DIContainer.DIContainer.GetService<AppointmentNotificationDoctorRepository>().Save();
         }
         public void Add(AppointmentNotification appointmentNotification)
         {

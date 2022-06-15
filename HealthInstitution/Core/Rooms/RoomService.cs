@@ -12,17 +12,10 @@ namespace HealthInstitution.Core.Rooms
     {
         IRoomRepository _roomRepository;
         IEquipmentService _equipmentService;
-        IRenovationService _renovationService;
-        IEquipmentTransferService _equipmentTransferService;
-        ISchedulingService _schedulingService;
 
-        public RoomService(IRoomRepository roomRepository, IEquipmentService equipmentService, IRenovationService renovationService,
-            IEquipmentTransferService equipmentTransferService, ISchedulingService schedulingService) {
+        public RoomService(IRoomRepository roomRepository, IEquipmentService equipmentService) {
             _roomRepository = roomRepository;
             _equipmentService = equipmentService;
-            _renovationService = renovationService;
-            _equipmentTransferService = equipmentTransferService;
-            _schedulingService = schedulingService;
         }
         public List<Room> GetAll()
         {
@@ -56,12 +49,12 @@ namespace HealthInstitution.Core.Rooms
         }
         public bool CheckImportantOccurrenceOfRoom(Room room)
         {
-            if (_equipmentTransferService.CheckOccurrenceOfRoom(room))
+            if (DIContainer.DIContainer.GetService<EquipmentTransferService>().CheckOccurrenceOfRoom(room))
             {
                 return true;
             }
 
-            if (_schedulingService.CheckOccurrenceOfRoom(room))
+            if (DIContainer.DIContainer.GetService<SchedulingService>().CheckOccurrenceOfRoom(room))
             {
                 return true;
             }
@@ -71,7 +64,7 @@ namespace HealthInstitution.Core.Rooms
 
         public void MoveRoomToRenovationHistory(Room selectedRoom)
         {
-            if (_renovationService.CheckRenovationStatusForHistoryDelete(selectedRoom))
+            if (DIContainer.DIContainer.GetService<RenovationService>().CheckRenovationStatusForHistoryDelete(selectedRoom))
             {
                 _roomRepository.Delete(selectedRoom.Id);
             }

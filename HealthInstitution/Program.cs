@@ -73,7 +73,7 @@ namespace HealthInstitution
 {
     public class Program
     {
-        static async Task Main(string[] args)
+        static void PAss(string[] args)
         {
             var services = new DIServiceCollection();
 
@@ -257,10 +257,29 @@ namespace HealthInstitution
             services.BuildContainer();
 
 
+            //var loginWindow = DIContainer.GetService<LoginWindow>();
+
+            DIContainer.GetService<IEquipmentTransferRefreshingService>().UpdateByTransfer();
+            DIContainer.GetService<IRenovationRefreshingService>().UpdateByRenovation();
+
+            //_equipmentTransferRefreshingService.UpdateByTransfer();
+            //_renovationRefreshingService.UpdateByRenovation();
+
             var loginWindow = DIContainer.GetService<LoginWindow>();
+            loginWindow.ShowDialog();
 
-            await loginWindow.StartAsync();
+        }
 
+        public static void Start()
+        {
+            DIContainer.GetService<IEquipmentTransferRefreshingService>().UpdateByTransfer();
+            DIContainer.GetService<IRenovationRefreshingService>().UpdateByRenovation();
+
+            //_equipmentTransferRefreshingService.UpdateByTransfer();
+            //_renovationRefreshingService.UpdateByRenovation();
+
+            var loginWindow = DIContainer.GetService<LoginWindow>();
+            loginWindow.ShowDialog();
         }
     }
 }

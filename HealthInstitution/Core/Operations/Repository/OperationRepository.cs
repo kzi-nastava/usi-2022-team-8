@@ -26,7 +26,6 @@ namespace HealthInstitution.Core.Operations.Repository
 
         private IRoomRepository _roomRepository;
         private IMedicalRecordRepository _medicalRecordRepository;
-        private IOperationDoctorRepository _operationDoctorRepository;
         public int _maxId { get; set; }
         public List<Operation> Operations { get; set; }
         public Dictionary<int, Operation> OperationsById { get; set; }
@@ -37,11 +36,10 @@ namespace HealthInstitution.Core.Operations.Repository
             PropertyNameCaseInsensitive = true
         };
 
-        public OperationRepository(IRoomRepository roomRepository, IMedicalRecordRepository medicalRecordRepository, IOperationDoctorRepository operationDoctorRepository)
+        public OperationRepository(IRoomRepository roomRepository, IMedicalRecordRepository medicalRecordRepository)
         {
             _roomRepository = roomRepository;
             _medicalRecordRepository = medicalRecordRepository;
-            _operationDoctorRepository = operationDoctorRepository;
             this.Operations = new List<Operation>();
             this.OperationsById = new Dictionary<int, Operation>();
             this._maxId = 0;
@@ -142,13 +140,18 @@ namespace HealthInstitution.Core.Operations.Repository
             OperationsById.Add(operation.Id, operation);
         }
 
+        private void SaveAll()
+        {
+            Save();
+            DIContainer.DIContainer.GetService<OperationDoctorRepository>().Save();
+        }
+
         public void Add(Operation operation)
         {
             int id = ++this._maxId;
             operation.Id = id;
             AddToCollections(operation);
-            Save();
-            _operationDoctorRepository.Save();
+            SaveAll();        
         }
 
         public void Update(int id, Operation byOperation)
@@ -161,14 +164,13 @@ namespace HealthInstitution.Core.Operations.Repository
             Save();
         }
 
-        //ispraviti 
+       
         public void Delete(int id)
         {
             Operation operation = OperationsById[id];
             this.Operations.Remove(operation);
             this.OperationsById.Remove(id);
-            Save();
-            _operationDoctorRepository.Save();
+            SaveAll();        
         }
 
         public void SwapOperationValue(Operation operation)

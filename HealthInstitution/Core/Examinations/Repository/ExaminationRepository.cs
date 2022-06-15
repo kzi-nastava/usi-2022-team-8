@@ -24,7 +24,6 @@ public class ExaminationRepository : IExaminationRepository
 
     private IMedicalRecordRepository _medicalRecordRepository;
 
-    private IExaminationDoctorRepository _examinationDoctorRepository;
     public int _maxId { get; set; }
     public List<Examination> Examinations { get; set; }
     public Dictionary<int, Examination> ExaminationsById { get; set; }
@@ -35,11 +34,10 @@ public class ExaminationRepository : IExaminationRepository
         PropertyNameCaseInsensitive = true
     };
 
-    public ExaminationRepository(IRoomRepository roomRepository, IMedicalRecordRepository medicalRecordRepository, IExaminationDoctorRepository examinationDoctorRepository)
+    public ExaminationRepository(IRoomRepository roomRepository, IMedicalRecordRepository medicalRecordRepository)
     {
         _roomRepository = roomRepository;
         _medicalRecordRepository = medicalRecordRepository;
-        _examinationDoctorRepository = examinationDoctorRepository;
         Examinations = new List<Examination>();
         ExaminationsById = new Dictionary<int, Examination>();
         _maxId = 0;
@@ -136,7 +134,7 @@ public class ExaminationRepository : IExaminationRepository
     private void SaveAll()
     {
         Save();
-        _examinationDoctorRepository.Save();
+        DIContainer.DIContainer.GetService<ExaminationDoctorRepository>().Save();
     }
 
     public void Add(Examination examination)

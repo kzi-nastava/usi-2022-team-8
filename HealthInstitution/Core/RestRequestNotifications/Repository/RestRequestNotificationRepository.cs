@@ -19,7 +19,6 @@ namespace HealthInstitution.Core.RestRequestNotifications.Repository
         public int _maxId { get; set; }
         public List<RestRequestNotification> Notifications { get; set; }
         public Dictionary<int, RestRequestNotification> NotificationsById { get; set; }
-        IRestRequestNotificationDoctorRepository _restRequestNotificationDoctorRepository;
         IRestRequestRepository _restRequestRepository;
 
         private JsonSerializerOptions _options = new JsonSerializerOptions
@@ -27,9 +26,8 @@ namespace HealthInstitution.Core.RestRequestNotifications.Repository
             Converters = { new JsonStringEnumConverter() },
             PropertyNameCaseInsensitive = true
         };
-        public RestRequestNotificationRepository(IRestRequestNotificationDoctorRepository restRequestNotificationDoctorRepository, IRestRequestRepository restRequestRepository)
+        public RestRequestNotificationRepository(IRestRequestRepository restRequestRepository)
         {
-            _restRequestNotificationDoctorRepository = restRequestNotificationDoctorRepository;
             _restRequestRepository = restRequestRepository;
             this.Notifications = new List<RestRequestNotification>();
             this.NotificationsById = new Dictionary<int, RestRequestNotification>();
@@ -98,7 +96,7 @@ namespace HealthInstitution.Core.RestRequestNotifications.Repository
         private void SaveAll()
         {
             Save();
-            _restRequestNotificationDoctorRepository.Save();
+            DIContainer.DIContainer.GetService<RestRequestNotificationDoctorRepository>().Save();
         }
         public void Add(RestRequestNotification restRequestNotification)
         {

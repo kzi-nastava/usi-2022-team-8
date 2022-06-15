@@ -34,9 +34,9 @@ public partial class DoctorPickExamination : Window
         var doctor = dataGrid.SelectedItem as Doctor;
 
         AddExaminationDialog dialog = DIContainer.GetService<AddExaminationDialog>();
-        dialog.SetLoggedPatient(_loggedPatient);            
-        dialog.ShowDialog();
+        dialog.SetLoggedPatient(_loggedPatient);
         dialog.SetSelectedDoctor(doctor);
+        dialog.ShowDialog();        
     }
 
     private void NameSort_Click(object sender, RoutedEventArgs e)

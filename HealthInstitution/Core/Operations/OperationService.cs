@@ -9,14 +9,11 @@ namespace HealthInstitution.Core.Operations
     {
         IOperationRepository _operationRepository;
         IDoctorOperationAvailabilityService _doctorOperationAvailabilityService;
-        IPatientOperationAvailabilityService _patientOperationAvailabilityService;
         public OperationService(IOperationRepository operationRepository,
-            IDoctorOperationAvailabilityService doctorOperationAvailabilityService,
-            IPatientOperationAvailabilityService patientOperationAvailabilityService)
+            IDoctorOperationAvailabilityService doctorOperationAvailabilityService)
         {
             _operationRepository = operationRepository;
             _doctorOperationAvailabilityService = doctorOperationAvailabilityService;
-            _patientOperationAvailabilityService = patientOperationAvailabilityService;
         }
         public int GetMaxId()
         {
@@ -43,7 +40,7 @@ namespace HealthInstitution.Core.Operations
             operationDTO.Validate();
             Operation operation = new Operation(operationDTO);
             _doctorOperationAvailabilityService.CheckIfDoctorIsAvailable(operationDTO, id);
-            _patientOperationAvailabilityService.CheckIfPatientIsAvailable(operationDTO, id);
+            DIContainer.DIContainer.GetService<PatientOperationAvailabilityService>().CheckIfPatientIsAvailable(operationDTO, id);
             _operationRepository.Update(id, operation);
         }
 

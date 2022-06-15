@@ -20,17 +20,15 @@ namespace HealthInstitution.Core.RestRequests.Repository
         public List<RestRequest> RestRequests { get; set; }
         public Dictionary<int, RestRequest> RestRequestsById { get; set; }
         IDoctorRepository _doctorRepository;
-        IRestRequestDoctorRepository _restRequestDoctorRepository;
 
         private JsonSerializerOptions _options = new JsonSerializerOptions
         {
             Converters = { new JsonStringEnumConverter() },
             PropertyNameCaseInsensitive = true
         };
-        public RestRequestRepository(IDoctorRepository doctorRepository, IRestRequestDoctorRepository restRequestDoctorRepository)
+        public RestRequestRepository(IDoctorRepository doctorRepository)
         {
             _doctorRepository = doctorRepository;
-            _restRequestDoctorRepository = restRequestDoctorRepository;
             this.RestRequests = new List<RestRequest>();
             this.RestRequestsById = new Dictionary<int, RestRequest>();
             this._maxId = 0;
@@ -114,31 +112,37 @@ namespace HealthInstitution.Core.RestRequests.Repository
             RestRequestsById.Add(RestRequest.Id, RestRequest);
         }
 
-        public void Add(RestRequest RestRequest)
+        private void SaveAll()
         {
-            int id = ++this._maxId;
-            RestRequest.Id = id;
-            AddToCollections(RestRequest);
             Save();
             _doctorRepository.Save();
+            DIContainer.DIContainer.GetService<RestRequestDoctorRepository>().Save();
+        }
+
+        public void Add(RestRequest restRequest)
+        {
+            int id = ++this._maxId;
+            restRequest.Id = id;
+            AddToCollections(restRequest);
+            SaveAll();
         }
 
         public void Update(int id, RestRequest byRestRequest)
         {
-            RestRequest RestRequest = GetById(id);
-            RestRequest.Reason = byRestRequest.Reason;
-            RestRequest.StartDate = byRestRequest.StartDate;
-            RestRequest.DaysDuration = byRestRequest.DaysDuration;
-            this.RestRequestsById[id] = RestRequest;
+            RestRequest restRequest = GetById(id);
+            restRequest.Reason = byRestRequest.Reason;
+            restRequest.StartDate = byRestRequest.StartDate;
+            restRequest.DaysDuration = byRestRequest.DaysDuration;
+            this.RestRequestsById[id] = restRequest;
             Save();
         }
         public void Delete(int id)
         {
-            RestRequest RestRequest = RestRequestsById[id];
-            this.RestRequests.Remove(RestRequest);
+            RestRequest restRequest = RestRequestsById[id];
+            this.RestRequests.Remove(restRequest);
             this.RestRequestsById.Remove(id);
-            Save();
-            _restRequestDoctorRepository.Save();
+            restRequest.Doctor.RestRequests.Remove(restRequest);
+            SaveAll();
         }
         public void AcceptRestRequest(RestRequest restRequest)
         {

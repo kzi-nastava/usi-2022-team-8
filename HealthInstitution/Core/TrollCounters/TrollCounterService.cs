@@ -17,11 +17,9 @@ namespace HealthInstitution.Core.TrollCounters
     public class TrollCounterService : ITrollCounterService
     {
         ITrollCounterFileRepository _trollCounterFileRepository;
-        IPatientService _patientService;
-        public TrollCounterService(ITrollCounterFileRepository trollCounterFileRepository,IPatientService patientService)
+        public TrollCounterService(ITrollCounterFileRepository trollCounterFileRepository)
         {
             _trollCounterFileRepository = trollCounterFileRepository;
-            _patientService = patientService;
         }
         public TrollCounter GetById(string id)
         {
@@ -56,7 +54,7 @@ namespace HealthInstitution.Core.TrollCounters
         }
         public void BlockPatient(string username)
         {
-            _patientService.ChangeBlockedStatus(username);
+            DIContainer.DIContainer.GetService<PatientService>().ChangeBlockedStatus(username);
         }
         public void CheckCreateTroll(string username)
         {
