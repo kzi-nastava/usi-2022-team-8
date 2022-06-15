@@ -3,6 +3,8 @@ using HealthInstitution.Core.Examinations.Model;
 using HealthInstitution.Core.SystemUsers.Users.Model;
 using System.Windows;
 using HealthInstitution.GUI.PatientView.Polls;
+using HealthInstitution.Core.Polls;
+using HealthInstitution.Core.DIContainer;
 
 namespace HealthInstitution.GUI.PatientView;
 
@@ -68,6 +70,6 @@ public partial class MedicalRecordView : Window
     private void RateDoctorButton_Click(object sender, RoutedEventArgs e)
     {
         Examination selectedExamination = (Examination)dataGrid.SelectedItem;
-        new DoctorPollDialog(selectedExamination.Doctor).ShowDialog();
+        new DoctorPollDialog(selectedExamination.Doctor, DIContainer.GetService<IPollService>()).ShowDialog();
     }
 }

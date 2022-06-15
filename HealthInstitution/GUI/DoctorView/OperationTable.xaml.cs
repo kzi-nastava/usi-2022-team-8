@@ -1,9 +1,13 @@
-﻿using HealthInstitution.Core.Operations;
+﻿using HealthInstitution.Core.DIContainer;
+using HealthInstitution.Core.MedicalRecords;
+using HealthInstitution.Core.Operations;
 using HealthInstitution.Core.Operations.Model;
 using HealthInstitution.Core.Operations.Repository;
+using HealthInstitution.Core.Scheduling;
 using HealthInstitution.Core.SystemUsers.Doctors;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using HealthInstitution.Core.SystemUsers.Doctors.Repository;
+using HealthInstitution.Core.SystemUsers.Patients;
 using System.Windows;
 
 namespace HealthInstitution.GUI.DoctorView
@@ -36,7 +40,7 @@ namespace HealthInstitution.GUI.DoctorView
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
-            new AddOperationDialog(this._loggedDoctor).ShowDialog();
+            new AddOperationDialog(this._loggedDoctor, DIContainer.GetService<IPatientService>(), DIContainer.GetService<IMedicalRecordService>(), DIContainer.GetService<ISchedulingService>()).ShowDialog();
             LoadRows();
             dataGrid.Items.Refresh();
         }
@@ -44,7 +48,7 @@ namespace HealthInstitution.GUI.DoctorView
         private void EditButton_Click(object sender, RoutedEventArgs e)
         {
             Operation selectedOperation = (Operation)dataGrid.SelectedItem;
-            new EditOperationDialog(selectedOperation).ShowDialog();
+            new EditOperationDialog(selectedOperation, DIContainer.GetService<IPatientService>(), DIContainer.GetService<IMedicalRecordService>(), DIContainer.GetService<IOperationService>()).ShowDialog();
             LoadRows();
             dataGrid.Items.Refresh();
         }

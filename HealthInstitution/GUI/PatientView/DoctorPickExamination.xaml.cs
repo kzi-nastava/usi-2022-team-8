@@ -1,4 +1,7 @@
-﻿using HealthInstitution.Core.SystemUsers.Doctors;
+﻿using HealthInstitution.Core.DIContainer;
+using HealthInstitution.Core.MedicalRecords;
+using HealthInstitution.Core.Scheduling;
+using HealthInstitution.Core.SystemUsers.Doctors;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using HealthInstitution.Core.SystemUsers.Patients.Model;
 using System.Windows;
@@ -27,7 +30,7 @@ public partial class DoctorPickExamination : Window
     private void Button_Click(object sender, RoutedEventArgs e)
     {
         var doctor = dataGrid.SelectedItem as Doctor;
-        var dialog = new AddExaminationDialog(_loggedPatient);
+        var dialog = new AddExaminationDialog(_loggedPatient, DIContainer.GetService<IDoctorService>(), DIContainer.GetService<IMedicalRecordService>(), DIContainer.GetService<ISchedulingService>());
         dialog.Show();
         dialog.SetSelectedDoctor(doctor);
     }

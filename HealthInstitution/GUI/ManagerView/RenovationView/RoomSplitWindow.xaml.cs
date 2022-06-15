@@ -30,6 +30,7 @@ using System.Windows.Forms;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using HealthInstitution.Core.DIContainer;
 
 namespace HealthInstitution.GUI.ManagerView.RenovationView
 {
@@ -60,14 +61,14 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
         private void SimpleRenovation_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
-            SimpleRenovationWindow simpleRenovationindow = new SimpleRenovationWindow();
+            SimpleRenovationWindow simpleRenovationindow = new SimpleRenovationWindow(DIContainer.GetService<IRoomService>(), DIContainer.GetService<IRoomTimetableService > (),DIContainer.GetService<IRenovationService>());
             simpleRenovationindow.ShowDialog();
         }
 
         private void RoomMerge_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
-            RoomMergeWindow roomMergeWindow = new RoomMergeWindow();
+            RoomMergeWindow roomMergeWindow = new RoomMergeWindow(DIContainer.GetService< IRoomTimetableService>(), DIContainer.GetService<IRenovationService>(), DIContainer.GetService<IRoomService>());
             roomMergeWindow.ShowDialog();
         }
 

@@ -1,4 +1,6 @@
-﻿using HealthInstitution.Core.Equipments.Model;
+﻿using HealthInstitution.Core.DIContainer;
+using HealthInstitution.Core.Equipments.Model;
+using HealthInstitution.Core.EquipmentTransfers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -70,7 +72,7 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
 
         private void TransferToFirst_Click(object sender, RoutedEventArgs e)
         {
-            EquipmentTransferForSplitDialog equipmentTransferForSplitDialog = new EquipmentTransferForSplitDialog(_secondRoomEquipments,_firstRoomEquipments);
+            EquipmentTransferForSplitDialog equipmentTransferForSplitDialog = new EquipmentTransferForSplitDialog(_secondRoomEquipments,_firstRoomEquipments, DIContainer.GetService<IEquipmentTransferService>());
             equipmentTransferForSplitDialog.ShowDialog();
 
             Load();
@@ -82,7 +84,7 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
 
         private void TransferToSecond_Click(object sender, RoutedEventArgs e)
         {
-            EquipmentTransferForSplitDialog equipmentTransferForSplitDialog = new EquipmentTransferForSplitDialog(_firstRoomEquipments,_secondRoomEquipments);
+            EquipmentTransferForSplitDialog equipmentTransferForSplitDialog = new EquipmentTransferForSplitDialog(_firstRoomEquipments,_secondRoomEquipments, DIContainer.GetService<IEquipmentTransferService>());
             equipmentTransferForSplitDialog.ShowDialog();
 
             Load();

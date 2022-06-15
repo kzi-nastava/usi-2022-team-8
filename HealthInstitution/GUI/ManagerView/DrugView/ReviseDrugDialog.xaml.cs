@@ -29,7 +29,7 @@ namespace HealthInstitution.GUI.ManagerView.DrugView
         private Drug _drug;
         IDrugService _drugService;
         IIngredientService _ingredientService;
-        public ReviseDrugDialog(Drug drug,IDrugService drugService, IngredientService ingredientService)
+        public ReviseDrugDialog(Drug drug,IDrugService drugService, IIngredientService ingredientService)
         {
             InitializeComponent();
             _ingredientService = ingredientService;

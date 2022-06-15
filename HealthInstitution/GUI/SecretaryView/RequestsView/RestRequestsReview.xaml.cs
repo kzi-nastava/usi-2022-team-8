@@ -1,4 +1,5 @@
-﻿using HealthInstitution.Core.RestRequestNotifications;
+﻿using HealthInstitution.Core.DIContainer;
+using HealthInstitution.Core.RestRequestNotifications;
 using HealthInstitution.Core.RestRequests;
 using HealthInstitution.Core.RestRequests.Model;
 using System;
@@ -56,7 +57,7 @@ namespace HealthInstitution.GUI.SecretaryView.RequestsView
             RestRequest selectedRequest = (RestRequest)dataGrid.SelectedItem;
             if (selectedRequest != null)
             {
-                RestRequestRejectionDialog restRequestRejectionDialog = new RestRequestRejectionDialog(selectedRequest);
+                RestRequestRejectionDialog restRequestRejectionDialog = new RestRequestRejectionDialog(selectedRequest, DIContainer.GetService<IRestRequestService>());
                 restRequestRejectionDialog.ShowDialog();    
             }
             LoadRows();

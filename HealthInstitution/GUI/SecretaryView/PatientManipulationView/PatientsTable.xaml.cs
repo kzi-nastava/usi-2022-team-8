@@ -1,10 +1,12 @@
-﻿using HealthInstitution.Core.Examinations;
+﻿using HealthInstitution.Core.DIContainer;
+using HealthInstitution.Core.Examinations;
 using HealthInstitution.Core.Examinations.Repository;
 using HealthInstitution.Core.Operations;
 using HealthInstitution.Core.Operations.Repository;
 using HealthInstitution.Core.SystemUsers.Patients;
 using HealthInstitution.Core.SystemUsers.Patients.Model;
 using HealthInstitution.Core.SystemUsers.Patients.Repository;
+using HealthInstitution.Core.SystemUsers.Users;
 using HealthInstitution.GUI.SecretaryView;
 using System.Windows;
 
@@ -34,7 +36,7 @@ namespace HealthInstitution.GUI.UserWindow
         }
         private void CreatePatient_Click(object sender, RoutedEventArgs e)
         {
-            CreatePatientDialog createPatientDialog = new CreatePatientDialog();
+            CreatePatientDialog createPatientDialog = new CreatePatientDialog(DIContainer.GetService<IPatientService>(), DIContainer.GetService<IUserService>());
             createPatientDialog.ShowDialog();
             LoadRows();
         }
@@ -44,7 +46,7 @@ namespace HealthInstitution.GUI.UserWindow
             Patient selectedPatient = (Patient)dataGrid.SelectedItem;
             if (selectedPatient != null) 
             {
-                UpdatePatientWindow updatePatientWindow = new UpdatePatientWindow(selectedPatient);
+                UpdatePatientWindow updatePatientWindow = new UpdatePatientWindow(selectedPatient, DIContainer.GetService<IPatientService>());
                 updatePatientWindow.ShowDialog();
                 dataGrid.SelectedItem = null;
                 LoadRows();

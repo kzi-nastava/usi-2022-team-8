@@ -1,6 +1,8 @@
-﻿using HealthInstitution.Core.Drugs;
+﻿using HealthInstitution.Core.DIContainer;
+using HealthInstitution.Core.Drugs;
 using HealthInstitution.Core.Drugs.Model;
 using HealthInstitution.Core.Drugs.Repository;
+using HealthInstitution.Core.Ingredients;
 using HealthInstitution.Core.Ingredients.Model;
 using System;
 using System.Collections.Generic;
@@ -89,7 +91,7 @@ namespace HealthInstitution.GUI.ManagerView.DrugView
             reasonLabel.Content = "";
             Drug selectedDrug = (Drug)drugsDataGrid.SelectedItem;
 
-            ReviseDrugDialog reviseDrugDialog = new ReviseDrugDialog(selectedDrug);
+            ReviseDrugDialog reviseDrugDialog = new ReviseDrugDialog(selectedDrug, DIContainer.GetService<IDrugService>(), DIContainer.GetService<IIngredientService>());
             reviseDrugDialog.ShowDialog();
             drugsDataGrid.SelectedItem = null;
             LoadRows();

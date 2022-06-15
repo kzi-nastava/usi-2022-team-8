@@ -1,6 +1,8 @@
 ﻿using HealthInstitution.Core;
+using HealthInstitution.Core.DIContainer;
 using HealthInstitution.Core.Examinations;
 using HealthInstitution.Core.Examinations.Model;
+using HealthInstitution.Core.MedicalRecords;
 using HealthInstitution.Core.MedicalRecords.Model;
 using HealthInstitution.Core.Operations.Model;
 using HealthInstitution.Core.Operations.Repository;
@@ -127,7 +129,7 @@ namespace HealthInstitution.GUI.DoctorView
             { 
                 Examination selectedExamination = (Examination)dataGrid.SelectedItem;
                 if (_examinationService.IsReadyForPerforming(selectedExamination))
-                    new PerformExaminationDialog(selectedExamination).ShowDialog();
+                    new PerformExaminationDialog(selectedExamination, DIContainer.GetService<IExaminationService>(), DIContainer.GetService<IMedicalRecordService>()).ShowDialog();
                 else
                     System.Windows.MessageBox.Show("Date of examination didn't pass!", "Error", MessageBoxButton.OKCancel, MessageBoxImage.Error);
             }

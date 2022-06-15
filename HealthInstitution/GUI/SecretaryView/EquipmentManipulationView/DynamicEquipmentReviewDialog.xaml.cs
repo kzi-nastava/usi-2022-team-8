@@ -1,4 +1,5 @@
-﻿using HealthInstitution.Core.Equipments;
+﻿using HealthInstitution.Core.DIContainer;
+using HealthInstitution.Core.Equipments;
 using HealthInstitution.Core.Equipments.Model;
 using HealthInstitution.Core.Equipments.Repository;
 using HealthInstitution.Core.EquipmentTransfers;
@@ -41,7 +42,7 @@ namespace HealthInstitution.GUI.SecretaryView
             dynamic selectedEquipment = (dynamic)dataGrid.SelectedItem;
             if (selectedEquipment != null)
             {
-                DynamicEquipmentTransferDialog dynamicEquipmentTransferDialog = new DynamicEquipmentTransferDialog(selectedEquipment.Room, selectedEquipment.Equipment);
+                DynamicEquipmentTransferDialog dynamicEquipmentTransferDialog = new DynamicEquipmentTransferDialog(selectedEquipment.Room, selectedEquipment.Equipment, DIContainer.GetService<IEquipmentService>(), DIContainer.GetService<IRoomService>(), DIContainer.GetService<IEquipmentTransferService>());
                 dynamicEquipmentTransferDialog.ShowDialog();
                 ProcessDialog();
             }

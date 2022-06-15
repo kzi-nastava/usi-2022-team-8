@@ -1,6 +1,8 @@
-﻿using HealthInstitution.Core.Drugs;
+﻿using HealthInstitution.Core.DIContainer;
+using HealthInstitution.Core.Drugs;
 using HealthInstitution.Core.Drugs.Model;
 using HealthInstitution.Core.Drugs.Repository;
+using HealthInstitution.Core.Ingredients;
 using HealthInstitution.Core.Ingredients.Model;
 using System;
 using System.Collections.Generic;
@@ -69,7 +71,7 @@ namespace HealthInstitution.GUI.ManagerView.DrugView
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
-            AddDrugDialog addDrugDialog = new AddDrugDialog();
+            AddDrugDialog addDrugDialog = new AddDrugDialog(DIContainer.GetService<IDrugService>(), DIContainer.GetService<IIngredientService>());
             addDrugDialog.ShowDialog();
 
             LoadRows();
@@ -80,7 +82,7 @@ namespace HealthInstitution.GUI.ManagerView.DrugView
         {
             Drug selectedDrug = (Drug)drugsDataGrid.SelectedItem;
 
-            EditDrugDialog editDrugDialog = new EditDrugDialog(selectedDrug);
+            EditDrugDialog editDrugDialog = new EditDrugDialog(selectedDrug, DIContainer.GetService<IDrugService>(), DIContainer.GetService<IIngredientService>());
             editDrugDialog.ShowDialog();
             drugsDataGrid.SelectedItem = null;
             drugsDataGrid.Items.Refresh();
