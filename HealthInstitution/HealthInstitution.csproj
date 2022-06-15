@@ -61,4 +61,6 @@
         <SubType>Designer</SubType>
       </Page>
     </ItemGroup>
+
+    <ProjectExtensions><VisualStudio><UserProperties data_4json_4drugs_1json__JsonSchema="C" /></VisualStudio></ProjectExtensions>
 </Project>

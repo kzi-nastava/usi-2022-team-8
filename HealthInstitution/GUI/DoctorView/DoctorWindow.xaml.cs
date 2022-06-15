@@ -16,6 +16,7 @@ using HealthInstitution.GUI.LoginView;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using HealthInstitution.Core.Examinations.Repository;
 using HealthInstitution.Core.Notifications.Model;
+using HealthInstitution.ViewModels.GUIViewModels.DoctorViewViewModels;
 
 namespace HealthInstitution.GUI.DoctorView
 {
@@ -24,14 +25,13 @@ namespace HealthInstitution.GUI.DoctorView
     /// </summary>
     public partial class DoctorWindow : Window
     {
-        private Doctor _loggedDoctor;
         public DoctorWindow(Doctor doctor)
         {
             InitializeComponent();
-            this._loggedDoctor = doctor;
-            ShowNotificationsDialog();
+            //ShowNotificationsDialog();
+            DataContext = new DoctorWindowViewModel(doctor);
         }
-        private void ShowNotificationsDialog()
+       /* private void ShowNotificationsDialog()
         {
             int activeNotifications = 0;
             foreach (AppointmentNotification notification in this._loggedDoctor.Notifications)
@@ -44,37 +44,6 @@ namespace HealthInstitution.GUI.DoctorView
                 DoctorNotificationsDialog doctorNotificationsDialog = new DoctorNotificationsDialog(this._loggedDoctor);
                 doctorNotificationsDialog.ShowDialog();
             }
-        }
-        private void LogOut_Click(object sender, RoutedEventArgs e)
-        {
-            var answer = System.Windows.MessageBox.Show("Are you sure you want to log out?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning);
-            if (answer == MessageBoxResult.Yes)
-            {
-                this.Close();
-                LoginWindow window = new LoginWindow();
-                window.ShowDialog();
-            }
-        }
-
-        private void Examinations_Click(object sender, RoutedEventArgs e)
-        {
-            new ExaminationTable(this._loggedDoctor).ShowDialog();
-        }
-
-        private void Operations_Click(object sender, RoutedEventArgs e)
-        {
-            new OperationTable(this._loggedDoctor).ShowDialog();
-        }
-
-        private void ScheduleReview_Click(object sender, RoutedEventArgs e)
-        {
-            new ScheduledExaminationTable(this._loggedDoctor).ShowDialog();
-        }
-
-        private void ManageDrugs_Click(object sender, RoutedEventArgs e)
-        {
-            new DrugsVerificationTable().ShowDialog();
-        }
+        }*/
     }
-
 }

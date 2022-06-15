@@ -17,6 +17,7 @@ public class ExaminationViewModel : ViewModelBase
     public DateTime Appointment => _examination.Appointment;
     public string Doctor => _examination.Doctor.Name + " " + _examination.Doctor.Surname;
     public string Anamnesis => _examination.Anamnesis;
+    public string Patient => _examination.MedicalRecord.Patient.Name + " " + _examination.MedicalRecord.Patient.Surname;
 
     public ExaminationViewModel(Examination examination)
     {

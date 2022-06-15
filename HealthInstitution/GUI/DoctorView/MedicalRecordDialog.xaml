@@ -13,11 +13,11 @@
         <Label Content="Weight" HorizontalAlignment="Left" Margin="70,102,0,0" VerticalAlignment="Top"/>
         <Label Content="Previous illnesses" HorizontalAlignment="Left" Margin="70,0,0,0" VerticalAlignment="Center"/>
         <Label Content="Allergens" HorizontalAlignment="Left" Margin="70,232,0,0" VerticalAlignment="Top"/>
-        <Label Name="patientLabel" Content="" HorizontalAlignment="Left" Margin="328,42,0,0" VerticalAlignment="Top"/>
-        <Label Name="heightLabel" Content="" HorizontalAlignment="Left" Margin="328,72,0,0" VerticalAlignment="Top"/>
-        <Label Name="weightLabel" Content="" HorizontalAlignment="Left" Margin="328,102,0,0" VerticalAlignment="Top"/>
-        <ListBox Name="illnessesListBox" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="230,150,64,118"/>
-        <ListBox Name="allergensListBox" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="231,228,64,41"/>
+        <Label Name="patientLabel" Content="{Binding Path=Patient, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="328,42,0,0" VerticalAlignment="Top"/>
+        <Label Name="heightLabel" Content="{Binding Path=Height, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="328,72,0,0" VerticalAlignment="Top"/>
+        <Label Name="weightLabel" Content="{Binding Path=Weight, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="328,102,0,0" VerticalAlignment="Top"/>
+        <ListBox Name="illnessesListBox"  ItemsSource="{Binding Path = PreviousIllnesses}" Margin="230,150,64,118"/>
+        <ListBox Name="allergensListBox"  ItemsSource="{Binding Path = Allergens}" Margin="231,228,64,41"/>
 
     </Grid>
 </Window>

@@ -24,6 +24,6 @@
         <ComboBox Name="minuteComboBox" HorizontalAlignment="Left" Margin="225,117,0,0" VerticalAlignment="Top" Width="45" Loaded="MinuteComboBox_Loaded" />
         <Button Content="Submit" Click="Submit_Click" HorizontalAlignment="Center" Height="22" Margin="0,284,0,0" VerticalAlignment="Top" Width="74"/>
         <Label Name="durationLabel" Content="Duration" HorizontalAlignment="Left" Margin="44,215,0,0" VerticalAlignment="Top"/>
-        <TextBox Name="durationTextBox" HorizontalAlignment="Left" Margin="120,215,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="150" Height="26"/>
+        <TextBox Name="durationTextBox" HorizontalAlignment="Left" Margin="120,215,0,0" TextWrapping="Wrap" Text="{Binding Duration, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="150" Height="26"/>
     </Grid>
 </Window>
