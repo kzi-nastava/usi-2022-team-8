@@ -1,7 +1,7 @@
 ﻿using HealthInstitution.Core;
 using HealthInstitution.Core.Examinations.Model;
 using HealthInstitution.GUI.PatientView.Polls;
-using HealthInstitution.ViewModels.GUIViewModels.Patient;
+using HealthInstitution.ViewModels.GUIViewModels.PatientViewViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;

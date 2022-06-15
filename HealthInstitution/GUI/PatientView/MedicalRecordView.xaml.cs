@@ -3,7 +3,7 @@ using HealthInstitution.Core.Examinations.Model;
 using HealthInstitution.Core.SystemUsers.Users.Model;
 using System.Windows;
 using HealthInstitution.GUI.PatientView.Polls;
-using HealthInstitution.ViewModels.GUIViewModels.Patient;
+using HealthInstitution.ViewModels.GUIViewModels.PatientViewViewModels;
 
 namespace HealthInstitution.GUI.PatientView;
 

@@ -1,6 +1,6 @@
 ﻿using HealthInstitution.Core;
 using HealthInstitution.Core.Examinations;
-using HealthInstitution.ViewModels.GUIViewModels.Patient;
+using HealthInstitution.ViewModels.GUIViewModels.PatientViewViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;

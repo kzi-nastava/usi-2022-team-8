@@ -13,7 +13,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace HealthInstitution.ViewModels.GUIViewModels.Patient;
+namespace HealthInstitution.ViewModels.GUIViewModels.PatientViewViewModels;
 
 public class MedicalRecordViewViewModel : ViewModelBase
 {

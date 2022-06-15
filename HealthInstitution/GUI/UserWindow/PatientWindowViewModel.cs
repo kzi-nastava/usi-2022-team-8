@@ -23,6 +23,7 @@ public class PatientWindowViewModel : ViewModelBase
         PickDoctor = new PickDoctorCommand(loggedPatient);
         PrescriptionNotificationSettings = new PrescriptionNotificationSettingsCommand(loggedPatient.Username);
         Logout = new LogoutCommand();
+        PatientNotificationCommand = new PatientNotificationCommand(loggedPatient);
     }
 
     public ICommand RateHospital { get; }
@@ -32,4 +33,5 @@ public class PatientWindowViewModel : ViewModelBase
     public ICommand PickDoctor { get; }
     public ICommand PrescriptionNotificationSettings { get; }
     public ICommand Logout { get; }
+    public ICommand PatientNotificationCommand { get; }
 }
