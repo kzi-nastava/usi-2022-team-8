@@ -24,10 +24,12 @@ namespace HealthInstitution.GUI.SecretaryView
         public UrgentOperationDialog()
         {
             InitializeComponent();
-            LoadRows();
         }
         public void SetScheduledOperation(Operation operation)
-        { _operation = operation;}
+        { 
+            _operation = operation;
+            LoadRows();
+        }
         private void LoadRows()
         {
             dataGrid.Items.Clear();

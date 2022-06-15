@@ -24,10 +24,13 @@ namespace HealthInstitution.GUI.SecretaryView
         public UrgentExaminationDialog()
         {
             InitializeComponent();
-            LoadRows();
+            
         }
         public void SetScheduledExamination(Examination examination)
-        { _examination = examination; }
+        {
+            _examination = examination;
+            LoadRows();
+        }
         private void LoadRows()
         {
             dataGrid.Items.Clear();

@@ -21,7 +21,7 @@ public class EditSchedulingService : IEditSchedulingService
 
     public Examination GenerateRequestExamination(int id, ExaminationDTO examinationDTO)
     {
-        examinationDTO.Validate();
+        _examinationService.Validate(examinationDTO);
         examinationDTO = _schedulingService.CheckExaminationAvailable(examinationDTO);
         Examination e = new Examination(examinationDTO);
         e.Id = id;
@@ -30,7 +30,7 @@ public class EditSchedulingService : IEditSchedulingService
 
     public void EditExamination(int id, ExaminationDTO examinationDTO)
     {
-        examinationDTO.Validate();
+        _examinationService.Validate(examinationDTO);
         examinationDTO = _schedulingService.CheckExaminationAvailable(examinationDTO);
         Examination e = new Examination(examinationDTO);
         e.Id = id;

@@ -1,4 +1,5 @@
 ﻿using HealthInstitution.Core.RestRequests.Model;
+using HealthInstitution.Core.RestRequests.Repository;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using HealthInstitution.Core.SystemUsers.Doctors.Repository;
 using Newtonsoft.Json.Linq;
@@ -11,7 +12,7 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace HealthInstitution.Core.RestRequests.Repository
+namespace HealthInstitution.Core
 {
     public class RestRequestRepository : IRestRequestRepository
     {
@@ -115,8 +116,7 @@ namespace HealthInstitution.Core.RestRequests.Repository
         private void SaveAll()
         {
             Save();
-            _doctorRepository.Save();
-            DIContainer.DIContainer.GetService<RestRequestDoctorRepository>().Save();
+            DIContainer.DIContainer.GetService<IRestRequestDoctorRepository>().Save();
         }
 
         public void Add(RestRequest restRequest)
@@ -144,16 +144,30 @@ namespace HealthInstitution.Core.RestRequests.Repository
             restRequest.Doctor.RestRequests.Remove(restRequest);
             SaveAll();
         }
-        public void AcceptRestRequest(RestRequest restRequest)
+        public void Accept(RestRequest restRequest)
         {
             restRequest.State = RestRequestState.Accepted;
             Save();
         }
-        public void RejectRestRequest(RestRequest restRequest, string rejectionReason)
+        public void Reject(RestRequest restRequest, string rejectionReason)
         {
             restRequest.State = RestRequestState.Rejected;
             restRequest.RejectionReason = rejectionReason;
             Save();
+        }
+
+        public List<RestRequest> GetByDoctor(string doctorUsername)
+        {
+            /*List<RestRequest> doctorRestRequests = new List<RestRequest>();
+            foreach (var restRequest in this.RestRequests)
+            {
+                if (restRequest.Doctor.Username == doctorUsername)
+                    doctorRestRequests.Add(restRequest);
+            }
+            return doctorRestRequests;*/
+
+
+            return GetAll().Where(restRequest => restRequest.Doctor.Username == doctorUsername).ToList();
         }
     }
 }

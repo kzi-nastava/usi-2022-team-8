@@ -43,8 +43,8 @@ namespace HealthInstitution.Core.SystemUsers.Patients
 
         public void LoadNotifications()
         {
-            _appointmentNotificationPatientRepository.LoadFromFile();
-            _appointmentNotificationDoctorRepository.LoadFromFile();
+            //_appointmentNotificationPatientRepository.LoadFromFile();
+            //_appointmentNotificationDoctorRepository.LoadFromFile();
         }
         public List<Patient> GetAll()
         {

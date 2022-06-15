@@ -24,6 +24,7 @@ namespace HealthInstitution.Core.EquipmentTransfers.Functionality
             _equipmentRepository = equipmentRepository;
             _equipmentTransferRepository = equipmentTransferRepository;
             _equipmentTransferService = equipmentTransferService;
+            UpdateByTransfer();
         }
         public  void UpdateByTransfer()
         {

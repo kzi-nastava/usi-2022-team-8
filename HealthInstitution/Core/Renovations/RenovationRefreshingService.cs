@@ -22,6 +22,7 @@ namespace HealthInstitution.Core.Renovations.Functionality
         {
             _renovationRepository = renovationRepository;
             _renovationService = renovationService;
+            UpdateByRenovation();
         }
         public void UpdateByRenovation()
         {

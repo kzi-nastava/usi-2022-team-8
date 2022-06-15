@@ -32,11 +32,12 @@ public partial class PatientScheduleWindow : Window
         this._examinationService = examinationService;
         this._trollCounterService = trollCounterService;
         _scheduleEditRequestService = scheduleEditRequestService;
-        LoadRows();
+        
     }
     public void SetLoggedPatient(Patient patient)
     {
         _loggedPatient = patient;
+        LoadRows();
     }
     private void GridRefresh()
     {

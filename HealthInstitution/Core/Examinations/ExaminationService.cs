@@ -2,6 +2,7 @@
 using HealthInstitution.Core.Examinations.Repository;
 using HealthInstitution.Core.Scheduling;
 using HealthInstitution.Core.SystemUsers.Patients.Model;
+using HealthInstitution.Core.SystemUsers.Users.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -44,12 +45,19 @@ public class ExaminationService : IExaminationService
         return examination;
     }
 
+    public void Validate(ExaminationDTO examinationDTO)
+    {
+        if (examinationDTO.Appointment <= DateTime.Now)
+            throw new Exception("You have to change dates for upcoming ones!");
+        if (examinationDTO.MedicalRecord.Patient.Blocked != BlockState.NotBlocked)
+            throw new Exception("Patient is blocked and can not have any examinations!");
+    }
     public void Update(int id, ExaminationDTO examinationDTO)
     {
-        examinationDTO.Validate();
+        Validate(examinationDTO);
         Examination examination = new Examination(examinationDTO);
         _doctorExaminationAvailabilityService.CheckIfDoctorIsAvailable(examinationDTO);
-        DIContainer.DIContainer.GetService<PatientExaminationAvailabilityService>().CheckIfPatientIsAvailable(examinationDTO);
+        DIContainer.DIContainer.GetService<IPatientExaminationAvailabilityService>().CheckIfPatientIsAvailable(examinationDTO);
         _examinationRepository.Update(id, examination);
     }
 

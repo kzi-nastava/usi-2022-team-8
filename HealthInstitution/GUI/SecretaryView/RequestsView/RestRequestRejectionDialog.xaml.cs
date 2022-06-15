@@ -43,7 +43,7 @@ namespace HealthInstitution.GUI.SecretaryView.RequestsView
             }
             else
             {
-                _restRequestService.RejectRestRequest(_selectedRestRequest, rejectionReason);
+                _restRequestService.Reject(_selectedRestRequest, rejectionReason);
                 System.Windows.MessageBox.Show("Successfull rejection!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 Close();
             }

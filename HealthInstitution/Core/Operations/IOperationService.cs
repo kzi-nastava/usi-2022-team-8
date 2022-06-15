@@ -18,5 +18,6 @@ namespace HealthInstitution.Core.Operations
         public void Delete(int id);
         public List<Operation> GetByPatient(string patientUsername);
         public List<Operation> GetByDoctor(string doctorUsername);
+        public void Validate(OperationDTO operationDTO);
     }
 }

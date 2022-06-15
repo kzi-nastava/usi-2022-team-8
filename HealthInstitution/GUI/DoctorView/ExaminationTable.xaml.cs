@@ -37,11 +37,12 @@ namespace HealthInstitution.GUI.DoctorView
             _examinationService = examinationService;
             _doctorService = doctorService;
             InitializeComponent();
-            LoadRows();
+            
         }
         public void SetLoggedDoctor(Doctor doctor)
         {
             _loggedDoctor = doctor;
+            LoadRows();
         }
         private void LoadRows()
         {

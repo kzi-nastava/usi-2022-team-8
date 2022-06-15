@@ -107,8 +107,8 @@ namespace HealthInstitution.Core.Notifications.Repository
         private void SaveAll()
         {
             Save();
-            DIContainer.DIContainer.GetService<AppointmentNotificationPatientRepository>().Save();
-            DIContainer.DIContainer.GetService<AppointmentNotificationDoctorRepository>().Save();
+            DIContainer.DIContainer.GetService<IAppointmentNotificationPatientRepository>().Save();
+            DIContainer.DIContainer.GetService<IAppointmentNotificationDoctorRepository>().Save();
         }
         public void Add(AppointmentNotification appointmentNotification)
         {

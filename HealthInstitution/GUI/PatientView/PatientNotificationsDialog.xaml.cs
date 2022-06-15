@@ -34,11 +34,12 @@ namespace HealthInstitution.GUI.PatientView
             _patientService = patientService;   
             _appointmentNotificationService = appointmentNotificationService;
             InitializeComponent();
-            LoadRows();
+            
         }
         public void SetLoggedPatient(Patient patient)
         {
             _loggedPatient = patient;
+            LoadRows();
         }
         private void LoadRows()
         {

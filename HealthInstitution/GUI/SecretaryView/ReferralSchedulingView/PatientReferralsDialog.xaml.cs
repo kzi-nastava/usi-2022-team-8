@@ -28,11 +28,12 @@ namespace HealthInstitution.GUI.SecretaryView
         public PatientReferralsDialog()
         {
             InitializeComponent();
-            LoadRows();
+            
         }
         public void SetSelectedMedicalRecord(MedicalRecord medicalRecord)
         {
             _medicalRecord = medicalRecord;
+            LoadRows();
         }
         private void LoadRows()
         {

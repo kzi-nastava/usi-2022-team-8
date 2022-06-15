@@ -1,5 +1,9 @@
-﻿using HealthInstitution.Core.Examinations.Model;
+﻿using HealthInstitution.Core.Examinations;
+using HealthInstitution.Core.Examinations.Model;
+using HealthInstitution.Core.Operations;
 using HealthInstitution.Core.Operations.Model;
+using HealthInstitution.Core.RestRequests.Model;
+using HealthInstitution.Core.SystemUsers.Doctors;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using System;
 using System.Collections.Generic;
@@ -14,70 +18,46 @@ namespace HealthInstitution.Core
         public TimetableService() { }
         public List<Examination> GetScheduledExaminations(Doctor doctor)
         {
-            var scheduledExaminations = new List<Examination>();
-            foreach (var examination in doctor.Examinations)
-            {
-                if (examination.Status == ExaminationStatus.Scheduled)
-                    scheduledExaminations.Add(examination);
-            }
-            return scheduledExaminations;
+            return doctor.Examinations.Where(e => e.Status == ExaminationStatus.Scheduled).ToList();
         }
 
         public List<Operation> GetScheduledOperations(Doctor doctor)
         {
-            var scheduledOperations = new List<Operation>();
-            foreach (var operation in doctor.Operations)
-            {
-                if (operation.Status == ExaminationStatus.Scheduled)
-                    scheduledOperations.Add(operation);
-            }
-            return scheduledOperations;
+            return doctor.Operations.Where(o => o.Status == ExaminationStatus.Scheduled).ToList();
         }
 
         public List<Examination> GetExaminationsInThreeDays(List<Examination> examinations)
         {
-            var upcomingExaminations = new List<Examination>();
             DateTime today = DateTime.Now;
             DateTime dateForThreeDays = today.AddDays(3);
-            foreach (Examination examination in examinations)
-            {
-                if (examination.Appointment <= dateForThreeDays && examination.Appointment >= today)
-                    upcomingExaminations.Add(examination);
-            }
-            return upcomingExaminations;
+            return examinations.Where(e => e.Appointment <= dateForThreeDays && e.Appointment >= today).ToList();
         }
         public List<Operation> GetOperationsInThreeDays(List<Operation> operations)
         {
-            var upcomingOperations = new List<Operation>();
             DateTime today = DateTime.Now;
             DateTime dateForThreeDays = today.AddDays(3);
-            foreach (Operation operation in upcomingOperations)
-            {
-                if (operation.Appointment <= dateForThreeDays && operation.Appointment >= today)
-                    upcomingOperations.Add(operation);
-            }
-            return upcomingOperations;
+            return operations.Where(o => o.Appointment <= dateForThreeDays && o.Appointment >= today).ToList();
         }
 
         public List<Examination> GetExaminationsByDate(List<Examination> examinations, DateTime date)
         {
-            var examinationsForDate = new List<Examination>();
-            foreach (Examination examination in examinations)
-            {
-                if (examination.Appointment.Date == date)
-                    examinationsForDate.Add(examination);
-            }
-            return examinationsForDate;
+            return examinations.Where(e => e.Appointment.Date == date).ToList();
         }
         public List<Operation> GetOperationsByDate(List<Operation> operations, DateTime date)
         {
-            var operationsForDate = new List<Operation>();
-            foreach (Operation operation in operations)
-            {
-                if (operation.Appointment.Date == date)
-                    operationsForDate.Add(operation);
-            }
-            return operationsForDate;
+            return operations.Where(o => o.Appointment.Date == date).ToList();
+        }
+
+        public static void IsDoctorAvailable(RestRequestDTO restRequestDTO)
+        {
+            var examinations = restRequestDTO.Doctor.Examinations;
+            var operations = restRequestDTO.Doctor.Operations;
+            int numberOfDays = restRequestDTO.DaysDuration;
+            DateTime startDate = restRequestDTO.StartDate;
+            bool hasScheduledExaminations = examinations.Any(e => e.Appointment >= startDate && e.Appointment <= startDate.AddDays(numberOfDays));
+            bool hasScheduledOperations = operations.Any(o => o.Appointment >= startDate && o.Appointment <= startDate.AddDays(numberOfDays));
+            if (hasScheduledExaminations || hasScheduledOperations)
+                throw new Exception("You have appointments in wanted days!");
         }
     }
 }

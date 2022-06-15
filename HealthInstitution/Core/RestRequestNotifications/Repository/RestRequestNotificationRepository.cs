@@ -96,7 +96,7 @@ namespace HealthInstitution.Core.RestRequestNotifications.Repository
         private void SaveAll()
         {
             Save();
-            DIContainer.DIContainer.GetService<RestRequestNotificationDoctorRepository>().Save();
+            DIContainer.DIContainer.GetService<IRestRequestNotificationDoctorRepository>().Save();
         }
         public void Add(RestRequestNotification restRequestNotification)
         {

@@ -41,7 +41,6 @@ namespace HealthInstitution.GUI.UserWindow
         {
             _loggedPatient = patient;
             ShowNotificationsDialog();
-
             RecepieNotificationDialog recepieNotificationDialog = DIContainer.GetService<RecepieNotificationDialog>();
             recepieNotificationDialog.SetLoggedPatient(_loggedPatient.Username);
             recepieNotificationDialog.ShowDialog();            

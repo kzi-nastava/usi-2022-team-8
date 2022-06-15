@@ -37,13 +37,14 @@ namespace HealthInstitution.GUI.SecretaryView
         {
             InitializeComponent();
             _appointmentDelayingService = appointmentDelayingService;
-            LoadRows();
+            
         }
         public void SetSelectedAppointment(List<ScheduleEditRequest> delayedAppointments, Examination? examination, Operation? operation)
         {
             _delayedAppointments = delayedAppointments;
             _examination = examination;
             _operation = operation;
+            LoadRows();
         }
         private void LoadRows()
         {

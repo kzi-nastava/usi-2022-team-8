@@ -25,11 +25,12 @@ namespace HealthInstitution.GUI.DoctorView
             this._operationService = operationService;
             _doctorService = doctorService;
             InitializeComponent();
-            LoadRows();
+            
         }
         public void SetLoggedDoctor(Doctor doctor)
         {
             _loggedDoctor = doctor;
+            LoadRows();
         }
         private void LoadRows()
         {

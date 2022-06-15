@@ -2,6 +2,7 @@
 using HealthInstitution.Core.Operations.Repository;
 using HealthInstitution.Core.Scheduling;
 using HealthInstitution.Core.SystemUsers.Patients.Model;
+using HealthInstitution.Core.SystemUsers.Users.Model;
 
 namespace HealthInstitution.Core.Operations
 {
@@ -35,12 +36,23 @@ namespace HealthInstitution.Core.Operations
             return operation;
         }
 
+        public void Validate(OperationDTO operationDTO)
+        {
+            if (operationDTO.Appointment <= DateTime.Now)
+                throw new Exception("You have to change dates for upcoming ones!");
+            if (operationDTO.Duration <= 15)
+                throw new Exception("Operation can't last less than 15 minutes!");
+            if (operationDTO.MedicalRecord.Patient.Blocked != BlockState.NotBlocked)
+                throw new Exception("Patient is blocked and can not have any examinations!");
+
+        }
+
         public void Update(int id, OperationDTO operationDTO)
         {
-            operationDTO.Validate();
+            Validate(operationDTO);
             Operation operation = new Operation(operationDTO);
             _doctorOperationAvailabilityService.CheckIfDoctorIsAvailable(operationDTO, id);
-            DIContainer.DIContainer.GetService<PatientOperationAvailabilityService>().CheckIfPatientIsAvailable(operationDTO, id);
+            DIContainer.DIContainer.GetService<IPatientOperationAvailabilityService>().CheckIfPatientIsAvailable(operationDTO, id);
             _operationRepository.Update(id, operation);
         }
 

@@ -143,7 +143,7 @@ namespace HealthInstitution.Core.Operations.Repository
         private void SaveAll()
         {
             Save();
-            DIContainer.DIContainer.GetService<OperationDoctorRepository>().Save();
+            DIContainer.DIContainer.GetService<IOperationDoctorRepository>().Save();
         }
 
         public void Add(Operation operation)

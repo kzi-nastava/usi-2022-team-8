@@ -28,5 +28,6 @@ namespace HealthInstitution.Core.RestRequests.Model
             IsUrgent = isUrgent;
             RejectionReason = rejectionReason;
         }
+
     }
 }

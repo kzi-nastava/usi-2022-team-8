@@ -34,14 +34,14 @@ public class DoctorService : IDoctorService
 
     public void LoadAppointments()
     {
-        _operationDoctorRepository.LoadFromFile();
-        _examinationDoctorRepository.LoadFromFile();
+        //_operationDoctorRepository.LoadFromFile();
+        //_examinationDoctorRepository.LoadFromFile();
     }
     public void LoadNotifications()
     {
-        _appointmentNotificationDoctorRepository.LoadFromFile();
-        _appointmentNotificationPatientRepository.LoadFromFile();
-        _restRequestNotificationDoctorRepository.LoadFromFile();
+        //_appointmentNotificationDoctorRepository.LoadFromFile();
+        //_appointmentNotificationPatientRepository.LoadFromFile();
+        //_restRequestNotificationDoctorRepository.LoadFromFile();
     }
     public List<Doctor> GetAll()
     {

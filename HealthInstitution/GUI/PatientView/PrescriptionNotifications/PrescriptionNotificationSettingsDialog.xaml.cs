@@ -27,13 +27,13 @@ public partial class RecepieNotificationSettingsDialog : Window
         _medicalRecordService = medicalRecordService;   
         _patientService = patientService;
         _prescriptionNotificationService = prescriptionNotificationService;
-        LoadRows();
+        
     }
     public void SetLoggedPatient(string patient)
     {
         _loggedPatinet=patient;
         _prescriptions = _medicalRecordService.GetByPatientUsername(_patientService.GetByUsername(_loggedPatinet)).Prescriptions;
-
+        LoadRows();
     }
 
     private void HourComboBox_Loaded(object sender, RoutedEventArgs e)

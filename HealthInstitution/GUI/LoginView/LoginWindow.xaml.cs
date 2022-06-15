@@ -80,24 +80,18 @@ namespace HealthInstitution.GUI.LoginView
         ITrollCounterService _trollCounterService;
         IPatientService _patientService;
         IDoctorService _doctorService;
-        IEquipmentTransferRefreshingService _equipmentTransferRefreshingService;
-        IRenovationRefreshingService _renovationRefreshingService;
         IPrescriptionNotificationService _prescriptionNotificationService;
-        IRestRequestService _restRequestService;
         IDoctorRatingsService _doctorRatingsService;
 
 
-        public LoginWindow(IUserService userService, ITrollCounterService trollCounterService, IPatientService patientService, IDoctorService doctorService, IEquipmentTransferRefreshingService equipmentTransferRefreshingService, IRenovationRefreshingService renovationRefreshingService, IPrescriptionNotificationService prescriptionNotificationService, IRestRequestService restRequestService, IDoctorRatingsService doctorRatingsService)
+        public LoginWindow(IUserService userService, ITrollCounterService trollCounterService, IPatientService patientService, IDoctorService doctorService, IPrescriptionNotificationService prescriptionNotificationService, IDoctorRatingsService doctorRatingsService, IEquipmentTransferRefreshingService equipmentTransferRefreshingService, IRenovationRefreshingService renovationRefreshingService)
         {
             InitializeComponent();
             _userService = userService;
             _trollCounterService = trollCounterService;
             _patientService = patientService;
             _doctorService = doctorService;
-            _equipmentTransferRefreshingService = equipmentTransferRefreshingService;
-            _renovationRefreshingService = renovationRefreshingService;
             _prescriptionNotificationService = prescriptionNotificationService;
-            _restRequestService = restRequestService;
             _doctorRatingsService = doctorRatingsService;
         }
 
@@ -138,7 +132,7 @@ namespace HealthInstitution.GUI.LoginView
         private void RedirectPatient(User foundUser)
         {
             _trollCounterService.TrollCheck(foundUser.Username);
-            _patientService.LoadNotifications();
+            //_patientService.LoadNotifications();
             Patient loggedPatient = _patientService.GetByUsername(_usernameInput);
             _prescriptionNotificationService.GenerateAllSkippedNotifications(loggedPatient.Username);
             _doctorRatingsService.AssignScores();
@@ -151,8 +145,9 @@ namespace HealthInstitution.GUI.LoginView
 
         private void RedirectDoctor()
         {
-            _doctorService.LoadAppointments();
-            _doctorService.LoadNotifications();
+            //_doctorService.LoadAppointments();
+            //_doctorService.LoadNotifications();
+            //_restRequestService.LoadRequests();
             Doctor loggedDoctor = _doctorService.GetById(_usernameInput);
 
             var doctorWindow = DIContainer.GetService<DoctorWindow>();
@@ -162,7 +157,7 @@ namespace HealthInstitution.GUI.LoginView
 
         private void RedirectSecretary()
         {
-            _restRequestService.LoadRequests();
+            //_restRequestService.LoadRequests();
 
             var secretaryWindow = DIContainer.GetService<SecretaryWindow>();
             secretaryWindow.ShowDialog();
@@ -182,96 +177,96 @@ namespace HealthInstitution.GUI.LoginView
             var services = new DIServiceCollection();
 
             {
-                services.RegisterTransient<IAppointmentNotificationDoctorRepository, AppointmentNotificationDoctorRepository>();
-                services.RegisterTransient<IAppointmentNotificationPatientRepository, AppointmentNotificationPatientRepository>();
-                services.RegisterTransient<IAppointmentNotificationRepository, AppointmentNotificationRepository>();
-                services.RegisterTransient<IAppointmentNotificationService, DoctorRatingService>();
+                services.RegisterSingleton<IAppointmentNotificationDoctorRepository, AppointmentNotificationDoctorRepository>();
+                services.RegisterSingleton<IAppointmentNotificationPatientRepository, AppointmentNotificationPatientRepository>();
+                services.RegisterSingleton<IAppointmentNotificationRepository, AppointmentNotificationRepository>();
+                services.RegisterSingleton<IAppointmentNotificationService, DoctorRatingService>();
 
-                services.RegisterTransient<IDoctorRatingRepository, DoctorRatingRepository>();
-                services.RegisterTransient<IDoctorRatingsService, DoctorRatingsService>();
+                services.RegisterSingleton<IDoctorRatingRepository, DoctorRatingRepository>();
+                services.RegisterSingleton<IDoctorRatingsService, DoctorRatingsService>();
 
-                services.RegisterTransient<IDrugRepository, DrugRepository>();
-                services.RegisterTransient<IDrugService, DrugService>();
-                services.RegisterTransient<IDrugVerificationService, DrugVerificationService>();
+                services.RegisterSingleton<IDrugRepository, DrugRepository>();
+                services.RegisterSingleton<IDrugService, DrugService>();
+                services.RegisterSingleton<IDrugVerificationService, DrugVerificationService>();
 
-                services.RegisterTransient<IEquipmentRepository, EquipmentRepository>();
-                services.RegisterTransient<IEquipmentService, EquipmentService>();
+                services.RegisterSingleton<IEquipmentRepository, EquipmentRepository>();
+                services.RegisterSingleton<IEquipmentService, EquipmentService>();
 
-                services.RegisterTransient<IEquipmentTransferRepository, EquipmentTransferRepository>();
-                services.RegisterTransient<IEquipmentTransferService, EquipmentTransferService>();
-                services.RegisterTransient<IEquipmentTransferRefreshingService, EquipmentTransferRefreshingService>();
+                services.RegisterSingleton<IEquipmentTransferRepository, EquipmentTransferRepository>();
+                services.RegisterSingleton<IEquipmentTransferService, EquipmentTransferService>();
+                services.RegisterSingleton<IEquipmentTransferRefreshingService, EquipmentTransferRefreshingService>();
 
-                services.RegisterTransient<IExaminationRepository, ExaminationRepository>();
-                services.RegisterTransient<IExaminationDoctorRepository, ExaminationDoctorRepository>();
-                services.RegisterTransient<IExaminationService, ExaminationService>();
+                services.RegisterSingleton<IExaminationRepository, ExaminationRepository>();
+                services.RegisterSingleton<IExaminationDoctorRepository, ExaminationDoctorRepository>();
+                services.RegisterSingleton<IExaminationService, ExaminationService>();
 
-                services.RegisterTransient<IIngredientRepository, IngredientRepository>();
-                services.RegisterTransient<IIngredientService, IngredientService>();
+                services.RegisterSingleton<IIngredientRepository, IngredientRepository>();
+                services.RegisterSingleton<IIngredientService, IngredientService>();
 
-                services.RegisterTransient<IMedicalRecordRepository, MedicalRecordRepository>();
-                services.RegisterTransient<IMedicalRecordService, MedicalRecordService>();
+                services.RegisterSingleton<IMedicalRecordRepository, MedicalRecordRepository>();
+                services.RegisterSingleton<IMedicalRecordService, MedicalRecordService>();
 
-                services.RegisterTransient<IOperationRepository, OperationRepository>();
-                services.RegisterTransient<IOperationDoctorRepository, OperationDoctorRepository>();
-                services.RegisterTransient<IOperationService, OperationService>();
+                services.RegisterSingleton<IOperationRepository, OperationRepository>();
+                services.RegisterSingleton<IOperationDoctorRepository, OperationDoctorRepository>();
+                services.RegisterSingleton<IOperationService, OperationService>();
 
-                services.RegisterTransient<IPollCommentRepository, PollCommentRepository>();
-                services.RegisterTransient<IPollQuestionRepository, PollQuestionRepository>();
-                services.RegisterTransient<IPollService, PollService>();
+                services.RegisterSingleton<IPollCommentRepository, PollCommentRepository>();
+                services.RegisterSingleton<IPollQuestionRepository, PollQuestionRepository>();
+                services.RegisterSingleton<IPollService, PollService>();
 
-                services.RegisterTransient<IPrescriptionNotificationRepository, PrescriptionNotificationRepository>();
-                services.RegisterTransient<IPrescriptionNotificationSettingsRepository, PrescriptionNotificationSettingsRepository>();
-                services.RegisterTransient<IPrescriptionNotificationService, PrescriptionNotificationService>();
-                services.RegisterTransient<IPrescriptionNotificationCronJobService, PrescriptionNotificationCronJobService>();
+                services.RegisterSingleton<IPrescriptionNotificationRepository, PrescriptionNotificationRepository>();
+                services.RegisterSingleton<IPrescriptionNotificationSettingsRepository, PrescriptionNotificationSettingsRepository>();
+                services.RegisterSingleton<IPrescriptionNotificationService, PrescriptionNotificationService>();
+                services.RegisterSingleton<IPrescriptionNotificationCronJobService, PrescriptionNotificationCronJobService>();
 
-                services.RegisterTransient<IPrescriptionRepository, PrescriptionRepository>();
-                services.RegisterTransient<IPrescriptionService, PrescriptionService>();
+                services.RegisterSingleton<IPrescriptionRepository, PrescriptionRepository>();
+                services.RegisterSingleton<IPrescriptionService, PrescriptionService>();
 
-                services.RegisterTransient<IReferralRepository, ReferralRepository>();
-                services.RegisterTransient<IReferralService, ReferralService>();
+                services.RegisterSingleton<IReferralRepository, ReferralRepository>();
+                services.RegisterSingleton<IReferralService, ReferralService>();
 
-                services.RegisterTransient<IRenovationRepository, RenovationRepository>();
-                services.RegisterTransient<IRenovationService, RenovationService>();
-                services.RegisterTransient<IRenovationRefreshingService, RenovationRefreshingService>();
+                services.RegisterSingleton<IRenovationRepository, RenovationRepository>();
+                services.RegisterSingleton<IRenovationService, RenovationService>();
+                services.RegisterSingleton<IRenovationRefreshingService, RenovationRefreshingService>();
 
-                services.RegisterTransient<IRestRequestNotificationRepository, RestRequestNotificationRepository>();
-                services.RegisterTransient<IRestRequestNotificationDoctorRepository, RestRequestNotificationDoctorRepository>();
-                services.RegisterTransient<IRestRequestNotificationService, RestRequestNotificationService>();
+                services.RegisterSingleton<IRestRequestNotificationRepository, RestRequestNotificationRepository>();
+                services.RegisterSingleton<IRestRequestNotificationDoctorRepository, RestRequestNotificationDoctorRepository>();
+                services.RegisterSingleton<IRestRequestNotificationService, RestRequestNotificationService>();
 
-                services.RegisterTransient<IRestRequestRepository, RestRequestRepository>();
-                services.RegisterTransient<IRestRequestDoctorRepository, RestRequestDoctorRepository>();
-                services.RegisterTransient<IRestRequestService, RestRequestService>();
+                services.RegisterSingleton<IRestRequestRepository, RestRequestRepository>();
+                services.RegisterSingleton<IRestRequestDoctorRepository, RestRequestDoctorRepository>();
+                services.RegisterSingleton<IRestRequestService, RestRequestService>();
 
-                services.RegisterTransient<IRoomRepository, RoomRepository>();
-                services.RegisterTransient<IRoomService, RoomService>();
-                services.RegisterTransient<IRoomTimetableService, RoomTimetableService>();
+                services.RegisterSingleton<IRoomRepository, RoomRepository>();
+                services.RegisterSingleton<IRoomService, RoomService>();
+                services.RegisterSingleton<IRoomTimetableService, RoomTimetableService>();
 
-                services.RegisterTransient<IScheduleEditRequestFileRepository, ScheduleEditRequestFileRepository>();
-                services.RegisterTransient<IScheduleEditRequestsService, ScheduleEditRequestService>();
+                services.RegisterSingleton<IScheduleEditRequestFileRepository, ScheduleEditRequestFileRepository>();
+                services.RegisterSingleton<IScheduleEditRequestsService, ScheduleEditRequestService>();
 
-                services.RegisterTransient<IAppointmentDelayingService, AppointmentDelayingService>();
-                services.RegisterTransient<IDoctorExaminationAvailabilityService, DoctorExaminationAvailabilityService>();
-                services.RegisterTransient<IDoctorOperationAvailabilityService, DoctorOperationAvailabilityService>();
-                services.RegisterTransient<IEditSchedulingService, EditSchedulingService>();
-                services.RegisterTransient<IPatientExaminationAvailabilityService, PatientExaminationAvailabilityService>();
-                services.RegisterTransient<IPatientOperationAvailabilityService, PatientOperationAvailabilityService>();
-                services.RegisterTransient<IRecommendedSchedulingService, RecommendedSchedulingService>();
-                services.RegisterTransient<ISchedulingService, SchedulingService>();
-                services.RegisterTransient<IUrgentService, UrgentService>();
+                services.RegisterSingleton<IAppointmentDelayingService, AppointmentDelayingService>();
+                services.RegisterSingleton<IDoctorExaminationAvailabilityService, DoctorExaminationAvailabilityService>();
+                services.RegisterSingleton<IDoctorOperationAvailabilityService, DoctorOperationAvailabilityService>();
+                services.RegisterSingleton<IEditSchedulingService, EditSchedulingService>();
+                services.RegisterSingleton<IPatientExaminationAvailabilityService, PatientExaminationAvailabilityService>();
+                services.RegisterSingleton<IPatientOperationAvailabilityService, PatientOperationAvailabilityService>();
+                services.RegisterSingleton<IRecommendedSchedulingService, RecommendedSchedulingService>();
+                services.RegisterSingleton<ISchedulingService, SchedulingService>();
+                services.RegisterSingleton<IUrgentService, UrgentService>();
 
-                services.RegisterTransient<IDoctorRepository, DoctorRepository>();
-                services.RegisterTransient<IDoctorService, DoctorService>();
+                services.RegisterSingleton<IDoctorRepository, DoctorRepository>();
+                services.RegisterSingleton<IDoctorService, DoctorService>();
 
-                services.RegisterTransient<IPatientRepository, PatientRepository>();
-                services.RegisterTransient<IPatientService, PatientService>();
+                services.RegisterSingleton<IPatientRepository, PatientRepository>();
+                services.RegisterSingleton<IPatientService, PatientService>();
 
-                services.RegisterTransient<IUserRepository, UserRepository>();
-                services.RegisterTransient<IUserService, UserService>();
+                services.RegisterSingleton<IUserRepository, UserRepository>();
+                services.RegisterSingleton<IUserService, UserService>();
 
-                services.RegisterTransient<ITrollCounterFileRepository, TrollCounterFileRepository>();
-                services.RegisterTransient<ITrollCounterService, TrollCounterService>();
+                services.RegisterSingleton<ITrollCounterFileRepository, TrollCounterFileRepository>();
+                services.RegisterSingleton<ITrollCounterService, TrollCounterService>();
 
-                services.RegisterTransient<ITimetableService, TimetableService>();
+                services.RegisterSingleton<ITimetableService, TimetableService>();
             }
 
 
@@ -322,6 +317,9 @@ namespace HealthInstitution.GUI.LoginView
                 services.RegisterTransient<OperationTable>();
                 services.RegisterTransient<PerformExaminationDialog>();
                 services.RegisterTransient<ScheduledExaminationTable>();
+                services.RegisterTransient<AddRestRequestDialog>();
+                services.RegisterTransient<RestRequestTable>();
+
 
                 services.RegisterTransient<DoctorPollDialog>();
                 services.RegisterTransient<PatientHospitalPollDialog>();
@@ -360,14 +358,6 @@ namespace HealthInstitution.GUI.LoginView
 
             services.BuildContainer();
 
-
-            //var loginWindow = DIContainer.GetService<LoginWindow>();
-
-            //DIContainer.GetService<IEquipmentTransferRefreshingService>().UpdateByTransfer();
-            //DIContainer.GetService<IRenovationRefreshingService>().UpdateByRenovation();
-
-            //_equipmentTransferRefreshingService.UpdateByTransfer();
-            //_renovationRefreshingService.UpdateByRenovation();
 
             var loginWindow = DIContainer.GetService<LoginWindow>();
             loginWindow.ShowDialog();

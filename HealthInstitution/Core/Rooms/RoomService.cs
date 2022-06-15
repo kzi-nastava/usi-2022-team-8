@@ -49,12 +49,12 @@ namespace HealthInstitution.Core.Rooms
         }
         public bool CheckImportantOccurrenceOfRoom(Room room)
         {
-            if (DIContainer.DIContainer.GetService<EquipmentTransferService>().CheckOccurrenceOfRoom(room))
+            if (DIContainer.DIContainer.GetService<IEquipmentTransferService>().CheckOccurrenceOfRoom(room))
             {
                 return true;
             }
 
-            if (DIContainer.DIContainer.GetService<SchedulingService>().CheckOccurrenceOfRoom(room))
+            if (DIContainer.DIContainer.GetService<ISchedulingService>().CheckOccurrenceOfRoom(room))
             {
                 return true;
             }
@@ -64,7 +64,7 @@ namespace HealthInstitution.Core.Rooms
 
         public void MoveRoomToRenovationHistory(Room selectedRoom)
         {
-            if (DIContainer.DIContainer.GetService<RenovationService>().CheckRenovationStatusForHistoryDelete(selectedRoom))
+            if (DIContainer.DIContainer.GetService<IRenovationService>().CheckRenovationStatusForHistoryDelete(selectedRoom))
             {
                 _roomRepository.Delete(selectedRoom.Id);
             }

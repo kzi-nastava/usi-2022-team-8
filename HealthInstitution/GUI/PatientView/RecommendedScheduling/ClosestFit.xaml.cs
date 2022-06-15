@@ -28,11 +28,12 @@ namespace HealthInstitution.GUI.PatientView
         {
             InitializeComponent();
             _examinationService = examinationService;
-            LoadRows();
+            
         }
         public void SetSuggestions(List<Examination> suggestions)
         {
             _suggestions = suggestions;
+            LoadRows();
         }
 
         private void AddButton_click(object sender, RoutedEventArgs e)

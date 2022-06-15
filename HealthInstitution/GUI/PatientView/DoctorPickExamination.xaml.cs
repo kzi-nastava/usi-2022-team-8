@@ -23,11 +23,12 @@ public partial class DoctorPickExamination : Window
         dataGrid.SelectedIndex = 0;
         _doctorService = doctorService;
         _currentDoctors = _doctorService.GetAll();
-        LoadRows();
+        
     }
     public void SetLoggedPatient(Patient patient)
     {
         _loggedPatient = patient;
+        LoadRows();
     }
     private void Button_Click(object sender, RoutedEventArgs e)
     {

@@ -54,7 +54,7 @@ namespace HealthInstitution.Core.TrollCounters
         }
         public void BlockPatient(string username)
         {
-            DIContainer.DIContainer.GetService<PatientService>().ChangeBlockedStatus(username);
+            DIContainer.DIContainer.GetService<IPatientService>().ChangeBlockedStatus(username);
         }
         public void CheckCreateTroll(string username)
         {

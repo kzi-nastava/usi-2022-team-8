@@ -47,11 +47,11 @@ namespace HealthInstitution.GUI.DoctorView
         {
             InitializeComponent();
             this._doctorService = doctorService;
-            ShowNotificationsDialog();
         }
         public void SetLoggedDoctor(Doctor doctor)
         {
             _loggedDoctor = doctor;
+            ShowNotificationsDialog();
         }
         private void ShowNotificationsDialog()
         {
@@ -100,6 +100,13 @@ namespace HealthInstitution.GUI.DoctorView
         {
             DrugsVerificationTable drugsVerificationTable = DIContainer.GetService<DrugsVerificationTable>();
             drugsVerificationTable.ShowDialog();
+        }
+
+        private void RestRequests_Click(object sender, RoutedEventArgs e)
+        {
+            RestRequestTable restRequestTable = DIContainer.GetService<RestRequestTable>();
+            restRequestTable.SetLoggedDoctor(_loggedDoctor);
+            restRequestTable.ShowDialog();
         }
     }
 

@@ -26,5 +26,6 @@ namespace HealthInstitution.Core.Examinations
         public bool IsReadyForPerforming(Examination examination);
         public ExaminationDTO ParseExaminationToExaminationDTO(Examination examination);
         public void Complete(Examination examination, string anamnesis);
+        public void Validate(ExaminationDTO examinationDTO);
     }
 }

@@ -134,7 +134,7 @@ public class ExaminationRepository : IExaminationRepository
     private void SaveAll()
     {
         Save();
-        DIContainer.DIContainer.GetService<ExaminationDoctorRepository>().Save();
+        DIContainer.DIContainer.GetService<IExaminationDoctorRepository>().Save();
     }
 
     public void Add(Examination examination)

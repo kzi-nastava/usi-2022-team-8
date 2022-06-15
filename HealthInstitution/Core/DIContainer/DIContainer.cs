@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HealthInstitution.Core.RestRequests.Repository;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -17,6 +18,10 @@ namespace HealthInstitution.Core.DIContainer
 
         public static object GetService(Type serviceType)
         {
+            if (serviceType == typeof(IRestRequestDoctorRepository))
+            {
+                int x = 0;
+            }
             var descriptor = s_serviceDescriptors
                 .SingleOrDefault(x => x.ServiceType == serviceType);
 
