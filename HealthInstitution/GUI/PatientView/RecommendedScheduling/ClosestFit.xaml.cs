@@ -14,38 +14,15 @@ using System.Windows.Shapes;
 using HealthInstitution.Core.Examinations.Model;
 using HealthInstitution.Core.Examinations;
 
-namespace HealthInstitution.GUI.PatientView
+namespace HealthInstitution.GUI.PatientView;
+
+/// <summary>
+/// Interaction logic for ClosestFit.xaml
+/// </summary>
+public partial class ClosestFit : Window
 {
-    /// <summary>
-    /// Interaction logic for ClosestFit.xaml
-    /// </summary>
-    public partial class ClosestFit : Window
+    public ClosestFit()
     {
-        private List<Examination> _suggestions;
-
-        public ClosestFit(List<Examination> suggestions)
-        {
-            InitializeComponent();
-            _suggestions = suggestions;
-            LoadRows();
-        }
-
-        private void AddButton_click(object sender, RoutedEventArgs e)
-        {
-            Examination selectedExamination = _suggestions[0];
-            if (secondRadioButton.IsChecked == true) selectedExamination = _suggestions[1];
-            if (thirdRadioButton.IsChecked == true) selectedExamination = _suggestions[2];
-            ExaminationService.Add(ExaminationService.ParseExaminationToExaminationDTO(selectedExamination));
-            this.Close();
-        }
-
-        private void LoadRows()
-        {
-            foreach (Examination examination in _suggestions)
-            {
-                dataGrid.Items.Add(examination);
-            }
-            dataGrid.Items.Refresh();
-        }
+        InitializeComponent();
     }
 }

@@ -1,6 +1,7 @@
 ﻿using HealthInstitution.Core;
 using HealthInstitution.Core.SystemUsers.Patients.Model;
 using HealthInstitution.GUI.PatientView;
+using HealthInstitution.ViewModels.GUIViewModels.PatientViewViewModels.RecommendedScheduling;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +21,9 @@ public class RecommendedScheduleCommand : CommandBase
 
     public override void Execute(object? parameter)
     {
-        new RecommendedWindow(this._loggedPatient).ShowDialog();
+        new RecommendedWindow()
+        {
+            DataContext = new RecommendedWindowViewModel(_loggedPatient)
+        }.ShowDialog();
     }
 }

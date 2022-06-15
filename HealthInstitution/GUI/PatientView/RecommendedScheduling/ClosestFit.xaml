@@ -3,29 +3,25 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:HealthInstitution.GUI.PatientView"
+        xmlns:local="clr-namespace:HealthInstitution.GUI.PatientView" xmlns:local1="clr-namespace:HealthInstitution.ViewModels.GUIViewModels"
         mc:Ignorable="d"
         Title="ClosestFit" Height="450" Width="800">
+    <Window.Resources>
+        <local1:GradeConverter x:Key="gradeConverterKey" />
+    </Window.Resources>
     <Grid>
-        <DataGrid  ItemsSource="{Binding Examination}" AutoGenerateColumns="True" Name="dataGrid" Grid.ColumnSpan="3" Margin="0,0,0,0">
+        <DataGrid  ItemsSource="{Binding ExaminationVMs}" AutoGenerateColumns="False" Name="dataGrid" Grid.ColumnSpan="3" Margin="0,0,0,0">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Time" FontSize="18" Binding="{Binding Appointment}" Width ="150" />
                 <DataGridTextColumn Header="Status" FontSize="18" Binding="{Binding Status}" Width =" 150" />
-                <DataGridTextColumn Header="RoomNo" FontSize="18" Binding="{Binding Room.Number}" Width =" 150" />
-                <DataGridTextColumn Header="Doctor" FontSize="18" Width =" 150">
-                    <DataGridTextColumn.Binding>
-                        <MultiBinding StringFormat="{}{0} {1}">
-                            <Binding Path="Doctor.Name" />
-                            <Binding Path="Doctor.Surname" />
-                        </MultiBinding>
-                    </DataGridTextColumn.Binding>
-                </DataGridTextColumn>
+                <DataGridTextColumn Header="RoomNo" FontSize="18" Binding="{Binding RoomNo}" Width =" 150" />
+                <DataGridTextColumn Header="Doctor" FontSize="18" Width =" 150" Binding="{Binding Doctor}" />
                 <DataGridTextColumn Header="Anamnesis" FontSize="18" Width =" 150" Binding="{Binding Anamnesis}" />
             </DataGrid.Columns>
         </DataGrid>
-        <RadioButton Name="firstRadioButton" IsChecked="True" GroupName="Select" Content="First suggestion" HorizontalAlignment="Left" Margin="100,304,0,0" VerticalAlignment="Top" Grid.Column="1" />
-        <RadioButton Name="secondRadioButton" IsChecked="False" GroupName="Select" Content="Second suggestion" HorizontalAlignment="Left" Margin="314,303,0,0" VerticalAlignment="Top" />
-        <RadioButton Name="thirdRadioButton" IsChecked="False" GroupName="Select" Content="Third suggestionl" HorizontalAlignment="Left" Margin="518,307,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.496,0.705" />
-        <Button Name="addButton" Content="Add" Click="AddButton_click" HorizontalAlignment="Left" Height="30" Margin="653,379,0,0" VerticalAlignment="Top" Width="111" RenderTransformOrigin="0.243,0.514" Cursor="Arrow" FontSize="18" Visibility="Visible" />
+        <RadioButton Name="firstRadioButton"  GroupName="Select" Content="First suggestion" HorizontalAlignment="Left" Margin="100,304,0,0" VerticalAlignment="Top" Grid.Column="1" IsChecked="{Binding Choice, Converter={StaticResource ResourceKey=gradeConverterKey}, ConverterParameter=0}" />
+        <RadioButton Name="secondRadioButton"  GroupName="Select" Content="Second suggestion" HorizontalAlignment="Left" Margin="314,303,0,0" VerticalAlignment="Top" IsChecked="{Binding Choice, Converter={StaticResource ResourceKey=gradeConverterKey}, ConverterParameter=1}" />
+        <RadioButton Name="thirdRadioButton"  GroupName="Select" Content="Third suggestionl" HorizontalAlignment="Left" Margin="518,307,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.496,0.705" IsChecked="{Binding Choice, Converter={StaticResource ResourceKey=gradeConverterKey}, ConverterParameter=2}" />
+        <Button Name="addButton" Content="Add" Command="{Binding AddClosestFitExaminationCommand}" HorizontalAlignment="Left" Height="30" Margin="653,379,0,0" VerticalAlignment="Top" Width="111" RenderTransformOrigin="0.243,0.514" Cursor="Arrow" FontSize="18" Visibility="Visible" />
     </Grid>
 </Window>
