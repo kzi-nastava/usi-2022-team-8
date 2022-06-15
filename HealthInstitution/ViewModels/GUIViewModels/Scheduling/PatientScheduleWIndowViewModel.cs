@@ -51,12 +51,15 @@ public class PatientScheduleWindowViewModel : ViewModelBase
 
     public void RefreshGrid()
     {
+        _examinationVMs.Clear();
+        Examinations.Clear();
         foreach (Examination examination in ExaminationService.GetAll())
         {
             if (examination.MedicalRecord.Patient.Username.Equals(LoggedPatient.Username))
-
+            {
                 Examinations.Add(examination);
-            _examinationVMs.Add(new ExaminationViewModel(examination));
+                _examinationVMs.Add(new ExaminationViewModel(examination));
+            }
         }
     }
 

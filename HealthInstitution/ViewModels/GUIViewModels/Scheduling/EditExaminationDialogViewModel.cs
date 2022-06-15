@@ -1,8 +1,8 @@
 ﻿using HealthInstitution.Commands.PatientCommands.Scheduling;
 using HealthInstitution.Core;
+using HealthInstitution.Core.Examinations.Model;
 using HealthInstitution.Core.SystemUsers.Doctors;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
-using HealthInstitution.Core.SystemUsers.Patients.Model;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -13,9 +13,9 @@ using System.Windows.Input;
 
 namespace HealthInstitution.ViewModels.GUIViewModels.Scheduling;
 
-public class AddExaminationDialogViewModel : ViewModelBase
+public class EditExaminationDialogViewModel : ViewModelBase
 {
-    public Patient LoggedPatient { get; }
+    public Examination SelectedExamination;
 
     public DateTime GetExaminationDateTime()
     {
@@ -146,6 +146,7 @@ public class AddExaminationDialogViewModel : ViewModelBase
         {
             HourComboBoxItems.Add(i.ToString());
         }
+        HourComboBoxSelectedIndex = SelectedExamination.Appointment.Hour - 9;
     }
 
     private void LoadMinuteComboBox()
@@ -155,15 +156,24 @@ public class AddExaminationDialogViewModel : ViewModelBase
         {
             MinuteComboBoxItems.Add(i.ToString());
         }
+        MinuteComboBoxSelectedIndex = SelectedExamination.Appointment.Minute / 15;
     }
 
     private void LoadDoctorComboBox()
     {
+        int i = 0;
+        int idx = 0;
         DoctorComboBoxItems = new();
         foreach (Doctor user in DoctorService.GetAll())
         {
             DoctorComboBoxItems.Add(user.Username);
+            if (user.Username == SelectedExamination.Doctor.Username)
+            {
+                idx = i;
+            }
+            i++;
         }
+        DoctorComboBoxSelectedIndex = idx;
     }
 
     private void LoadComboBoxes()
@@ -173,12 +183,13 @@ public class AddExaminationDialogViewModel : ViewModelBase
         LoadMinuteComboBox();
     }
 
-    public ICommand CreateExaminationCommand { get; }
+    public ICommand EditExaminationCommand { get; }
 
-    public AddExaminationDialogViewModel(Patient loggedPatient)
+    public EditExaminationDialogViewModel(Examination selectedExamination)
     {
-        LoggedPatient = loggedPatient;
+        SelectedExamination = selectedExamination;
         LoadComboBoxes();
-        CreateExaminationCommand = new CreateExaminationCommand(this);
+        _selectedDateTime = selectedExamination.Appointment;
+        EditExaminationCommand = new EditExaminationCommand(this, SelectedExamination);
     }
 }

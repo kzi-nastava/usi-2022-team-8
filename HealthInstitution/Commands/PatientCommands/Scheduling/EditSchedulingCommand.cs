@@ -24,7 +24,11 @@ namespace HealthInstitution.Commands.PatientCommands.Scheduling
         {
             TrollCounterService.TrollCheck(_patientScheduleWindowViewModel.LoggedPatient.Username);
             Examination selectedExamination = _patientScheduleWindowViewModel.GetSelectedExamination();
-            new EditExaminationDialog(selectedExamination).ShowDialog();
+            new EditExaminationDialog(selectedExamination)
+            {
+                DataContext = new EditExaminationDialogViewModel(_patientScheduleWindowViewModel.Examinations
+                [_patientScheduleWindowViewModel.SelectedExaminationIndex])
+            }.ShowDialog();
             _patientScheduleWindowViewModel.RefreshGrid();
             TrollCounterService.AppendEditDeleteDates(_patientScheduleWindowViewModel.LoggedPatient.Username);
         }
