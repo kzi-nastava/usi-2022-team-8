@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.Operations.Repository
 {
-    public interface IOperationDoctorRepository : ILinkerRepository
+    public interface IOperationDoctorRepository
     {
         public void LoadFromFile();
         public void Save();

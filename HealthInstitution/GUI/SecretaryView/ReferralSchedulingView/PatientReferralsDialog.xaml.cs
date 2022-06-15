@@ -1,6 +1,8 @@
-﻿using HealthInstitution.Core.MedicalRecords.Model;
+﻿using HealthInstitution.Core.DIContainer;
+using HealthInstitution.Core.MedicalRecords.Model;
 using HealthInstitution.Core.Referrals.Model;
 using HealthInstitution.Core.Referrals.Repository;
+using HealthInstitution.Core.Scheduling;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,10 +25,14 @@ namespace HealthInstitution.GUI.SecretaryView
     public partial class PatientReferralsDialog : Window
     {
         MedicalRecord _medicalRecord;
-        public PatientReferralsDialog(MedicalRecord medicalRecord)
+        public PatientReferralsDialog()
         {
-            _medicalRecord=medicalRecord;
             InitializeComponent();
+            
+        }
+        public void SetSelectedMedicalRecord(MedicalRecord medicalRecord)
+        {
+            _medicalRecord = medicalRecord;
             LoadRows();
         }
         private void LoadRows()
@@ -45,7 +51,8 @@ namespace HealthInstitution.GUI.SecretaryView
             Referral selectedReferral = (Referral)dataGrid.SelectedItem;
             if (selectedReferral != null)
             {
-                AddExaminationWithReferralDialog addExaminationWithReferralDialog = new AddExaminationWithReferralDialog(selectedReferral,_medicalRecord);
+                AddExaminationWithReferralDialog addExaminationWithReferralDialog = DIContainer.GetService<AddExaminationWithReferralDialog>();
+                addExaminationWithReferralDialog.SetReferral(selectedReferral, _medicalRecord);                
                 addExaminationWithReferralDialog.ShowDialog();
                 dataGrid.SelectedItem = null;
                 LoadRows();

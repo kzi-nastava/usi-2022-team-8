@@ -1,6 +1,8 @@
-﻿using HealthInstitution.Core.MedicalRecords;
+﻿using HealthInstitution.Core.DIContainer;
+using HealthInstitution.Core.MedicalRecords;
 using HealthInstitution.Core.MedicalRecords.Model;
 using HealthInstitution.Core.MedicalRecords.Repository;
+using HealthInstitution.Core.Scheduling;
 using HealthInstitution.Core.SystemUsers.Patients.Model;
 using HealthInstitution.Core.SystemUsers.Patients.Repository;
 using HealthInstitution.Core.SystemUsers.Users.Model;
@@ -25,15 +27,17 @@ namespace HealthInstitution.GUI.SecretaryView
     /// </summary>
     public partial class PatientSelectionDialog : Window
     {
-        public PatientSelectionDialog()
+        IMedicalRecordService _medicalRecordService;
+        public PatientSelectionDialog(IMedicalRecordService medicalRecordService)
         {
+            _medicalRecordService = medicalRecordService;
             InitializeComponent();
             LoadRows();
         }
         private void LoadRows()
         {
             dataGrid.Items.Clear();
-            List<MedicalRecord> medicalRecords = MedicalRecordService.GetAll();
+            List<MedicalRecord> medicalRecords = _medicalRecordService.GetAll();
             foreach (MedicalRecord medicalRecord in medicalRecords)
             {
                 if(medicalRecord.Patient.Blocked==BlockState.NotBlocked)
@@ -47,8 +51,10 @@ namespace HealthInstitution.GUI.SecretaryView
             MedicalRecord selectedMedicalRecord = (MedicalRecord)dataGrid.SelectedItem;
             if (selectedMedicalRecord != null)
             {
-                PatientReferralsDialog patientReferralsDialog = new PatientReferralsDialog(selectedMedicalRecord);
+                PatientReferralsDialog patientReferralsDialog = DIContainer.GetService<PatientReferralsDialog>();
+                patientReferralsDialog.SetSelectedMedicalRecord(selectedMedicalRecord);               
                 patientReferralsDialog.ShowDialog();
+
                 dataGrid.SelectedItem = null;
 
             }

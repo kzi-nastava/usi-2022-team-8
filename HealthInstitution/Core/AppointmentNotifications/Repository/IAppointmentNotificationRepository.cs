@@ -7,12 +7,14 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.Notifications.Repository
 {
-    public interface IAppointmentNotificationRepository : IRepository<AppointmentNotification>
+    public interface IAppointmentNotificationRepository
     {
         public void LoadFromFile();
         public void Save();
         public List<AppointmentNotification> GetAll();
         public AppointmentNotification GetById(int id);
         public void Add(AppointmentNotification appointmentNotification);
+
+        public Dictionary<int, AppointmentNotification> GetAllById();
     }
 }

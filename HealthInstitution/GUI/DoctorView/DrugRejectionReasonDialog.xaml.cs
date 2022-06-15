@@ -22,10 +22,15 @@ namespace HealthInstitution.GUI.DoctorView
     public partial class DrugRejectionReasonDialog : Window
     {
         private Drug _selectedDrug;
-        public DrugRejectionReasonDialog(Drug selectedDrug)
+        IDrugVerificationService _drugVerificationService;
+        public DrugRejectionReasonDialog(IDrugVerificationService drugVerificationService)
         {
-            _selectedDrug = selectedDrug;
+            this._drugVerificationService = drugVerificationService;
             InitializeComponent();
+        }
+        public void SetSelectedDrug(Drug drug)
+        {
+            _selectedDrug = drug;
         }
 
         private void Submit_Click(object sender, RoutedEventArgs e)
@@ -37,7 +42,7 @@ namespace HealthInstitution.GUI.DoctorView
             }
             else
             {
-                DrugVerificationService.Reject(_selectedDrug, rejectionReason);
+                _drugVerificationService.Reject(_selectedDrug, rejectionReason);
                 System.Windows.MessageBox.Show("Successfull rejection!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 Close();
             }

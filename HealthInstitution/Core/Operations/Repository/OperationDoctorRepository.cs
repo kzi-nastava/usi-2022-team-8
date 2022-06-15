@@ -14,30 +14,22 @@ namespace HealthInstitution.Core.Operations.Repository
 {
     public class OperationDoctorRepository : IOperationDoctorRepository
     {
-        private String _fileName;
-        private OperationDoctorRepository(String fileName)
+        private String _fileName = @"..\..\..\Data\JSON\operationDoctor.json";
+        private IDoctorRepository _doctorRepository;
+        private IOperationRepository _operationRepository;
+
+        public OperationDoctorRepository(IDoctorRepository doctorRepository, IOperationRepository operationRepository)
         {
-            this._fileName = fileName;
+            _doctorRepository = doctorRepository;
+            _operationRepository = operationRepository;
             this.LoadFromFile();
         }
 
-        private static OperationDoctorRepository s_instance = null;
-
-        public static OperationDoctorRepository GetInstance()
-        {
-            {
-                if (s_instance == null)
-                {
-                    s_instance = new OperationDoctorRepository(@"..\..\..\Data\JSON\operationDoctor.json");
-                }
-                return s_instance;
-            }
-        }
-
+        
         public void LoadFromFile()
         {
-            var doctorsByUsername = DoctorRepository.GetInstance().DoctorsByUsername;
-            var operationsById = OperationRepository.GetInstance().OperationsById;
+            var doctorsByUsername = _doctorRepository.GetAllByUsername();
+            var operationsById = _operationRepository.GetAllById();
             var operationIdsDoctorUsernames = JArray.Parse(File.ReadAllText(this._fileName));
             foreach (var pair in operationIdsDoctorUsernames)
             {
@@ -53,7 +45,7 @@ namespace HealthInstitution.Core.Operations.Repository
         public void Save()
         {
             List<dynamic> operationIdsDoctorUsernames = new List<dynamic>();
-            var operations = OperationRepository.GetInstance().Operations;
+            var operations = _operationRepository.GetAll();
             foreach (var operation in operations)
             {
                 Doctor doctor = operation.Doctor;

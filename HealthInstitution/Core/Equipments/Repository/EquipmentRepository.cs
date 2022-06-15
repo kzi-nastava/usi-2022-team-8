@@ -12,7 +12,7 @@ namespace HealthInstitution.Core.Equipments.Repository
 {
     public class EquipmentRepository : IEquipmentRepository
     {
-        private String _fileName;
+        private String _fileName = @"..\..\..\Data\JSON\equipments.json";
 
         private int _maxId;
         public List<Equipment> Equipments { get; set; }
@@ -24,27 +24,15 @@ namespace HealthInstitution.Core.Equipments.Repository
             Converters = { new JsonStringEnumConverter() },
             PropertyNameCaseInsensitive = true
         };
-        private EquipmentRepository(String fileName)
-        {
-            this._fileName = fileName;
+        public EquipmentRepository()
+        {            
             this.Equipments = new List<Equipment>();
             this.EquipmentById = new Dictionary<int, Equipment>();
             this.EquipmentPerQuantity = new Dictionary<string, int>();
             this._maxId = 0;
             this.LoadFromFile();
         }
-        private static EquipmentRepository s_instance = null;
-        public static EquipmentRepository GetInstance()
-        {
-            {
-                if (s_instance == null)
-                {
-                    s_instance = new EquipmentRepository(@"..\..\..\Data\JSON\equipments.json");
-                }
-                return s_instance;
-            }
-        }
-
+        
         public void LoadFromFile()
         {
             var equipments = JsonSerializer.Deserialize<List<Equipment>>(File.ReadAllText(@"..\..\..\Data\JSON\equipments.json"), _options);
@@ -87,6 +75,16 @@ namespace HealthInstitution.Core.Equipments.Repository
         public List<Equipment> GetAll()
         {
             return this.Equipments;
+        }
+
+        public Dictionary<int, Equipment> GetAllById()
+        {
+            return this.EquipmentById;
+        }
+
+        public Dictionary<string, int> GetAllByQuantity()
+        {
+            return this.EquipmentPerQuantity;
         }
 
         public Equipment GetById(int id)
@@ -140,6 +138,11 @@ namespace HealthInstitution.Core.Equipments.Repository
             equipment.Quantity -= consumedQuantity;
             EquipmentById[equipment.Id] = equipment;
             Save();
+        }
+
+        public Dictionary<String, int> GetEquipmentPerQuantity()
+        {
+            return EquipmentPerQuantity;
         }
     }
 }

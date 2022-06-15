@@ -19,10 +19,22 @@ namespace HealthInstitution.GUI.DoctorView
     public partial class AddExaminationDialog : Window
     {
         private Doctor _loggedDoctor;
-        public AddExaminationDialog(Doctor doctor)
+        IPatientService _patientService;
+        IMedicalRecordService _medicalRecordService;
+        ISchedulingService _schedulingService;
+        public AddExaminationDialog(IPatientService patientService, 
+                                    IMedicalRecordService medicalRecordService, 
+                                    ISchedulingService schedulingService)
         {
-            this._loggedDoctor = doctor;
             InitializeComponent();
+            _patientService = patientService;
+            _medicalRecordService = medicalRecordService;
+            _schedulingService = schedulingService;
+        }
+        public void SetLoggedDoctor(Doctor doctor)
+        {
+
+            this._loggedDoctor = doctor;
         }
 
         private void MinuteComboBox_Loaded(object sender, RoutedEventArgs e)
@@ -51,7 +63,7 @@ namespace HealthInstitution.GUI.DoctorView
         private void PatientComboBox_Loaded(object sender, RoutedEventArgs e)
         {
             patientComboBox.Items.Clear();
-            List<Patient> patients = PatientService.GetAll();
+            List<Patient> patients = _patientService.GetAll();
             foreach (Patient patient in patients)
             {
                 patientComboBox.Items.Add(patient);
@@ -67,7 +79,7 @@ namespace HealthInstitution.GUI.DoctorView
             appointment = appointment.AddHours(hours);
             appointment = appointment.AddMinutes(minutes);
             Patient patient = (Patient)patientComboBox.SelectedItem;
-            MedicalRecord medicalRecord = MedicalRecordService.GetByPatientUsername(patient);
+            MedicalRecord medicalRecord = _medicalRecordService.GetByPatientUsername(patient);
             ExaminationDTO examinationDTO = new ExaminationDTO(appointment, null, _loggedDoctor, medicalRecord);
             return examinationDTO;
         }
@@ -77,7 +89,7 @@ namespace HealthInstitution.GUI.DoctorView
             try
             {
                 ExaminationDTO examinationDTO = CreateExaminationDTOFromInputData();
-                SchedulingService.ReserveExamination(examinationDTO);
+                _schedulingService.ReserveExamination(examinationDTO);
                 this.Close();
             }
             catch (Exception ex)

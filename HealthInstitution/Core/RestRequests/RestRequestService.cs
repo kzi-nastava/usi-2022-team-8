@@ -6,60 +6,93 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 
 namespace HealthInstitution.Core.RestRequests
 {
-    public class RestRequestService
+    public class RestRequestService : IRestRequestService
     {
-        static RestRequestRepository s_restRequestRepository = RestRequestRepository.GetInstance();
-
-        public static void LoadRequests()
+        IRestRequestRepository _restRequestRepository;
+        IRestRequestNotificationService _restRequestNotificationService;
+        IRestRequestDoctorRepository _restRequestDoctorRepository;
+        public RestRequestService(IRestRequestRepository restRequestRepository, IRestRequestNotificationService restRequestNotificationService, IRestRequestDoctorRepository restRequestDoctorRepository)
         {
-            RestRequestDoctorRepository.GetInstance();
+            _restRequestRepository = restRequestRepository;
+            _restRequestNotificationService = restRequestNotificationService;
+            _restRequestDoctorRepository = restRequestDoctorRepository;
         }
-        private static bool CheckRequestActivity(RestRequest restRequest)
+
+        public void LoadRequests()
+        {
+            _restRequestDoctorRepository.LoadFromFile();
+        }
+        private bool CheckRequestActivity(RestRequest restRequest)
         {
             return restRequest.StartDate.Date >= DateTime.Now.Date && restRequest.State == RestRequestState.OnHold;
         }
-        public static List<RestRequest> GetActive()
+        public List<RestRequest> GetActive()
         {
             List<RestRequest> activeRestRequests = new List<RestRequest>();
-            foreach(RestRequest restRequest in GetAll())
-                if(CheckRequestActivity(restRequest))
+            foreach (RestRequest restRequest in GetAll())
+                if (CheckRequestActivity(restRequest))
                     activeRestRequests.Add(restRequest);
             return activeRestRequests;
         }
-        public static List<RestRequest> GetAll()
+        public List<RestRequest> GetAll()
         {
-            return s_restRequestRepository.GetAll();
+            return _restRequestRepository.GetAll();
         }
 
-        public static RestRequest GetById(int id)
+        public RestRequest GetById(int id)
         {
-            return s_restRequestRepository.GetById(id);
+            return _restRequestRepository.GetById(id);
         }
 
-        public static void Add(RestRequestDTO restRequestDTO)
+        public void Add(RestRequestDTO restRequestDTO)
         {
-            RestRequest RestRequest = new RestRequest(restRequestDTO);
-            s_restRequestRepository.Add(RestRequest);
+            RestRequest restRequest = new RestRequest(restRequestDTO);
+            _restRequestRepository.Add(restRequest);
+            if (restRequestDTO.IsUrgent)
+                Accept(restRequest);
         }
 
-        public static void DeleteRequest(int id)
+        public void DeleteRequest(int id)
         {
-            s_restRequestRepository.Delete(id);
+            _restRequestRepository.Delete(id);
         }
 
-        public static void AcceptRestRequest(RestRequest restRequest)
+        public void Accept(RestRequest restRequest)
         {
-            s_restRequestRepository.AcceptRestRequest(restRequest);
-            RestRequestNotificationService.SendNotification(restRequest);
+            _restRequestRepository.Accept(restRequest);
+            _restRequestNotificationService.SendNotification(restRequest);
         }
 
-        public static void RejectRestRequest(RestRequest restRequest,string rejectionReason)
+        public void Reject(RestRequest restRequest,string rejectionReason)
         {
-            s_restRequestRepository.RejectRestRequest(restRequest,rejectionReason);
-            RestRequestNotificationService.SendNotification(restRequest);
+            _restRequestRepository.Reject(restRequest,rejectionReason);
+            _restRequestNotificationService.SendNotification(restRequest);
+        }
+
+        public List<RestRequest> GetByDoctor(string doctorUsername)
+        {
+            return _restRequestRepository.GetByDoctor(doctorUsername);
+        }
+        private void Validate(RestRequestDTO restRequestDTO)
+        {
+            if ((restRequestDTO.StartDate - DateTime.Now).Days <= 2)
+            {
+                System.Windows.MessageBox.Show((restRequestDTO.StartDate - DateTime.Now).Days.ToString(), "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+                throw new Exception("You have to request your days off minimum two days before the start of it!");
+            }
+
+            if (restRequestDTO.IsUrgent && !(restRequestDTO.DaysDuration > 0 && restRequestDTO.DaysDuration < 5))
+                throw new Exception("Urgent requests have to be five or less days!");
+            TimetableService.IsDoctorAvailable(restRequestDTO);
+        }
+        public void ApplyForRestRequest(RestRequestDTO restRequestDTO)
+        {
+            Validate(restRequestDTO);
+            Add(restRequestDTO);
         }
     }
 }

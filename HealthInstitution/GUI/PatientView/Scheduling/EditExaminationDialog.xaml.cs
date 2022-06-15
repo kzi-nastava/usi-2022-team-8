@@ -21,29 +21,42 @@ public partial class EditExaminationDialog : Window
     private User _loggedPatient;
     private string _doctorUsername;
     private Examination _selectedExamination;
+    IDoctorService _doctorService;
+    IExaminationService _examinationService;
+    IEditSchedulingService _editSchedulingService;
+    IScheduleEditRequestsService _scheduleEditRequestService;
 
-    public EditExaminationDialog(Examination selectedExamination)
+    public EditExaminationDialog(IDoctorService doctorService,
+                                       IExaminationService examinationService, 
+                                         IEditSchedulingService editSchedulingService,
+                                         IScheduleEditRequestsService scheduleEditRequestsService)
     {
-        _selectedExamination = selectedExamination;
-        _loggedPatient = selectedExamination.MedicalRecord.Patient;
         InitializeComponent();
+        _doctorService = doctorService;
+        _examinationService = examinationService;
+        _editSchedulingService = editSchedulingService;
+        _scheduleEditRequestService = scheduleEditRequestsService;
     }
-
+    public void SetExamination(Examination examination)
+    {
+        _selectedExamination = examination;
+        _loggedPatient = examination.MedicalRecord.Patient;
+    }
     private void GenerateRequest(DateTime dateTime)
     {
-        ExaminationDTO examinationDTO = ExaminationService.ParseExaminationToExaminationDTO(_selectedExamination);
-        examinationDTO.Doctor = DoctorService.GetById(_doctorUsername);
+        ExaminationDTO examinationDTO = _examinationService.ParseExaminationToExaminationDTO(_selectedExamination);
+        examinationDTO.Doctor = _doctorService.GetById(_doctorUsername);
         examinationDTO.Appointment = dateTime;
-        Examination newExamination = EditSchedulingService.GenerateRequestExamination(_selectedExamination.Id, examinationDTO);
-        ScheduleEditRequestService.AddEditRequest(newExamination);
+        Examination newExamination = _editSchedulingService.GenerateRequestExamination(_selectedExamination.Id, examinationDTO);
+        _scheduleEditRequestService.AddEditRequest(newExamination);
     }
 
     private void EditNow(DateTime dateTime)
     {
-        ExaminationDTO examinationDTO = ExaminationService.ParseExaminationToExaminationDTO(_selectedExamination);
-        examinationDTO.Doctor = DoctorService.GetById(_doctorUsername);
+        ExaminationDTO examinationDTO = _examinationService.ParseExaminationToExaminationDTO(_selectedExamination);
+        examinationDTO.Doctor = _doctorService.GetById(_doctorUsername);
         examinationDTO.Appointment = dateTime;
-        EditSchedulingService.EditExamination(_selectedExamination.Id, examinationDTO);
+        _editSchedulingService.EditExamination(_selectedExamination.Id, examinationDTO);
     }
 
     private void Save_Click(object sender, RoutedEventArgs e)
@@ -77,7 +90,7 @@ public partial class EditExaminationDialog : Window
         var doctorComboBox = sender as System.Windows.Controls.ComboBox;
         List<String> doctors = new List<String>();
 
-        foreach (User user in DoctorService.GetAll())
+        foreach (User user in _doctorService.GetAll())
         {
             doctors.Add(user.Username);
         }

@@ -23,12 +23,14 @@ namespace HealthInstitution.GUI.ManagerView
     
     public partial class EquipmentTableWindow : Window
     {
-        public EquipmentTableWindow(List<TableItemEquipment> items)
+        public EquipmentTableWindow()
         {
             InitializeComponent();
+        }
+        public void SetTableItems(List<TableItemEquipment> items)
+        {
             Load(items);
         }
-
         private void Load(List<TableItemEquipment> items)
         {
             dataGrid.Items.Clear();

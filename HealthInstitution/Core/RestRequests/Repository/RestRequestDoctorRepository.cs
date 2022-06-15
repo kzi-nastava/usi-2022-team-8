@@ -12,32 +12,22 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.RestRequests.Repository
 {
-    public class RestRequestDoctorRepository
+    public class RestRequestDoctorRepository : IRestRequestDoctorRepository
     {
-        private String _fileName;
-        private RestRequestDoctorRepository(String fileName)
+        private String _fileName= @"..\..\..\Data\JSON\restRequestDoctor.json";
+        IDoctorRepository _doctorRepository;
+        IRestRequestRepository _restRequestRepository;
+        public RestRequestDoctorRepository(IDoctorRepository doctorRepository, IRestRequestRepository restRequestRepository)
         {
-            this._fileName = fileName;
+            _doctorRepository = doctorRepository;
+            _restRequestRepository = restRequestRepository;
             this.LoadFromFile();
-        }
-
-        private static RestRequestDoctorRepository s_instance = null;
-
-        public static RestRequestDoctorRepository GetInstance()
-        {
-            {
-                if (s_instance == null)
-                {
-                    s_instance = new RestRequestDoctorRepository(@"..\..\..\Data\JSON\restRequestDoctor.json");
-                }
-                return s_instance;
-            }
         }
 
         public void LoadFromFile()
         {
-            var doctorsByUsername = DoctorRepository.GetInstance().DoctorsByUsername;
-            var restRequestsById = RestRequestRepository.GetInstance().RestRequestsById;
+            var doctorsByUsername = _doctorRepository.GetAllByUsername();
+            var restRequestsById = _restRequestRepository.GetAllById();
             var operationIdsDoctorUsernames = JArray.Parse(File.ReadAllText(this._fileName));
             foreach (var pair in operationIdsDoctorUsernames)
             {
@@ -53,7 +43,7 @@ namespace HealthInstitution.Core.RestRequests.Repository
         public void Save()
         {
             List<dynamic> restRequestsIdsDoctorUsernames = new List<dynamic>();
-            var restRequests = RestRequestRepository.GetInstance().RestRequests;
+            var restRequests = _restRequestRepository.GetAll();
             foreach (var restRequest in restRequests)
             {
                 Doctor doctor = restRequest.Doctor;

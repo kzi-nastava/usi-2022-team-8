@@ -17,6 +17,7 @@ using HealthInstitution.Core.SystemUsers.Doctors;
 using HealthInstitution.Core.Examinations.Model;
 using HealthInstitution.Core.Examinations;
 using HealthInstitution.Core.Scheduling;
+using HealthInstitution.Core.DIContainer;
 
 namespace HealthInstitution.GUI.PatientView
 {
@@ -32,19 +33,26 @@ namespace HealthInstitution.GUI.PatientView
         private int _endHours;
         private User _loggedPatient;
         private string _doctorUsername;
+        IRecommendedSchedulingService _recommendedSchedulingService;
+        IDoctorService _doctorService;
 
-        public RecommendedWindow(User loggedPatient)
+        public RecommendedWindow(IRecommendedSchedulingService recommendedSchedulingService, 
+                                    IDoctorService doctorService)
         {
             InitializeComponent();
-            _loggedPatient = loggedPatient;
+            _recommendedSchedulingService = recommendedSchedulingService;
+            _doctorService = doctorService;
         }
-
+        public void SetLoggedPatient(User patient)
+        {
+            _loggedPatient = patient;
+        }
         private void DoctorComboBox_Loaded(object sender, RoutedEventArgs e)
         {
             var doctorComboBox = sender as System.Windows.Controls.ComboBox;
             List<String> doctors = new List<String>();
 
-            foreach (Doctor doctor in DoctorService.GetAll())
+            foreach (Doctor doctor in _doctorService.GetAll())
                 doctors.Add(doctor.Username);
 
             doctorComboBox.ItemsSource = doctors;
@@ -123,14 +131,18 @@ namespace HealthInstitution.GUI.PatientView
             string formatDate = datePicker.SelectedDate.ToString();
             DateTime.TryParse(formatDate, out var dateTime);
             var fitDTO = GenerateFirstFitDTO(dateTime);
-            bool found = RecommendedSchedulingService.FindFirstFit(fitDTO);
+            bool found = _recommendedSchedulingService.FindFirstFit(fitDTO);
             if (!found)
             {
                 bool doctorPriority = doctorRadioButton.IsChecked == true;
                 var closestFitDTO = GenerateClosestFitDTO(dateTime, doctorPriority);
                 List<Examination> suggestions =
-                    RecommendedSchedulingService.FindClosestFit(closestFitDTO);
-                new ClosestFit(suggestions).ShowDialog();
+                    _recommendedSchedulingService.FindClosestFit(closestFitDTO);
+
+                ClosestFit closestFit = DIContainer.GetService<ClosestFit>();
+                closestFit.SetSuggestions(suggestions);
+                closestFit.ShowDialog();
+                
             }
             this.Close();
         }

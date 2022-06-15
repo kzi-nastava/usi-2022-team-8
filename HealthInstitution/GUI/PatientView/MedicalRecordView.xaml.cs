@@ -3,6 +3,8 @@ using HealthInstitution.Core.Examinations.Model;
 using HealthInstitution.Core.SystemUsers.Users.Model;
 using System.Windows;
 using HealthInstitution.GUI.PatientView.Polls;
+using HealthInstitution.Core.Polls;
+using HealthInstitution.Core.DIContainer;
 
 namespace HealthInstitution.GUI.PatientView;
 
@@ -13,38 +15,42 @@ public partial class MedicalRecordView : Window
 {
     private User _loggedPatient;
     private List<Examination> _currentExaminations;
+    IExaminationService _examinationService;
 
-    public MedicalRecordView(User loggedPatient)
+    public MedicalRecordView(IExaminationService examinationService)
     {
         InitializeComponent();
-        _loggedPatient = loggedPatient;
-
+        _examinationService = examinationService;
         LoadAllRows();
+    }
+    public void SetLoggedPatient(User patient)
+    {
+        _loggedPatient = patient;
     }
 
     private void DoctorButton_Click(object sender, RoutedEventArgs e)
     {
-        LoadRows(ExaminationService.OrderByDoctor(_currentExaminations));
+        LoadRows(_examinationService.OrderByDoctor(_currentExaminations));
     }
 
     private void DateButton_Click(object sender, RoutedEventArgs e)
     {
-        LoadRows(ExaminationService.OrderByDate(_currentExaminations));
+        LoadRows(_examinationService.OrderByDate(_currentExaminations));
     }
 
     private void SpecializationButton_Click(object sender, RoutedEventArgs e)
     {
-        LoadRows(ExaminationService.OrderByDoctorSpeciality(_currentExaminations));
+        LoadRows(_examinationService.OrderByDoctorSpeciality(_currentExaminations));
     }
 
     private void SearchButton_Click(object sender, RoutedEventArgs e)
     {
-        LoadRows(ExaminationService.GetSearchAnamnesis(searchParameter.Text, _loggedPatient.Username));
+        LoadRows(_examinationService.GetSearchAnamnesis(searchParameter.Text, _loggedPatient.Username));
     }
 
     private void LoadAllRows()
     {
-        LoadRows(ExaminationService.GetCompletedByPatient(_loggedPatient.Username));
+        LoadRows(_examinationService.GetCompletedByPatient(_loggedPatient.Username));
     }
 
     private void LoadRows(List<Examination> examinations)
@@ -67,6 +73,9 @@ public partial class MedicalRecordView : Window
     private void RateDoctorButton_Click(object sender, RoutedEventArgs e)
     {
         Examination selectedExamination = (Examination)dataGrid.SelectedItem;
-        new DoctorPollDialog(selectedExamination.Doctor).ShowDialog();
+
+        DoctorPollDialog doctorPollDialog = DIContainer.GetService<DoctorPollDialog>();
+        doctorPollDialog.SetRatedDoctor(selectedExamination.Doctor);
+        doctorPollDialog.ShowDialog();
     }
 }

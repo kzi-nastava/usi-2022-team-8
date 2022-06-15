@@ -18,14 +18,22 @@ namespace HealthInstitution.GUI.DoctorView
     public partial class EditOperationDialog : Window
     {
         private Operation _selectedOperation;
-
-        public EditOperationDialog(Operation operation)
+        IPatientService _patientService;
+        IMedicalRecordService _medicalRecordService;
+        IOperationService _operationService;
+        public EditOperationDialog(IPatientService patientService, IMedicalRecordService medicalRecordService, IOperationService operationService)
         {
-            this._selectedOperation = operation;
             InitializeComponent();
+            
+            _patientService = patientService;
+            _medicalRecordService = medicalRecordService;
+            _operationService = operationService;
+        }
+        public void SetSelectedOperation(Operation operation)
+        {
+            _selectedOperation = operation;
             Load();
         }
-
         public void Load()
         {
             datePicker.SelectedDate = _selectedOperation.Appointment;
@@ -35,7 +43,7 @@ namespace HealthInstitution.GUI.DoctorView
         private void PatientComboBox_Loaded(object sender, RoutedEventArgs e)
         {
             var patientComboBox = sender as System.Windows.Controls.ComboBox;
-            List<Patient> patients = PatientService.GetAll();
+            List<Patient> patients = _patientService.GetAll();
             foreach (Patient patient in patients)
             {
                 patientComboBox.Items.Add(patient);
@@ -81,7 +89,7 @@ namespace HealthInstitution.GUI.DoctorView
             appointment = appointment.AddMinutes(minutes);
             int duration = Int32.Parse(durationTextBox.Text);
             Patient patient = (Patient)patientComboBox.SelectedItem;
-            MedicalRecord medicalRecord = MedicalRecordService.GetByPatientUsername(patient);
+            MedicalRecord medicalRecord = _medicalRecordService.GetByPatientUsername(patient);
             return new OperationDTO(appointment, duration, null, _selectedOperation.Doctor, medicalRecord);
         }
         private void Submit_Click(object sender, RoutedEventArgs e)
@@ -89,7 +97,7 @@ namespace HealthInstitution.GUI.DoctorView
             try
             {
                 OperationDTO operationDTO = CreateOperationDTOFromInputData();
-                OperationService.Update(this._selectedOperation.Id, operationDTO);
+                _operationService.Update(this._selectedOperation.Id, operationDTO);
                 this.Close();
             }
             catch (Exception ex)

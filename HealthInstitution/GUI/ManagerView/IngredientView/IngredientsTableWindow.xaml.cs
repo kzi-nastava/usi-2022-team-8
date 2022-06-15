@@ -1,4 +1,5 @@
-﻿using HealthInstitution.Core.Drugs;
+﻿using HealthInstitution.Core.DIContainer;
+using HealthInstitution.Core.Drugs;
 using HealthInstitution.Core.Drugs.Repository;
 using HealthInstitution.Core.Ingredients;
 using HealthInstitution.Core.Ingredients.Model;
@@ -25,9 +26,11 @@ namespace HealthInstitution.GUI.ManagerView
     /// </summary>
     public partial class IngredientsTableWindow : Window
     {
-        public IngredientsTableWindow()
+        IIngredientService _ingredientService;
+        public IngredientsTableWindow(IIngredientService ingredientService)
         {
             InitializeComponent();
+            _ingredientService = ingredientService;
             LoadRows();
         }
 
@@ -39,7 +42,7 @@ namespace HealthInstitution.GUI.ManagerView
         private void LoadRows()
         {
             dataGrid.Items.Clear();
-            List<Ingredient> ingredients = IngredientService.GetAll();
+            List<Ingredient> ingredients = _ingredientService.GetAll();
             foreach (Ingredient ingredient in ingredients)
             {
                 dataGrid.Items.Add(ingredient);
@@ -48,7 +51,7 @@ namespace HealthInstitution.GUI.ManagerView
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
-            AddIngredientDialog addIngredientDialog = new AddIngredientDialog();
+            AddIngredientDialog addIngredientDialog = DIContainer.GetService<AddIngredientDialog>();            
             addIngredientDialog.ShowDialog();
 
             LoadRows();
@@ -59,8 +62,10 @@ namespace HealthInstitution.GUI.ManagerView
         {
             Ingredient selectedIngredient = (Ingredient)dataGrid.SelectedItem;
 
-            EditIngredientDialog editIngredientDialog = new EditIngredientDialog(selectedIngredient);
+            EditIngredientDialog editIngredientDialog = DIContainer.GetService<EditIngredientDialog>();
+            editIngredientDialog.SetSelectedIngredient(selectedIngredient);            
             editIngredientDialog.ShowDialog();
+
             dataGrid.SelectedItem = null;
             dataGrid.Items.Refresh();
         }
@@ -69,7 +74,7 @@ namespace HealthInstitution.GUI.ManagerView
         {
             Ingredient selectedIngredient = (Ingredient)dataGrid.SelectedItem;
             
-            if (IngredientService.CheckOccurrenceOfIngredient(selectedIngredient))
+            if (_ingredientService.CheckOccurrenceOfIngredient(selectedIngredient))
             {
                 System.Windows.MessageBox.Show("You cant delete ingredient because it's part of the drug!", "Delete error", MessageBoxButton.OK, MessageBoxImage.Error);
                 dataGrid.SelectedItem = null;
@@ -79,7 +84,7 @@ namespace HealthInstitution.GUI.ManagerView
             if (System.Windows.MessageBox.Show("Are you sure you want to delete selected ingredient", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
             {
                 dataGrid.Items.Remove(selectedIngredient);
-                IngredientService.Delete(selectedIngredient.Id);
+                _ingredientService.Delete(selectedIngredient.Id);
 
             }
         }

@@ -23,8 +23,10 @@ namespace HealthInstitution.GUI.ManagerView
     /// </summary>
     public partial class AddRoomDialog : Window
     {
-        public AddRoomDialog()
+        IRoomService _roomService;
+        public AddRoomDialog(IRoomService roomService)
         {
+            _roomService = roomService;
             InitializeComponent();
         }
 
@@ -61,7 +63,7 @@ namespace HealthInstitution.GUI.ManagerView
             RoomType type = (RoomType)typeComboBox.SelectedItem;
 
             RoomDTO roomDTO = new RoomDTO(type, number);
-            RoomService.AddRoom(roomDTO);
+            _roomService.AddRoom(roomDTO);
             System.Windows.MessageBox.Show("Room added!", "Room creation", MessageBoxButton.OK, MessageBoxImage.Information);
             
             this.Close();
@@ -88,7 +90,7 @@ namespace HealthInstitution.GUI.ManagerView
             }
             int number = Int32.Parse(numberInput);
 
-            if (RoomService.RoomNumberIsTaken(number))
+            if (_roomService.RoomNumberIsTaken(number))
             {
                 System.Windows.MessageBox.Show("This room number already exist!", "Create error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;

@@ -20,12 +20,5 @@ namespace HealthInstitution.Core.Examinations.Model
             this.MedicalRecord = medicalRecord;
         }
 
-        public void Validate()
-        {
-            if (this.Appointment <= DateTime.Now)
-                throw new Exception("You have to change dates for upcoming ones!");
-            if (this.MedicalRecord.Patient.Blocked != BlockState.NotBlocked)
-                throw new Exception("Patient is blocked and can not have any examinations!");
-        }
     }
 }

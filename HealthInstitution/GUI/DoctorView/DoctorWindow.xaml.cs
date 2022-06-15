@@ -18,6 +18,21 @@ using HealthInstitution.Core.Examinations.Repository;
 using HealthInstitution.Core.Notifications.Model;
 using HealthInstitution.Core.RestRequestNotifications.Model;
 using HealthInstitution.Core.SystemUsers.Doctors;
+using HealthInstitution.Core.DIContainer;
+using HealthInstitution.Core.Notifications;
+using HealthInstitution.Core.RestRequestNotifications;
+using HealthInstitution.Core.Examinations;
+using HealthInstitution.Core.Operations;
+using HealthInstitution.Core;
+using HealthInstitution.Core.Drugs;
+using HealthInstitution.Core.SystemUsers.Users;
+using HealthInstitution.Core.TrollCounters;
+using HealthInstitution.Core.SystemUsers.Patients;
+using HealthInstitution.Core.EquipmentTransfers;
+using HealthInstitution.Core.Renovations.Functionality;
+using HealthInstitution.Core.PrescriptionNotifications.Service;
+using HealthInstitution.Core.RestRequests;
+using HealthInstitution.Core.DoctorRatings;
 
 namespace HealthInstitution.GUI.DoctorView
 {
@@ -27,18 +42,25 @@ namespace HealthInstitution.GUI.DoctorView
     public partial class DoctorWindow : Window
     {
         private Doctor _loggedDoctor;
-        public DoctorWindow(Doctor doctor)
+        IDoctorService _doctorService;
+        public DoctorWindow(IDoctorService doctorService)
         {
             InitializeComponent();
-            this._loggedDoctor = doctor;
+            this._doctorService = doctorService;
+        }
+        public void SetLoggedDoctor(Doctor doctor)
+        {
+            _loggedDoctor = doctor;
             ShowNotificationsDialog();
         }
         private void ShowNotificationsDialog()
         {
-            if (DoctorService.GetActiveAppointmentNotification(_loggedDoctor).Count + DoctorService.GetActiveRestRequestNotification(_loggedDoctor).Count > 0)
+            if (_doctorService.GetActiveAppointmentNotification(_loggedDoctor).Count + _doctorService.GetActiveRestRequestNotification(_loggedDoctor).Count > 0)
             {
-                DoctorNotificationsDialog doctorNotificationsDialog = new DoctorNotificationsDialog(this._loggedDoctor);
+                DoctorNotificationsDialog doctorNotificationsDialog = DIContainer.GetService<DoctorNotificationsDialog>();
+                doctorNotificationsDialog.SetLoggedDoctor(this._loggedDoctor);
                 doctorNotificationsDialog.ShowDialog();
+                    
             }
         }
         private void LogOut_Click(object sender, RoutedEventArgs e)
@@ -47,29 +69,44 @@ namespace HealthInstitution.GUI.DoctorView
             if (answer == MessageBoxResult.Yes)
             {
                 this.Close();
-                LoginWindow window = new LoginWindow();
+
+                LoginWindow window = DIContainer.GetService<LoginWindow>();
                 window.ShowDialog();
             }
         }
 
         private void Examinations_Click(object sender, RoutedEventArgs e)
         {
-            new ExaminationTable(this._loggedDoctor).ShowDialog();
+            ExaminationTable examinationTable = DIContainer.GetService<ExaminationTable>();
+            examinationTable.SetLoggedDoctor(_loggedDoctor);
+            examinationTable.ShowDialog();           
         }
 
         private void Operations_Click(object sender, RoutedEventArgs e)
         {
-            new OperationTable(this._loggedDoctor).ShowDialog();
+            OperationTable operationTable = DIContainer.GetService<OperationTable>();
+            operationTable.SetLoggedDoctor(_loggedDoctor);
+            operationTable.ShowDialog();            
         }
 
         private void ScheduleReview_Click(object sender, RoutedEventArgs e)
         {
-            new ScheduledExaminationTable(this._loggedDoctor).ShowDialog();
+            ScheduledExaminationTable scheduledExaminationTable = DIContainer.GetService<ScheduledExaminationTable>();
+            scheduledExaminationTable.SetLoggedDoctor(_loggedDoctor);
+            scheduledExaminationTable.ShowDialog();          
         }
-
+        
         private void ManageDrugs_Click(object sender, RoutedEventArgs e)
         {
-            new DrugsVerificationTable().ShowDialog();
+            DrugsVerificationTable drugsVerificationTable = DIContainer.GetService<DrugsVerificationTable>();
+            drugsVerificationTable.ShowDialog();
+        }
+
+        private void RestRequests_Click(object sender, RoutedEventArgs e)
+        {
+            RestRequestTable restRequestTable = DIContainer.GetService<RestRequestTable>();
+            restRequestTable.SetLoggedDoctor(_loggedDoctor);
+            restRequestTable.ShowDialog();
         }
     }
 

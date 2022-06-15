@@ -13,6 +13,7 @@ namespace HealthInstitution.Core.Rooms
     public interface IRoomService
     {
         public List<Room> GetAll();
+        public Room GetById(int id);
         public Room AddRoom(RoomDTO roomDTO);
         public void Update(int id, RoomDTO roomDTO);
         public void Delete(int id);
@@ -25,8 +26,10 @@ namespace HealthInstitution.Core.Rooms
         public List<Room> GetNotRenovating();
         public bool RoomNumberIsTaken(int number);
         public List<Equipment> GetAvailableEquipment(Room room);
+        public List<Equipment> GetDynamicEquipment(Room room);
         public List<TableItemEquipment> GetTableItemEquipments();
         public void UpdateEquipmentQuantity(Room room, Equipment equipment);
         public void RemoveEquipmentFrom(Room room);
+        public Room? GetFromString(string? roomFromForm);
     }
 }

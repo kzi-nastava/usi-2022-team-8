@@ -14,31 +14,36 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.Renovations.Functionality
 {
-    public static class RenovationRefreshingService 
+    public class RenovationRefreshingService : IRenovationRefreshingService
     {
-        private static RenovationRepository s_renovationRepository = RenovationRepository.GetInstance();
-       
-        public static void UpdateByRenovation()
+        IRenovationRepository _renovationRepository;
+        IRenovationService _renovationService;
+        public RenovationRefreshingService(IRenovationRepository renovationRepository, IRenovationService renovationService)
         {
-            foreach (Renovation renovation in s_renovationRepository.Renovations)
-            { 
+            _renovationRepository = renovationRepository;
+            _renovationService = renovationService;
+            UpdateByRenovation();
+        }
+        public void UpdateByRenovation()
+        {
+            foreach (Renovation renovation in _renovationRepository.GetAll())
+            {
                 if (renovation.HasActiveRooms())
                 {
                     Update(renovation);
-                }                   
+                }
             }
         }
-
-        private static void Update(Renovation renovation)
+        private void Update(Renovation renovation)
         {
             if (renovation.ShouldStart())
             {
-                RenovationService.Start(renovation);
+                _renovationService.Start(renovation);
             }
 
             if (renovation.ShouldEnd())
             {
-                RenovationService.End(renovation);
+                _renovationService.End(renovation);
             }
         }
 

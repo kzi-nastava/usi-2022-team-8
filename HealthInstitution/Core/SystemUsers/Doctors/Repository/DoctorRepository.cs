@@ -13,7 +13,7 @@ namespace HealthInstitution.Core.SystemUsers.Doctors.Repository;
 
 public class DoctorRepository : IDoctorRepository
 {
-    private String _fileName;
+    private String _fileName= @"..\..\..\Data\JSON\doctors.json";
     public List<Doctor> Doctors { get; set; }
     public Dictionary<String, Doctor> DoctorsByUsername { get; set; }
 
@@ -23,23 +23,11 @@ public class DoctorRepository : IDoctorRepository
         PropertyNameCaseInsensitive = true
     };
 
-    private DoctorRepository(String fileName)
+    public DoctorRepository()
     {
-        this._fileName = fileName;
         this.Doctors = new List<Doctor>();
         this.DoctorsByUsername = new Dictionary<string, Doctor>();
         this.LoadFromFile();
-    }
-
-    private static DoctorRepository s_instance = null;
-
-    public static DoctorRepository GetInstance()
-    {
-        if (s_instance == null)
-        {
-            s_instance = new DoctorRepository(@"..\..\..\Data\JSON\doctors.json");
-        }
-        return s_instance;
     }
 
     private Doctor Parse(JToken? doctor)
@@ -90,6 +78,11 @@ public class DoctorRepository : IDoctorRepository
     public List<Doctor> GetAll()
     {
         return this.Doctors;
+    }
+
+    public Dictionary<string,Doctor> GetAllByUsername()
+    {
+        return DoctorsByUsername;
     }
 
     public Doctor GetById(String username)
@@ -220,7 +213,7 @@ public class DoctorRepository : IDoctorRepository
         return found;
     }
 
-    public List<Doctor> GetSearchSpeciality(string keyword)
+    public List<Doctor> GetSearchSpecialty(string keyword)
     {
         keyword = keyword.Trim();
         List<Doctor> found = new List<Doctor>();

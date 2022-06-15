@@ -4,9 +4,11 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HealthInstitution.Core.SystemUsers.Secretaries.Model
+namespace HealthInstitution.Core.DIContainer
 {
-    public class Secretary
+    public enum ServiceLifetime
     {
+        Singleton,
+        Transient
     }
 }

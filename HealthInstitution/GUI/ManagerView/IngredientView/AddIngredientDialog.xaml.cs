@@ -21,9 +21,11 @@ namespace HealthInstitution.GUI.ManagerView.IngredientView
     /// </summary>
     public partial class AddIngredientDialog : Window
     {
-        public AddIngredientDialog()
+        IIngredientService _ingredientService;
+        public AddIngredientDialog(IIngredientService ingredientService)
         {
             InitializeComponent();
+            _ingredientService = ingredientService;
         }
 
         private void Create_Click(object sender, RoutedEventArgs e)
@@ -34,7 +36,7 @@ namespace HealthInstitution.GUI.ManagerView.IngredientView
                 return;
             }
 
-            IngredientService.Add(name);
+            _ingredientService.Add(name);
             System.Windows.MessageBox.Show("Ingredient added!", "Ingredient creation", MessageBoxButton.OK, MessageBoxImage.Information);
 
             this.Close();
@@ -48,7 +50,7 @@ namespace HealthInstitution.GUI.ManagerView.IngredientView
                 return false;
             }
 
-            if (IngredientService.Contains(name))
+            if (_ingredientService.Contains(name))
             {
                 System.Windows.MessageBox.Show("This ingredient name already exist!", "Create error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;

@@ -20,18 +20,20 @@ namespace HealthInstitution.GUI.SecretaryView
     /// </summary>
     public partial class UrgentOperationDialog : Window
     {
-        Operation Operation;
-        public UrgentOperationDialog(Operation operation)
+        Operation _operation;
+        public UrgentOperationDialog()
         {
             InitializeComponent();
-            Operation = operation;
+        }
+        public void SetScheduledOperation(Operation operation)
+        { 
+            _operation = operation;
             LoadRows();
         }
-
         private void LoadRows()
         {
             dataGrid.Items.Clear();
-            dataGrid.Items.Add(Operation);
+            dataGrid.Items.Add(_operation);
             dataGrid.Items.Refresh();
         }
     }

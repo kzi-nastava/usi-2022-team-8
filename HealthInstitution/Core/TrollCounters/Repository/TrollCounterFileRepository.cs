@@ -12,7 +12,7 @@ namespace HealthInstitution.Core.TrollCounters.Repository;
 
 public class TrollCounterFileRepository : ITrollCounterFileRepository
 {
-    private String _fileName;
+    private String _fileName= @"..\..\..\Data\JSON\trollCounters.json";
     public List<TrollCounter> Counters { get; set; }
     public Dictionary<String, TrollCounter> CountersById { get; set; }
 
@@ -22,25 +22,11 @@ public class TrollCounterFileRepository : ITrollCounterFileRepository
         PropertyNameCaseInsensitive = true
     };
 
-    private TrollCounterFileRepository(String fileName)
+    public TrollCounterFileRepository()
     {
-        this._fileName = fileName;
         this.Counters = new List<TrollCounter>();
         this.CountersById = new Dictionary<string, TrollCounter>();
         this.LoadFromFile();
-    }
-
-    private static TrollCounterFileRepository s_instance = null;
-
-    public static TrollCounterFileRepository GetInstance()
-    {
-        {
-            if (s_instance == null)
-            {
-                s_instance = new TrollCounterFileRepository(@"..\..\..\Data\JSON\trollCounters.json");
-            }
-            return s_instance;
-        }
     }
 
     public void LoadFromFile()
@@ -63,7 +49,10 @@ public class TrollCounterFileRepository : ITrollCounterFileRepository
     {
         return this.Counters;
     }
-
+    public Dictionary<string, TrollCounter> GetAllById(string id)
+    {
+        return CountersById;
+    }
     public TrollCounter GetById(string id)
     {
         return this.CountersById[id];

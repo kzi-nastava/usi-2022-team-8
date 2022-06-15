@@ -1,4 +1,5 @@
 ﻿using HealthInstitution.Core.RestRequests.Model;
+using HealthInstitution.Core.RestRequests.Repository;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using HealthInstitution.Core.SystemUsers.Doctors.Repository;
 using Newtonsoft.Json.Linq;
@@ -11,38 +12,28 @@ using System.Text.Json;
 using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
-namespace HealthInstitution.Core.RestRequests.Repository
+namespace HealthInstitution.Core
 {
-    public class RestRequestRepository
+    public class RestRequestRepository : IRestRequestRepository
     {
-        private String _fileName;
+        private String _fileName= @"..\..\..\Data\JSON\RestRequests.json";
         public int _maxId { get; set; }
         public List<RestRequest> RestRequests { get; set; }
         public Dictionary<int, RestRequest> RestRequestsById { get; set; }
+        IDoctorRepository _doctorRepository;
 
         private JsonSerializerOptions _options = new JsonSerializerOptions
         {
             Converters = { new JsonStringEnumConverter() },
             PropertyNameCaseInsensitive = true
         };
-        private RestRequestRepository(String fileName)
+        public RestRequestRepository(IDoctorRepository doctorRepository)
         {
-            this._fileName = fileName;
+            _doctorRepository = doctorRepository;
             this.RestRequests = new List<RestRequest>();
             this.RestRequestsById = new Dictionary<int, RestRequest>();
             this._maxId = 0;
             this.LoadFromFile();
-        }
-        private static RestRequestRepository s_instance = null;
-        public static RestRequestRepository GetInstance()
-        {
-            {
-                if (s_instance == null)
-                {
-                    s_instance = new RestRequestRepository(@"..\..\..\Data\JSON\RestRequests.json");
-                }
-                return s_instance;
-            }
         }
 
         private RestRequest Parse(JToken? RestRequest)
@@ -55,8 +46,8 @@ namespace HealthInstitution.Core.RestRequests.Repository
             Enum.TryParse(RestRequest["state"].ToString(), out state);
             bool urgent = (bool)RestRequest["urgent"];
             string rejectionReason = (string)RestRequest["rejectionReason"];
-            
-            return new RestRequest(id,null,reason,startDate, daysDuration,state,urgent,rejectionReason);
+
+            return new RestRequest(id, null, reason, startDate, daysDuration, state, urgent, rejectionReason);
         }
         public void LoadFromFile()
         {
@@ -84,8 +75,8 @@ namespace HealthInstitution.Core.RestRequests.Repository
                     startDate = RestRequest.StartDate,
                     daysDuration = RestRequest.DaysDuration,
                     state = RestRequest.State,
-                    urgent=RestRequest.IsUrgent,
-                    rejectionReason=RestRequest.RejectionReason
+                    urgent = RestRequest.IsUrgent,
+                    rejectionReason = RestRequest.RejectionReason
                 });
             }
             return reducedRestRequests;
@@ -102,6 +93,10 @@ namespace HealthInstitution.Core.RestRequests.Repository
             return this.RestRequests;
         }
 
+        public Dictionary<int, RestRequest> GetAllById()
+        {
+            return RestRequestsById;
+        }
         public RestRequest GetById(int id)
         {
             if (RestRequestsById.ContainsKey(id))
@@ -118,42 +113,61 @@ namespace HealthInstitution.Core.RestRequests.Repository
             RestRequestsById.Add(RestRequest.Id, RestRequest);
         }
 
-        public void Add(RestRequest RestRequest)
+        private void SaveAll()
+        {
+            Save();
+            DIContainer.DIContainer.GetService<IRestRequestDoctorRepository>().Save();
+        }
+
+        public void Add(RestRequest restRequest)
         {
             int id = ++this._maxId;
-            RestRequest.Id = id;
-            AddToCollections(RestRequest);
-            Save();
-            DoctorRepository.GetInstance().Save();
+            restRequest.Id = id;
+            AddToCollections(restRequest);
+            SaveAll();
         }
 
         public void Update(int id, RestRequest byRestRequest)
         {
-            RestRequest RestRequest = GetById(id);
-            RestRequest.Reason = byRestRequest.Reason;
-            RestRequest.StartDate = byRestRequest.StartDate;
-            RestRequest.DaysDuration = byRestRequest.DaysDuration;
-            this.RestRequestsById[id] = RestRequest;
+            RestRequest restRequest = GetById(id);
+            restRequest.Reason = byRestRequest.Reason;
+            restRequest.StartDate = byRestRequest.StartDate;
+            restRequest.DaysDuration = byRestRequest.DaysDuration;
+            this.RestRequestsById[id] = restRequest;
             Save();
         }
         public void Delete(int id)
         {
-            RestRequest RestRequest = RestRequestsById[id];
-            this.RestRequests.Remove(RestRequest);
+            RestRequest restRequest = RestRequestsById[id];
+            this.RestRequests.Remove(restRequest);
             this.RestRequestsById.Remove(id);
-            Save();
-            RestRequestDoctorRepository.GetInstance().Save();
+            restRequest.Doctor.RestRequests.Remove(restRequest);
+            SaveAll();
         }
-        public void AcceptRestRequest(RestRequest restRequest)
+        public void Accept(RestRequest restRequest)
         {
             restRequest.State = RestRequestState.Accepted;
             Save();
         }
-        public void RejectRestRequest(RestRequest restRequest, string rejectionReason)
+        public void Reject(RestRequest restRequest, string rejectionReason)
         {
             restRequest.State = RestRequestState.Rejected;
             restRequest.RejectionReason = rejectionReason;
             Save();
+        }
+
+        public List<RestRequest> GetByDoctor(string doctorUsername)
+        {
+            /*List<RestRequest> doctorRestRequests = new List<RestRequest>();
+            foreach (var restRequest in this.RestRequests)
+            {
+                if (restRequest.Doctor.Username == doctorUsername)
+                    doctorRestRequests.Add(restRequest);
+            }
+            return doctorRestRequests;*/
+
+
+            return GetAll().Where(restRequest => restRequest.Doctor.Username == doctorUsername).ToList();
         }
     }
 }

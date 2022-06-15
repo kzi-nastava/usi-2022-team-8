@@ -9,13 +9,16 @@ namespace HealthInstitution.GUI.DoctorView
     public partial class MedicalRecordDialog : Window
     {
         private MedicalRecord _selectedMedicalRecord;
-        public MedicalRecordDialog(MedicalRecord medicalRecord)
+        public MedicalRecordDialog()
         {
             InitializeComponent();
+            
+        }
+        public void SetSelectedMedicalRecord(MedicalRecord medicalRecord)
+        {
             _selectedMedicalRecord = medicalRecord;
             Load();
         }
-
         public void Load()
         {
             patientLabel.Content = _selectedMedicalRecord.Patient.ToString();

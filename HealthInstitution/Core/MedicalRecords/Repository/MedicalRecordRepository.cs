@@ -14,7 +14,11 @@ namespace HealthInstitution.Core.MedicalRecords.Repository
 {
     public class MedicalRecordRepository : IMedicalRecordRepository
     {
-        private String _fileName;
+        private String _fileName = @"..\..\..\Data\JSON\medicalRecords.json";
+
+        private IPrescriptionRepository _prescriptionRepository;
+        private IReferralRepository _referralRepository;
+        private IPatientRepository _patientRepository;
         public List<MedicalRecord> MedicalRecords { get; set; }
         public Dictionary<string, MedicalRecord> MedicalRecordByUsername { get; set; }
 
@@ -24,27 +28,16 @@ namespace HealthInstitution.Core.MedicalRecords.Repository
             PropertyNameCaseInsensitive = true
         };
 
-        private MedicalRecordRepository(string fileName) //singleton
+        public MedicalRecordRepository(IPrescriptionRepository prescriptionRepository, IReferralRepository referralRepository, IPatientRepository patientRepository)
         {
-            this._fileName = fileName;
+            _prescriptionRepository = prescriptionRepository;
+            _referralRepository = referralRepository;
+            _patientRepository = patientRepository;
             this.MedicalRecords = new List<MedicalRecord>();
             this.MedicalRecordByUsername = new Dictionary<string, MedicalRecord>();
             this.LoadFromFile();
         }
-
-        private static MedicalRecordRepository s_instance = null;
-
-        public static MedicalRecordRepository GetInstance()
-        {
-            {
-                if (s_instance == null)
-                {
-                    s_instance = new MedicalRecordRepository(@"..\..\..\Data\JSON\medicalRecords.json");
-                }
-                return s_instance;
-            }
-        }
-
+        
         private List<string> JToken2Strings(JToken tokens)
         {
             List<string> items = new List<string>();
@@ -55,7 +48,7 @@ namespace HealthInstitution.Core.MedicalRecords.Repository
 
         private List<Prescription> JToken2Prescriptions(JToken tokens)
         {
-            Dictionary<int, Prescription> prescriptionById = PrescriptionRepository.GetInstance().PrescriptionById;
+            Dictionary<int, Prescription> prescriptionById = _prescriptionRepository.GetAllById();
             List<Prescription> items = new List<Prescription>();
             foreach (int token in tokens)
                 items.Add(prescriptionById[token]);
@@ -64,7 +57,7 @@ namespace HealthInstitution.Core.MedicalRecords.Repository
 
         private List<Referral> JToken2Referrals(JToken tokens)
         {
-            Dictionary<int, Referral> referralById = ReferralRepository.GetInstance().ReferralById;
+            Dictionary<int, Referral> referralById = _referralRepository.GetAllById();
             List<Referral> items = new List<Referral>();
             foreach (int token in tokens)
                 items.Add(referralById[token]);
@@ -73,7 +66,7 @@ namespace HealthInstitution.Core.MedicalRecords.Repository
 
         private MedicalRecord Parse(JToken? medicalRecord)
         {
-            Dictionary<string, Patient> patientByUsername = PatientRepository.GetInstance().PatientByUsername;
+            Dictionary<string, Patient> patientByUsername = _patientRepository.GetAllByUsername();
             return new MedicalRecord((double)medicalRecord["height"],
                                                                     (double)medicalRecord["weight"],
                                                                     JToken2Strings(medicalRecord["previousIlnesses"]),
@@ -130,6 +123,11 @@ namespace HealthInstitution.Core.MedicalRecords.Repository
         public List<MedicalRecord> GetAll()
         {
             return this.MedicalRecords;
+        }
+
+        public Dictionary<string, MedicalRecord> GetAllByUsername()
+        {
+            return this.MedicalRecordByUsername;
         }
 
         public MedicalRecord GetByPatientUsername(Patient patient)

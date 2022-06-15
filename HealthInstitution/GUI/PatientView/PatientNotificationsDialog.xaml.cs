@@ -27,22 +27,30 @@ namespace HealthInstitution.GUI.PatientView
     public partial class PatientNotificationsDialog : Window
     {
         private Patient _loggedPatient;
-        public PatientNotificationsDialog(Patient patient)
+        IAppointmentNotificationService _appointmentNotificationService;
+        IPatientService _patientService;
+        public PatientNotificationsDialog(IPatientService patientService, IAppointmentNotificationService appointmentNotificationService)
+        {
+            _patientService = patientService;   
+            _appointmentNotificationService = appointmentNotificationService;
+            InitializeComponent();
+            
+        }
+        public void SetLoggedPatient(Patient patient)
         {
             _loggedPatient = patient;
-            InitializeComponent();
             LoadRows();
         }
         private void LoadRows()
         {
             dataGrid.Items.Clear();
-            foreach (AppointmentNotification notification in PatientService.GetActiveAppointmentNotification(_loggedPatient))
+            foreach (AppointmentNotification notification in _patientService.GetActiveAppointmentNotification(_loggedPatient))
             {
                 dataGrid.Items.Add(notification);
-                AppointmentNotificationService.ChangeActiveStatus(notification, false);
+                _appointmentNotificationService.ChangeActiveStatus(notification, false);
             }
             dataGrid.Items.Refresh();
-            PatientService.DeleteNotifications(_loggedPatient);
+            _patientService.DeleteNotifications(_loggedPatient);
         }
     }
 }

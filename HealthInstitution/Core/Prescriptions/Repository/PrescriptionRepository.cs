@@ -12,7 +12,9 @@ namespace HealthInstitution.Core.Prescriptions.Repository
     public class PrescriptionRepository : IPrescriptionRepository
     {
         public int maxId;
-        private String _fileName;
+        private String _fileName = @"..\..\..\Data\JSON\prescriptions.json";
+
+        private IDrugRepository _drugRepository;
         public List<Prescription> Prescriptions { get; set; }
         public Dictionary<int, Prescription> PrescriptionById { get; set; }
 
@@ -22,31 +24,18 @@ namespace HealthInstitution.Core.Prescriptions.Repository
             PropertyNameCaseInsensitive = true
         };
 
-        private PrescriptionRepository(string fileName) //singleton
+        public PrescriptionRepository(IDrugRepository drugRepository)
         {
+            _drugRepository = drugRepository;
             this.maxId = 0;
-            this._fileName = fileName;
             this.Prescriptions = new List<Prescription>();
             this.PrescriptionById = new Dictionary<int, Prescription>();
             this.LoadFromFile();
         }
 
-        private static PrescriptionRepository s_instance = null;
-
-        public static PrescriptionRepository GetInstance()
-        {
-            {
-                if (s_instance == null)
-                {
-                    s_instance = new PrescriptionRepository(@"..\..\..\Data\JSON\prescriptions.json");
-                }
-                return s_instance;
-            }
-        }
-
         private Prescription Parse(JToken? prescription)
         {
-            Dictionary<int, Drug> drugById = DrugRepository.GetInstance().DrugById;
+            Dictionary<int, Drug> drugById = _drugRepository.GetAllById();
             PrescriptionTime prescriptionTime;
             Enum.TryParse<PrescriptionTime>((string)prescription["timeOfUse"], out prescriptionTime);
             var dt = (string)prescription["hourlyRate"];
@@ -98,6 +87,10 @@ namespace HealthInstitution.Core.Prescriptions.Repository
             return this.Prescriptions;
         }
 
+        public Dictionary<int, Prescription> GetAllById()
+        {
+            return this.PrescriptionById;
+        }
         public Prescription GetById(int id)
         {
             if (PrescriptionById.ContainsKey(id))

@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using HealthInstitution.Core.Prescriptions.Repository;
 using HealthInstitution.Core.PrescriptionNotifications.Repository;
+using HealthInstitution.Core.PrescriptionNotifications.Service;
 
 namespace HealthInstitution.Core.PrescriptionNotifications.Model;
 
@@ -13,6 +14,11 @@ public class PrescriptionNotificationSender : IJob
 {
     public string _loggedUsername { get; set; }
     public PrescriptionNotificationSettings _settings { get; set; }
+    IPrescriptionNotificationService _prescriptionNotificationService;
+    public PrescriptionNotificationSender(IPrescriptionNotificationService prescriptionNotificationService)
+    {
+        _prescriptionNotificationService = prescriptionNotificationService;
+    }
 
     public async Task Execute(IJobExecutionContext context)
     {
@@ -27,6 +33,6 @@ public class PrescriptionNotificationSender : IJob
             recepieNotification.ActiveForPatient = false;
             MessageBox.Show("Take " + recepieNotification.Prescription.Drug.Name + " at " + recepieNotification.TriggerDateTime + " " + recepieNotification.Prescription.TimeOfUse);
         }
-        PrescriptionNotificationRepository.GetInstance().Add(recepieNotification);
+        _prescriptionNotificationService.Add(recepieNotification);
     }
 }

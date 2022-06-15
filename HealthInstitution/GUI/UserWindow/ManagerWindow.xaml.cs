@@ -16,6 +16,22 @@ using HealthInstitution.GUI.LoginView;
 using HealthInstitution.GUI.ManagerView.RenovationView;
 using HealthInstitution.GUI.ManagerView.DrugView;
 using HealthInstitution.GUI.ManagerView.PollView;
+using HealthInstitution.Core.DIContainer;
+using HealthInstitution.Core.SystemUsers.Users;
+using HealthInstitution.Core.TrollCounters;
+using HealthInstitution.Core.SystemUsers.Patients;
+using HealthInstitution.Core.SystemUsers.Doctors;
+using HealthInstitution.Core.EquipmentTransfers;
+using HealthInstitution.Core.Renovations.Functionality;
+using HealthInstitution.Core.PrescriptionNotifications.Service;
+using HealthInstitution.Core.RestRequests;
+using HealthInstitution.Core.DoctorRatings;
+using HealthInstitution.Core.Renovations;
+using HealthInstitution.Core.Equipments;
+using HealthInstitution.Core.Rooms;
+using HealthInstitution.Core.Ingredients;
+using HealthInstitution.Core.Drugs;
+using HealthInstitution.Core.Polls;
 
 namespace HealthInstitution.GUI.UserWindow
 {
@@ -34,63 +50,63 @@ namespace HealthInstitution.GUI.UserWindow
             if (System.Windows.MessageBox.Show("Are you sure you want to log out?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
             {
                 this.Close();
-                LoginWindow window = new LoginWindow();
+                LoginWindow window = DIContainer.GetService<LoginWindow>();               
                 window.ShowDialog();
             }
         }
 
         private void EquipmentTransfer_Click(object sender, RoutedEventArgs e)
         {
-            EquipmentTransferDialog equipmentTransferDialog = new EquipmentTransferDialog();
+            EquipmentTransferDialog equipmentTransferDialog = DIContainer.GetService<EquipmentTransferDialog>();           
             equipmentTransferDialog.ShowDialog();
         }
 
         private void EquipmentInspection_Click(object sender, RoutedEventArgs e)
         {
-            EquipmentInspectionDialog equipmentInspectionDialog = new EquipmentInspectionDialog();
+            EquipmentInspectionDialog equipmentInspectionDialog = DIContainer.GetService<EquipmentInspectionDialog>();           
             equipmentInspectionDialog.ShowDialog();
         }
 
         private void Rooms_Click(object sender, RoutedEventArgs e)
         {
-            RoomsTableWindow roomsTableWindow = new RoomsTableWindow();
+            RoomsTableWindow roomsTableWindow = DIContainer.GetService<RoomsTableWindow>();        
             roomsTableWindow.ShowDialog();
             
         }
 
         private void Renovate_Click(object sender, RoutedEventArgs e)
         {
-            SimpleRenovationWindow simpleRenovationWindow = new SimpleRenovationWindow();
+            SimpleRenovationWindow simpleRenovationWindow = DIContainer.GetService<SimpleRenovationWindow>();
             simpleRenovationWindow.ShowDialog();
         }
 
         private void Ingredients_Click(object sender, RoutedEventArgs e)
         {
-            IngredientsTableWindow ingredientsTableWindow = new IngredientsTableWindow();
+            IngredientsTableWindow ingredientsTableWindow = DIContainer.GetService<IngredientsTableWindow>();
             ingredientsTableWindow.ShowDialog();
         }
 
         private void OnVerificationDrugs_Click(object sender, RoutedEventArgs e)
         {
-            DrugsOnVerificationTableWindow drugsOnVerificationTableWindow = new DrugsOnVerificationTableWindow();
+            DrugsOnVerificationTableWindow drugsOnVerificationTableWindow = DIContainer.GetService<DrugsOnVerificationTableWindow>();
             drugsOnVerificationTableWindow.ShowDialog();
         }
 
         private void RejectedDrugs_Click(object sender, RoutedEventArgs e)
         {
-            RejectedDrugsTableWindow rejectedDrugsTableWindow = new RejectedDrugsTableWindow();
+            RejectedDrugsTableWindow rejectedDrugsTableWindow = DIContainer.GetService<RejectedDrugsTableWindow>();
             rejectedDrugsTableWindow.ShowDialog();
         }
 
         private void HospitalPoll_Click(object sender, RoutedEventArgs e)
         {
-            HospitalPollWindow hospitalPollWindow = new HospitalPollWindow();
+            HospitalPollWindow hospitalPollWindow = DIContainer.GetService<HospitalPollWindow>();
             hospitalPollWindow.ShowDialog();
         }
 
         private void DoctorPoll_Click(object sender, RoutedEventArgs e)
         {
-            DoctorPollWindow doctorPollWindow = new DoctorPollWindow();
+            DoctorPollWindow doctorPollWindow = DIContainer.GetService<DoctorPollWindow>();        
             doctorPollWindow.ShowDialog();
         }
     }

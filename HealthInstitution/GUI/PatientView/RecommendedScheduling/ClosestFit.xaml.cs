@@ -22,10 +22,16 @@ namespace HealthInstitution.GUI.PatientView
     public partial class ClosestFit : Window
     {
         private List<Examination> _suggestions;
+        IExaminationService _examinationService;
 
-        public ClosestFit(List<Examination> suggestions)
+        public ClosestFit(IExaminationService examinationService)
         {
             InitializeComponent();
+            _examinationService = examinationService;
+            
+        }
+        public void SetSuggestions(List<Examination> suggestions)
+        {
             _suggestions = suggestions;
             LoadRows();
         }
@@ -35,7 +41,7 @@ namespace HealthInstitution.GUI.PatientView
             Examination selectedExamination = _suggestions[0];
             if (secondRadioButton.IsChecked == true) selectedExamination = _suggestions[1];
             if (thirdRadioButton.IsChecked == true) selectedExamination = _suggestions[2];
-            ExaminationService.Add(ExaminationService.ParseExaminationToExaminationDTO(selectedExamination));
+            _examinationService.Add(_examinationService.ParseExaminationToExaminationDTO(selectedExamination));
             this.Close();
         }
 

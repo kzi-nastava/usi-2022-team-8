@@ -1,4 +1,5 @@
-﻿using HealthInstitution.Core.MedicalRecords.Model;
+﻿using HealthInstitution.Core.Ingredients.Model;
+using HealthInstitution.Core.MedicalRecords.Model;
 using HealthInstitution.Core.Prescriptions.Model;
 using HealthInstitution.Core.Referrals.Model;
 using HealthInstitution.Core.SystemUsers.Patients.Model;
@@ -12,7 +13,7 @@ namespace HealthInstitution.Core.MedicalRecords
 {
     public interface IMedicalRecordService
     {
-        public Task<IEnumerable<MedicalRecord>> GetAll();
+        public List<MedicalRecord> GetAll();
         public MedicalRecord GetByPatientUsername(Patient patient);
         public void Add(MedicalRecordDTO medicalRecordDTO);
         public void Update(MedicalRecordDTO medicalRecordDTO);
@@ -21,5 +22,6 @@ namespace HealthInstitution.Core.MedicalRecords
         public void Delete(Patient patient);
         public void DeleteReferral(Patient patient, Referral referral);
         public void DeletePrescription(Patient patient, Prescription prescription);
+        public bool IsPatientAlergic(MedicalRecord medicalRecord, List<Ingredient> ingredients);
     }
 }

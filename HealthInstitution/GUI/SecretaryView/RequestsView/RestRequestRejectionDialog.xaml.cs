@@ -22,10 +22,16 @@ namespace HealthInstitution.GUI.SecretaryView.RequestsView
     public partial class RestRequestRejectionDialog : Window
     {
         RestRequest _selectedRestRequest;
-        public RestRequestRejectionDialog(RestRequest selectedRestRequest)
+        IRestRequestService _restRequestService;
+        public RestRequestRejectionDialog(IRestRequestService restRequestService)
         {
-            _selectedRestRequest = selectedRestRequest;
+            _restRequestService = restRequestService;
             InitializeComponent();
+        }
+
+        public void SetSelectedRequest(RestRequest restRequest)
+        {
+            _selectedRestRequest = restRequest;
         }
 
         private void Submit_Click(object sender, RoutedEventArgs e)
@@ -37,7 +43,7 @@ namespace HealthInstitution.GUI.SecretaryView.RequestsView
             }
             else
             {
-                RestRequestService.RejectRestRequest(_selectedRestRequest, rejectionReason);
+                _restRequestService.Reject(_selectedRestRequest, rejectionReason);
                 System.Windows.MessageBox.Show("Successfull rejection!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
                 Close();
             }

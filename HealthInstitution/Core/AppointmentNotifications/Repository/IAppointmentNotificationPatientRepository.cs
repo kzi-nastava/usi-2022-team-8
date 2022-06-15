@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.Notifications.Repository
 {
-    public interface IAppointmentNotificationPatientRepository : ILinkerRepository
+    public interface IAppointmentNotificationPatientRepository
     { 
         public void LoadFromFile();
         public void Save();

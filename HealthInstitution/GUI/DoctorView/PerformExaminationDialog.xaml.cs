@@ -1,11 +1,18 @@
-﻿using HealthInstitution.Core.Examinations;
+﻿using HealthInstitution.Core.DIContainer;
+using HealthInstitution.Core.Drugs;
+using HealthInstitution.Core.Equipments;
+using HealthInstitution.Core.Examinations;
 using HealthInstitution.Core.Examinations.Model;
 using HealthInstitution.Core.Examinations.Repository;
 using HealthInstitution.Core.MedicalRecords;
 using HealthInstitution.Core.MedicalRecords.Model;
 using HealthInstitution.Core.MedicalRecords.Repository;
+using HealthInstitution.Core.Prescriptions;
 using HealthInstitution.Core.Prescriptions.Model;
+using HealthInstitution.Core.Referrals;
 using HealthInstitution.Core.Referrals.Model;
+using HealthInstitution.Core.Rooms;
+using HealthInstitution.Core.SystemUsers.Doctors;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using HealthInstitution.Core.SystemUsers.Patients.Model;
 using System.Windows;
@@ -19,10 +26,19 @@ namespace HealthInstitution.GUI.DoctorView
     {
         private Examination _selectedExamination;
         private MedicalRecord _medicalRecord;
-        public PerformExaminationDialog(Examination examination)
+        IMedicalRecordService _medicalRecordService;
+        IExaminationService _examinationService;
+        public PerformExaminationDialog(IExaminationService examinationService, 
+            IMedicalRecordService medicalRecordService)
         {
             InitializeComponent();
-            this._selectedExamination = examination;
+            _examinationService = examinationService;
+            _medicalRecordService = medicalRecordService;
+            
+        }
+        public void SetSelectedExamination(Examination examination)
+        {
+            _selectedExamination = examination;
             Load();
         }
 
@@ -63,13 +79,16 @@ namespace HealthInstitution.GUI.DoctorView
         {
             Patient patient = _medicalRecord.Patient;
             Doctor doctor = _selectedExamination.Doctor;
-            AddReferralDialog dialog = new AddReferralDialog(doctor, patient);
+
+            var dialog = DIContainer.GetService<AddReferralDialog>();
+            dialog.SetReferralFields(patient, doctor);
             dialog.ShowDialog();
         }
 
         private void CreatePrescription_Click(object sender, RoutedEventArgs e)
         {
-            AddPrescriptionDialog dialog = new AddPrescriptionDialog(_medicalRecord);
+            AddPrescriptionDialog dialog = DIContainer.GetService<AddPrescriptionDialog>();
+            dialog.SetMedicalRecord(_medicalRecord);
             dialog.ShowDialog();
         }
 
@@ -97,11 +116,14 @@ namespace HealthInstitution.GUI.DoctorView
             try
             {
                 MedicalRecordDTO medicalRecordDTO = CreateMedicalRecordDTOFromInputData();
-                MedicalRecordService.Update(medicalRecordDTO);
-                ExaminationService.Complete(_selectedExamination, anamnesisTextBox.Text);
+                _medicalRecordService.Update(medicalRecordDTO);
+                _examinationService.Complete(_selectedExamination, anamnesisTextBox.Text);
                 System.Windows.MessageBox.Show("You have finished the examination!", "Congrats", MessageBoxButton.OK, MessageBoxImage.Information);
                 this.Close();
-                new ConsumedEquipmentDialog(_selectedExamination.Room).ShowDialog();
+
+                ConsumedEquipmentDialog dialog = DIContainer.GetService<ConsumedEquipmentDialog>();
+                dialog.SetSelectedRoom(_selectedExamination.Room);
+                dialog.ShowDialog();              
             }
             catch
             {

@@ -11,7 +11,7 @@ namespace HealthInstitution.Core.EquipmentTransfers
 {
     public interface IEquipmentTransferService
     {
-        public Task<IEnumerable<EquipmentTransfer>> GetAll();
+        public List<EquipmentTransfer> GetAll();
         public void Add(EquipmentTransferDTO equipmentTransferDTO);
         public void Update(int id, EquipmentTransferDTO equipmentTransferDTO);
         public void Delete(int id);

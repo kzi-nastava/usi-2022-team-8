@@ -11,88 +11,96 @@ using HealthInstitution.Core.DoctorRatings;
 
 namespace HealthInstitution.Core.Polls;
 
-internal static class PollService
+public class PollService : IPollService
 {
-    private static PollQuestionRepository s_pollQuestionRepository = PollQuestionRepository.GetInstance();
-    private static PollCommentRepository s_pollCommentRepository = PollCommentRepository.GetInstance();
+    IPollQuestionRepository _pollQuestionRepository;
+    IPollCommentRepository _pollCommentRepository;
+    IDoctorRatingsService _doctorRatingService;
 
-    public static List<PollComment> GetAllComments()
+    public PollService(IPollQuestionRepository pollQuestionRepository, IPollCommentRepository pollCommentRepository, IDoctorRatingsService doctorRatingService)
     {
-        return s_pollCommentRepository.GetAll();
+        _pollQuestionRepository = pollQuestionRepository;
+        _pollCommentRepository = pollCommentRepository;
+        _doctorRatingService = doctorRatingService;
     }
 
-    public static PollComment GetCommentById(int id)
+    public List<PollComment> GetAllComments()
     {
-        return s_pollCommentRepository.GetById(id);
+        return _pollCommentRepository.GetAll();
     }
 
-    public static void AddComment(PollCommentDTO pollCommentDTO)
+    public PollComment GetCommentById(int id)
+    {
+        return _pollCommentRepository.GetById(id);
+    }
+
+    public void AddComment(PollCommentDTO pollCommentDTO)
     {
         PollComment pollComment = new PollComment(pollCommentDTO);
-        s_pollCommentRepository.Add(pollComment);
+        _pollCommentRepository.Add(pollComment);
     }
 
-    public static void UpdateComment(int id, PollCommentDTO pollCommentDTO)
+    public void UpdateComment(int id, PollCommentDTO pollCommentDTO)
     {
         PollComment pollComment = new PollComment(pollCommentDTO);
-        s_pollCommentRepository.Update(id, pollComment);
+        _pollCommentRepository.Update(id, pollComment);
     }
 
-    public static void DeleteComment(int id)
+    public void DeleteComment(int id)
     {
-        s_pollCommentRepository.Delete(id);
+        _pollCommentRepository.Delete(id);
     }
 
-    public static List<PollQuestion> GetAllQuestions()
+    public List<PollQuestion> GetAllQuestions()
     {
-        return s_pollQuestionRepository.GetAll();
+        return _pollQuestionRepository.GetAll();
     }
 
-    public static PollQuestion GetQuestionById(int id)
+    public PollQuestion GetQuestionById(int id)
     {
-        return s_pollQuestionRepository.GetById(id);
+        return _pollQuestionRepository.GetById(id);
     }
 
-    public static void AddQuestion(PollQuestionDTO pollQuestionDTO)
-    {
-        PollQuestion pollQuestion = new PollQuestion(pollQuestionDTO);
-        s_pollQuestionRepository.Add(pollQuestion);
-    }
-
-    public static void UpdateQuestion(int id, PollQuestionDTO pollQuestionDTO)
+    public void AddQuestion(PollQuestionDTO pollQuestionDTO)
     {
         PollQuestion pollQuestion = new PollQuestion(pollQuestionDTO);
-        s_pollQuestionRepository.Update(id, pollQuestion);
+        _pollQuestionRepository.Add(pollQuestion);
     }
 
-    public static void DeleteQuestion(int id)
+    public void UpdateQuestion(int id, PollQuestionDTO pollQuestionDTO)
     {
-        s_pollQuestionRepository.Delete(id);
+        PollQuestion pollQuestion = new PollQuestion(pollQuestionDTO);
+        _pollQuestionRepository.Update(id, pollQuestion);
     }
 
-    public static List<string> GetHospitalQuestions()
+    public void DeleteQuestion(int id)
     {
-        return s_pollQuestionRepository.GetHospitalQuestions();
+        _pollQuestionRepository.Delete(id);
     }
 
-    public static List<string> GetDoctorQuestions()
+    public List<string> GetHospitalQuestions()
     {
-        return s_pollQuestionRepository.GetDoctorQuestions();
+        return _pollQuestionRepository.GetHospitalQuestions();
     }
 
-    public static void UpdateQuestionGrades(PollQuestionDTO pollQuestionDTO)
+    public List<string> GetDoctorQuestions()
+    {
+        return _pollQuestionRepository.GetDoctorQuestions();
+    }
+
+    public void UpdateQuestionGrades(PollQuestionDTO pollQuestionDTO)
     {
         List<PollQuestion> allQuestions = GetAllQuestions();
         List<PollQuestion> filteredQuestions = allQuestions.Where(o => o.Question == pollQuestionDTO.Question).ToList();
         filteredQuestions = filteredQuestions.Where(o => o.ForDoctor == pollQuestionDTO.ForDoctor).ToList();
         HandleAddingScores(filteredQuestions, pollQuestionDTO);
         UpdateDoctorRatings(pollQuestionDTO);
-        s_pollQuestionRepository.Save();
+        _pollQuestionRepository.Save();
     }
 
-    public static List<TableItemPoll> GetHospitalPollByQuestions()
+    public List<TableItemPoll> GetHospitalPollByQuestions()
     {
-        List<PollQuestion> hospitalQuestions = s_pollQuestionRepository.GetHospitalGradeByQuestion();
+        List<PollQuestion> hospitalQuestions = _pollQuestionRepository.GetHospitalGradeByQuestion();
         List<TableItemPoll> items = new List<TableItemPoll>();
 
         var groupByQuestion = hospitalQuestions.ToLookup(q => q.Question);
@@ -107,9 +115,9 @@ internal static class PollService
         return items;
     }
 
-    public static List<TableItemPoll> GetDoctorPollByQuestions(Doctor doctor)
+    public List<TableItemPoll> GetDoctorPollByQuestions(Doctor doctor)
     {
-        List<PollQuestion> hospitalQuestions = s_pollQuestionRepository.GetDoctorGradeByQuestion(doctor);
+        List<PollQuestion> hospitalQuestions = _pollQuestionRepository.GetDoctorGradeByQuestion(doctor);
         List<TableItemPoll> items = new List<TableItemPoll>();
 
         var groupByQuestion = hospitalQuestions.ToLookup(q => q.Question);
@@ -124,7 +132,7 @@ internal static class PollService
         return items;
     }
 
-    private static Dictionary<int, int> GetOccurrenceByGrade(List<int> grades)
+    private Dictionary<int, int> GetOccurrenceByGrade(List<int> grades)
     {
         var groups = grades.GroupBy(i => i);
         Dictionary<int, int> occurrenceByGrade = GetDefaultGrades();
@@ -136,7 +144,7 @@ internal static class PollService
         return occurrenceByGrade;
     }
 
-    private static Dictionary<int, int> GetDefaultGrades()
+    private Dictionary<int, int> GetDefaultGrades()
     {
         Dictionary<int, int> occurrenceByGrade = new Dictionary<int, int>();
         for (int i = 1; i <= 5; i++)
@@ -146,25 +154,25 @@ internal static class PollService
         return occurrenceByGrade;
     }
 
-    public static List<PollComment> GetHospitalComments()
+    public List<PollComment> GetHospitalComments()
     {
-        return s_pollCommentRepository.GetHospitalComments();
+        return _pollCommentRepository.GetHospitalComments();
     }
 
-    public static List<PollComment> GetCommentsByDoctor(Doctor doctor)
+    public List<PollComment> GetCommentsByDoctor(Doctor doctor)
     {
-        return s_pollCommentRepository.GetCommentsByDoctor(doctor);
+        return _pollCommentRepository.GetCommentsByDoctor(doctor);
     }
 
-    private static void UpdateDoctorRatings(PollQuestionDTO pollQuestionDTO)
+    private void UpdateDoctorRatings(PollQuestionDTO pollQuestionDTO)
     {
         if (pollQuestionDTO.ForDoctor != null)
         {
-            DoctorRatingsService.UpdateScore(pollQuestionDTO.ForDoctor.Username, pollQuestionDTO.Grades[0]);
+            _doctorRatingService.UpdateScore(pollQuestionDTO.ForDoctor.Username, pollQuestionDTO.Grades[0]);
         }
     }
 
-    private static void HandleAddingScores(List<PollQuestion> filteredQuestions, PollQuestionDTO pollQuestionDTO)
+    private void HandleAddingScores(List<PollQuestion> filteredQuestions, PollQuestionDTO pollQuestionDTO)
     {
         if (filteredQuestions.Count > 0)
             filteredQuestions[0].Grades.AddRange(pollQuestionDTO.Grades);
