@@ -12,11 +12,12 @@ namespace HealthInstitution.GUI.DoctorView
         public MedicalRecordDialog()
         {
             InitializeComponent();
-            Load();
+            
         }
         public void SetSelectedMedicalRecord(MedicalRecord medicalRecord)
         {
-            _selectedMedicalRecord = medicalRecord; 
+            _selectedMedicalRecord = medicalRecord;
+            Load();
         }
         public void Load()
         {

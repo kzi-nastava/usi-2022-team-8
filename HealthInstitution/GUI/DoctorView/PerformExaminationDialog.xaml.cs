@@ -34,11 +34,12 @@ namespace HealthInstitution.GUI.DoctorView
             InitializeComponent();
             _examinationService = examinationService;
             _medicalRecordService = medicalRecordService;
-            Load();
+            
         }
         public void SetSelectedExamination(Examination examination)
         {
             _selectedExamination = examination;
+            Load();
         }
 
         private void Load()

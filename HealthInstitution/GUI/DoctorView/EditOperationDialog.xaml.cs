@@ -24,7 +24,7 @@ namespace HealthInstitution.GUI.DoctorView
         public EditOperationDialog(IPatientService patientService, IMedicalRecordService medicalRecordService, IOperationService operationService)
         {
             InitializeComponent();
-            Load();
+            
             _patientService = patientService;
             _medicalRecordService = medicalRecordService;
             _operationService = operationService;
@@ -32,6 +32,7 @@ namespace HealthInstitution.GUI.DoctorView
         public void SetSelectedOperation(Operation operation)
         {
             _selectedOperation = operation;
+            Load();
         }
         public void Load()
         {

@@ -25,7 +25,7 @@ namespace HealthInstitution.GUI.DoctorView
         public EditExaminationDialog(IPatientService patientService, IMedicalRecordService medicalRecordService, IExaminationService examinationService)
         {
             InitializeComponent();
-            Load();
+            
             _patientService = patientService;
             _medicalRecordService = medicalRecordService;
             _examinationService = examinationService;
@@ -33,6 +33,7 @@ namespace HealthInstitution.GUI.DoctorView
         public void SetSelectedExamination(Examination examination)
         {
             _selectedExamination = examination;
+            Load();
         }
 
         public void Load()
