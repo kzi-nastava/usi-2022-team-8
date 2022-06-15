@@ -16,7 +16,7 @@ public class PrescriptionViewModel : ViewModelBase
     public int DailyDose => _presritpion.DailyDose;
     public PrescriptionTime TimeOfUse => _presritpion.TimeOfUse;
     public string Drug => _presritpion.Drug.Name;
-    public DateTime StartHours => _presritpion.HourlyRate;
+    public DateTime StartTime => _presritpion.HourlyRate;
 
     public PrescriptionViewModel(Prescription presritpion)
     {

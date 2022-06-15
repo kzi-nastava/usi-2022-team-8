@@ -6,18 +6,18 @@
         mc:Ignorable="d"
         Title="RecepieNotificationSettings" Height="450" Width="800">
     <Grid>
-        <DataGrid SelectedIndex="{Binding PSelectedPrescritpionIndex}"  ItemsSource="{Binding PrescritpionVMs}" AutoGenerateColumns="False" Name="dataGrid"  Height="250" VerticalAlignment="Top">
+        <DataGrid SelectedIndex="{Binding SelectedPrescritpionIndex}"  ItemsSource="{Binding PrescritpionVMs}" AutoGenerateColumns="False" Name="dataGrid"  Height="250" VerticalAlignment="Top">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Id" FontSize="18" Binding="{Binding Id}" Width ="140" />
                 <DataGridTextColumn Header="DailyDose" FontSize="18" Binding="{Binding DailyDose}" Width ="140" />
                 <DataGridTextColumn Header="PrescriprionTime" FontSize="18" Binding="{Binding TimeOfUse}" Width ="140" />
                 <DataGridTextColumn Header="Drug" FontSize="18" Binding="{Binding Drug}" Width ="140" />
-                <DataGridTextColumn Header="HourlyRate" FontSize="18" Binding="{Binding HourlyRate}" Width ="140" />
+                <DataGridTextColumn Header="HourlyRate" FontSize="18" Binding="{Binding StartTime}" Width ="140" />
             </DataGrid.Columns>
         </DataGrid>
         <Label Content="Time" HorizontalAlignment="Left" Margin="44,333,0,0" VerticalAlignment="Top" />
         <ComboBox ItemsSource="{Binding HourComboBoxItems}" HorizontalAlignment="Left" Margin="130,337,0,0" SelectedIndex="{Binding HourComboBoxSelectedIndex}" VerticalAlignment="Top" Width="45" />
         <ComboBox ItemsSource="{Binding MinuteComboBoxItems}" HorizontalAlignment="Left" SelectedIndex="{Binding MinuteComboBoxSelectedIndex}" Margin="225,337,0,0" VerticalAlignment="Top" Width="45" />
-        <Button Content="Set Time" HorizontalAlignment="Center" Margin="0,330,0,0" VerticalAlignment="Top" Height="32" Width="112" Command="{Binding SetNotificationTime}" />
+        <Button Content="Set Time" HorizontalAlignment="Center" Margin="0,330,0,0" VerticalAlignment="Top" Height="32" Width="112" Command="{Binding SetNotificationTimeCommand}" />
     </Grid>
 </Window>

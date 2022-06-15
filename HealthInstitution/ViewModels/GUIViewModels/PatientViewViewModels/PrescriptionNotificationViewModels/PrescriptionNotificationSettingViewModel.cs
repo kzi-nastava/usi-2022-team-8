@@ -1,4 +1,5 @@
-﻿using HealthInstitution.Core;
+﻿using HealthInstitution.Commands.PatientCommands;
+using HealthInstitution.Core;
 using HealthInstitution.Core.MedicalRecords;
 using HealthInstitution.Core.Prescriptions.Model;
 using HealthInstitution.Core.SystemUsers.Patients;
@@ -20,7 +21,7 @@ public class PrescriptionNotificationSettingViewModel : ViewModelBase
 
     public Patient LoggedPatient;
 
-    public int HourComboBoxSelectedintex
+    public int HourComboBoxSelectedIndex
     {
         get
         {
@@ -29,7 +30,7 @@ public class PrescriptionNotificationSettingViewModel : ViewModelBase
         set
         {
             _hourComboBoxSelectedIndex = value;
-            OnPropertyChanged(nameof(HourComboBoxSelectedintex));
+            OnPropertyChanged(nameof(HourComboBoxSelectedIndex));
         }
     }
 
@@ -132,13 +133,13 @@ public class PrescriptionNotificationSettingViewModel : ViewModelBase
         MinuteComboBoxLoad();
     }
 
-    private ICommand SetNotificationTime;
+    public ICommand SetNotificationTimeCommand { get; }
 
     private void GridRefresh()
     {
         _prescriptions.Clear();
         _prescriptionVMs.Clear();
-        _prescriptions = MedicalRecordService.GetByPatientUsername(PatientService.GetByUsername(_loggedPatient.Username)).Prescriptions;
+        _prescriptions = MedicalRecordService.GetByPatientUsername(PatientService.GetByUsername(LoggedPatient.Username)).Prescriptions;
 
         foreach (var prescription in _prescriptions)
         {
@@ -148,11 +149,23 @@ public class PrescriptionNotificationSettingViewModel : ViewModelBase
 
     public PrescriptionNotificationSettingViewModel(Patient loggedPatient)
     {
-        _loggedPatient = loggedPatient;
+        LoggedPatient = loggedPatient;
         PrescritpionVMs = new();
         _hourComboBoxItems = new();
         _minuteComboBoxItems = new();
+        _prescriptions = new();
         LoadComboBoxes();
         GridRefresh();
+        SetNotificationTimeCommand = new SetPrescriptionNotificationTimeCommand(this);
+    }
+
+    public Prescription GetSelectedPrescription()
+    {
+        return _prescriptions[SelectedPrescritpionIndex];
+    }
+
+    public DateTime GetbeforeTime()
+    {
+        return DateTime.Today.AddHours(HourComboBoxSelectedIndex).AddMinutes(MinuteComboBoxSelectedIndex);
     }
 }

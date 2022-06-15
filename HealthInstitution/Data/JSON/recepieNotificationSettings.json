@@ -1,1 +1,27 @@
-[{"BeforeAmmount":"2022-06-04T05:10:00+02:00","PatientUsername":"pera","Prescription":{"Id":4,"DailyDose":2,"TimeOfUse":"DuringMeal","Drug":{"Id":1,"Name":"Brufen","State":"Accepted","Ingredients":[{"Id":2,"Name":"bromazepam"}],"RejectionReason":""},"HourlyRate":"2022-05-15T00:00:00"},"LastUpdated":"2022-06-04T19:58:51.5063984+02:00","Id":4}]
+[
+
+  {
+    "BeforeAmmount": "2022-06-15T05:05:00+02:00",
+    "PatientUsername": "pera",
+    "Prescription": {
+      "Id": 4,
+      "DailyDose": 2,
+      "TimeOfUse": "DuringMeal",
+      "Drug": {
+        "Id": 1,
+        "Name": "Brufen",
+        "State": "Accepted",
+        "Ingredients": [
+          {
+            "Id": 2,
+            "Name": "bromazepam"
+          }
+        ],
+        "RejectionReason": ""
+      },
+      "HourlyRate": "2022-05-15T00:00:00"
+    },
+    "LastUpdated": "2022-06-15T18:13:17.8100058+02:00",
+    "Id": 4
+  }
+]

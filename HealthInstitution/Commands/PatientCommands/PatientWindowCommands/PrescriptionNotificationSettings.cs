@@ -1,5 +1,7 @@
 ﻿using HealthInstitution.Core;
+using HealthInstitution.Core.SystemUsers.Patients;
 using HealthInstitution.GUI.PatientView;
+using HealthInstitution.ViewModels.GUIViewModels.PatientViewViewModels.PrescriptionNotificationViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +21,10 @@ namespace HealthInstitution.Commands.PatientCommands.PatientWindowCommands
 
         public override void Execute(object? parameter)
         {
-            new RecepieNotificationSettingsDialog(_username).ShowDialog();
+            new RecepieNotificationSettingsDialog(_username)
+            {
+                DataContext = new PrescriptionNotificationSettingViewModel(PatientService.GetByUsername(_username))
+            }.ShowDialog();
         }
     }
 }
