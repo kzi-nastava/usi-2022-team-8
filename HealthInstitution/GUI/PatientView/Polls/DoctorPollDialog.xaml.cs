@@ -28,7 +28,7 @@ public partial class DoctorPollDialog : Window
     {
         InitializeComponent();
         _doctor = doctor;
-        LoadQuestionLabels();
+        //LoadQuestionLabels();
     }
 
     private void Button_Click(object sender, RoutedEventArgs e)

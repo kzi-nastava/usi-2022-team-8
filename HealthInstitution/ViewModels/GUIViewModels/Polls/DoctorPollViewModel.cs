@@ -1,5 +1,6 @@
 ﻿using HealthInstitution.Commands.PatientCommands.PollCommands;
 using HealthInstitution.Core;
+using HealthInstitution.Core.Polls;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using System;
 using System.Collections.Generic;
@@ -184,5 +185,16 @@ public class DoctorPollViewModel : ViewModelBase
     {
         Doctor = doctor;
         SubmitCommand = new PollSubmitCommand(this);
+        LoadLabels();
+    }
+
+    private void LoadLabels()
+    {
+        var questions = PollService.GetDoctorQuestions();
+        Q1Text = questions[0];
+        Q2Text = questions[1];
+        Q3Text = questions[2];
+        Q4Text = questions[3];
+        Q5Text = questions[4];
     }
 }
