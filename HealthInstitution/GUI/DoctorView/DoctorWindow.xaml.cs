@@ -18,6 +18,21 @@ using HealthInstitution.Core.Examinations.Repository;
 using HealthInstitution.Core.Notifications.Model;
 using HealthInstitution.Core.RestRequestNotifications.Model;
 using HealthInstitution.Core.SystemUsers.Doctors;
+using HealthInstitution.Core.DIContainer;
+using HealthInstitution.Core.Notifications;
+using HealthInstitution.Core.RestRequestNotifications;
+using HealthInstitution.Core.Examinations;
+using HealthInstitution.Core.Operations;
+using HealthInstitution.Core;
+using HealthInstitution.Core.Drugs;
+using HealthInstitution.Core.SystemUsers.Users;
+using HealthInstitution.Core.TrollCounters;
+using HealthInstitution.Core.SystemUsers.Patients;
+using HealthInstitution.Core.EquipmentTransfers;
+using HealthInstitution.Core.Renovations.Functionality;
+using HealthInstitution.Core.PrescriptionNotifications.Service;
+using HealthInstitution.Core.RestRequests;
+using HealthInstitution.Core.DoctorRatings;
 
 namespace HealthInstitution.GUI.DoctorView
 {
@@ -39,7 +54,7 @@ namespace HealthInstitution.GUI.DoctorView
         {
             if (_doctorService.GetActiveAppointmentNotification(_loggedDoctor).Count + _doctorService.GetActiveRestRequestNotification(_loggedDoctor).Count > 0)
             {
-                DoctorNotificationsDialog doctorNotificationsDialog = new DoctorNotificationsDialog(this._loggedDoctor);
+                DoctorNotificationsDialog doctorNotificationsDialog = new DoctorNotificationsDialog(this._loggedDoctor, DIContainer.GetService<IDoctorService>(), DIContainer.GetService<IAppointmentNotificationService>(), DIContainer.GetService<IRestRequestNotificationService>());
                 doctorNotificationsDialog.ShowDialog();
             }
         }
@@ -49,29 +64,37 @@ namespace HealthInstitution.GUI.DoctorView
             if (answer == MessageBoxResult.Yes)
             {
                 this.Close();
-                LoginWindow window = new LoginWindow();
+                LoginWindow window = new LoginWindow(DIContainer.GetService<IUserService>(),
+                                                    DIContainer.GetService<ITrollCounterService>(),
+                                                    DIContainer.GetService<IPatientService>(),
+                                                    DIContainer.GetService<IDoctorService>(),
+                                                    DIContainer.GetService<IEquipmentTransferRefreshingService>(),
+                                                    DIContainer.GetService<IRenovationRefreshingService>(),
+                                                    DIContainer.GetService<IPrescriptionNotificationService>(),
+                                                    DIContainer.GetService<IRestRequestService>(),
+                                                    DIContainer.GetService<IDoctorRatingsService>());
                 window.ShowDialog();
             }
         }
 
         private void Examinations_Click(object sender, RoutedEventArgs e)
         {
-            new ExaminationTable(this._loggedDoctor).ShowDialog();
+            new ExaminationTable(this._loggedDoctor, DIContainer.GetService<IExaminationService>(), DIContainer.GetService<IDoctorService>()).ShowDialog();
         }
 
         private void Operations_Click(object sender, RoutedEventArgs e)
         {
-            new OperationTable(this._loggedDoctor).ShowDialog();
+            new OperationTable(this._loggedDoctor, DIContainer.GetService<IOperationService>(), DIContainer.GetService<IDoctorService>()).ShowDialog();
         }
 
         private void ScheduleReview_Click(object sender, RoutedEventArgs e)
         {
-            new ScheduledExaminationTable(this._loggedDoctor).ShowDialog();
+            new ScheduledExaminationTable(this._loggedDoctor, DIContainer.GetService<ITimetableService>(), DIContainer.GetService<IExaminationService>()).ShowDialog();
         }
         
         private void ManageDrugs_Click(object sender, RoutedEventArgs e)
         {
-            new DrugsVerificationTable().ShowDialog();
+            new DrugsVerificationTable(DIContainer.GetService<IDrugVerificationService>(), DIContainer.GetService<IDrugService>()).ShowDialog();
         }
     }
 

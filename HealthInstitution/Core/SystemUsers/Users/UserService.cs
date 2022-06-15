@@ -9,6 +9,7 @@ namespace HealthInstitution.Core.SystemUsers.Users
         IUserRepository _userRepository;
         public UserService(IUserRepository userRepository)
         {
+            //_userRepository= DIContainer.GetService<IUserRepository>()
             _userRepository = userRepository;
         }
         public bool IsExist(string username)

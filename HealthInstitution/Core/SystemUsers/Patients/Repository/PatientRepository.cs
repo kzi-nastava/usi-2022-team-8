@@ -19,8 +19,6 @@ namespace HealthInstitution.Core.SystemUsers.Patients.Repository
         public List<Patient> Patients { get; set; }
         public Dictionary<string, Patient> PatientByUsername { get; set; }
 
-        private IMedicalRecordRepository _medicalRecordRepository;
-
         private JsonSerializerOptions _options = new JsonSerializerOptions
         {
             ReferenceHandler = ReferenceHandler.IgnoreCycles,
@@ -28,9 +26,8 @@ namespace HealthInstitution.Core.SystemUsers.Patients.Repository
             PropertyNameCaseInsensitive = true
         };
 
-        public PatientRepository(IMedicalRecordRepository medicalRecordRepository)
+        public PatientRepository()
         {
-            _medicalRecordRepository = medicalRecordRepository;
             this.Patients = new List<Patient>();
             this.PatientByUsername = new Dictionary<string, Patient>();
             this.LoadFromFile();
@@ -118,7 +115,6 @@ namespace HealthInstitution.Core.SystemUsers.Patients.Repository
         public void Delete(string username)
         {
             Patient patient = GetByUsername(username);
-            _medicalRecordRepository.Delete(patient);
             this.Patients.Remove(patient);
             this.PatientByUsername.Remove(username);
             Save();

@@ -65,7 +65,8 @@ namespace HealthInstitution.GUI.UserWindow
 
         private void EquipmentTransfer_Click(object sender, RoutedEventArgs e)
         {
-            EquipmentTransferDialog equipmentTransferDialog = new EquipmentTransferDialog(DIContainer.GetService<IRenovationService>(), DIContainer.GetService<IEquipmentService>(), DIContainer.GetService<IEquipmentTransferService>(), DIContainer.GetService<IRoomService>());
+            EquipmentTransferDialog equipmentTransferDialog = new EquipmentTransferDialog(DIContainer.GetService<IRenovationService>(), DIContainer.GetService<IEquipmentService>(),
+                                                                                            DIContainer.GetService<IEquipmentTransferService>(), DIContainer.GetService<IRoomService>());
             equipmentTransferDialog.ShowDialog();
         }
 

@@ -1,4 +1,5 @@
-﻿using HealthInstitution.Core.Drugs;
+﻿using HealthInstitution.Core.DIContainer;
+using HealthInstitution.Core.Drugs;
 using HealthInstitution.Core.Drugs.Model;
 using HealthInstitution.Core.Drugs.Repository;
 using System;
@@ -53,7 +54,7 @@ namespace HealthInstitution.GUI.DoctorView
         private void RejectButton_Click(object sender, RoutedEventArgs e)
         {
             Drug selectedDrug = (Drug)dataGrid.SelectedItem;
-            DrugRejectionReasonDialog drugRejectionReasonDialog = new DrugRejectionReasonDialog(selectedDrug);
+            DrugRejectionReasonDialog drugRejectionReasonDialog = new DrugRejectionReasonDialog(selectedDrug, DIContainer.GetService<IDrugVerificationService>());
             drugRejectionReasonDialog.ShowDialog();
             LoadRows();
             dataGrid.Items.Refresh();

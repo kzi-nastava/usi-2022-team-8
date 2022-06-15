@@ -1,9 +1,13 @@
-﻿using HealthInstitution.Core.Examinations;
+﻿using HealthInstitution.Core.DIContainer;
+using HealthInstitution.Core.Examinations;
 using HealthInstitution.Core.Examinations.Model;
 using HealthInstitution.Core.Examinations.Repository;
+using HealthInstitution.Core.MedicalRecords;
+using HealthInstitution.Core.Scheduling;
 using HealthInstitution.Core.SystemUsers.Doctors;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using HealthInstitution.Core.SystemUsers.Doctors.Repository;
+using HealthInstitution.Core.SystemUsers.Patients;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -48,7 +52,7 @@ namespace HealthInstitution.GUI.DoctorView
         }
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
-            new AddExaminationDialog(this._loggedDoctor).ShowDialog();
+            new AddExaminationDialog(this._loggedDoctor, DIContainer.GetService<IPatientService>(), DIContainer.GetService<IMedicalRecordService>(), DIContainer.GetService<ISchedulingService>()).ShowDialog();
             LoadRows();
             dataGrid.Items.Refresh();
         }
@@ -56,7 +60,7 @@ namespace HealthInstitution.GUI.DoctorView
         private void EditButton_Click(object sender, RoutedEventArgs e)
         {
             Examination selectedExamination = (Examination)dataGrid.SelectedItem;
-            new EditExaminationDialog(selectedExamination).ShowDialog();
+            new EditExaminationDialog(selectedExamination, DIContainer.GetService<IPatientService>(), DIContainer.GetService<IMedicalRecordService>(), DIContainer.GetService<IExaminationService>()).ShowDialog();
             LoadRows();
             dataGrid.Items.Refresh();
         }

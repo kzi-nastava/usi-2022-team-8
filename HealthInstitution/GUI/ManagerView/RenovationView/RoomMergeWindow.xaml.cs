@@ -58,7 +58,7 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
         private void RoomSplit_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
-            RoomSplitWindow roomSplitWindow = new RoomSplitWindow(DIContainer.GetService<IRoomService>(), DIContainer.GetService<IRenovationService>(), DIContainer.GetService<IEquipmentService>(), DIContainer.GetService<IRoomTimetableService>());
+            RoomSplitWindow roomSplitWindow = new RoomSplitWindow(DIContainer.GetService<IRoomService>(), DIContainer.GetService<IRenovationService>(), DIContainer.GetService<IEquipmentService>(), DIContainer.GetService<IRoomTimetableService > ());
             roomSplitWindow.ShowDialog();
         }
 

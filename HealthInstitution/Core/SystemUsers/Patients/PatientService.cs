@@ -78,6 +78,7 @@ namespace HealthInstitution.Core.SystemUsers.Patients
         }
         public void Delete(string username)
         {
+            _medicalRecordService.Delete(GetByUsername(username));
             _patientRepository.Delete(username);
             _trollCounterService.Delete(username);
             _userService.Delete(username);

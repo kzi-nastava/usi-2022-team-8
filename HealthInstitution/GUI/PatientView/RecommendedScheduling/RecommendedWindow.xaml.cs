@@ -17,6 +17,7 @@ using HealthInstitution.Core.SystemUsers.Doctors;
 using HealthInstitution.Core.Examinations.Model;
 using HealthInstitution.Core.Examinations;
 using HealthInstitution.Core.Scheduling;
+using HealthInstitution.Core.DIContainer;
 
 namespace HealthInstitution.GUI.PatientView
 {
@@ -135,7 +136,7 @@ namespace HealthInstitution.GUI.PatientView
                 var closestFitDTO = GenerateClosestFitDTO(dateTime, doctorPriority);
                 List<Examination> suggestions =
                     _recommendedSchedulingService.FindClosestFit(closestFitDTO);
-                new ClosestFit(suggestions).ShowDialog();
+                new ClosestFit(suggestions, DIContainer.GetService<IExaminationService>()).ShowDialog();
             }
             this.Close();
         }
