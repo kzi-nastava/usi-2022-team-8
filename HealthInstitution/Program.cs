@@ -161,7 +161,7 @@ namespace HealthInstitution
             }
 
 
-            services.RegisterTransient<IServiceInConstructorOfSomeService, ServiceInConstructorOfSomeService>();
+            //services.RegisterTransient<IServiceInConstructorOfSomeService, ServiceInConstructorOfSomeService>();
 
             services.RegisterSingleton<LoginWindow>();
 
@@ -169,8 +169,8 @@ namespace HealthInstitution
             services.BuildContainer();
             
 
-            var service1 = DIContainer.GetService<ISomeService>();
-            var service2 = DIContainer.GetService<ISomeService>();
+            //var service1 = DIContainer.GetService<ISomeService>();
+            //var service2 = DIContainer.GetService<ISomeService>();
 
             var loginWindow = DIContainer.GetService<LoginWindow>();
 

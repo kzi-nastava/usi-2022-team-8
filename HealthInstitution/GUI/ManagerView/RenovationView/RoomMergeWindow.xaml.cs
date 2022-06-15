@@ -1,4 +1,6 @@
-﻿using HealthInstitution.Core.EquipmentTransfers;
+﻿using HealthInstitution.Core.DIContainer;
+using HealthInstitution.Core.Equipments;
+using HealthInstitution.Core.EquipmentTransfers;
 using HealthInstitution.Core.EquipmentTransfers.Model;
 using HealthInstitution.Core.EquipmentTransfers.Repository;
 using HealthInstitution.Core.Examinations.Model;
@@ -49,14 +51,14 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
         private void SimpleRenovation_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
-            SimpleRenovationWindow simpleRenovationWindow = new SimpleRenovationWindow();
+            SimpleRenovationWindow simpleRenovationWindow = new SimpleRenovationWindow(DIContainer.GetService<IRoomService>(), DIContainer.GetService<IRoomTimetableService>(), DIContainer.GetService<IRenovationService>());
             simpleRenovationWindow.ShowDialog();
         }
 
         private void RoomSplit_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
-            RoomSplitWindow roomSplitWindow = new RoomSplitWindow();
+            RoomSplitWindow roomSplitWindow = new RoomSplitWindow(DIContainer.GetService<IRoomService>(), DIContainer.GetService<IRenovationService>(), DIContainer.GetService<IEquipmentService>(), DIContainer.GetService<IRoomTimetableService>());
             roomSplitWindow.ShowDialog();
         }
 

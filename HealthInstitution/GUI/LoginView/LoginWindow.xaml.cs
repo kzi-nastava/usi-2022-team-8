@@ -22,6 +22,7 @@ using HealthInstitution.Core.DoctorRatings;
 using HealthInstitution.Core.EquipmentTransfers;
 using HealthInstitution.Core.Renovations;
 using HealthInstitution.Core.RestRequests;
+using HealthInstitution.Core.DIContainer;
 
 namespace HealthInstitution.GUI.LoginView
 {
@@ -127,7 +128,15 @@ namespace HealthInstitution.GUI.LoginView
             _equipmentTransferRefreshingService.UpdateByTransfer();
             _renovationRefreshingService.UpdateByRenovation();
 
-            LoginWindow window = new LoginWindow();
+            LoginWindow window = new LoginWindow(DIContainer.GetService<IUserService>(),
+                                                    DIContainer.GetService<ITrollCounterService>(),
+                                                    DIContainer.GetService<IPatientService>(),
+                                                    DIContainer.GetService<IDoctorService>(),
+                                                    DIContainer.GetService<IEquipmentTransferRefreshingService>(),
+                                                    DIContainer.GetService<IRenovationRefreshingService>(),
+                                                    DIContainer.GetService<IPrescriptionNotificationService>(),
+                                                    DIContainer.GetService<IRestRequestService>(),
+                                                    DIContainer.GetService<IDoctorRatingsService>());
             window.ShowDialog();
         }
     }

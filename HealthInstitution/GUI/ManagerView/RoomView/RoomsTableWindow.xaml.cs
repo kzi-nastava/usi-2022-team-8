@@ -1,4 +1,5 @@
-﻿using HealthInstitution.Core.EquipmentTransfers.Repository;
+﻿using HealthInstitution.Core.DIContainer;
+using HealthInstitution.Core.EquipmentTransfers.Repository;
 using HealthInstitution.Core.Examinations.Repository;
 using HealthInstitution.Core.Operations.Repository;
 using HealthInstitution.Core.Renovations;
@@ -48,7 +49,7 @@ namespace HealthInstitution.GUI.ManagerView
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
-            AddRoomDialog addRoomDialog = new AddRoomDialog();
+            AddRoomDialog addRoomDialog = new AddRoomDialog(DIContainer.GetService<IRoomService>());
             addRoomDialog.ShowDialog();
 
             LoadRows();
@@ -65,7 +66,7 @@ namespace HealthInstitution.GUI.ManagerView
                 return;
             }
        
-            EditRoomDialog editRoomDialog = new EditRoomDialog(selectedRoom);
+            EditRoomDialog editRoomDialog = new EditRoomDialog(selectedRoom, DIContainer.GetService<IRoomService>());
             editRoomDialog.ShowDialog();
             dataGrid.SelectedItem = null;
             dataGrid.Items.Refresh();
