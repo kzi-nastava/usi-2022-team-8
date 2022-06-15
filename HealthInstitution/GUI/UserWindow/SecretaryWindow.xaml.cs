@@ -95,7 +95,6 @@ namespace HealthInstitution.GUI.UserWindow
             if (System.Windows.MessageBox.Show("Are you sure you want to log out?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
             {
                 this.Close();
-
                 LoginWindow window = DIContainer.GetService<LoginWindow>();               
                 window.ShowDialog();
             }

@@ -166,13 +166,14 @@ namespace HealthInstitution.GUI.LoginView
 
             var secretaryWindow = DIContainer.GetService<SecretaryWindow>();
             secretaryWindow.ShowDialog();
-            this.Close();
+
         }
 
         private void RedirectManager()
         {
             var managerWindow = DIContainer.GetService<ManagerWindow>();
             managerWindow.ShowDialog();
+
         }
 
         [STAThread]
@@ -276,82 +277,82 @@ namespace HealthInstitution.GUI.LoginView
 
             //view
             {
-                services.RegisterSingleton<ManagerWindow>();
-                services.RegisterSingleton<DoctorWindow>();
-                services.RegisterSingleton<PatientWindow>();
-                services.RegisterSingleton<SecretaryWindow>();
+                services.RegisterTransient<ManagerWindow>();
+                services.RegisterTransient<DoctorWindow>();
+                services.RegisterTransient<PatientWindow>();
+                services.RegisterTransient<SecretaryWindow>();
 
 
-                services.RegisterSingleton<AddDrugDialog>();
-                services.RegisterSingleton<DrugsVerificationTable>();
-                services.RegisterSingleton<EditDrugDialog>();
-                services.RegisterSingleton<RejectedDrugsTableWindow>();
-                services.RegisterSingleton<ReviseDrugDialog>();
-                services.RegisterSingleton<AddIngredientDialog>();
-                services.RegisterSingleton<EditIngredientDialog>();
-                services.RegisterSingleton<IngredientsTableWindow>();
-                services.RegisterSingleton<DoctorPollWindow>();
-                services.RegisterSingleton<HospitalPollWindow>();
-                services.RegisterSingleton<RatedDoctorsWindow>();
-                services.RegisterSingleton<ArrangeEquipmentForSplitWindow>();
-                services.RegisterSingleton<EquipmentTransferForSplitDialog>();
-                services.RegisterSingleton<RoomMergeWindow>();
-                services.RegisterSingleton<RoomSplitWindow>();
-                services.RegisterSingleton<SimpleRenovationWindow>();
-                services.RegisterSingleton<AddRoomDialog>();
-                services.RegisterSingleton<EditRoomDialog>();
-                services.RegisterSingleton<RoomsTableWindow>();
-                services.RegisterSingleton<EquipmentInspectionDialog>();
-                services.RegisterSingleton<EquipmentTableWindow>();
-                services.RegisterSingleton<EquipmentTransferDialog>();
+                services.RegisterTransient<AddDrugDialog>();
+                services.RegisterTransient<DrugsVerificationTable>();
+                services.RegisterTransient<EditDrugDialog>();
+                services.RegisterTransient<RejectedDrugsTableWindow>();
+                services.RegisterTransient<ReviseDrugDialog>();
+                services.RegisterTransient<AddIngredientDialog>();
+                services.RegisterTransient<EditIngredientDialog>();
+                services.RegisterTransient<IngredientsTableWindow>();
+                services.RegisterTransient<DoctorPollWindow>();
+                services.RegisterTransient<HospitalPollWindow>();
+                services.RegisterTransient<RatedDoctorsWindow>();
+                services.RegisterTransient<ArrangeEquipmentForSplitWindow>();
+                services.RegisterTransient<EquipmentTransferForSplitDialog>();
+                services.RegisterTransient<RoomMergeWindow>();
+                services.RegisterTransient<RoomSplitWindow>();
+                services.RegisterTransient<SimpleRenovationWindow>();
+                services.RegisterTransient<AddRoomDialog>();
+                services.RegisterTransient<EditRoomDialog>();
+                services.RegisterTransient<RoomsTableWindow>();
+                services.RegisterTransient<EquipmentInspectionDialog>();
+                services.RegisterTransient<EquipmentTableWindow>();
+                services.RegisterTransient<EquipmentTransferDialog>();
 
 
-                services.RegisterSingleton<HealthInstitution.GUI.DoctorView.AddExaminationDialog>();
-                services.RegisterSingleton<AddOperationDialog>();
-                services.RegisterSingleton<AddPrescriptionDialog>();
-                services.RegisterSingleton<AddReferralDialog>();
-                services.RegisterSingleton<ConsumedEquipmentDialog>();
-                services.RegisterSingleton<DoctorNotificationsDialog>();
-                services.RegisterSingleton<DrugRejectionReasonDialog>();
-                services.RegisterSingleton<DrugsVerificationTable>();
-                services.RegisterSingleton<HealthInstitution.GUI.DoctorView.EditExaminationDialog>();
-                services.RegisterSingleton<EditOperationDialog>();
-                services.RegisterSingleton<ExaminationTable>();
-                services.RegisterSingleton<MedicalRecordDialog>();
-                services.RegisterSingleton<OperationTable>();
-                services.RegisterSingleton<PerformExaminationDialog>();
-                services.RegisterSingleton<ScheduledExaminationTable>();
+                services.RegisterTransient<HealthInstitution.GUI.DoctorView.AddExaminationDialog>();
+                services.RegisterTransient<AddOperationDialog>();
+                services.RegisterTransient<AddPrescriptionDialog>();
+                services.RegisterTransient<AddReferralDialog>();
+                services.RegisterTransient<ConsumedEquipmentDialog>();
+                services.RegisterTransient<DoctorNotificationsDialog>();
+                services.RegisterTransient<DrugRejectionReasonDialog>();
+                services.RegisterTransient<DrugsVerificationTable>();
+                services.RegisterTransient<HealthInstitution.GUI.DoctorView.EditExaminationDialog>();
+                services.RegisterTransient<EditOperationDialog>();
+                services.RegisterTransient<ExaminationTable>();
+                services.RegisterTransient<MedicalRecordDialog>();
+                services.RegisterTransient<OperationTable>();
+                services.RegisterTransient<PerformExaminationDialog>();
+                services.RegisterTransient<ScheduledExaminationTable>();
 
-                services.RegisterSingleton<DoctorPollDialog>();
-                services.RegisterSingleton<PatientHospitalPollDialog>();
-                services.RegisterSingleton<RecepieNotificationDialog>();
-                services.RegisterSingleton<RecepieNotificationSettingsDialog>();
-                services.RegisterSingleton<ClosestFit>();
-                services.RegisterSingleton<RecommendedWindow>();
-                services.RegisterSingleton<HealthInstitution.GUI.PatientView.AddExaminationDialog>();
-                services.RegisterSingleton<HealthInstitution.GUI.PatientWindows.EditExaminationDialog>();
-                services.RegisterSingleton<PatientScheduleWindow>();
-                services.RegisterSingleton<DoctorPickExamination>();
-                services.RegisterSingleton<MedicalRecordView>();
-                services.RegisterSingleton<PatientNotificationsDialog>();
+                services.RegisterTransient<DoctorPollDialog>();
+                services.RegisterTransient<PatientHospitalPollDialog>();
+                services.RegisterTransient<RecepieNotificationDialog>();
+                services.RegisterTransient<RecepieNotificationSettingsDialog>();
+                services.RegisterTransient<ClosestFit>();
+                services.RegisterTransient<RecommendedWindow>();
+                services.RegisterTransient<HealthInstitution.GUI.PatientView.AddExaminationDialog>();
+                services.RegisterTransient<HealthInstitution.GUI.PatientWindows.EditExaminationDialog>();
+                services.RegisterTransient<PatientScheduleWindow>();
+                services.RegisterTransient<DoctorPickExamination>();
+                services.RegisterTransient<MedicalRecordView>();
+                services.RegisterTransient<PatientNotificationsDialog>();
 
-                services.RegisterSingleton<DynamicEquipmentPurchaseDialog>();
-                services.RegisterSingleton<DynamicEquipmentReviewDialog>();
-                services.RegisterSingleton<DynamicEquipmentTransferDialog>();
-                services.RegisterSingleton<CreatePatientDialog>();
-                services.RegisterSingleton<PatientsTable>();
-                services.RegisterSingleton<UpdatePatientWindow>();
-                services.RegisterSingleton<AddExaminationWithReferralDialog>();
-                services.RegisterSingleton<PatientReferralsDialog>();
-                services.RegisterSingleton<PatientSelectionDialog>();
-                services.RegisterSingleton<ExaminationRequestsReview>();
-                services.RegisterSingleton<RestRequestRejectionDialog>();
-                services.RegisterSingleton<RestRequestsReview>();
-                services.RegisterSingleton<AddUrgentExaminationDialog>();
-                services.RegisterSingleton<AddUrgentOperationDialog>();
-                services.RegisterSingleton<DelayExaminationOperationDialog>();
-                services.RegisterSingleton<UrgentExaminationDialog>();
-                services.RegisterSingleton<UrgentOperationDialog>();
+                services.RegisterTransient<DynamicEquipmentPurchaseDialog>();
+                services.RegisterTransient<DynamicEquipmentReviewDialog>();
+                services.RegisterTransient<DynamicEquipmentTransferDialog>();
+                services.RegisterTransient<CreatePatientDialog>();
+                services.RegisterTransient<PatientsTable>();
+                services.RegisterTransient<UpdatePatientWindow>();
+                services.RegisterTransient<AddExaminationWithReferralDialog>();
+                services.RegisterTransient<PatientReferralsDialog>();
+                services.RegisterTransient<PatientSelectionDialog>();
+                services.RegisterTransient<ExaminationRequestsReview>();
+                services.RegisterTransient<RestRequestRejectionDialog>();
+                services.RegisterTransient<RestRequestsReview>();
+                services.RegisterTransient<AddUrgentExaminationDialog>();
+                services.RegisterTransient<AddUrgentOperationDialog>();
+                services.RegisterTransient<DelayExaminationOperationDialog>();
+                services.RegisterTransient<UrgentExaminationDialog>();
+                services.RegisterTransient<UrgentOperationDialog>();
             }
 
             services.RegisterTransient<LoginWindow>();
