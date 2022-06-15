@@ -89,7 +89,7 @@ namespace HealthInstitution.GUI.ManagerView.DrugView
             reasonLabel.Content = "";
             Drug selectedDrug = (Drug)drugsDataGrid.SelectedItem;
 
-            ReviseDrugDialog reviseDrugDialog = new ReviseDrugDialog(selectedDrug);
+            ReviseDrugDialog reviseDrugDialog = new ReviseDrugDialog(selectedDrug,);
             reviseDrugDialog.ShowDialog();
             drugsDataGrid.SelectedItem = null;
             LoadRows();
