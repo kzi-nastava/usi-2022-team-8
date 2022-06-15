@@ -1,4 +1,5 @@
-﻿using HealthInstitution.Core.Equipments;
+﻿using HealthInstitution.Core.DIContainer;
+using HealthInstitution.Core.Equipments;
 using HealthInstitution.Core.Equipments.Model;
 using HealthInstitution.Core.Rooms;
 using HealthInstitution.Core.Rooms.Model;
@@ -124,7 +125,8 @@ namespace HealthInstitution.GUI.ManagerView
             }
 
             this.Close();
-            EquipmentTableWindow equipmentTableWindow = new EquipmentTableWindow(items);
+            EquipmentTableWindow equipmentTableWindow = DIContainer.GetService<EquipmentTableWindow>();
+            equipmentTableWindow.SetTableItems(items);
             equipmentTableWindow.ShowDialog();
         }
 
@@ -177,7 +179,8 @@ namespace HealthInstitution.GUI.ManagerView
             }
 
             this.Close();
-            EquipmentTableWindow equipmentTableWindow = new EquipmentTableWindow(items);
+            EquipmentTableWindow equipmentTableWindow = DIContainer.GetService<EquipmentTableWindow>();
+            equipmentTableWindow.SetTableItems(items);
             equipmentTableWindow.ShowDialog();
         }     
 
@@ -190,7 +193,8 @@ namespace HealthInstitution.GUI.ManagerView
                 return;
             }
             this.Close();
-            EquipmentTableWindow equipmentTableWindow = new EquipmentTableWindow(items);
+            EquipmentTableWindow equipmentTableWindow = DIContainer.GetService<EquipmentTableWindow>();
+            equipmentTableWindow.SetTableItems(items);
             equipmentTableWindow.ShowDialog();
         }
 

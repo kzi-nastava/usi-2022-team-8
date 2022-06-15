@@ -1,4 +1,5 @@
-﻿using HealthInstitution.Core.DoctorRatings;
+﻿using HealthInstitution.Core.DIContainer;
+using HealthInstitution.Core.DoctorRatings;
 using HealthInstitution.Core.Polls;
 using HealthInstitution.Core.Polls.Model;
 using HealthInstitution.Core.SystemUsers.Doctors;
@@ -59,14 +60,18 @@ namespace HealthInstitution.GUI.ManagerView.PollView
         private void TopRated_Click(object sender, RoutedEventArgs e)
         {
             var topRatedDoctors = _doctorRatingsService.GetTopRated(3);
-            RatedDoctorsWindow ratedDoctorsWindow = new RatedDoctorsWindow(topRatedDoctors);
+
+            RatedDoctorsWindow ratedDoctorsWindow = DIContainer.GetService<RatedDoctorsWindow>();
+            ratedDoctorsWindow.SetDoctors(topRatedDoctors);
             ratedDoctorsWindow.ShowDialog();
         }
 
         private void WorstRated_Click(object sender, RoutedEventArgs e)
         {
             var worstRatedDoctors = _doctorRatingsService.GetWorstRated(3);
-            RatedDoctorsWindow ratedDoctorsWindow = new RatedDoctorsWindow(worstRatedDoctors);
+
+            RatedDoctorsWindow ratedDoctorsWindow = DIContainer.GetService<RatedDoctorsWindow>();
+            ratedDoctorsWindow.SetDoctors(worstRatedDoctors);
             ratedDoctorsWindow.ShowDialog();
         }
 

@@ -47,7 +47,11 @@ public partial class PatientScheduleWindow : Window
     private void AddButton_click(object sender, RoutedEventArgs e)
     {
         _trollCounterService.TrollCheck(_loggedPatient.Username);
-        new AddExaminationDialog(_loggedPatient, DIContainer.GetService<IDoctorService>(), DIContainer.GetService<IMedicalRecordService>(), DIContainer.GetService<ISchedulingService>()).ShowDialog();
+
+        AddExaminationDialog addExaminationDialog = DIContainer.GetService<AddExaminationDialog>();
+        addExaminationDialog.SetLoggedPatient(_loggedPatient);
+        addExaminationDialog.ShowDialog();
+        
         GridRefresh();
         _trollCounterService.AppendCreateDates(_loggedPatient.Username);
     }
@@ -56,7 +60,11 @@ public partial class PatientScheduleWindow : Window
     {
         _trollCounterService.TrollCheck(_loggedPatient.Username);
         Examination selectedExamination = (Examination)dataGrid.SelectedItem;
-        new EditExaminationDialog(selectedExamination, DIContainer.GetService<IDoctorService>(), DIContainer.GetService<IExaminationService>(), DIContainer.GetService<IEditSchedulingService>(), DIContainer.GetService<IScheduleEditRequestsService>()).ShowDialog();
+
+        EditExaminationDialog editExaminationDialog = DIContainer.GetService<EditExaminationDialog>();
+        editExaminationDialog.SetExamination(selectedExamination);
+        editExaminationDialog.ShowDialog();
+        
         GridRefresh();
         _trollCounterService.AppendEditDeleteDates(_loggedPatient.Username);
     }

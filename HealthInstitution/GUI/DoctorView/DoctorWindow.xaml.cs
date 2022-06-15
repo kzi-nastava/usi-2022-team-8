@@ -57,8 +57,10 @@ namespace HealthInstitution.GUI.DoctorView
         {
             if (_doctorService.GetActiveAppointmentNotification(_loggedDoctor).Count + _doctorService.GetActiveRestRequestNotification(_loggedDoctor).Count > 0)
             {
-                DoctorNotificationsDialog doctorNotificationsDialog = new DoctorNotificationsDialog(this._loggedDoctor, DIContainer.GetService<IDoctorService>(), DIContainer.GetService<IAppointmentNotificationService>(), DIContainer.GetService<IRestRequestNotificationService>());
+                DoctorNotificationsDialog doctorNotificationsDialog = DIContainer.GetService<DoctorNotificationsDialog>();
+                doctorNotificationsDialog.SetLoggedDoctor(this._loggedDoctor);
                 doctorNotificationsDialog.ShowDialog();
+                    
             }
         }
         private void LogOut_Click(object sender, RoutedEventArgs e)
@@ -67,37 +69,37 @@ namespace HealthInstitution.GUI.DoctorView
             if (answer == MessageBoxResult.Yes)
             {
                 this.Close();
-                LoginWindow window = new LoginWindow(DIContainer.GetService<IUserService>(),
-                                                    DIContainer.GetService<ITrollCounterService>(),
-                                                    DIContainer.GetService<IPatientService>(),
-                                                    DIContainer.GetService<IDoctorService>(),
-                                                    DIContainer.GetService<IEquipmentTransferRefreshingService>(),
-                                                    DIContainer.GetService<IRenovationRefreshingService>(),
-                                                    DIContainer.GetService<IPrescriptionNotificationService>(),
-                                                    DIContainer.GetService<IRestRequestService>(),
-                                                    DIContainer.GetService<IDoctorRatingsService>());
+
+                LoginWindow window = DIContainer.GetService<LoginWindow>();
                 window.ShowDialog();
             }
         }
 
         private void Examinations_Click(object sender, RoutedEventArgs e)
         {
-            new ExaminationTable(this._loggedDoctor, DIContainer.GetService<IExaminationService>(), DIContainer.GetService<IDoctorService>()).ShowDialog();
+            ExaminationTable examinationTable = DIContainer.GetService<ExaminationTable>();
+            examinationTable.SetLoggedDoctor(_loggedDoctor);
+            examinationTable.ShowDialog();           
         }
 
         private void Operations_Click(object sender, RoutedEventArgs e)
         {
-            new OperationTable(this._loggedDoctor, DIContainer.GetService<IOperationService>(), DIContainer.GetService<IDoctorService>()).ShowDialog();
+            OperationTable operationTable = DIContainer.GetService<OperationTable>();
+            operationTable.SetLoggedDoctor(_loggedDoctor);
+            operationTable.ShowDialog();            
         }
 
         private void ScheduleReview_Click(object sender, RoutedEventArgs e)
         {
-            new ScheduledExaminationTable(this._loggedDoctor, DIContainer.GetService<ITimetableService>(), DIContainer.GetService<IExaminationService>()).ShowDialog();
+            ScheduledExaminationTable scheduledExaminationTable = DIContainer.GetService<ScheduledExaminationTable>();
+            scheduledExaminationTable.SetLoggedDoctor(_loggedDoctor);
+            scheduledExaminationTable.ShowDialog();          
         }
         
         private void ManageDrugs_Click(object sender, RoutedEventArgs e)
         {
-            new DrugsVerificationTable(DIContainer.GetService<IDrugVerificationService>(), DIContainer.GetService<IDrugService>()).ShowDialog();
+            DrugsVerificationTable drugsVerificationTable = DIContainer.GetService<DrugsVerificationTable>();
+            drugsVerificationTable.ShowDialog();
         }
     }
 

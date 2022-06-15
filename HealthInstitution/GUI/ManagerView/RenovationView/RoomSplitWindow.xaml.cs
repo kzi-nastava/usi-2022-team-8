@@ -60,14 +60,15 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
         private void SimpleRenovation_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
-            SimpleRenovationWindow simpleRenovationindow = new SimpleRenovationWindow(DIContainer.GetService<IRoomService>(), DIContainer.GetService<IRoomTimetableService > (),DIContainer.GetService<IRenovationService>());
-            simpleRenovationindow.ShowDialog();
+
+            SimpleRenovationWindow simpleRenovationWindow = DIContainer.GetService<SimpleRenovationWindow>();
+            simpleRenovationWindow.ShowDialog();
         }
 
         private void RoomMerge_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
-            RoomMergeWindow roomMergeWindow = new RoomMergeWindow(DIContainer.GetService< IRoomTimetableService>(), DIContainer.GetService<IRenovationService>(), DIContainer.GetService<IRoomService>());
+            RoomMergeWindow roomMergeWindow = DIContainer.GetService<RoomMergeWindow>();
             roomMergeWindow.ShowDialog();
         }
 
@@ -309,7 +310,8 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
             {
                 _firstRoomEquipmentFromArranging = _equipmentService.CopyEquipments(_roomService.GetAvailableEquipment(selectedRoom));
             }
-            ArrangeEquipmentForSplitWindow arrangeEquipmentForSplitWindow = new ArrangeEquipmentForSplitWindow(_firstRoomEquipmentFromArranging,_secondRoomEquipmentFromArranging);
+            ArrangeEquipmentForSplitWindow arrangeEquipmentForSplitWindow = DIContainer.GetService<ArrangeEquipmentForSplitWindow>();
+            arrangeEquipmentForSplitWindow.SetEquipmentCollections(_firstRoomEquipmentFromArranging, _secondRoomEquipmentFromArranging);
             arrangeEquipmentForSplitWindow.ShowDialog();
         }
 

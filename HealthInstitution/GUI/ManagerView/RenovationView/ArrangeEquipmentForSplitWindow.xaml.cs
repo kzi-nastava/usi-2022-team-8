@@ -75,7 +75,8 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
 
         private void TransferToFirst_Click(object sender, RoutedEventArgs e)
         {
-            EquipmentTransferForSplitDialog equipmentTransferForSplitDialog = new EquipmentTransferForSplitDialog(_secondRoomEquipments,_firstRoomEquipments, DIContainer.GetService<IEquipmentTransferService>());
+            EquipmentTransferForSplitDialog equipmentTransferForSplitDialog = DIContainer.GetService<EquipmentTransferForSplitDialog>();
+            equipmentTransferForSplitDialog.SetEquipmentCollections(_secondRoomEquipments, _firstRoomEquipments);
             equipmentTransferForSplitDialog.ShowDialog();
 
             Load();
@@ -87,7 +88,8 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
 
         private void TransferToSecond_Click(object sender, RoutedEventArgs e)
         {
-            EquipmentTransferForSplitDialog equipmentTransferForSplitDialog = new EquipmentTransferForSplitDialog(_firstRoomEquipments,_secondRoomEquipments, DIContainer.GetService<IEquipmentTransferService>());
+            EquipmentTransferForSplitDialog equipmentTransferForSplitDialog = DIContainer.GetService<EquipmentTransferForSplitDialog>();
+            equipmentTransferForSplitDialog.SetEquipmentCollections(_firstRoomEquipments, _secondRoomEquipments);
             equipmentTransferForSplitDialog.ShowDialog();
 
             Load();

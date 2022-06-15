@@ -57,7 +57,8 @@ namespace HealthInstitution.GUI.SecretaryView.RequestsView
             RestRequest selectedRequest = (RestRequest)dataGrid.SelectedItem;
             if (selectedRequest != null)
             {
-                RestRequestRejectionDialog restRequestRejectionDialog = new RestRequestRejectionDialog(selectedRequest, DIContainer.GetService<IRestRequestService>());
+                RestRequestRejectionDialog restRequestRejectionDialog = DIContainer.GetService<RestRequestRejectionDialog>();
+                restRequestRejectionDialog.SetSelectedRequest(selectedRequest);               
                 restRequestRejectionDialog.ShowDialog();    
             }
             LoadRows();

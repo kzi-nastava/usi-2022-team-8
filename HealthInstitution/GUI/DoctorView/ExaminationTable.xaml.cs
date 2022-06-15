@@ -54,7 +54,10 @@ namespace HealthInstitution.GUI.DoctorView
         }
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
-            new AddExaminationDialog(this._loggedDoctor, DIContainer.GetService<IPatientService>(), DIContainer.GetService<IMedicalRecordService>(), DIContainer.GetService<ISchedulingService>()).ShowDialog();
+            AddExaminationDialog dialog = DIContainer.GetService<AddExaminationDialog>();
+            dialog.SetLoggedDoctor(this._loggedDoctor);
+            dialog.ShowDialog();
+            
             LoadRows();
             dataGrid.Items.Refresh();
         }
@@ -62,7 +65,11 @@ namespace HealthInstitution.GUI.DoctorView
         private void EditButton_Click(object sender, RoutedEventArgs e)
         {
             Examination selectedExamination = (Examination)dataGrid.SelectedItem;
-            new EditExaminationDialog(selectedExamination, DIContainer.GetService<IPatientService>(), DIContainer.GetService<IMedicalRecordService>(), DIContainer.GetService<IExaminationService>()).ShowDialog();
+
+            EditExaminationDialog dialog = DIContainer.GetService<EditExaminationDialog>();
+            dialog.SetSelectedExamination(selectedExamination);
+            dialog.ShowDialog();
+            
             LoadRows();
             dataGrid.Items.Refresh();
         }

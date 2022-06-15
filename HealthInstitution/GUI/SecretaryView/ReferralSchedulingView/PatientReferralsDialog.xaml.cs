@@ -50,7 +50,8 @@ namespace HealthInstitution.GUI.SecretaryView
             Referral selectedReferral = (Referral)dataGrid.SelectedItem;
             if (selectedReferral != null)
             {
-                AddExaminationWithReferralDialog addExaminationWithReferralDialog = new AddExaminationWithReferralDialog(selectedReferral,_medicalRecord, DIContainer.GetService<ISchedulingService>());
+                AddExaminationWithReferralDialog addExaminationWithReferralDialog = DIContainer.GetService<AddExaminationWithReferralDialog>();
+                addExaminationWithReferralDialog.SetReferral(selectedReferral, _medicalRecord);                
                 addExaminationWithReferralDialog.ShowDialog();
                 dataGrid.SelectedItem = null;
                 LoadRows();

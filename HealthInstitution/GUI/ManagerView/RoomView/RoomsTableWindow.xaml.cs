@@ -49,7 +49,7 @@ namespace HealthInstitution.GUI.ManagerView
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
-            AddRoomDialog addRoomDialog = new AddRoomDialog(DIContainer.GetService<IRoomService>());
+            AddRoomDialog addRoomDialog = DIContainer.GetService<AddRoomDialog>();
             addRoomDialog.ShowDialog();
 
             LoadRows();
@@ -65,9 +65,11 @@ namespace HealthInstitution.GUI.ManagerView
                 dataGrid.SelectedItem = null;
                 return;
             }
-       
-            EditRoomDialog editRoomDialog = new EditRoomDialog(selectedRoom, DIContainer.GetService<IRoomService>());
+
+            EditRoomDialog editRoomDialog = DIContainer.GetService<EditRoomDialog>();
+            editRoomDialog.SetSelectedRoom(selectedRoom);        
             editRoomDialog.ShowDialog();
+
             dataGrid.SelectedItem = null;
             dataGrid.Items.Refresh();
         }

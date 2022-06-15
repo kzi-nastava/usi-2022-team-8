@@ -51,8 +51,10 @@ namespace HealthInstitution.GUI.SecretaryView
             MedicalRecord selectedMedicalRecord = (MedicalRecord)dataGrid.SelectedItem;
             if (selectedMedicalRecord != null)
             {
-                PatientReferralsDialog patientReferralsDialog = new PatientReferralsDialog(selectedMedicalRecord);
+                PatientReferralsDialog patientReferralsDialog = DIContainer.GetService<PatientReferralsDialog>();
+                patientReferralsDialog.SetSelectedMedicalRecord(selectedMedicalRecord);               
                 patientReferralsDialog.ShowDialog();
+
                 dataGrid.SelectedItem = null;
 
             }

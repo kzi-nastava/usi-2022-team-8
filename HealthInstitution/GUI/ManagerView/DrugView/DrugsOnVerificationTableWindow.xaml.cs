@@ -71,7 +71,7 @@ namespace HealthInstitution.GUI.ManagerView.DrugView
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
-            AddDrugDialog addDrugDialog = new AddDrugDialog(DIContainer.GetService<IDrugService>(), DIContainer.GetService<IIngredientService>());
+            AddDrugDialog addDrugDialog = DIContainer.GetService<AddDrugDialog>();           
             addDrugDialog.ShowDialog();
 
             LoadRows();
@@ -82,8 +82,10 @@ namespace HealthInstitution.GUI.ManagerView.DrugView
         {
             Drug selectedDrug = (Drug)drugsDataGrid.SelectedItem;
 
-            EditDrugDialog editDrugDialog = new EditDrugDialog(selectedDrug, DIContainer.GetService<IDrugService>(), DIContainer.GetService<IIngredientService>());
+            EditDrugDialog editDrugDialog = DIContainer.GetService<EditDrugDialog>();
+            editDrugDialog.SetDrug(selectedDrug);            
             editDrugDialog.ShowDialog();
+
             drugsDataGrid.SelectedItem = null;
             drugsDataGrid.Items.Refresh();
         }

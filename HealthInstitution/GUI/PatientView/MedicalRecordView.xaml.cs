@@ -73,6 +73,9 @@ public partial class MedicalRecordView : Window
     private void RateDoctorButton_Click(object sender, RoutedEventArgs e)
     {
         Examination selectedExamination = (Examination)dataGrid.SelectedItem;
-        new DoctorPollDialog(selectedExamination.Doctor, DIContainer.GetService<IPollService>()).ShowDialog();
+
+        DoctorPollDialog doctorPollDialog = DIContainer.GetService<DoctorPollDialog>();
+        doctorPollDialog.SetRatedDoctor(selectedExamination.Doctor);
+        doctorPollDialog.ShowDialog();
     }
 }

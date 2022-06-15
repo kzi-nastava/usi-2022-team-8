@@ -36,7 +36,7 @@ namespace HealthInstitution.GUI.UserWindow
         }
         private void CreatePatient_Click(object sender, RoutedEventArgs e)
         {
-            CreatePatientDialog createPatientDialog = new CreatePatientDialog(DIContainer.GetService<IPatientService>(), DIContainer.GetService<IUserService>());
+            CreatePatientDialog createPatientDialog = DIContainer.GetService<CreatePatientDialog>();          
             createPatientDialog.ShowDialog();
             LoadRows();
         }
@@ -46,8 +46,10 @@ namespace HealthInstitution.GUI.UserWindow
             Patient selectedPatient = (Patient)dataGrid.SelectedItem;
             if (selectedPatient != null) 
             {
-                UpdatePatientWindow updatePatientWindow = new UpdatePatientWindow(selectedPatient, DIContainer.GetService<IPatientService>());
+                UpdatePatientWindow updatePatientWindow = DIContainer.GetService<UpdatePatientWindow>();
+                updatePatientWindow.SetSelectedPatient(selectedPatient);               
                 updatePatientWindow.ShowDialog();
+
                 dataGrid.SelectedItem = null;
                 LoadRows();
             }

@@ -43,7 +43,10 @@ namespace HealthInstitution.GUI.DoctorView
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
-            new AddOperationDialog(this._loggedDoctor, DIContainer.GetService<IPatientService>(), DIContainer.GetService<IMedicalRecordService>(), DIContainer.GetService<ISchedulingService>()).ShowDialog();
+            AddOperationDialog dialog = DIContainer.GetService<AddOperationDialog>();
+            dialog.SetLoggedDoctor(this._loggedDoctor);
+            dialog.ShowDialog();
+            
             LoadRows();
             dataGrid.Items.Refresh();
         }
@@ -51,7 +54,11 @@ namespace HealthInstitution.GUI.DoctorView
         private void EditButton_Click(object sender, RoutedEventArgs e)
         {
             Operation selectedOperation = (Operation)dataGrid.SelectedItem;
-            new EditOperationDialog(selectedOperation, DIContainer.GetService<IPatientService>(), DIContainer.GetService<IMedicalRecordService>(), DIContainer.GetService<IOperationService>()).ShowDialog();
+
+            EditOperationDialog dialog = DIContainer.GetService<EditOperationDialog>();
+            dialog.SetSelectedOperation(selectedOperation);
+            dialog.ShowDialog();
+      
             LoadRows();
             dataGrid.Items.Refresh();
         }

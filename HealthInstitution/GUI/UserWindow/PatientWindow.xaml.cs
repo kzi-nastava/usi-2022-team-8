@@ -41,13 +41,17 @@ namespace HealthInstitution.GUI.UserWindow
         {
             _loggedPatient = patient;
             ShowNotificationsDialog();
-            new RecepieNotificationDialog(_loggedPatient.Username, DIContainer.GetService<IPrescriptionNotificationService>()).ShowDialog();
+
+            RecepieNotificationDialog recepieNotificationDialog = DIContainer.GetService<RecepieNotificationDialog>();
+            recepieNotificationDialog.SetLoggedPatient(_loggedPatient.Username);
+            recepieNotificationDialog.ShowDialog();            
         }
         private void ShowNotificationsDialog()
         {
             if (_patientService.GetActiveAppointmentNotification(_loggedPatient).Count>0)
             {
-                PatientNotificationsDialog patientNotificationsDialog = new PatientNotificationsDialog(this._loggedPatient, DIContainer.GetService<IPatientService>(), DIContainer.GetService<IAppointmentNotificationService>());
+                PatientNotificationsDialog patientNotificationsDialog = DIContainer.GetService<PatientNotificationsDialog>();
+                patientNotificationsDialog.SetLoggedPatient(_loggedPatient);
                 patientNotificationsDialog.ShowDialog();
             }
         }
@@ -57,47 +61,50 @@ namespace HealthInstitution.GUI.UserWindow
             if (System.Windows.MessageBox.Show("Are you sure you want to log out?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
             {
                 this.Close();
-                LoginWindow window = new LoginWindow(DIContainer.GetService<IUserService>(),
-                                                    DIContainer.GetService<ITrollCounterService>(),
-                                                    DIContainer.GetService<IPatientService>(),
-                                                    DIContainer.GetService<IDoctorService>(),
-                                                    DIContainer.GetService<IEquipmentTransferRefreshingService>(),
-                                                    DIContainer.GetService<IRenovationRefreshingService>(),
-                                                    DIContainer.GetService<IPrescriptionNotificationService>(),
-                                                    DIContainer.GetService<IRestRequestService>(),
-                                                    DIContainer.GetService<IDoctorRatingsService>());
+                LoginWindow window = DIContainer.GetService<LoginWindow>();               
                 window.ShowDialog();
             }
         }
 
         private void ManuallSchedule_Click(object sender, RoutedEventArgs e)
         {
-            new PatientScheduleWindow(this._loggedPatient, DIContainer.GetService<IExaminationService>(), DIContainer.GetService<ITrollCounterService>(), DIContainer.GetService<IScheduleEditRequestsService>()).ShowDialog();
+            PatientScheduleWindow patientScheduleWindow = DIContainer.GetService<PatientScheduleWindow>();
+            patientScheduleWindow.SetLoggedPatient(_loggedPatient);
+            patientScheduleWindow.ShowDialog();
         }
 
         private void RecommendedSchedule_Click(object sender, RoutedEventArgs e)
         {
-            new RecommendedWindow(this._loggedPatient, DIContainer.GetService<IRecommendedSchedulingService>(), DIContainer.GetService<IDoctorService>()).ShowDialog();
+            RecommendedWindow recommendedWindow = DIContainer.GetService<RecommendedWindow>();
+            recommendedWindow.SetLoggedPatient(_loggedPatient);
+            recommendedWindow.ShowDialog();           
         }
 
         private void MedicalRecordView_button_Click(object sender, RoutedEventArgs e)
         {
-            new MedicalRecordView(_loggedPatient, DIContainer.GetService<IExaminationService>()).ShowDialog();
+            MedicalRecordView medicalRecordView = DIContainer.GetService<MedicalRecordView>();
+            medicalRecordView.SetLoggedPatient(_loggedPatient);
+            medicalRecordView.ShowDialog();       
         }
 
         private void PickDoctor_button_Click(object sender, RoutedEventArgs e)
         {
-            new DoctorPickExamination(_loggedPatient, DIContainer.GetService<IDoctorService>()).ShowDialog();
+            DoctorPickExamination doctorPickExamination = DIContainer.GetService<DoctorPickExamination>();
+            doctorPickExamination.SetLoggedPatient(_loggedPatient);
+            doctorPickExamination.ShowDialog();            
         }
 
         private void RecepieNotificationSettings_button_Click(object sender, RoutedEventArgs e)
         {
-            new RecepieNotificationSettingsDialog(_loggedPatient.Username, DIContainer.GetService<IMedicalRecordService>(), DIContainer.GetService<IPatientService>(), DIContainer.GetService<IPrescriptionNotificationService>()).ShowDialog();
+            RecepieNotificationSettingsDialog recepieNotificationSettingsDialog = DIContainer.GetService<RecepieNotificationSettingsDialog>();
+            recepieNotificationSettingsDialog.SetLoggedPatient(_loggedPatient.Username);
+            recepieNotificationSettingsDialog.ShowDialog();            
         }
 
         private void rateHospital_button_Click(object sender, RoutedEventArgs e)
         {
-            new PatientHospitalPollDialog(DIContainer.GetService<IPollService>()).ShowDialog();
+            PatientHospitalPollDialog patientHospitalPollDialog = DIContainer.GetService<PatientHospitalPollDialog>();
+            patientHospitalPollDialog.ShowDialog();           
         }
     }
 }

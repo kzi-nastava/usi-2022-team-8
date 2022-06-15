@@ -42,7 +42,9 @@ namespace HealthInstitution.GUI.SecretaryView
             dynamic selectedEquipment = (dynamic)dataGrid.SelectedItem;
             if (selectedEquipment != null)
             {
-                DynamicEquipmentTransferDialog dynamicEquipmentTransferDialog = new DynamicEquipmentTransferDialog(selectedEquipment.Room, selectedEquipment.Equipment, DIContainer.GetService<IEquipmentService>(), DIContainer.GetService<IRoomService>(), DIContainer.GetService<IEquipmentTransferService>());
+
+                DynamicEquipmentTransferDialog dynamicEquipmentTransferDialog = DIContainer.GetService<DynamicEquipmentTransferDialog>();
+                dynamicEquipmentTransferDialog.SetEquipmentData(selectedEquipment.Room,selectedEquipment.Equipment);             
                 dynamicEquipmentTransferDialog.ShowDialog();
                 ProcessDialog();
             }

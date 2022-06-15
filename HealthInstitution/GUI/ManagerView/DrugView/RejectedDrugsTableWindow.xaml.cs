@@ -91,8 +91,10 @@ namespace HealthInstitution.GUI.ManagerView.DrugView
             reasonLabel.Content = "";
             Drug selectedDrug = (Drug)drugsDataGrid.SelectedItem;
 
-            ReviseDrugDialog reviseDrugDialog = new ReviseDrugDialog(selectedDrug, DIContainer.GetService<IDrugService>(), DIContainer.GetService<IIngredientService>());
+            ReviseDrugDialog reviseDrugDialog = DIContainer.GetService<ReviseDrugDialog>();
+            reviseDrugDialog.SetDrug(selectedDrug);           
             reviseDrugDialog.ShowDialog();
+
             drugsDataGrid.SelectedItem = null;
             LoadRows();
             drugsDataGrid.Items.Refresh();

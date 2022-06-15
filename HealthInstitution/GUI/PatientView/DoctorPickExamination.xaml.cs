@@ -32,8 +32,10 @@ public partial class DoctorPickExamination : Window
     private void Button_Click(object sender, RoutedEventArgs e)
     {
         var doctor = dataGrid.SelectedItem as Doctor;
-        var dialog = new AddExaminationDialog(_loggedPatient, DIContainer.GetService<IDoctorService>(), DIContainer.GetService<IMedicalRecordService>(), DIContainer.GetService<ISchedulingService>());
-        dialog.Show();
+
+        AddExaminationDialog dialog = DIContainer.GetService<AddExaminationDialog>();
+        dialog.SetLoggedPatient(_loggedPatient);            
+        dialog.ShowDialog();
         dialog.SetSelectedDoctor(doctor);
     }
 

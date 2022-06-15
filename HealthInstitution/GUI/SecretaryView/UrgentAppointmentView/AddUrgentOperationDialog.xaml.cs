@@ -73,7 +73,9 @@ namespace HealthInstitution.GUI.SecretaryView
         {
             Operation urgentOperation = _operationService.GetById(examinationsAndOperationsForDelaying[0].Item1);
             System.Windows.MessageBox.Show("Urgent operation has ordered successfully.");
-            UrgentOperationDialog urgentOperationDialog = new UrgentOperationDialog(urgentOperation);
+
+            UrgentOperationDialog urgentOperationDialog = DIContainer.GetService<UrgentOperationDialog>();
+            urgentOperationDialog.SetScheduledOperation(urgentOperation);
             urgentOperationDialog.ShowDialog();
         }
         private void ShowDelayingAppointmentSelectionDialog(List<Tuple<int, int, DateTime>> examinationsAndOperationsForDelaying, MedicalRecord medicalRecord)
@@ -81,7 +83,9 @@ namespace HealthInstitution.GUI.SecretaryView
             System.Windows.MessageBox.Show("There are no free appointments in next two hours. Please select examination or operation to be delayed.");
             List<ScheduleEditRequest> delayedAppointments = _appointmentDelayingService.PrepareDataForDelaying(examinationsAndOperationsForDelaying);
             Operation urgentOperation = new Operation(examinationsAndOperationsForDelaying[0].Item1, new DateTime(1, 1, 1), 15, null, null, medicalRecord);
-            DelayExaminationOperationDialog delayExaminationOperationDialog = new DelayExaminationOperationDialog(delayedAppointments, null, urgentOperation, DIContainer.GetService<IAppointmentDelayingService>());
+
+            DelayExaminationOperationDialog delayExaminationOperationDialog = DIContainer.GetService<DelayExaminationOperationDialog>();
+            delayExaminationOperationDialog.SetSelectedAppointment(delayedAppointments, null, urgentOperation);       
             delayExaminationOperationDialog.ShowDialog();
         }
         private void PickDataFromForm()

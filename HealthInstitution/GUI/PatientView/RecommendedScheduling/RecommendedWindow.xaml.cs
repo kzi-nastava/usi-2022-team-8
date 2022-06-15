@@ -138,7 +138,11 @@ namespace HealthInstitution.GUI.PatientView
                 var closestFitDTO = GenerateClosestFitDTO(dateTime, doctorPriority);
                 List<Examination> suggestions =
                     _recommendedSchedulingService.FindClosestFit(closestFitDTO);
-                new ClosestFit(suggestions, DIContainer.GetService<IExaminationService>()).ShowDialog();
+
+                ClosestFit closestFit = DIContainer.GetService<ClosestFit>();
+                closestFit.SetSuggestions(suggestions);
+                closestFit.ShowDialog();
+                
             }
             this.Close();
         }

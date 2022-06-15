@@ -45,49 +45,49 @@ namespace HealthInstitution.GUI.UserWindow
 
         private void Patients_Click(object sender, RoutedEventArgs e)
         {
-            PatientsTable patientsTableWindow = new PatientsTable(DIContainer.GetService<IPatientService>());
+            PatientsTable patientsTableWindow = DIContainer.GetService<PatientsTable>();
             patientsTableWindow.ShowDialog();
         }
 
 
         private void ExaminationRequests_Click(object sender, RoutedEventArgs e)
         {
-            ExaminationRequestsReview examinationRequestsReview = new ExaminationRequestsReview(DIContainer.GetService<IScheduleEditRequestsService>());
+            ExaminationRequestsReview examinationRequestsReview = DIContainer.GetService<ExaminationRequestsReview>();           
             examinationRequestsReview.ShowDialog();
         }
 
         private void RestRequests_Click(object sender, RoutedEventArgs e)
         {
-            RestRequestsReview restRequestsReview = new RestRequestsReview(DIContainer.GetService<IRestRequestService>());
+            RestRequestsReview restRequestsReview = DIContainer.GetService<RestRequestsReview>();
             restRequestsReview.ShowDialog();
         }
 
         private void UrgentExaminations_Click(object sender, RoutedEventArgs e)
         {
-            AddUrgentExaminationDialog addUrgentExaminationDialog=new AddUrgentExaminationDialog(DIContainer.GetService<IPatientService>(), DIContainer.GetService<IExaminationService>(), DIContainer.GetService<IAppointmentDelayingService>(), DIContainer.GetService<IMedicalRecordService>(), DIContainer.GetService<IUrgentService>());
+            AddUrgentExaminationDialog addUrgentExaminationDialog = DIContainer.GetService<AddUrgentExaminationDialog>();            
             addUrgentExaminationDialog.ShowDialog();
         }
 
         private void UrgentOperations_Click(object sender, RoutedEventArgs e)
         {
-            AddUrgentOperationDialog addUrgentOperationDialog = new AddUrgentOperationDialog(DIContainer.GetService<IPatientService>(), DIContainer.GetService<IOperationService>(), DIContainer.GetService<IAppointmentDelayingService>(), DIContainer.GetService<IMedicalRecordService>(), DIContainer.GetService<IUrgentService>());
+            AddUrgentOperationDialog addUrgentOperationDialog = DIContainer.GetService<AddUrgentOperationDialog>();            
             addUrgentOperationDialog.ShowDialog();
         }
 
         private void Scheduling_Click(object sender, RoutedEventArgs e)
         {
-            PatientSelectionDialog patientSelectionDialog = new PatientSelectionDialog(DIContainer.GetService<IMedicalRecordService>());
+            PatientSelectionDialog patientSelectionDialog = DIContainer.GetService<PatientSelectionDialog>();           
             patientSelectionDialog.ShowDialog();
         }
         private void DynamicEquipment_Click(object sender, RoutedEventArgs e)
         {
-            DynamicEquipmentPurchaseDialog dynamicEquipmentPurchaseDialog = new DynamicEquipmentPurchaseDialog(DIContainer.GetService<IEquipmentTransferService>(), DIContainer.GetService<IEquipmentService>());
+            DynamicEquipmentPurchaseDialog dynamicEquipmentPurchaseDialog = DIContainer.GetService<DynamicEquipmentPurchaseDialog>();        
             dynamicEquipmentPurchaseDialog.ShowDialog();
         }
 
         private void TransferDynamicEquipment_Click(object sender, RoutedEventArgs e)
         {
-            DynamicEquipmentReviewDialog dynamicEquipmentReviewDialog = new DynamicEquipmentReviewDialog(DIContainer.GetService<IEquipmentService>());
+            DynamicEquipmentReviewDialog dynamicEquipmentReviewDialog = DIContainer.GetService<DynamicEquipmentReviewDialog>();          
             dynamicEquipmentReviewDialog.ShowDialog();
         }
         private void LogOut_Click(object sender, RoutedEventArgs e)
@@ -95,15 +95,8 @@ namespace HealthInstitution.GUI.UserWindow
             if (System.Windows.MessageBox.Show("Are you sure you want to log out?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning) == MessageBoxResult.Yes)
             {
                 this.Close();
-                LoginWindow window = new LoginWindow(DIContainer.GetService<IUserService>(),
-                                                    DIContainer.GetService<ITrollCounterService>(),
-                                                    DIContainer.GetService<IPatientService>(),
-                                                    DIContainer.GetService<IDoctorService>(),
-                                                    DIContainer.GetService<IEquipmentTransferRefreshingService>(),
-                                                    DIContainer.GetService<IRenovationRefreshingService>(),
-                                                    DIContainer.GetService<IPrescriptionNotificationService>(),
-                                                    DIContainer.GetService<IRestRequestService>(),
-                                                    DIContainer.GetService<IDoctorRatingsService>());
+
+                LoginWindow window = DIContainer.GetService<LoginWindow>();               
                 window.ShowDialog();
             
             }

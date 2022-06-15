@@ -108,7 +108,10 @@ namespace HealthInstitution.GUI.DoctorView
                 Operation selectedOperation = (Operation)dataGrid.SelectedItem;
                 selectedMedicalRecord = selectedOperation.MedicalRecord;
             }
-            new MedicalRecordDialog(selectedMedicalRecord).ShowDialog();
+
+            var medicalRecordDialog = DIContainer.GetService<MedicalRecordDialog>();
+            medicalRecordDialog.SetSelectedMedicalRecord(selectedMedicalRecord);
+            medicalRecordDialog.ShowDialog();           
         }
 
         private bool IsExaminationSelected()
@@ -131,8 +134,12 @@ namespace HealthInstitution.GUI.DoctorView
             if (IsExaminationSelected())
             { 
                 Examination selectedExamination = (Examination)dataGrid.SelectedItem;
-                if (_examinationService.IsReadyForPerforming(selectedExamination))
-                    new PerformExaminationDialog(selectedExamination, DIContainer.GetService<IExaminationService>(), DIContainer.GetService<IMedicalRecordService>()).ShowDialog();
+                if (_examinationService.IsReadyForPerforming(selectedExamination)) {
+                    var performExaminationDialog = DIContainer.GetService<PerformExaminationDialog>();
+                    performExaminationDialog.SetSelectedExamination(selectedExamination);
+                    performExaminationDialog.ShowDialog(); 
+                }
+
                 else
                     System.Windows.MessageBox.Show("Date of examination didn't pass!", "Error", MessageBoxButton.OKCancel, MessageBoxImage.Error);
             }

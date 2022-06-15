@@ -49,14 +49,14 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
         private void RoomSplit_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
-            RoomSplitWindow roomSplitWindow = new RoomSplitWindow(DIContainer.GetService<IRoomService>(), DIContainer.GetService<IRenovationService>(), DIContainer.GetService<IEquipmentService>(), DIContainer.GetService<IRoomTimetableService>());
+            RoomSplitWindow roomSplitWindow = DIContainer.GetService<RoomSplitWindow>();           
             roomSplitWindow.ShowDialog();
         }
 
         private void RoomMerge_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
-            RoomMergeWindow roomMergeWindow = new RoomMergeWindow(DIContainer.GetService<IRoomTimetableService>(), DIContainer.GetService<IRenovationService>(), DIContainer.GetService<IRoomService>());
+            RoomMergeWindow roomMergeWindow = DIContainer.GetService<RoomMergeWindow>();            
             roomMergeWindow.ShowDialog();
         }
 

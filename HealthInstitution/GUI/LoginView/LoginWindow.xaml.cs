@@ -99,7 +99,11 @@ namespace HealthInstitution.GUI.LoginView
             Patient loggedPatient = _patientService.GetByUsername(_usernameInput);
             _prescriptionNotificationService.GenerateAllSkippedNotifications(loggedPatient.Username);
             _doctorRatingsService.AssignScores();
-            new PatientWindow(loggedPatient, DIContainer.GetService<IPatientService>()).ShowDialog();
+
+            var patientWindow = DIContainer.GetService<PatientWindow>();
+            patientWindow.SetLoggedPatient(loggedPatient);
+            patientWindow.ShowDialog();
+            
         }
 
         private void RedirectDoctor()
@@ -108,40 +112,35 @@ namespace HealthInstitution.GUI.LoginView
             _doctorService.LoadNotifications();
             Doctor loggedDoctor = _doctorService.GetById(_usernameInput);
 
-            new DoctorWindow(loggedDoctor, DIContainer.GetService<IDoctorService>()).ShowDialog();
+            var doctorWindow = DIContainer.GetService<DoctorWindow>();
+            doctorWindow.SetLoggedDoctor(loggedDoctor);
+            doctorWindow.ShowDialog();
         }
 
         private void RedirectSecretary()
         {
             _restRequestService.LoadRequests();
-            SecretaryWindow secretaryWindow = new SecretaryWindow();
+
+            var secretaryWindow = DIContainer.GetService<SecretaryWindow>();
             secretaryWindow.ShowDialog();
         }
 
         private void RedirectManager()
         {
-            ManagerWindow managerWindow = new ManagerWindow();
+            var managerWindow = DIContainer.GetService<ManagerWindow>();
             managerWindow.ShowDialog();
         }
 
         public async Task StartAsync()
         {
-            //DIContainer.GetService<IEquipmentTransferRefreshingService>().UpdateByTransfer();
-            //DIContainer.GetService<IRenovationRefreshingService>().UpdateByRenovation();
+            DIContainer.GetService<IEquipmentTransferRefreshingService>().UpdateByTransfer();
+            DIContainer.GetService<IRenovationRefreshingService>().UpdateByRenovation();
 
             //_equipmentTransferRefreshingService.UpdateByTransfer();
             //_renovationRefreshingService.UpdateByRenovation();
 
-            LoginWindow window = new LoginWindow(DIContainer.GetService<IUserService>(),
-                                                    DIContainer.GetService<ITrollCounterService>(),
-                                                    DIContainer.GetService<IPatientService>(),
-                                                    DIContainer.GetService<IDoctorService>(),
-                                                    DIContainer.GetService<IEquipmentTransferRefreshingService>(),
-                                                    DIContainer.GetService<IRenovationRefreshingService>(),
-                                                    DIContainer.GetService<IPrescriptionNotificationService>(),
-                                                    DIContainer.GetService<IRestRequestService>(),
-                                                    DIContainer.GetService<IDoctorRatingsService>());
-            window.ShowDialog();
+            var loginWindow = DIContainer.GetService<LoginWindow>();
+            loginWindow.ShowDialog();
         }
     }
 }

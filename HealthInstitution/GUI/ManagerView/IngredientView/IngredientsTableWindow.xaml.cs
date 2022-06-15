@@ -51,7 +51,7 @@ namespace HealthInstitution.GUI.ManagerView
 
         private void AddButton_Click(object sender, RoutedEventArgs e)
         {
-            AddIngredientDialog addIngredientDialog = new AddIngredientDialog(DIContainer.GetService<IIngredientService>());
+            AddIngredientDialog addIngredientDialog = DIContainer.GetService<AddIngredientDialog>();            
             addIngredientDialog.ShowDialog();
 
             LoadRows();
@@ -62,8 +62,10 @@ namespace HealthInstitution.GUI.ManagerView
         {
             Ingredient selectedIngredient = (Ingredient)dataGrid.SelectedItem;
 
-            EditIngredientDialog editIngredientDialog = new EditIngredientDialog(selectedIngredient, DIContainer.GetService<IIngredientService>());
+            EditIngredientDialog editIngredientDialog = DIContainer.GetService<EditIngredientDialog>();
+            editIngredientDialog.SetSelectedIngredient(selectedIngredient);            
             editIngredientDialog.ShowDialog();
+
             dataGrid.SelectedItem = null;
             dataGrid.Items.Refresh();
         }

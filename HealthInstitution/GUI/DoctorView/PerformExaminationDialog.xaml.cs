@@ -78,13 +78,16 @@ namespace HealthInstitution.GUI.DoctorView
         {
             Patient patient = _medicalRecord.Patient;
             Doctor doctor = _selectedExamination.Doctor;
-            AddReferralDialog dialog = new AddReferralDialog(doctor, patient, DIContainer.GetService<IDoctorService>(), DIContainer.GetService<IReferralService>(), DIContainer.GetService<IMedicalRecordService>());
+
+            var dialog = DIContainer.GetService<AddReferralDialog>();
+            dialog.SetReferralFields(patient, doctor);
             dialog.ShowDialog();
         }
 
         private void CreatePrescription_Click(object sender, RoutedEventArgs e)
         {
-            AddPrescriptionDialog dialog = new AddPrescriptionDialog(_medicalRecord, DIContainer.GetService<IDrugService>(), DIContainer.GetService<IMedicalRecordService>(), DIContainer.GetService<IPrescriptionService>());
+            AddPrescriptionDialog dialog = DIContainer.GetService<AddPrescriptionDialog>();
+            dialog.SetMedicalRecord(_medicalRecord);
             dialog.ShowDialog();
         }
 
@@ -116,7 +119,10 @@ namespace HealthInstitution.GUI.DoctorView
                 _examinationService.Complete(_selectedExamination, anamnesisTextBox.Text);
                 System.Windows.MessageBox.Show("You have finished the examination!", "Congrats", MessageBoxButton.OK, MessageBoxImage.Information);
                 this.Close();
-                new ConsumedEquipmentDialog(_selectedExamination.Room, DIContainer.GetService<IRoomService>(), DIContainer.GetService<IEquipmentService>()).ShowDialog();
+
+                ConsumedEquipmentDialog dialog = DIContainer.GetService<ConsumedEquipmentDialog>();
+                dialog.SetSelectedRoom(_selectedExamination.Room);
+                dialog.ShowDialog();              
             }
             catch
             {

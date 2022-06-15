@@ -37,7 +37,7 @@ public partial class EditExaminationDialog : Window
         _editSchedulingService = editSchedulingService;
         _scheduleEditRequestService = scheduleEditRequestsService;
     }
-    public void SetLoggedPatient(Examination examination)
+    public void SetExamination(Examination examination)
     {
         _selectedExamination = examination;
         _loggedPatient = examination.MedicalRecord.Patient;
