@@ -12,18 +12,29 @@ namespace HealthInstitution.Commands.PatientCommands.Scheduling;
 
 public class AddSchedulingCommand : CommandBase
 {
-    private PatientScheduleWindowViewModel _patientScheduleWIndowViewModel;
+    private PatientScheduleWindowViewModel _patientScheduleWindowViewModel;
 
-    public AddSchedulingCommand(PatientScheduleWindowViewModel patientScheduleWIndowViewModel)
+    public AddSchedulingCommand(PatientScheduleWindowViewModel patientScheduleWindowViewModel)
     {
-        _patientScheduleWIndowViewModel = patientScheduleWIndowViewModel;
+        _patientScheduleWindowViewModel = patientScheduleWindowViewModel;
     }
 
     public override void Execute(object? parameter)
     {
-        TrollCounterService.TrollCheck(_patientScheduleWIndowViewModel.LoggedPatient.Username);
-        new AddExaminationDialog(_patientScheduleWIndowViewModel.LoggedPatient).ShowDialog();
-        _patientScheduleWIndowViewModel.RefreshGrid();
-        TrollCounterService.AppendCreateDates(_patientScheduleWIndowViewModel.LoggedPatient.Username);
+        try
+        {
+            TrollCounterService.TrollCheck(_patientScheduleWindowViewModel.LoggedPatient.Username);
+            new AddExaminationDialog(_patientScheduleWindowViewModel.LoggedPatient)
+            {
+                DataContext = new AddExaminationDialogViewModel(_patientScheduleWindowViewModel.LoggedPatient)
+            }.ShowDialog();
+            _patientScheduleWindowViewModel.RefreshGrid();
+            TrollCounterService.AppendCreateDates(_patientScheduleWindowViewModel.LoggedPatient.Username);
+            MessageBox.Show("Sucessfuly made examination appointment", "Success");
+        }
+        catch (Exception e)
+        {
+            MessageBox.Show(e.Message, "Error");
+        }
     }
 }

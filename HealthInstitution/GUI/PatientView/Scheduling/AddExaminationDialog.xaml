@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="AddExaminationDialog" Height="300" Width="350">
     <Grid>
-        <DatePicker Name="datePicker" SelectedDate="{Binding Date, StringFormat='dd/MM/yyyy '}" Margin="120,-80,30,102" Height="50" />
+        <DatePicker Name="datePicker" SelectedDate="{Binding SelectedDateTime,UpdateSourceTrigger=LostFocus, StringFormat='dd/MM/yyyy '}" Margin="120,-80,30,102" Height="50" />
 
         <ComboBox
                   Name="DoctorComboBox"
@@ -15,13 +15,13 @@
                   Margin="120,152,0,0"
                   VerticalAlignment="Top"
                   Width="150"
-                  Loaded="DoctorComboBox_Loaded" SelectionChanged="DoctorComboBox_SelectionChanged"
-                  Height="30" />
+                  SelectedIndex="{Binding DoctorComboBoxSelectedIndex}"
+                  Height="30" ItemsSource="{Binding DoctorComboBoxItems}" />
         <Label Content="Doctor" HorizontalAlignment="Left" Margin="44,152,0,0" VerticalAlignment="Top" Height="30" />
         <Label Content="Date" HorizontalAlignment="Left" Margin="44,33,0,0" VerticalAlignment="Top" />
         <Label Content="Time" HorizontalAlignment="Left" Margin="44,96,0,0" VerticalAlignment="Top" />
-        <ComboBox HorizontalAlignment="Left" Margin="120,96,0,0" Loaded="HourComboBox_Loaded" SelectionChanged="HourComboBox_SelectionChanged" VerticalAlignment="Top" Width="45" />
-        <ComboBox HorizontalAlignment="Left" Margin="225,96,0,0" VerticalAlignment="Top" Width="45" Loaded="MinuteComboBox_Loaded" SelectionChanged="MinuteComboBox_SelectionChanged" />
-        <Button Content="Create" Click="Create_Click" HorizontalAlignment="Center" Height="22" Margin="0,219,0,0" VerticalAlignment="Top" Width="74" />
+        <ComboBox HorizontalAlignment="Left" Margin="120,96,0,0"    VerticalAlignment="Top" Width="45" SelectedIndex="{Binding HourComboBoxSelectedIndex}" ItemsSource="{Binding HourComboBoxItems}" />
+        <ComboBox HorizontalAlignment="Left" Margin="225,96,0,0" VerticalAlignment="Top" Width="45" SelectedIndex="{Binding MinuteComboBoxSelectedIndex}" ItemsSource="{Binding MinuteComboBoxItems}" />
+        <Button Content="Create" Command="{Binding CreateExaminationCommand}" HorizontalAlignment="Center" Height="22" Margin="0,219,0,0" VerticalAlignment="Top" Width="74" />
     </Grid>
 </Window>
