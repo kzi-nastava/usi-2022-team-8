@@ -73,7 +73,7 @@ public class MedicalRecordViewViewModel : ViewModelBase
 
     public User LoggedPatient { get; set; }
 
-    public MedicalRecordViewViewModel(User patient)
+    public MedicalRecordViewViewModel(User patientn)
     {
         _examinationVMs = new();
         LoggedPatient = patient;
