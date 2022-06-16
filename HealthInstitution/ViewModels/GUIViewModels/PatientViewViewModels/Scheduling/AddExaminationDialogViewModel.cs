@@ -1,43 +1,43 @@
 ﻿using HealthInstitution.Commands.PatientCommands.Scheduling;
 using HealthInstitution.Core;
-using HealthInstitution.Core.Examinations;
-using HealthInstitution.Core.Examinations.Model;
-using HealthInstitution.Core.ScheduleEditRequests;
+using HealthInstitution.Core.MedicalRecords;
 using HealthInstitution.Core.Scheduling;
 using HealthInstitution.Core.SystemUsers.Doctors;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
+using HealthInstitution.Core.SystemUsers.Patients.Model;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace HealthInstitution.ViewModels.GUIViewModels.Scheduling;
 
-public class EditExaminationDialogViewModel : ViewModelBase
+public class AddExaminationDialogViewModel : ViewModelBase
 {
+    public Patient LoggedPatient { get; }
+    public Window ThisWindow;
+    public ICommand CreateExaminationCommand { get; }
+    private IDoctorService _doctorService;
+    private IMedicalRecordService _medicalRecordService;
+    private ISchedulingService _schedulingService;
 
-    public Examination SelectedExamination;
-    IDoctorService _doctorService;
-    IExaminationService _examinationService;
-    IEditSchedulingService _editSchedulingService;
-    IScheduleEditRequestsService _scheduleEditRequestService;
-    public EditExaminationDialogViewModel(Examination selectedExamination, IDoctorService doctorService,
-                                       IExaminationService examinationService,
-                                         IEditSchedulingService editSchedulingService,
-                                         IScheduleEditRequestsService scheduleEditRequestsService)
+    public AddExaminationDialogViewModel(Window window, Patient loggedPatient, IDoctorService doctorService,
+                                    IMedicalRecordService medicalRecordService,
+                                    ISchedulingService schedulingService)
     {
-        SelectedExamination = selectedExamination;
+        ThisWindow = window;
+        LoggedPatient = loggedPatient;
         LoadComboBoxes();
-        _selectedDateTime = selectedExamination.Appointment;
-        _editSchedulingService = editSchedulingService;
-        _scheduleEditRequestService = scheduleEditRequestsService;
-        _examinationService = examinationService;
         _doctorService = doctorService;
-        EditExaminationCommand = new EditExaminationCommand(this, SelectedExamination, _examinationService, _editSchedulingService, _scheduleEditRequestService, _doctorService);
+        _medicalRecordService = medicalRecordService;
+        _schedulingService = schedulingService;
+        CreateExaminationCommand = new CreateExaminationCommand(this, _medicalRecordService, _doctorService, _schedulingService);
     }
+
     public DateTime GetExaminationDateTime()
     {
         string formatDate = SelectedDateTime.Date.ToString();
@@ -167,7 +167,6 @@ public class EditExaminationDialogViewModel : ViewModelBase
         {
             HourComboBoxItems.Add(i.ToString());
         }
-        HourComboBoxSelectedIndex = SelectedExamination.Appointment.Hour - 9;
     }
 
     private void LoadMinuteComboBox()
@@ -177,24 +176,15 @@ public class EditExaminationDialogViewModel : ViewModelBase
         {
             MinuteComboBoxItems.Add(i.ToString());
         }
-        MinuteComboBoxSelectedIndex = SelectedExamination.Appointment.Minute / 15;
     }
 
     private void LoadDoctorComboBox()
     {
-        int i = 0;
-        int idx = 0;
         DoctorComboBoxItems = new();
         foreach (Doctor user in _doctorService.GetAll())
         {
             DoctorComboBoxItems.Add(user.Username);
-            if (user.Username == SelectedExamination.Doctor.Username)
-            {
-                idx = i;
-            }
-            i++;
         }
-        DoctorComboBoxSelectedIndex = idx;
     }
 
     private void LoadComboBoxes()
@@ -203,8 +193,4 @@ public class EditExaminationDialogViewModel : ViewModelBase
         LoadHourComboBox();
         LoadMinuteComboBox();
     }
-
-    public ICommand EditExaminationCommand { get; }
-
-    
 }

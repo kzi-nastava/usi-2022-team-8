@@ -22,11 +22,12 @@ namespace HealthInstitution.GUI.PatientView;
 /// </summary>
 public partial class PatientHospitalPollDialog : Window
 {
-    IPollService _pollService;
+    private IPollService _pollService;
+
     public PatientHospitalPollDialog(IPollService pollService)
     {
         InitializeComponent();
         _pollService = pollService;
-        DataContext = new HospitalPollDialogViewModel(pollService);
+        DataContext = new HospitalPollDialogViewModel(this, pollService);
     }
 }

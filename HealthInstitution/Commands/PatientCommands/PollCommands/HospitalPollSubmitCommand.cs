@@ -13,7 +13,8 @@ namespace HealthInstitution.Commands.PatientCommands.PollCommands;
 public class HospitalPollSubmitCommand : CommandBase
 {
     private HospitalPollDialogViewModel _hospitalPollDialogViewModel;
-    IPollService _pollService;
+    private IPollService _pollService;
+
     public HospitalPollSubmitCommand(HospitalPollDialogViewModel hospitalPollDialogViewModel, IPollService pollService)
     {
         _hospitalPollDialogViewModel = hospitalPollDialogViewModel;
@@ -28,6 +29,7 @@ public class HospitalPollSubmitCommand : CommandBase
         AddForOneQuestion(_hospitalPollDialogViewModel.Q3Text, _hospitalPollDialogViewModel.Q3Answer);
         AddForOneQuestion(_hospitalPollDialogViewModel.Q4Text, _hospitalPollDialogViewModel.Q4Answer);
         AddForOneQuestion(_hospitalPollDialogViewModel.Q5Text, _hospitalPollDialogViewModel.Q5Answer);
+        _hospitalPollDialogViewModel.ThisWindow.Close();
     }
 
     private void AddForOneQuestion(string question, object answer)

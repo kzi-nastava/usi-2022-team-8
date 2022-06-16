@@ -17,7 +17,8 @@ namespace HealthInstitution.Commands.PatientCommands.MedicalRecordViewCommands;
 public class RateDoctorCommand : CommandBase
 {
     private MedicalRecordViewViewModel _medicalRecordViewModel;
-    IPollService _pollService;
+    private IPollService _pollService;
+
     public RateDoctorCommand(MedicalRecordViewViewModel medicalRecordViewModel, IPollService pollService)
     {
         _medicalRecordViewModel = medicalRecordViewModel;
@@ -38,6 +39,7 @@ public class RateDoctorCommand : CommandBase
         window.SetRatedDoctor(examination.Doctor);
         window.ShowDialog();
         _pollService.AddRatedExamination(examination.Id);
+        _medicalRecordViewModel.SelectedExaminationIndex = 0;
     }
 
     public override bool CanExecute(object? parameter)

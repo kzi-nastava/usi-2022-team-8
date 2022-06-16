@@ -13,8 +13,9 @@ namespace HealthInstitution.Commands.PatientCommands.RecommendedSchedulingComman
 public class ClosestFitCommand : CommandBase
 {
     private ClosestFitViewModel _viewModel;
-    IExaminationService _examinationService;
-    public ClosestFitCommand(ClosestFitViewModel viewModel,IExaminationService examinationService)
+    private IExaminationService _examinationService;
+
+    public ClosestFitCommand(ClosestFitViewModel viewModel, IExaminationService examinationService)
     {
         _viewModel = viewModel;
         _examinationService = examinationService;
@@ -23,5 +24,6 @@ public class ClosestFitCommand : CommandBase
     public override void Execute(object? parameter)
     {
         _examinationService.Add(_examinationService.ParseExaminationToExaminationDTO(_viewModel.GetChosen()));
+        _viewModel.ThisWindow.Close();
     }
 }

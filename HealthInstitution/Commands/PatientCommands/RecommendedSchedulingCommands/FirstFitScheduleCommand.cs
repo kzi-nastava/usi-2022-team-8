@@ -15,7 +15,8 @@ namespace HealthInstitution.Commands.PatientCommands.RecommendedSchedulingComman
 internal class FirstFitScheduleCommand : CommandBase
 {
     private RecommendedWindowViewModel _viewModel;
-    IRecommendedSchedulingService _recommendedSchedulingService;
+    private IRecommendedSchedulingService _recommendedSchedulingService;
+
     public FirstFitScheduleCommand(RecommendedWindowViewModel viewModel, IRecommendedSchedulingService recommendedSchedulingService)
     {
         _viewModel = viewModel;
@@ -29,10 +30,11 @@ internal class FirstFitScheduleCommand : CommandBase
         if (!found)
         {
             var closestFitDTO = GenerateClosestFitDTO();
-            List<Examination> suggestions =_recommendedSchedulingService.FindClosestFit(closestFitDTO);
+            List<Examination> suggestions = _recommendedSchedulingService.FindClosestFit(closestFitDTO);
             var window = DIContainer.GetService<ClosestFit>();
             window.SetSuggestions(suggestions);
             window.ShowDialog();
+            _viewModel.ThisWindow.Close();
         }
     }
 

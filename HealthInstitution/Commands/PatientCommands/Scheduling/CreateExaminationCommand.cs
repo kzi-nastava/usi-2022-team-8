@@ -17,10 +17,11 @@ namespace HealthInstitution.Commands.PatientCommands.Scheduling;
 internal class CreateExaminationCommand : CommandBase
 {
     private AddExaminationDialogViewModel _addExaminationDialogViewModel;
-    IMedicalRecordService _medicalRecordService;
-    IDoctorService _doctorService;
-    ISchedulingService _schedulingService;
-    public CreateExaminationCommand(AddExaminationDialogViewModel addExaminationDialogViewModel, IMedicalRecordService medicalRecordService,IDoctorService doctorService,ISchedulingService schedulingService)
+    private IMedicalRecordService _medicalRecordService;
+    private IDoctorService _doctorService;
+    private ISchedulingService _schedulingService;
+
+    public CreateExaminationCommand(AddExaminationDialogViewModel addExaminationDialogViewModel, IMedicalRecordService medicalRecordService, IDoctorService doctorService, ISchedulingService schedulingService)
     {
         _addExaminationDialogViewModel = addExaminationDialogViewModel;
         _medicalRecordService = medicalRecordService;
@@ -30,10 +31,18 @@ internal class CreateExaminationCommand : CommandBase
 
     public override void Execute(object? parameter)
     {
-        MedicalRecord medicalRecord = _medicalRecordService.GetByPatientUsername(_addExaminationDialogViewModel.LoggedPatient);
-        Doctor doctor = _doctorService.GetById(_addExaminationDialogViewModel.GetDoctorUsername());
-        DateTime dateTime = _addExaminationDialogViewModel.GetExaminationDateTime();
-        ExaminationDTO examination = new ExaminationDTO(dateTime, null, doctor, medicalRecord);
-        _schedulingService.ReserveExamination(examination);
+        try
+        {
+            MedicalRecord medicalRecord = _medicalRecordService.GetByPatientUsername(_addExaminationDialogViewModel.LoggedPatient);
+            Doctor doctor = _doctorService.GetById(_addExaminationDialogViewModel.GetDoctorUsername());
+            DateTime dateTime = _addExaminationDialogViewModel.GetExaminationDateTime();
+            ExaminationDTO examination = new ExaminationDTO(dateTime, null, doctor, medicalRecord);
+            _schedulingService.ReserveExamination(examination);
+            _addExaminationDialogViewModel.ThisWindow.Close();
+        }
+        catch (Exception e)
+        {
+            MessageBox.Show(e.Message, "Error");
+        }
     }
 }

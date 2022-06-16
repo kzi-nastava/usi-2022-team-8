@@ -19,13 +19,13 @@ public partial class EditExaminationDialog : Window
 {
     private User _loggedPatient;
     private Examination _selectedExamination;
-    IDoctorService _doctorService;
-    IExaminationService _examinationService;
-    IEditSchedulingService _editSchedulingService;
-    IScheduleEditRequestsService _scheduleEditRequestService;
+    private IDoctorService _doctorService;
+    private IExaminationService _examinationService;
+    private IEditSchedulingService _editSchedulingService;
+    private IScheduleEditRequestsService _scheduleEditRequestService;
 
     public EditExaminationDialog(IDoctorService doctorService,
-                                       IExaminationService examinationService, 
+                                       IExaminationService examinationService,
                                          IEditSchedulingService editSchedulingService,
                                          IScheduleEditRequestsService scheduleEditRequestsService)
     {
@@ -35,10 +35,11 @@ public partial class EditExaminationDialog : Window
         _editSchedulingService = editSchedulingService;
         _scheduleEditRequestService = scheduleEditRequestsService;
     }
+
     public void SetExamination(Examination examination)
     {
         _selectedExamination = examination;
         _loggedPatient = examination.MedicalRecord.Patient;
-        DataContext = new EditExaminationDialogViewModel(examination, _doctorService, _examinationService, _editSchedulingService, _scheduleEditRequestService);
+        DataContext = new EditExaminationDialogViewModel(this, examination, _doctorService, _examinationService, _editSchedulingService, _scheduleEditRequestService);
     }
 }

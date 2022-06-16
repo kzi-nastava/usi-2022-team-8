@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace HealthInstitution.ViewModels.GUIViewModels.Polls;
@@ -15,14 +16,18 @@ public class DoctorPollViewModel : ViewModelBase
 {
     public ICommand SubmitCommand { get; }
     public Doctor Doctor;
-    IPollService _pollService;
-    public DoctorPollViewModel(Doctor doctor, IPollService pollService)
+    private IPollService _pollService;
+    public Window ThisWindow;
+
+    public DoctorPollViewModel(Window window, Doctor doctor, IPollService pollService)
     {
+        ThisWindow = window;
         Doctor = doctor;
         _pollService = pollService;
-        SubmitCommand = new DoctorPollSubmitCommand(this,_pollService);
+        SubmitCommand = new DoctorPollSubmitCommand(this, _pollService);
         LoadLabels();
     }
+
     private string _q1Text;
 
     public string Q1Text
@@ -113,7 +118,7 @@ public class DoctorPollViewModel : ViewModelBase
         }
     }
 
-    private object _q1Answer="3";
+    private object _q1Answer = "3";
 
     public object Q1Answer
     {
@@ -187,8 +192,6 @@ public class DoctorPollViewModel : ViewModelBase
             OnPropertyChanged(nameof(Q5Answer));
         }
     }
-
-    
 
     private void LoadLabels()
     {

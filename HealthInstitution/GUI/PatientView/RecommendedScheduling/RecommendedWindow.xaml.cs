@@ -28,18 +28,20 @@ namespace HealthInstitution.GUI.PatientView;
 ///
 public partial class RecommendedWindow : Window
 {
-    User _loggedPatient;
-    IRecommendedSchedulingService _recommendedSchedulingService;
-    IDoctorService _doctorService;
+    private User _loggedPatient;
+    private IRecommendedSchedulingService _recommendedSchedulingService;
+    private IDoctorService _doctorService;
+
     public RecommendedWindow(IRecommendedSchedulingService recommendedSchedulingService, IDoctorService doctorService)
     {
         InitializeComponent();
         _recommendedSchedulingService = recommendedSchedulingService;
         _doctorService = doctorService;
     }
+
     public void SetLoggedPatient(User patient)
     {
         _loggedPatient = patient;
-        DataContext = new RecommendedWindowViewModel(patient, _recommendedSchedulingService, _doctorService);
+        DataContext = new RecommendedWindowViewModel(this, patient, _recommendedSchedulingService, _doctorService);
     }
 }

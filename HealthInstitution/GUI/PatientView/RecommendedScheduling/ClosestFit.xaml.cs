@@ -23,17 +23,17 @@ namespace HealthInstitution.GUI.PatientView;
 public partial class ClosestFit : Window
 {
     private List<Examination> _suggestions;
-    IExaminationService _examinationService;
+    private IExaminationService _examinationService;
 
     public ClosestFit(IExaminationService examinationService)
     {
         InitializeComponent();
         _examinationService = examinationService;
-
     }
+
     public void SetSuggestions(List<Examination> suggestions)
     {
         _suggestions = suggestions;
-        DataContext = new ClosestFitViewModel(suggestions, _examinationService);
+        DataContext = new ClosestFitViewModel(this, suggestions, _examinationService);
     }
 }

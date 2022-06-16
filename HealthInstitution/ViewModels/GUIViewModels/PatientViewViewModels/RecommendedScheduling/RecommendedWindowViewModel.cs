@@ -11,27 +11,30 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace HealthInstitution.ViewModels.GUIViewModels.PatientViewViewModels.RecommendedScheduling;
 
 public class RecommendedWindowViewModel : ViewModelBase
 {
-
     public ICommand ScheduleCommand { get; }
     public User LoggedPatient;
-    IRecommendedSchedulingService _recommendedSchedulingService;
-    IDoctorService _doctorService;
-    public RecommendedWindowViewModel(User loggedPatient, IRecommendedSchedulingService recommendedSchedulingService,
+    public Window ThisWindow { get; }
+    private IRecommendedSchedulingService _recommendedSchedulingService;
+    private IDoctorService _doctorService;
+
+    public RecommendedWindowViewModel(Window window, User loggedPatient, IRecommendedSchedulingService recommendedSchedulingService,
                                     IDoctorService doctorService)
     {
+        ThisWindow = window;
         LoggedPatient = loggedPatient;
         _recommendedSchedulingService = recommendedSchedulingService;
         _doctorService = doctorService;
         _doctorComboBoxItems = new();
         _hourComboBoxItems = new();
         _minuteComboBoxItems = new();
-        ScheduleCommand = new FirstFitScheduleCommand(this,_recommendedSchedulingService);
+        ScheduleCommand = new FirstFitScheduleCommand(this, _recommendedSchedulingService);
         LoadComboBoxes();
     }
 
@@ -246,6 +249,4 @@ public class RecommendedWindowViewModel : ViewModelBase
         LoadHourComboBox();
         LoadMinuteComboBox();
     }
-
-    
 }

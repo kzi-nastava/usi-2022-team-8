@@ -18,9 +18,9 @@ namespace HealthInstitution.GUI.PatientView
     public partial class AddExaminationDialog : Window
     {
         private Patient _loggedPatient;
-        IDoctorService _doctorService;
-        IMedicalRecordService _medicalRecordService;
-        ISchedulingService _schedulingService;
+        private IDoctorService _doctorService;
+        private IMedicalRecordService _medicalRecordService;
+        private ISchedulingService _schedulingService;
 
         public AddExaminationDialog(IDoctorService doctorService,
                                     IMedicalRecordService medicalRecordService,
@@ -31,13 +31,13 @@ namespace HealthInstitution.GUI.PatientView
             _medicalRecordService = medicalRecordService;
             _schedulingService = schedulingService;
         }
+
         public AddExaminationDialogViewModel SetLoggedPatient(Patient patient)
         {
             _loggedPatient = patient;
-            var dc = new AddExaminationDialogViewModel(patient, _doctorService, _medicalRecordService, _schedulingService);
+            var dc = new AddExaminationDialogViewModel(this, patient, _doctorService, _medicalRecordService, _schedulingService);
             DataContext = dc;
             return dc;
         }
-
     }
 }

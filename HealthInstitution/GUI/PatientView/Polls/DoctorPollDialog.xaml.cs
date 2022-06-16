@@ -24,16 +24,17 @@ namespace HealthInstitution.GUI.PatientView.Polls;
 public partial class DoctorPollDialog : Window
 {
     private Doctor _doctor;
-    IPollService _pollService;
+    private IPollService _pollService;
+
     public DoctorPollDialog(IPollService pollService)
     {
         InitializeComponent();
         _pollService = pollService;
     }
+
     public void SetRatedDoctor(Doctor doctor)
     {
         _doctor = doctor;
-        DataContext = new DoctorPollViewModel(doctor, _pollService);
+        DataContext = new DoctorPollViewModel(this, doctor, _pollService);
     }
-    
 }

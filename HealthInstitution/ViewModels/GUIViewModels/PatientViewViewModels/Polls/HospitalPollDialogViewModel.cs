@@ -6,17 +6,22 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace HealthInstitution.ViewModels.GUIViewModels.Polls;
 
 public class HospitalPollDialogViewModel : ViewModelBase
 {
-    IPollService _pollService;
-    public HospitalPollDialogViewModel(IPollService pollService)
+    private IPollService _pollService;
+
+    public Window ThisWindow;
+
+    public HospitalPollDialogViewModel(Window window, IPollService pollService)
     {
+        ThisWindow = window;
         _pollService = pollService;
-        SubmitCommand = new HospitalPollSubmitCommand(this,_pollService);
+        SubmitCommand = new HospitalPollSubmitCommand(this, _pollService);
         LoadLabels();
     }
 
@@ -171,8 +176,6 @@ public class HospitalPollDialogViewModel : ViewModelBase
     }
 
     private object _q5Answer = "3";
-
-    
 
     public object Q5Answer
     {

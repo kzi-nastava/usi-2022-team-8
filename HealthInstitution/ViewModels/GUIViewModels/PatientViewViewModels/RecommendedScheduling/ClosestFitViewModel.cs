@@ -9,22 +9,25 @@ using System.Threading.Tasks;
 using System.Windows.Input;
 using HealthInstitution.Commands.PatientCommands.RecommendedSchedulingCommands;
 using HealthInstitution.Core.Examinations;
+using System.Windows;
 
 namespace HealthInstitution.ViewModels.GUIViewModels.PatientViewViewModels.RecommendedScheduling;
 
 public class ClosestFitViewModel : ViewModelBase
 {
     public List<Examination> Examinations;
-
+    public Window ThisWindow { get; set; }
     public ICommand AddClosestFitExaminationCommand { get; }
-    IExaminationService _examinationService;
-    public ClosestFitViewModel(List<Examination> examinations, IExaminationService examinationService)
+    private IExaminationService _examinationService;
+
+    public ClosestFitViewModel(Window window, List<Examination> examinations, IExaminationService examinationService)
     {
+        ThisWindow = window;
         _examinationService = examinationService;
         Examinations = new();
         Examinations = examinations;
         _examinationVMs = new();
-        AddClosestFitExaminationCommand = new ClosestFitCommand(this,_examinationService);
+        AddClosestFitExaminationCommand = new ClosestFitCommand(this, _examinationService);
         LoadRows();
     }
 
@@ -62,8 +65,6 @@ public class ClosestFitViewModel : ViewModelBase
     {
         return Examinations[Convert.ToInt32(Choice as string)];
     }
-
-    
 
     private void LoadRows()
     {

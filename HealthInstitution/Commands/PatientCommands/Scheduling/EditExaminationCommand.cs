@@ -17,11 +17,12 @@ public class EditExaminationCommand : Core.CommandBase
 {
     private EditExaminationDialogViewModel _editExaminationDialogViewModel;
     private Examination _selectedExamination;
-    IExaminationService _examinationService;
-    IEditSchedulingService _editSchedulingService;
-    IScheduleEditRequestsService _scheduleEditRequestsService;
-    IDoctorService _doctorService;
-    public EditExaminationCommand(EditExaminationDialogViewModel editExaminationDialogViewModel, Examination selectedExamination,IExaminationService examinationService,IEditSchedulingService editSchedulingService,IScheduleEditRequestsService scheduleEditRequestsService,IDoctorService doctorService)
+    private IExaminationService _examinationService;
+    private IEditSchedulingService _editSchedulingService;
+    private IScheduleEditRequestsService _scheduleEditRequestsService;
+    private IDoctorService _doctorService;
+
+    public EditExaminationCommand(EditExaminationDialogViewModel editExaminationDialogViewModel, Examination selectedExamination, IExaminationService examinationService, IEditSchedulingService editSchedulingService, IScheduleEditRequestsService scheduleEditRequestsService, IDoctorService doctorService)
     {
         _editExaminationDialogViewModel = editExaminationDialogViewModel;
         _selectedExamination = selectedExamination;
@@ -44,6 +45,7 @@ public class EditExaminationCommand : Core.CommandBase
             {
                 EditNow(dateTime);
             }
+            _editExaminationDialogViewModel.ThisWindow.Close();
         }
         catch (Exception ex)
         {
