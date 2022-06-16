@@ -22,6 +22,6 @@
         <Label Content="Time" HorizontalAlignment="Left" Margin="44,96,0,0" VerticalAlignment="Top"/>
         <ComboBox Name ="hourComboBox" HorizontalAlignment="Left" Margin="120,96,0,0" SelectedIndex="{Binding HourComboBoxSelectedIndex}"  ItemsSource="{Binding HourComboBoxItems}" VerticalAlignment="Top" Width="45"/>
         <ComboBox Name ="minuteComboBox" HorizontalAlignment="Left" Margin="225,96,0,0" VerticalAlignment="Top" Width="45" SelectedIndex="{Binding MinuteComboBoxSelectedIndex}" ItemsSource="{Binding MinuteComboBoxItems}"/>
-        <Button Content="Submit" Command="{Binding CreateExaminationCommand}" HorizontalAlignment="Center" Height="22" Margin="0,219,0,0" VerticalAlignment="Top" Width="74"/>
+        <Button Content="Submit" Command="{Binding CreateExaminationDialogCommand}" HorizontalAlignment="Center" Height="22" Margin="0,219,0,0" VerticalAlignment="Top" Width="74"/>
     </Grid>
 </Window>

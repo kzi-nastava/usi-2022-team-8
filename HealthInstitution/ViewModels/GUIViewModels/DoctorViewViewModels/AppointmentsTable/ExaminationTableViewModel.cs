@@ -1,5 +1,5 @@
 ﻿using HealthInstitution.Commands.DoctorCommands.Scheduling;
-using HealthInstitution.Commands.DoctorCommands.ShowDialog;
+using HealthInstitution.Commands.DoctorCommands.SchedulingDialogs;
 using HealthInstitution.Core;
 using HealthInstitution.Core.Examinations;
 using HealthInstitution.Core.Examinations.Model;

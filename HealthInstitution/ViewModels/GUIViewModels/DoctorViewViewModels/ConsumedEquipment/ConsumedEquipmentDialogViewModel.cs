@@ -2,6 +2,7 @@
 using HealthInstitution.Core;
 using HealthInstitution.Core.Equipments;
 using HealthInstitution.Core.Equipments.Model;
+using HealthInstitution.Core.Rooms;
 using HealthInstitution.Core.Rooms.Model;
 using System;
 using System.Collections.Generic;
@@ -72,7 +73,7 @@ namespace HealthInstitution.ViewModels.GUIViewModels.DoctorViewViewModels.Consum
         public void LoadEquipmentComboBox()
         {
             EquipmentComboBoxItems = new();
-            foreach (Equipment equipment in EquipmentService.GetAll())
+            foreach (Equipment equipment in RoomService.GetDynamicEquipment(Room))
             {
                 EquipmentComboBoxItems.Add(equipment);
             }
@@ -84,6 +85,7 @@ namespace HealthInstitution.ViewModels.GUIViewModels.DoctorViewViewModels.Consum
         public ConsumedEquipmentDialogViewModel(Room room)
         {
             Room = room;
+            RoomNo = room.Number;
             LoadEquipmentComboBox();
             SubmitOneConsumedEquipmentCommand = new SubmitOneConsumedEquipmentCommand(this);
             FinishConsumedEquipmentCommand = new FinishConsumedEquipmentCommand(this);

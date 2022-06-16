@@ -8,7 +8,7 @@ using HealthInstitution.Core.SystemUsers.Patients.Model;
 using HealthInstitution.Core.Examinations;
 using System.Windows;
 
-namespace HealthInstitution.Commands.DoctorCommands.Scheduling
+namespace HealthInstitution.Commands.DoctorCommands.SchedulingDialogs
 {
     internal class EditExaminationDialogCommand : CommandBase
     {

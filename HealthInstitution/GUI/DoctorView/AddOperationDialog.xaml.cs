@@ -9,6 +9,7 @@ using HealthInstitution.Core.SystemUsers.Patients;
 using HealthInstitution.Core.SystemUsers.Patients.Model;
 using HealthInstitution.Core.SystemUsers.Patients.Repository;
 using HealthInstitution.Core.SystemUsers.Users.Model;
+using HealthInstitution.ViewModels.GUIViewModels.DoctorViewViewModels.Scheduling;
 
 namespace HealthInstitution.GUI.DoctorView
 {
@@ -17,73 +18,10 @@ namespace HealthInstitution.GUI.DoctorView
     /// </summary>
     public partial class AddOperationDialog : Window
     {
-        private Doctor _loggedDoctor;
         public AddOperationDialog(Doctor doctor)
         {
-            this._loggedDoctor = doctor;
             InitializeComponent();
-        }
-
-        private void HourComboBox_Loaded(object sender, RoutedEventArgs e)
-        {
-            var hourComboBox = sender as System.Windows.Controls.ComboBox;
-            List<String> hours = new List<String>();
-            for (int i = 9; i < 22; i++)
-            {
-                hours.Add(i.ToString());
-            }
-            hourComboBox.ItemsSource = hours;
-            hourComboBox.SelectedIndex = 0;
-        }
-
-        private void MinuteComboBox_Loaded(object sender, RoutedEventArgs e)
-        {
-            var minuteComboBox = sender as System.Windows.Controls.ComboBox;
-            List<String> minutes = new List<String>();
-            minutes.Add("00");
-            minutes.Add("15");
-            minutes.Add("30");
-            minutes.Add("45");
-            minuteComboBox.ItemsSource = minutes;
-            minuteComboBox.SelectedIndex = 0;
-        }
-
-        private void PatientComboBox_Loaded(object sender, RoutedEventArgs e)
-        {
-            patientComboBox.Items.Clear();
-            List<Patient> patients = PatientService.GetAll();
-            foreach (Patient patient in patients)
-            {
-                patientComboBox.Items.Add(patient);
-            }
-            patientComboBox.SelectedIndex = 0;
-        }
-
-        private OperationDTO CreateOperationDTOFromInputData()
-        {
-            var appointment = (DateTime)datePicker.SelectedDate;
-            int minutes = Int32.Parse(minuteComboBox.Text);
-            int hours = Int32.Parse(hourComboBox.Text);
-            appointment = appointment.AddHours(hours);
-            appointment = appointment.AddMinutes(minutes);
-            int duration = Int32.Parse(durationTextBox.Text);
-            var patient = (Patient)patientComboBox.SelectedItem;
-            var medicalRecord = MedicalRecordService.GetByPatientUsername(patient);
-            return new OperationDTO(appointment, duration, null, _loggedDoctor, medicalRecord);
-        }
-
-        private void Submit_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                OperationDTO operationDTO = CreateOperationDTOFromInputData();
-                SchedulingService.ReserveOperation(operationDTO);
-                this.Close();
-            }
-            catch (Exception ex)
-            {
-                System.Windows.MessageBox.Show(ex.Message, "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
-            }
+            DataContext = new AddOperationDialogViewModel(doctor);
         }
     }
 }

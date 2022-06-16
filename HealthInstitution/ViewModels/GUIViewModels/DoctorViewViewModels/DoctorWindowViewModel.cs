@@ -19,13 +19,13 @@ namespace HealthInstitution.ViewModels.GUIViewModels.DoctorViewViewModels
             ExaminationsTableCommand = new ExaminationsTableCommand(loggedDoctor);
             ScheduleReviewCommand = new ScheduleReviewCommand(loggedDoctor);
             DrugManagementCommand = new DrugManagementCommand();
-            Logout = new LogoutCommand();
+            LogoutCommand = new LogoutCommand();
         }
 
         public ICommand OperationsTableCommand { get; }
         public ICommand ExaminationsTableCommand { get; }
         public ICommand ScheduleReviewCommand { get; }
         public ICommand DrugManagementCommand { get; }
-        public ICommand Logout { get; }
+        public ICommand LogoutCommand { get; }
     }
 }

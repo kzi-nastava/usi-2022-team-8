@@ -1,4 +1,5 @@
-﻿using HealthInstitution.Commands.PatientCommands.Scheduling;
+﻿using HealthInstitution.Commands.DoctorCommands.SchedulingDialogs;
+using HealthInstitution.Commands.PatientCommands.Scheduling;
 using HealthInstitution.Core;
 using HealthInstitution.Core.SystemUsers.Doctors;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;

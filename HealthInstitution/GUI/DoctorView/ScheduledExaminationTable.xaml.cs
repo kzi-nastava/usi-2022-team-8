@@ -6,6 +6,7 @@ using HealthInstitution.Core.Operations.Model;
 using HealthInstitution.Core.Operations.Repository;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using HealthInstitution.Core.SystemUsers.Doctors.Repository;
+using HealthInstitution.ViewModels.GUIViewModels.DoctorViewViewModels.AppointmentsTable;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -27,16 +28,16 @@ namespace HealthInstitution.GUI.DoctorView
     /// </summary>
     public partial class ScheduledExaminationTable : Window
     {
-        private Doctor _loggedDoctor;
         public ScheduledExaminationTable(Doctor doctor)
         {
-            this._loggedDoctor = doctor;   
+            //this._loggedDoctor = doctor;   
             InitializeComponent();
-            examinationRadioButton.IsChecked = true;
-            datePicker.SelectedDate = DateTime.Now;
+            DataContext = new ScheduledExaminationTableViewModel(doctor);
+            //examinationRadioButton.IsChecked = true;
+            //datePicker.SelectedDate = DateTime.Now;
         }
 
-        private void LoadOperationRows()
+        /*private void LoadOperationRows()
         {
             dataGrid.Items.Clear();
             List<Operation> scheduledOperations = TimetableService.GetScheduledOperations(_loggedDoctor);
@@ -70,7 +71,7 @@ namespace HealthInstitution.GUI.DoctorView
                 selectedExaminations = TimetableService.GetExaminationsByDate(scheduledExaminations, date);
             }
             foreach (var examination in selectedExaminations)
-            {
+            {*//*
                 dataGrid.Items.Add(examination);
             }
     
@@ -136,6 +137,6 @@ namespace HealthInstitution.GUI.DoctorView
 
         private void DatesChecked(object sender, RoutedEventArgs e)
         {
-        }
+        }*/
     }
 }

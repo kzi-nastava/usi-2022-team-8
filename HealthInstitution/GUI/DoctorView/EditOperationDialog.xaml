@@ -8,21 +8,21 @@
         WindowStartupLocation="CenterScreen"
         Title="Edit operation" Height="350" Width="350">
     <Grid>
-        <DatePicker Name="datePicker" SelectedDate="{Binding Date, StringFormat='dd/MM/yyyy HH:mm:ss'}" Margin="120,29,30,255" Height="50"/>
+        <DatePicker Name="datePicker" SelectedDate="{Binding SelectedDateTime, UpdateSourceTrigger=LostFocus, StringFormat='dd/MM/yyyy HH:mm:ss'}" Margin="120,29,30,255" Height="50"/>
 
         <ComboBox Name="patientComboBox" HorizontalAlignment="Left"   
                   Margin="120,163,0,0"   
                   VerticalAlignment="Top"   
                   Width="150"
-                  Loaded="PatientComboBox_Loaded" 
-                  Height="30"
+                  SelectedIndex="{Binding PatientComboBoxSelectedIndex}"
+                  Height="30" ItemsSource="{Binding PatientComboBoxItems}"
                   />
         <Label Content="Patient" HorizontalAlignment="Left" Margin="44,164,0,0" VerticalAlignment="Top" Height="30"/>
         <Label Content="Date" HorizontalAlignment="Left" Margin="44,53,0,0" VerticalAlignment="Top"/>
         <Label Content="Time" HorizontalAlignment="Left" Margin="44,117,0,0" VerticalAlignment="Top"/>
-        <ComboBox Name="hourComboBox" HorizontalAlignment="Left" Margin="120,119,0,0" Loaded="HourComboBox_Loaded" VerticalAlignment="Top" Width="45"/>
-        <ComboBox Name="minuteComboBox" HorizontalAlignment="Left" Margin="225,117,0,0" VerticalAlignment="Top" Width="45" Loaded="MinuteComboBox_Loaded" />
-        <Button Content="Submit" Click="Submit_Click" HorizontalAlignment="Center" Height="22" Margin="0,284,0,0" VerticalAlignment="Top" Width="74"/>
+        <ComboBox Name="hourComboBox" HorizontalAlignment="Left" Margin="120,119,0,0"  VerticalAlignment="Top" Width="45" SelectedIndex="{Binding HourComboBoxSelectedIndex}" ItemsSource="{Binding HourComboBoxItems}"/>
+        <ComboBox Name="minuteComboBox" HorizontalAlignment="Left" Margin="225,117,0,0" VerticalAlignment="Top" Width="45" SelectedIndex="{Binding MinuteComboBoxSelectedIndex}" ItemsSource="{Binding MinuteComboBoxItems}"/>
+        <Button Content="Submit" Command="{Binding EditOperationCommand}" HorizontalAlignment="Center" Height="22" Margin="0,284,0,0" VerticalAlignment="Top" Width="74"/>
         <Label Name="durationLabel" Content="Duration" HorizontalAlignment="Left" Margin="44,215,0,0" VerticalAlignment="Top"/>
         <TextBox Name="durationTextBox" HorizontalAlignment="Left" Margin="120,215,0,0" TextWrapping="Wrap" Text="{Binding Duration, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="150" Height="26"/>
     </Grid>

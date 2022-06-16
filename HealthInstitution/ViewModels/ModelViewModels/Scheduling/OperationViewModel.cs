@@ -18,7 +18,7 @@ namespace HealthInstitution.ViewModels.ModelViewModels.Scheduling
         public DateTime Appointment => _operation.Appointment;
         public string Doctor => _operation.Doctor.Name + " " + _operation.Doctor.Surname;
         public string Patient => _operation.MedicalRecord.Patient.Name + " " + _operation.MedicalRecord.Patient.Surname;
-
+        public string Duration => _operation.Duration.ToString();
         public OperationViewModel(Operation operation)
         {
             _operation = operation;

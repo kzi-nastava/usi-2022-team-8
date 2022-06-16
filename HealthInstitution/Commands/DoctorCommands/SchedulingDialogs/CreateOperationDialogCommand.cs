@@ -8,7 +8,7 @@ using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using HealthInstitution.Core.SystemUsers.Patients.Model;
 using HealthInstitution.ViewModels.GUIViewModels.DoctorViewViewModels.Scheduling;
 
-namespace HealthInstitution.Commands.DoctorCommands.Scheduling
+namespace HealthInstitution.Commands.DoctorCommands.SchedulingDialogs
 {
     internal class CreateOperationDialogCommand : CommandBase
     {
@@ -21,13 +21,20 @@ namespace HealthInstitution.Commands.DoctorCommands.Scheduling
 
         public override void Execute(object? parameter)
         {
-            Doctor doctor = _addOperationDialogViewModel.LoggedDoctor;
-            Patient patient = _addOperationDialogViewModel.GetPatient();
-            MedicalRecord medicalRecord = MedicalRecordService.GetByPatientUsername(patient);
-            DateTime dateTime = _addOperationDialogViewModel.GetOperationDateTime();
-            int duration = _addOperationDialogViewModel.GetDuration();
-            OperationDTO operation = new OperationDTO(dateTime, duration, null, doctor, medicalRecord);
-            SchedulingService.ReserveOperation(operation);
+            try
+            {
+                Doctor doctor = _addOperationDialogViewModel.LoggedDoctor;
+                Patient patient = _addOperationDialogViewModel.GetPatient();
+                MedicalRecord medicalRecord = MedicalRecordService.GetByPatientUsername(patient);
+                DateTime dateTime = _addOperationDialogViewModel.GetOperationDateTime();
+                int duration = _addOperationDialogViewModel.GetDuration();
+                OperationDTO operation = new OperationDTO(dateTime, duration, null, doctor, medicalRecord);
+                SchedulingService.ReserveOperation(operation);
+            }
+            catch (Exception ex)
+            {
+                System.Windows.MessageBox.Show(ex.Message, "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
         }
     }
 }

@@ -9,7 +9,7 @@ using HealthInstitution.Core.Operations;
 using System.Windows;
 
 
-namespace HealthInstitution.Commands.DoctorCommands.Scheduling
+namespace HealthInstitution.Commands.DoctorCommands.SchedulingDialogs
 {
     public class EditOperationDialogCommand : CommandBase
     {

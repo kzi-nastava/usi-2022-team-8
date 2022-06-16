@@ -12,7 +12,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HealthInstitution.Commands.DoctorCommands.Scheduling
+namespace HealthInstitution.Commands.DoctorCommands.SchedulingDialogs
 {
     internal class CreateExaminationDialogCommand : CommandBase
     {
@@ -25,12 +25,18 @@ namespace HealthInstitution.Commands.DoctorCommands.Scheduling
 
         public override void Execute(object? parameter)
         {
-            Doctor doctor = _addDoctorExaminationDialogViewModel.LoggedDoctor;
-            Patient patient = _addDoctorExaminationDialogViewModel.GetPatient();
-            MedicalRecord medicalRecord = MedicalRecordService.GetByPatientUsername(patient);
-            DateTime dateTime = _addDoctorExaminationDialogViewModel.GetExaminationDateTime();
-            ExaminationDTO examination = new ExaminationDTO(dateTime, null, doctor, medicalRecord);
-            SchedulingService.ReserveExamination(examination);
+            try {
+                Doctor doctor = _addDoctorExaminationDialogViewModel.LoggedDoctor;
+                Patient patient = _addDoctorExaminationDialogViewModel.GetPatient();
+                MedicalRecord medicalRecord = MedicalRecordService.GetByPatientUsername(patient);
+                DateTime dateTime = _addDoctorExaminationDialogViewModel.GetExaminationDateTime();
+                ExaminationDTO examination = new ExaminationDTO(dateTime, null, doctor, medicalRecord);
+                SchedulingService.ReserveExamination(examination);
+            }
+            catch (Exception ex)
+            {
+                System.Windows.MessageBox.Show(ex.Message, "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
         }
     }
 }

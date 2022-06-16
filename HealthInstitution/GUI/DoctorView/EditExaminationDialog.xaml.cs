@@ -20,6 +20,7 @@ namespace HealthInstitution.GUI.DoctorView
     {
         public EditExaminationDialog(Examination examination)
         {
+            InitializeComponent();
             DataContext = new EditExaminationDialogViewModel(examination);
         }
     }

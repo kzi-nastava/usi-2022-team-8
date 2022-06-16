@@ -1,4 +1,4 @@
-﻿using HealthInstitution.Commands.DoctorCommands.Scheduling;
+﻿using HealthInstitution.Commands.DoctorCommands.SchedulingDialogs;
 using HealthInstitution.Core;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using HealthInstitution.Core.SystemUsers.Patients;
@@ -171,13 +171,13 @@ namespace HealthInstitution.ViewModels.GUIViewModels.DoctorViewViewModels.Schedu
             LoadMinuteComboBox();
         }
 
-        public ICommand CreateExaminationCommand { get; }
+        public ICommand CreateExaminationDialogCommand { get; }
 
         public AddExaminationDialogViewModel(Doctor loggedDoctor)
         {
             LoggedDoctor = loggedDoctor;
             LoadComboBoxes();
-            CreateExaminationCommand = new CreateExaminationDialogCommand(this);
+            CreateExaminationDialogCommand = new CreateExaminationDialogCommand(this);
         }
     }
 }

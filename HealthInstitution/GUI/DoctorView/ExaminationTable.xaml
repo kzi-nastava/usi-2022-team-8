@@ -16,14 +16,14 @@
         </Style>
     </Window.Resources>
     <Grid Margin="0,115,0,0">
-        <DataGrid  ItemsSource="{Binding ExaminationsVM}" AutoGenerateColumns="False" Name="dataGrid" Grid.ColumnSpan="3" Margin="0,-108,0,108">
+        <DataGrid  SelectedIndex="{Binding SelectedExaminationIndex, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding ExaminationsVM}" AutoGenerateColumns="False" Name="dataGrid" Grid.ColumnSpan="3" Margin="0,-108,0,108">
 
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Patient" Binding="{Binding Patient}"  FontSize="15" Width =" 145">
                 </DataGridTextColumn>
                 <DataGridTextColumn Header="Time" FontSize="15" Binding="{Binding Appointment}" Width ="155"/>
                 <DataGridTextColumn Header="Status" FontSize="15" Binding="{Binding Status}" Width ="110"/>
-                <DataGridTextColumn Header="RoomNo" FontSize="15" Binding="{Binding Room.Number}" Width ="60"/>
+                <DataGridTextColumn Header="RoomNo" FontSize="15" Binding="{Binding RoomNo}" Width ="60"/>
                 <DataGridTextColumn Header="Anamnesis" FontSize="15" Width ="Auto" Binding="{Binding Anamnesis}"/>
             </DataGrid.Columns>
         </DataGrid>

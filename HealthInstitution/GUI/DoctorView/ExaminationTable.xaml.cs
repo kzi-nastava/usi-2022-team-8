@@ -4,6 +4,7 @@ using HealthInstitution.Core.Examinations.Repository;
 using HealthInstitution.Core.SystemUsers.Doctors;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using HealthInstitution.Core.SystemUsers.Doctors.Repository;
+using HealthInstitution.ViewModels.GUIViewModels.DoctorViewViewModels.AppointmentsTable;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,48 +26,10 @@ namespace HealthInstitution.GUI.DoctorView
     /// </summary>
     public partial class ExaminationTable : Window
     {
-        private Doctor _loggedDoctor;
         public ExaminationTable(Doctor doctor)
         {
-            this._loggedDoctor = doctor;
             InitializeComponent();
-            LoadRows();
-        }
-        
-        private void LoadRows()
-        {
-            dataGrid.Items.Clear();
-            List<Examination> doctorExaminations = ExaminationService.GetByDoctor(_loggedDoctor.Username);
-            foreach (Examination examination in doctorExaminations)
-            {
-                dataGrid.Items.Add(examination);
-            }
-        }
-        private void AddButton_Click(object sender, RoutedEventArgs e)
-        {
-            new AddExaminationDialog(this._loggedDoctor).ShowDialog();
-            LoadRows();
-            dataGrid.Items.Refresh();
-        }
-
-        private void EditButton_Click(object sender, RoutedEventArgs e)
-        {
-            Examination selectedExamination = (Examination)dataGrid.SelectedItem;
-            new EditExaminationDialog(selectedExamination).ShowDialog();
-            LoadRows();
-            dataGrid.Items.Refresh();
-        }
-
-        private void DeleteButton_Click(object sender, RoutedEventArgs e)
-        {
-            var answer = System.Windows.MessageBox.Show("Are you sure you want to delete selected examination?", "Question", MessageBoxButton.YesNo, MessageBoxImage.Warning);
-            if (answer == MessageBoxResult.Yes)
-            {
-                Examination selectedExamination = (Examination)dataGrid.SelectedItem;
-                dataGrid.Items.Remove(selectedExamination);
-                ExaminationService.Delete(selectedExamination.Id);
-                DoctorService.DeleteExamination(selectedExamination);
-            }
+            DataContext = new ExaminationTableViewModel(doctor);
         }
     }
 }

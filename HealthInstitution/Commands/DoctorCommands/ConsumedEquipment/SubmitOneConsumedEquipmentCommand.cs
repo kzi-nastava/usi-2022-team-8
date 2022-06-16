@@ -27,11 +27,13 @@ namespace HealthInstitution.Commands.DoctorCommands.ConsumedEquipment
                 EquipmentService.RemoveConsumed(equipment, consumedQuantity);
                 System.Windows.MessageBox.Show("You have removed " + consumedQuantity + " " + equipment.Name + " from " + _consumedEquipmentDialogViewModel.Room.ToString(), "Info", MessageBoxButton.OK, MessageBoxImage.Information);
                 _consumedEquipmentDialogViewModel.EquipmentComboBoxItems.Remove(equipment);
+                _consumedEquipmentDialogViewModel.ConsumedQuantity = string.Empty;
                 if (_consumedEquipmentDialogViewModel.EquipmentComboBoxItems.Count == 0)
                 {
                     System.Windows.MessageBox.Show("You have updated all equipment quantites", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
-                    //this.Close();
+                    //_consumedEquipmentDialogViewModel.ThisWindow.Close();
                 }
+                _consumedEquipmentDialogViewModel.ConsumedQuantity = "";
             }
             catch
             {
