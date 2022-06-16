@@ -1,5 +1,4 @@
 ﻿using HealthInstitution.Commands.DoctorCommands.Scheduling;
-using HealthInstitution.Core;
 using HealthInstitution.Core.Operations;
 using HealthInstitution.Core.Operations.Model;
 using HealthInstitution.Core.SystemUsers.Doctors;

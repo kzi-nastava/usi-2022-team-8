@@ -1,6 +1,5 @@
 ﻿using HealthInstitution.Commands.DoctorCommands.DrugVerification;
 using HealthInstitution.Commands.DoctorCommands.Scheduling;
-using HealthInstitution.Core;
 using HealthInstitution.Core.Drugs;
 using HealthInstitution.Core.Drugs.Model;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;

@@ -10,25 +10,22 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Compile Remove="Core\SystemUsers\Secretaries\**" />
-      <EmbeddedResource Remove="Core\SystemUsers\Secretaries\**" />
-      <None Remove="Core\SystemUsers\Secretaries\**" />
-      <Page Remove="Core\SystemUsers\Secretaries\**" />
+      <Compile Remove="Controllers\**" />
+      <Compile Remove="Core\UserActivity\SystemUsers\Secretaries\**" />
+      <EmbeddedResource Remove="Controllers\**" />
+      <EmbeddedResource Remove="Core\UserActivity\SystemUsers\Secretaries\**" />
+      <None Remove="Controllers\**" />
+      <None Remove="Core\UserActivity\SystemUsers\Secretaries\**" />
+      <Page Remove="Controllers\**" />
+      <Page Remove="Core\UserActivity\SystemUsers\Secretaries\**" />
     </ItemGroup>
 
     <ItemGroup>
-      <None Remove="Data\Images\Hospital.png" />
+      <Compile Remove="Core\RelayCommand.cs" />
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Controllers" />
-      <Folder Include="Core\Equipments\Repository" />
-      <Folder Include="Core\RestRequests\Repository" />
-      <Folder Include="Core\Notifications\" />
-      <Folder Include="Core\RestRequests\Repository" />
-      <Folder Include="Core\Polls\Repository\" />
-      <Folder Include="Core\SystemUsers\Secretaries\Model" />
-      <Folder Include="Core\SystemUsers\Secretaries\Repository" />
+      <None Remove="Images\Hospital.png" />
     </ItemGroup>
 
     <ItemGroup>
@@ -42,13 +39,13 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Resource Include="Data\Images\Hospital.png">
+      <Resource Include="Images\Hospital.png">
         <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
       </Resource>
     </ItemGroup>
 
     <ItemGroup>
-      <Compile Update="GUI\DoctorView\DoctorWindow.xaml.cs">
+      <Compile Update="GUI\UserStartupView\DoctorWindow.xaml.cs">
         <SubType>Code</SubType>
       </Compile>
       <Compile Update="Properties\Resources.Designer.cs">
@@ -66,7 +63,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Page Update="GUI\DoctorView\DoctorWindow.xaml">
+      <Page Update="GUI\UserStartupView\DoctorWindow.xaml">
         <XamlRuntime>$(DefaultXamlRuntime)</XamlRuntime>
         <SubType>Designer</SubType>
       </Page>

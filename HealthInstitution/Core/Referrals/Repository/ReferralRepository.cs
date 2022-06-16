@@ -10,7 +10,7 @@ namespace HealthInstitution.Core.Referrals.Repository
 {
     public class ReferralRepository : IReferralRepository
     {
-        private String _fileName = @"..\..\..\Data\JSON\referrals.json";
+        private String _fileName = @"..\..\..\Data\referrals.json";
         private IDoctorRepository _doctorRepository;
         public int maxId;
         public List<Referral> Referrals { get; set; }
@@ -106,6 +106,7 @@ namespace HealthInstitution.Core.Referrals.Repository
         {
             return this.ReferralById;
         }
+
         public Referral GetById(int id)
         {
             if (ReferralById.ContainsKey(id))

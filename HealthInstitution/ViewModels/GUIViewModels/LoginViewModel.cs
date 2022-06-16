@@ -1,5 +1,4 @@
 ﻿using HealthInstitution.Commands;
-using HealthInstitution.Core;
 using HealthInstitution.Core.DoctorRatings;
 using HealthInstitution.Core.EquipmentTransfers;
 using HealthInstitution.Core.PrescriptionNotifications.Service;

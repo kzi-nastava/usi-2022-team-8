@@ -1,5 +1,4 @@
 ﻿using HealthInstitution.Commands.PatientCommands.PollCommands;
-using HealthInstitution.Core;
 using HealthInstitution.Core.Polls;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using System;

@@ -1,5 +1,4 @@
 ﻿using HealthInstitution.Commands.DoctorCommands.ExaminationPerforming;
-using HealthInstitution.Core;
 using HealthInstitution.Core.Examinations;
 using HealthInstitution.Core.Examinations.Model;
 using HealthInstitution.Core.MedicalRecords;

@@ -1,10 +1,10 @@
 ﻿using HealthInstitution.Commands.DoctorCommands.ExaminationPerforming;
 using HealthInstitution.Commands.DoctorCommands.Timetable;
-using HealthInstitution.Core;
 using HealthInstitution.Core.Examinations;
 using HealthInstitution.Core.Examinations.Model;
 using HealthInstitution.Core.MedicalRecords.Model;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
+using HealthInstitution.Core.Timetable;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -142,8 +142,8 @@ namespace HealthInstitution.ViewModels.GUIViewModels.DoctorViewViewModels.Appoin
         public ICommand ShowMedicalRecordCommand { get; }
         public ICommand StartExaminationCommand { get; }
         IExaminationService _examinationService;
-        ITimetableService _timetableService;
-        public ScheduledExaminationTableViewModel(Doctor loggedDoctor, IExaminationService examinationService, ITimetableService timetableService)
+        IDoctorTimetableService _timetableService;
+        public ScheduledExaminationTableViewModel(Doctor loggedDoctor, IExaminationService examinationService, IDoctorTimetableService timetableService)
         {
             LoggedDoctor = loggedDoctor;
             _examinationService = examinationService;

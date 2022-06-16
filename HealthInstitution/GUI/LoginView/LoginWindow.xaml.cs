@@ -66,6 +66,7 @@ using HealthInstitution.GUI.PatientView;
 using HealthInstitution.GUI.PatientWindows;
 using HealthInstitution.GUI.SecretaryView;
 using HealthInstitution.GUI.SecretaryView.RequestsView;
+using HealthInstitution.Core.Timetable;
 
 namespace HealthInstitution.GUI.LoginView
 {
@@ -78,18 +79,17 @@ namespace HealthInstitution.GUI.LoginView
         private String _usernameInput;
         private String _passwordInput;
 
-        IUserService _userService;
-        ITrollCounterService _trollCounterService;
-        IPatientService _patientService;
-        IDoctorService _doctorService;
-        IPrescriptionNotificationService _prescriptionNotificationService;
-        IDoctorRatingsService _doctorRatingsService;
-
+        private IUserService _userService;
+        private ITrollCounterService _trollCounterService;
+        private IPatientService _patientService;
+        private IDoctorService _doctorService;
+        private IPrescriptionNotificationService _prescriptionNotificationService;
+        private IDoctorRatingsService _doctorRatingsService;
 
         public LoginWindow(IUserService userService, ITrollCounterService trollCounterService, IPatientService patientService, IDoctorService doctorService, IPrescriptionNotificationService prescriptionNotificationService, IDoctorRatingsService doctorRatingsService, IEquipmentTransferRefreshingService equipmentTransferRefreshingService, IRenovationRefreshingService renovationRefreshingService)
         {
             InitializeComponent();
-            this.DataContext = new LoginViewModel(this, userService,trollCounterService,patientService,doctorService,prescriptionNotificationService,doctorRatingsService);
+            this.DataContext = new LoginViewModel(this, userService, trollCounterService, patientService, doctorService, prescriptionNotificationService, doctorRatingsService);
 
             _userService = userService;
             _trollCounterService = trollCounterService;
@@ -108,7 +108,7 @@ namespace HealthInstitution.GUI.LoginView
         }
 
         [STAThread]
-        static void Main(string[] args)
+        private static void Main(string[] args)
         {
             var services = new DIServiceCollection();
 
@@ -202,9 +202,8 @@ namespace HealthInstitution.GUI.LoginView
                 services.RegisterSingleton<ITrollCounterFileRepository, TrollCounterFileRepository>();
                 services.RegisterSingleton<ITrollCounterService, TrollCounterService>();
 
-                services.RegisterSingleton<ITimetableService, TimetableService>();
+                services.RegisterSingleton<IDoctorTimetableService, DoctorTimetableService>();
             }
-
 
             //view
             {
@@ -212,7 +211,6 @@ namespace HealthInstitution.GUI.LoginView
                 services.RegisterTransient<DoctorWindow>();
                 services.RegisterTransient<PatientWindow>();
                 services.RegisterTransient<SecretaryWindow>();
-
 
                 services.RegisterTransient<AddDrugDialog>();
                 services.RegisterTransient<DrugsOnVerificationTableWindow>();
@@ -237,7 +235,6 @@ namespace HealthInstitution.GUI.LoginView
                 services.RegisterTransient<EquipmentTableWindow>();
                 services.RegisterTransient<EquipmentTransferDialog>();
 
-
                 services.RegisterTransient<HealthInstitution.GUI.DoctorView.AddExaminationDialog>();
                 services.RegisterTransient<AddOperationDialog>();
                 services.RegisterTransient<AddPrescriptionDialog>();
@@ -255,7 +252,6 @@ namespace HealthInstitution.GUI.LoginView
                 services.RegisterTransient<ScheduledExaminationTable>();
                 services.RegisterTransient<AddRestRequestDialog>();
                 services.RegisterTransient<RestRequestTable>();
-
 
                 services.RegisterTransient<DoctorPollDialog>();
                 services.RegisterTransient<PatientHospitalPollDialog>();
@@ -291,9 +287,7 @@ namespace HealthInstitution.GUI.LoginView
 
             services.RegisterTransient<LoginWindow>();
 
-
             services.BuildContainer();
-
 
             var loginWindow = DIContainer.GetService<LoginWindow>();
             loginWindow.ShowDialog();
