@@ -6,6 +6,7 @@ using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using HealthInstitution.Core.SystemUsers.Patients.Model;
 using HealthInstitution.Core.TrollCounters;
 using HealthInstitution.ViewModels.GUIViewModels.PatientViewViewModels;
+using HealthInstitution.ViewModels.GUIViewModels.PatientViewViewModels.Scheduling;
 using System.Windows;
 
 namespace HealthInstitution.GUI.PatientView;
@@ -17,8 +18,8 @@ public partial class DoctorPickExamination : Window
 {
     private Patient _loggedPatient;
     private List<Doctor> _currentDoctors;
-    IDoctorService _doctorService;
-    ITrollCounterService _trollCounterService;
+    private IDoctorService _doctorService;
+    private ITrollCounterService _trollCounterService;
 
     public DoctorPickExamination(IDoctorService doctorService, ITrollCounterService trollCounterService)
     {
@@ -27,12 +28,11 @@ public partial class DoctorPickExamination : Window
         _doctorService = doctorService;
         _trollCounterService = trollCounterService;
         _currentDoctors = _doctorService.GetAll();
-        
     }
+
     public void SetLoggedPatient(Patient patient)
     {
         _loggedPatient = patient;
         DataContext = new DoctorPickViewModel(_loggedPatient, _doctorService, _trollCounterService);
-        
     }
 }

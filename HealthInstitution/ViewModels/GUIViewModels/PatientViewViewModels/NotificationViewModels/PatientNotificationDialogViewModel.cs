@@ -10,14 +10,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HealthInstitution.ViewModels.GUIViewModels.PatientViewViewModels;
+namespace HealthInstitution.ViewModels.GUIViewModels.PatientViewViewModels.PrescriptionNotificationViewModels;
 
 public class PatientNotificationDialogViewModel : ViewModelBase
 {
     private List<AppointmentNotification> _notifications;
     private Patient _loggedPatient;
-    IPatientService _patientService;
-    IAppointmentNotificationService _appointmentNotificationService;
+    private IPatientService _patientService;
+    private IAppointmentNotificationService _appointmentNotificationService;
+
     public PatientNotificationDialogViewModel(Patient loggedPatient, IPatientService patientService, IAppointmentNotificationService appointmentNotificationService)
     {
         _loggedPatient = loggedPatient;
@@ -43,8 +44,6 @@ public class PatientNotificationDialogViewModel : ViewModelBase
             OnPropertyChanged(nameof(NotificationVMs));
         }
     }
-
-    
 
     public void PutIntoGrid()
     {

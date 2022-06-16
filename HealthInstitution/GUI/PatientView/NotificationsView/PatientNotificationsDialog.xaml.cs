@@ -6,6 +6,7 @@ using HealthInstitution.Core.SystemUsers.Patients;
 using HealthInstitution.Core.SystemUsers.Patients.Model;
 using HealthInstitution.Core.SystemUsers.Patients.Repository;
 using HealthInstitution.ViewModels.GUIViewModels.PatientViewViewModels;
+using HealthInstitution.ViewModels.GUIViewModels.PatientViewViewModels.PrescriptionNotificationViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -28,20 +29,20 @@ namespace HealthInstitution.GUI.PatientView
     public partial class PatientNotificationsDialog : Window
     {
         private Patient _loggedPatient;
-        IAppointmentNotificationService _appointmentNotificationService;
-        IPatientService _patientService;
+        private IAppointmentNotificationService _appointmentNotificationService;
+        private IPatientService _patientService;
+
         public PatientNotificationsDialog(IPatientService patientService, IAppointmentNotificationService appointmentNotificationService)
         {
-            _patientService = patientService;   
+            _patientService = patientService;
             _appointmentNotificationService = appointmentNotificationService;
             InitializeComponent();
-            
         }
+
         public void SetLoggedPatient(Patient patient)
         {
             _loggedPatient = patient;
-            this.DataContext = new PatientNotificationDialogViewModel(patient, _patientService,_appointmentNotificationService);
+            this.DataContext = new PatientNotificationDialogViewModel(patient, _patientService, _appointmentNotificationService);
         }
- 
     }
 }

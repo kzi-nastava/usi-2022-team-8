@@ -12,18 +12,18 @@
             <MenuItem Header="Rooms" Click="Rooms_Click" FontSize="14" Height="30" Width="111" />
             <MenuItem Header="Ingredients" Click="Ingredients_Click" FontSize="14" Height="30" Width="111" />
             <MenuItem Header="Drugs" FontSize="14" Height="30" Width="111">
-                <MenuItem Header="On verification" Click="OnVerificationDrugs_Click"/>
-                <MenuItem Header="Rejected" Click="RejectedDrugs_Click"/>
+                <MenuItem Header="On verification" Click="OnVerificationDrugs_Click" />
+                <MenuItem Header="Rejected" Click="RejectedDrugs_Click" />
             </MenuItem>
             <MenuItem Header="Polls" FontSize="14" Height="30" Width="111">
-                <MenuItem Header="Hospital poll" Click="HospitalPoll_Click"/>
-                <MenuItem Header="Doctor poll" Click="DoctorPoll_Click"/>
+                <MenuItem Header="Hospital poll" Click="HospitalPoll_Click" />
+                <MenuItem Header="Doctor poll" Click="DoctorPoll_Click" />
             </MenuItem>
         </Menu>
-        <Button Content="Equipment inspection" Click="EquipmentInspection_Click" Height="28" HorizontalAlignment="Center" Margin="0,200,0,0" VerticalAlignment="Top" FontSize="18"/>
-        <Button Content="Equipment transfer" Click="EquipmentTransfer_Click"  Height="28" HorizontalAlignment="Center" Margin="0,250,0,0" VerticalAlignment="Top" FontSize="18"/>
-        <Button Content="Log out" Click="LogOut_Click" HorizontalAlignment="Left" Margin="501,332,0,0" VerticalAlignment="Top" FontSize="14" Width="60"/>
-        <Image HorizontalAlignment="Center" Height="100" Margin="0,65,0,0" VerticalAlignment="Top" Width="100" Source="/Data/Images/Hospital.png"/>
-        <Button Content="Renovate" Click="Renovate_Click" HorizontalAlignment="Center" Height="28" Margin="0,300,0,0" VerticalAlignment="Top" Width="150" FontSize="18"/>
+        <Button Content="Equipment inspection" Click="EquipmentInspection_Click" Height="28" HorizontalAlignment="Center" Margin="0,200,0,0" VerticalAlignment="Top" FontSize="18" />
+        <Button Content="Equipment transfer" Click="EquipmentTransfer_Click"  Height="28" HorizontalAlignment="Center" Margin="0,250,0,0" VerticalAlignment="Top" FontSize="18" />
+        <Button Content="Log out" Click="LogOut_Click" HorizontalAlignment="Left" Margin="501,332,0,0" VerticalAlignment="Top" FontSize="14" Width="60" />
+        <Image HorizontalAlignment="Center" Height="100" Margin="0,65,0,0" VerticalAlignment="Top" Width="100" Source="/Images/Hospital.png" />
+        <Button Content="Renovate" Click="Renovate_Click" HorizontalAlignment="Center" Height="28" Margin="0,300,0,0" VerticalAlignment="Top" Width="150" FontSize="18" />
     </Grid>
 </Window>

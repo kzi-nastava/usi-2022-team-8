@@ -3,7 +3,7 @@ using HealthInstitution.Core.DIContainer;
 using HealthInstitution.Core.SystemUsers.Patients.Model;
 using HealthInstitution.Core.TrollCounters;
 using HealthInstitution.GUI.PatientView;
-using HealthInstitution.ViewModels.GUIViewModels.PatientViewViewModels;
+using HealthInstitution.ViewModels.GUIViewModels.PatientViewViewModels.Scheduling;
 using HealthInstitution.ViewModels.GUIViewModels.Scheduling;
 using System;
 using System.Collections.Generic;

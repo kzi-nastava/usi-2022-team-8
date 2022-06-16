@@ -1,6 +1,6 @@
 ﻿using HealthInstitution.Core;
 using HealthInstitution.Core.SystemUsers.Doctors;
-using HealthInstitution.ViewModels.GUIViewModels.PatientViewViewModels;
+using HealthInstitution.ViewModels.GUIViewModels.PatientViewViewModels.Scheduling;
 using System;
 using System.Collections.Generic;
 using System.Linq;

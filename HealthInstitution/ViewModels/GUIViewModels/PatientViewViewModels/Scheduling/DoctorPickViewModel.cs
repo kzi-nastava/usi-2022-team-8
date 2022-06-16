@@ -11,7 +11,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Input;
 
-namespace HealthInstitution.ViewModels.GUIViewModels.PatientViewViewModels;
+namespace HealthInstitution.ViewModels.GUIViewModels.PatientViewViewModels.Scheduling;
 
 public class DoctorPickViewModel : ViewModelBase
 {
@@ -81,21 +81,22 @@ public class DoctorPickViewModel : ViewModelBase
     public ICommand SpecialitySearch { get; }
     public ICommand ScheduleCommand { get; }
 
-    IDoctorService _doctorService;
-    ITrollCounterService _trollCounterService;
+    private IDoctorService _doctorService;
+    private ITrollCounterService _trollCounterService;
+
     public DoctorPickViewModel(Patient loggedPatient, IDoctorService doctorService, ITrollCounterService trollCounterService)
     {
         _doctorService = doctorService;
         _trollCounterService = trollCounterService;
         LoggedPatient = loggedPatient;
-        NameSort = new NameSortCommand(this,_doctorService);
+        NameSort = new NameSortCommand(this, _doctorService);
         SurnameSort = new SurnameSortCommand(this, _doctorService);
         SpecialitySort = new SpecialitySortCommand(this, _doctorService);
         RatingSort = new RatingSortCommand(this, _doctorService);
         NameSearch = new NameSearchCommand(this, _doctorService);
-        ScheduleCommand = new ScheduleCommand(this,LoggedPatient, _trollCounterService);
-        SurnameSearch = new SurnameSearchCommand(this,_doctorService);
-        SpecialitySearch = new SpecialitySearchCommand(this,_doctorService);
+        ScheduleCommand = new ScheduleCommand(this, LoggedPatient, _trollCounterService);
+        SurnameSearch = new SurnameSearchCommand(this, _doctorService);
+        SpecialitySearch = new SpecialitySearchCommand(this, _doctorService);
         Doctors = _doctorService.GetAll();
         _doctorVMs = new();
         LoadRows();
