@@ -18,6 +18,7 @@ using HealthInstitution.Core.Examinations.Model;
 using HealthInstitution.Core.Examinations;
 using HealthInstitution.Core.Scheduling;
 using HealthInstitution.Core.DIContainer;
+using HealthInstitution.ViewModels.GUIViewModels.PatientViewViewModels.RecommendedScheduling;
 
 namespace HealthInstitution.GUI.PatientView;
 
@@ -27,8 +28,18 @@ namespace HealthInstitution.GUI.PatientView;
 ///
 public partial class RecommendedWindow : Window
 {
-    public RecommendedWindow()
+    User _loggedPatient;
+    IRecommendedSchedulingService _recommendedSchedulingService;
+    IDoctorService _doctorService;
+    public RecommendedWindow(IRecommendedSchedulingService recommendedSchedulingService, IDoctorService doctorService)
     {
         InitializeComponent();
+        _recommendedSchedulingService = recommendedSchedulingService;
+        _doctorService = doctorService;
+    }
+    public void SetLoggedPatient(User patient)
+    {
+        _loggedPatient = patient;
+        DataContext = new RecommendedWindowViewModel(patient, _recommendedSchedulingService, _doctorService);
     }
 }

@@ -21,6 +21,7 @@ using HealthInstitution.Core.ScheduleEditRequests;
 using HealthInstitution.Core.Scheduling;
 using HealthInstitution.Core.MedicalRecords;
 using HealthInstitution.Core.Polls;
+using HealthInstitution.ViewModels.GUIViewModels.PatientViewViewModels;
 
 namespace HealthInstitution.GUI.UserWindow
 {
@@ -34,16 +35,16 @@ namespace HealthInstitution.GUI.UserWindow
         public PatientWindow(IPatientService patientService)
         {
             InitializeComponent();
-            this._loggedPatient = loggedPatient;
-            //ShowNotificationsDialog();
+            _patientService = patientService;
         }
 
         public void SetLoggedPatient(Patient patient)
         {
             _loggedPatient = patient;
+            this.DataContext = new PatientWindowViewModel(patient, this, _patientService);
             ShowNotificationsDialog();
             RecepieNotificationDialog recepieNotificationDialog = DIContainer.GetService<RecepieNotificationDialog>();
-            recepieNotificationDialog.SetLoggedPatient(_loggedPatient.Username);
+            recepieNotificationDialog.SetLoggedPatient(_loggedPatient);
             recepieNotificationDialog.ShowDialog();
         }
         private void ShowNotificationsDialog()

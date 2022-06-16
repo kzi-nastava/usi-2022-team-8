@@ -26,14 +26,6 @@ public partial class MedicalRecordView : Window
     public void SetLoggedPatient(User patient)
     {
         _loggedPatient = patient;
-    }
-
-    private void RateDoctorButton_Click(object sender, RoutedEventArgs e)
-    {
-        Examination selectedExamination = (Examination)dataGrid.SelectedItem;
-
-        DoctorPollDialog doctorPollDialog = DIContainer.GetService<DoctorPollDialog>();
-        doctorPollDialog.SetRatedDoctor(selectedExamination.Doctor);
-        doctorPollDialog.ShowDialog();
+        DataContext = new MedicalRecordViewViewModel(patient, _examinationService);
     }
 }

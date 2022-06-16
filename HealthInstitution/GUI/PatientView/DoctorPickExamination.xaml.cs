@@ -28,75 +28,7 @@ public partial class DoctorPickExamination : Window
     public void SetLoggedPatient(Patient patient)
     {
         _loggedPatient = patient;
-        LoadRows();
-    }
-    private void Button_Click(object sender, RoutedEventArgs e)
-    {
-        var doctor = dataGrid.SelectedItem as Doctor;
-
-        AddExaminationDialog dialog = DIContainer.GetService<AddExaminationDialog>();
-        dialog.SetLoggedPatient(_loggedPatient);
-        dialog.SetSelectedDoctor(doctor);
-        dialog.ShowDialog();        
-    }
-
-    private void NameSort_Click(object sender, RoutedEventArgs e)
-    {
-        _currentDoctors = _doctorService.OrderByDoctorName(_currentDoctors);
-        LoadRows();
-    }
-
-    private void LoadRows()
-    {
-        dataGrid.Items.Clear();
-        List<Doctor> doctors = _currentDoctors;
-        foreach (Doctor doctor in doctors)
-        {
-            dataGrid.Items.Add(doctor);
-        }
-    }
-
-    private void SurnameSort_Click(object sender, RoutedEventArgs e)
-    {
-        _currentDoctors = _doctorService.OrderByDoctorSurname(_currentDoctors);
-        LoadRows();
-    }
-
-    private void SpecialitySort_Click(object sender, RoutedEventArgs e)
-    {
-        _currentDoctors = _doctorService.OrderByDoctorSpeciality(_currentDoctors);
-        LoadRows();
-    }
-
-    private void RatingSort_Click(object sender, RoutedEventArgs e)
-    {
-        _currentDoctors = _doctorService.OrderByDoctorRating(_currentDoctors);
-        LoadRows();
-    }
-
-    private void SpecialitySearch_Click(object sender, RoutedEventArgs e)
-    {
-        string speciality = SearchBox.Text;
-        _currentDoctors = _doctorService.SearchBySpeciality(speciality);
-        LoadRows();
-    }
-
-    private void SurnameSearch_Click(object sender, RoutedEventArgs e)
-    {
-        string surname = SearchBox.Text;
-        _currentDoctors = _doctorService.SearchBySurname(surname);
-        LoadRows();
-    }
-
-    private void SearchParameter_GotFocus(object sender, RoutedEventArgs e)
-    {
-        SearchBox.Clear();
-    }
-
-    private void NameSearch_Click(object sender, RoutedEventArgs e)
-    {
-        string name = SearchBox.Text;
-        _currentDoctors = _doctorService.SearchByName(name);
-        LoadRows();
+        //DataContext = new DoctorPickExaminationViewModel();
+        
     }
 }

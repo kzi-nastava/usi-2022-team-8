@@ -89,6 +89,8 @@ namespace HealthInstitution.GUI.LoginView
         public LoginWindow(IUserService userService, ITrollCounterService trollCounterService, IPatientService patientService, IDoctorService doctorService, IPrescriptionNotificationService prescriptionNotificationService, IDoctorRatingsService doctorRatingsService, IEquipmentTransferRefreshingService equipmentTransferRefreshingService, IRenovationRefreshingService renovationRefreshingService)
         {
             InitializeComponent();
+            this.DataContext = new LoginViewModel(this, userService,trollCounterService,patientService,doctorService,prescriptionNotificationService,doctorRatingsService);
+
             _userService = userService;
             _trollCounterService = trollCounterService;
             _patientService = patientService;
@@ -295,10 +297,6 @@ namespace HealthInstitution.GUI.LoginView
 
             var loginWindow = DIContainer.GetService<LoginWindow>();
             loginWindow.ShowDialog();
-
-            LoginWindow window = DIContainer.GetService<LoginWindow>();
-            window.DataContext = new LoginViewModel(window, DIContainer.GetService<IUserService>(), DIContainer.GetService<ITrollCounterService>(), DIContainer.GetService<IPatientService>(), DIContainer.GetService<IDoctorService>(), DIContainer.GetService<IPrescriptionNotificationService>(), DIContainer.GetService<IDoctorRatingsService>());
-            window.ShowDialog();
         }
     }
 }

@@ -89,7 +89,6 @@ public class LoginCommand : CommandBase
 
         var window = DIContainer.GetService<PatientWindow>();
         window.SetLoggedPatient(loggedPatient);
-        window.DataContext = new PatientWindowViewModel(loggedPatient, window, _patientService);
         _loginViewModel.ThisWindow.Close();
         window.ShowDialog();
     }
