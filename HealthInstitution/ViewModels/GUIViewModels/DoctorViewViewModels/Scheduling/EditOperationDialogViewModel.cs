@@ -207,7 +207,7 @@ namespace HealthInstitution.ViewModels.GUIViewModels.DoctorViewViewModels.Schedu
             SelectedOperation = selectedOperation;
             LoadComboBoxes();
             _selectedDateTime = selectedOperation.Appointment;
-            EditOperationCommand = new EditOperationCommand(this);
+            EditOperationCommand = new EditOperationDialogCommand(this);
         }
     }
 }

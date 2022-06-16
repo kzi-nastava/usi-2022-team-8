@@ -1,40 +1,27 @@
-﻿using HealthInstitution.ViewModels.GUIViewModels.DoctorViewViewModels.Scheduling;
-using HealthInstitution.Core;
-using HealthInstitution.Core.Examinations.Model;
-using HealthInstitution.Core.MedicalRecords;
-using HealthInstitution.Core.MedicalRecords.Model;
-using HealthInstitution.Core.SystemUsers.Doctors.Model;
-using HealthInstitution.Core.SystemUsers.Patients.Model;
-using HealthInstitution.Core.Examinations;
-using System.Windows;
+﻿using HealthInstitution.Core;
+using HealthInstitution.GUI.DoctorView;
+using HealthInstitution.ViewModels.GUIViewModels.DoctorViewViewModels.AppointmentsTable;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace HealthInstitution.Commands.DoctorCommands.Scheduling
 {
     internal class EditExaminationCommand : CommandBase
     {
-        private EditExaminationDialogViewModel _editExaminationDialogViewModel;
+        private ExaminationTableViewModel _examinationTableViewModel;
 
-        public EditExaminationCommand(EditExaminationDialogViewModel editExaminationDialogViewModel)
+        public EditExaminationCommand(ExaminationTableViewModel examinationTableViewModel)
         {
-            _editExaminationDialogViewModel = editExaminationDialogViewModel;
+            _examinationTableViewModel = examinationTableViewModel;
         }
 
         public override void Execute(object? parameter)
         {
-            try
-            {
-                var selectedExamination = _editExaminationDialogViewModel.SelectedExamination;
-                Doctor doctor = selectedExamination.Doctor;
-                Patient patient = _editExaminationDialogViewModel.GetPatient();
-                MedicalRecord medicalRecord = MedicalRecordService.GetByPatientUsername(patient);
-                DateTime dateTime = _editExaminationDialogViewModel.GetExaminationDateTime();
-                ExaminationDTO examination = new ExaminationDTO(dateTime, null, doctor, medicalRecord);
-                ExaminationService.Update(selectedExamination.Id, examination);
-            }
-            catch (Exception ex)
-            {
-                System.Windows.MessageBox.Show(ex.Message, "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
-            }
+            new EditExaminationDialog(_examinationTableViewModel.GetSelectedExamination()).ShowDialog();
+            _examinationTableViewModel.RefreshGrid();
         }
     }
 }

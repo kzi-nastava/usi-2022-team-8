@@ -196,7 +196,7 @@ namespace HealthInstitution.ViewModels.GUIViewModels.DoctorViewViewModels.Schedu
         {
             LoggedDoctor = loggedDoctor;
             LoadComboBoxes();
-            CreateOperationCommand = new CreateOperationCommand(this);
+            CreateOperationCommand = new CreateOperationDialogCommand(this);
         }
     }
 }

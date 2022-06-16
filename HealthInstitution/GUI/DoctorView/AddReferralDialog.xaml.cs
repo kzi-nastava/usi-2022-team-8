@@ -21,6 +21,7 @@ using HealthInstitution.Core.MedicalRecords.Repository;
 using HealthInstitution.Core.Referrals;
 using HealthInstitution.Core.MedicalRecords;
 using HealthInstitution.Core.SystemUsers.Doctors;
+using HealthInstitution.ViewModels.GUIViewModels.DoctorViewViewModels.Referrals;
 
 namespace HealthInstitution.GUI.DoctorView
 {
@@ -33,81 +34,8 @@ namespace HealthInstitution.GUI.DoctorView
         private Doctor _doctor;
         public AddReferralDialog(Doctor doctor, Patient patient)
         {
-            _patient = patient;
-            _doctor = doctor;
             InitializeComponent();
-            Load();
-        }
-
-        public void Load()
-        {
-            doctorRadioButton.IsChecked = true;
-            doctorComboBox.IsEnabled = true;
-            specialtyComboBox.IsEnabled = false;
-        }
-
-        private void DoctorChecked(object sender, RoutedEventArgs e)
-        {
-            specialtyComboBox.IsEnabled = false;
-            doctorComboBox.IsEnabled = true;
-        }
-
-        private void SpecialtyChecked(object sender, RoutedEventArgs e)
-        {
-            doctorComboBox.IsEnabled = false;
-            specialtyComboBox.IsEnabled = true;
-        }
-
-        private void DoctorComboBox_Loaded(object sender, RoutedEventArgs e)
-        {
-            var doctorComboBox = sender as System.Windows.Controls.ComboBox;
-            List<Doctor> doctors = DoctorService.GetAll();
-            foreach (Doctor doctor in doctors)
-            {
-                if (_doctor.Username != doctor.Username)
-                    doctorComboBox.Items.Add(doctor);
-            }
-            doctorComboBox.SelectedIndex = 0;
-            doctorComboBox.Items.Refresh();
-        }
-
-        private void SpecialtyComboBox_Loaded(object sender, RoutedEventArgs e)
-        {
-            var specialtyComboBox = sender as System.Windows.Controls.ComboBox;
-            specialtyComboBox.Items.Add("GeneralPractitioner");
-            specialtyComboBox.Items.Add("Surgeon");
-            specialtyComboBox.Items.Add("Radiologist");
-            specialtyComboBox.Items.Add("Pediatrician");
-            specialtyComboBox.SelectedIndex = 0;
-            specialtyComboBox.Items.Refresh();
-        }
-
-        private ReferralDTO CreateReferralDTOWithDoctor()
-        {
-            Doctor refferedDoctor = (Doctor)doctorComboBox.SelectedItem;
-            return new ReferralDTO(ReferralType.SpecificDoctor, _doctor, refferedDoctor, null);
-        }
-
-        private ReferralDTO CreateReferralDTOWithSpecialty()
-        {
-            SpecialtyType specialtyType = (SpecialtyType)specialtyComboBox.SelectedIndex;
-            return new ReferralDTO(ReferralType.Specialty, _doctor, null, specialtyType);
-        }
-
-        private void Submit_Click(object sender, RoutedEventArgs e)
-        {
-            this.Close();
-            ReferralDTO referralDTO;
-            if ((bool)doctorRadioButton.IsChecked)
-            {
-                referralDTO = CreateReferralDTOWithDoctor();
-            } else
-            {
-                referralDTO = CreateReferralDTOWithSpecialty();
-            }
-            Referral referral = ReferralService.Add(referralDTO);
-            MedicalRecordService.AddReferral(_patient, referral);
-            System.Windows.MessageBox.Show("You have created the referral!", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
+            DataContext = new AddReferralDialogViewModel(patient, doctor);
         }
     }
 }

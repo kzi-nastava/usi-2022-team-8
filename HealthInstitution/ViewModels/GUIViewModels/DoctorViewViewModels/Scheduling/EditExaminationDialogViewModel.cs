@@ -186,7 +186,7 @@ namespace HealthInstitution.ViewModels.GUIViewModels.DoctorViewViewModels.Schedu
             SelectedExamination = selectedExamination;
             LoadComboBoxes();
             _selectedDateTime = selectedExamination.Appointment;
-            EditExaminationCommand = new EditExaminationCommand(this);
+            EditExaminationCommand = new EditExaminationDialogCommand(this);
         }
     }
 }

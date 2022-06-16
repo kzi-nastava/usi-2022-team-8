@@ -16,16 +16,10 @@
         </Style>
     </Window.Resources>
     <Grid Margin="0,115,0,0">
-        <DataGrid  ItemsSource="{Binding Examination}" AutoGenerateColumns="False" Name="dataGrid" Grid.ColumnSpan="3" Margin="0,-108,0,108">
+        <DataGrid  ItemsSource="{Binding ExaminationsVM}" AutoGenerateColumns="False" Name="dataGrid" Grid.ColumnSpan="3" Margin="0,-108,0,108">
 
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Patient" FontSize="15" Width =" 145">
-                    <DataGridTextColumn.Binding>
-                        <MultiBinding StringFormat="{}{0} {1}">
-                            <Binding Path="MedicalRecord.Patient.Name" />
-                            <Binding Path="MedicalRecord.Patient.Surname"/>
-                        </MultiBinding>
-                    </DataGridTextColumn.Binding>
+                <DataGridTextColumn Header="Patient" Binding="{Binding Patient}"  FontSize="15" Width =" 145">
                 </DataGridTextColumn>
                 <DataGridTextColumn Header="Time" FontSize="15" Binding="{Binding Appointment}" Width ="155"/>
                 <DataGridTextColumn Header="Status" FontSize="15" Binding="{Binding Status}" Width ="110"/>
@@ -33,8 +27,8 @@
                 <DataGridTextColumn Header="Anamnesis" FontSize="15" Width ="Auto" Binding="{Binding Anamnesis}"/>
             </DataGrid.Columns>
         </DataGrid>
-        <Button Name="addButton" Content="Add" Click="AddButton_Click" HorizontalAlignment="Center" Height="30" Margin="0,240,350,0" VerticalAlignment="Top" Width="111" RenderTransformOrigin="0.243,0.514" Cursor="Arrow" FontSize="18" Visibility="Visible"/>
-        <Button Name="editButton" Content="Edit" Click="EditButton_Click" IsEnabled="{Binding ElementName=dataGrid, Path=SelectedItems.Count}" HorizontalAlignment="Center" Height="30" Margin="0,240,0,0" VerticalAlignment="Top" Width="111" RenderTransformOrigin="0.243,0.514" Cursor="Arrow" FontSize="18" Visibility="Visible"/>
-        <Button Name="deleteButton" Content="Delete" Click="DeleteButton_Click" IsEnabled="{Binding ElementName=dataGrid, Path=SelectedItems.Count}" HorizontalAlignment="Center" Height="30" Margin="0,240,-350,0" VerticalAlignment="Top" Width="111" RenderTransformOrigin="0.243,0.514" Cursor="Arrow" FontSize="18" Visibility="Visible"/>
+        <Button Name="addButton" Content="Add" Command="{Binding CreateExaminationCommand}" HorizontalAlignment="Center" Height="30" Margin="0,240,350,0" VerticalAlignment="Top" Width="111" RenderTransformOrigin="0.243,0.514" Cursor="Arrow" FontSize="18" Visibility="Visible"/>
+        <Button Name="editButton" Content="Edit" Command="{Binding EditExaminationCommand}" IsEnabled="{Binding ElementName=dataGrid, Path=SelectedItems.Count}" HorizontalAlignment="Center" Height="30" Margin="0,240,0,0" VerticalAlignment="Top" Width="111" RenderTransformOrigin="0.243,0.514" Cursor="Arrow" FontSize="18" Visibility="Visible"/>
+        <Button Name="deleteButton" Content="Delete" Command="{Binding DeleteExaminationCommand}" IsEnabled="{Binding ElementName=dataGrid, Path=SelectedItems.Count}" HorizontalAlignment="Center" Height="30" Margin="0,240,-350,0" VerticalAlignment="Top" Width="111" RenderTransformOrigin="0.243,0.514" Cursor="Arrow" FontSize="18" Visibility="Visible"/>
     </Grid>
 </Window>

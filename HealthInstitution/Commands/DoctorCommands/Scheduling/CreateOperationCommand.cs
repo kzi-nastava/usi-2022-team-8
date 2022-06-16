@@ -1,33 +1,30 @@
-﻿using System;
-using HealthInstitution.Core;
-using HealthInstitution.Core.Operations.Model;
-using HealthInstitution.Core.MedicalRecords;
-using HealthInstitution.Core.MedicalRecords.Model;
-using HealthInstitution.Core.Scheduling;
+﻿using HealthInstitution.Core;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
-using HealthInstitution.Core.SystemUsers.Patients.Model;
-using HealthInstitution.ViewModels.GUIViewModels.DoctorViewViewModels.Scheduling;
+using HealthInstitution.GUI.DoctorView;
+using HealthInstitution.ViewModels.GUIViewModels.DoctorViewViewModels.AppointmentsTable;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
 namespace HealthInstitution.Commands.DoctorCommands.Scheduling
 {
     internal class CreateOperationCommand : CommandBase
     {
-        private AddOperationDialogViewModel _addOperationDialogViewModel;
+        private OperationTableViewModel _operationTableViewModel;
+        private Doctor _loggedDoctor;
 
-        public CreateOperationCommand(AddOperationDialogViewModel addOperationDialogViewModel)
+        public CreateOperationCommand(OperationTableViewModel operationTableViewModel, Doctor doctor)
         {
-            _addOperationDialogViewModel = addOperationDialogViewModel;
+            _operationTableViewModel = operationTableViewModel;
+            _loggedDoctor = doctor;
         }
 
         public override void Execute(object? parameter)
         {
-            Doctor doctor = _addOperationDialogViewModel.LoggedDoctor;
-            Patient patient = _addOperationDialogViewModel.GetPatient();
-            MedicalRecord medicalRecord = MedicalRecordService.GetByPatientUsername(patient);
-            DateTime dateTime = _addOperationDialogViewModel.GetOperationDateTime();
-            int duration = _addOperationDialogViewModel.GetDuration();
-            OperationDTO operation = new OperationDTO(dateTime, duration, null, doctor, medicalRecord);
-            SchedulingService.ReserveOperation(operation);
+            new AddOperationDialog(_loggedDoctor).ShowDialog();
+            _operationTableViewModel.RefreshGrid();
         }
     }
 }

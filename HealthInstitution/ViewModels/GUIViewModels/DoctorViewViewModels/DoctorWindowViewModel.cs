@@ -1,4 +1,5 @@
 ﻿using HealthInstitution.Commands;
+using HealthInstitution.Commands.DoctorCommands.DoctorWindow;
 using HealthInstitution.Core;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using System;
@@ -17,7 +18,7 @@ namespace HealthInstitution.ViewModels.GUIViewModels.DoctorViewViewModels
             OperationsTableCommand = new OperationsTableCommand(loggedDoctor);
             ExaminationsTableCommand = new ExaminationsTableCommand(loggedDoctor);
             ScheduleReviewCommand = new ScheduleReviewCommand(loggedDoctor);
-            DrugManagementCommand = new DrugManagementCommand(loggedDoctor);
+            DrugManagementCommand = new DrugManagementCommand();
             Logout = new LogoutCommand();
         }
 

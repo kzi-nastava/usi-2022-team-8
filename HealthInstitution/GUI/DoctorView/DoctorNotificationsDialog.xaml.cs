@@ -4,6 +4,7 @@ using HealthInstitution.Core.Notifications.Repository;
 using HealthInstitution.Core.SystemUsers.Doctors;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using HealthInstitution.Core.SystemUsers.Doctors.Repository;
+using HealthInstitution.ViewModels.GUIViewModels.DoctorViewViewModels.Notifications;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,24 +26,10 @@ namespace HealthInstitution.GUI.DoctorView
     /// </summary>
     public partial class DoctorNotificationsDialog : Window
     {
-        private Doctor _loggedDoctor;
         public DoctorNotificationsDialog(Doctor doctor)
         {
-            _loggedDoctor = doctor;
             InitializeComponent();
-            LoadRows();
-        }
-        private void LoadRows()
-        {
-            dataGrid.Items.Clear();
-            List<AppointmentNotification> doctorsNotifications = _loggedDoctor.Notifications;
-            foreach (AppointmentNotification notification in doctorsNotifications)
-            {
-                dataGrid.Items.Add(notification);
-                AppointmentNotificationService.ChangeActiveStatus(notification,true);
-            }
-            dataGrid.Items.Refresh();
-            DoctorService.DeleteNotifications(_loggedDoctor);
+            DataContext = new DoctorNotificationsDialogViewModel(doctor);
         }
     }
 }

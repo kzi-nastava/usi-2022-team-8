@@ -177,7 +177,7 @@ namespace HealthInstitution.ViewModels.GUIViewModels.DoctorViewViewModels.Schedu
         {
             LoggedDoctor = loggedDoctor;
             LoadComboBoxes();
-            CreateExaminationCommand = new CreateExaminationCommand(this);
+            CreateExaminationCommand = new CreateExaminationDialogCommand(this);
         }
     }
 }

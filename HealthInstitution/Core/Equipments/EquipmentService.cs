@@ -239,6 +239,8 @@ namespace HealthInstitution.Core.Equipments
         }
         public static void RemoveConsumed(Equipment equipment, int consumedQuantity)
         {
+            if (consumedQuantity < 0 || consumedQuantity > equipment.Quantity)
+                throw new Exception ("Entered too much quantity!");
             equipment.Quantity -= consumedQuantity;
             s_equipmentRepository.Save();
          }
