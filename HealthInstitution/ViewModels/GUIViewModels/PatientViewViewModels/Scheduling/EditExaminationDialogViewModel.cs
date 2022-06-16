@@ -33,13 +33,13 @@ public class EditExaminationDialogViewModel : ViewModelBase
     {
         ThisWindow = window;
         SelectedExamination = selectedExamination;
-        LoadComboBoxes();
         _selectedDateTime = selectedExamination.Appointment;
         _editSchedulingService = editSchedulingService;
         _scheduleEditRequestService = scheduleEditRequestsService;
         _examinationService = examinationService;
         _doctorService = doctorService;
         EditExaminationCommand = new EditExaminationCommand(this, SelectedExamination, _examinationService, _editSchedulingService, _scheduleEditRequestService, _doctorService);
+        LoadComboBoxes();
     }
 
     public DateTime GetExaminationDateTime()

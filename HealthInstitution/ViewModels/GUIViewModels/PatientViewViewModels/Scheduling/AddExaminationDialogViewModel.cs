@@ -31,11 +31,11 @@ public class AddExaminationDialogViewModel : ViewModelBase
     {
         ThisWindow = window;
         LoggedPatient = loggedPatient;
-        LoadComboBoxes();
         _doctorService = doctorService;
         _medicalRecordService = medicalRecordService;
         _schedulingService = schedulingService;
         CreateExaminationCommand = new CreateExaminationCommand(this, _medicalRecordService, _doctorService, _schedulingService);
+        LoadComboBoxes();
     }
 
     public DateTime GetExaminationDateTime()
