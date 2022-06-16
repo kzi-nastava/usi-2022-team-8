@@ -12,16 +12,17 @@ namespace HealthInstitution.Commands.PatientCommands;
 public class SearchAnamnesisCommand : CommandBase
 {
     private MedicalRecordViewViewModel _medicalRecordViewModel;
-
-    public SearchAnamnesisCommand(MedicalRecordViewViewModel medicalRecordViewModel)
+    IExaminationService _examinationService;
+    public SearchAnamnesisCommand(MedicalRecordViewViewModel medicalRecordViewModel, IExaminationService examinationService)
     {
+        _examinationService = examinationService;
         _medicalRecordViewModel = medicalRecordViewModel;
     }
 
     public override void Execute(object? parameter)
     {
         _medicalRecordViewModel.Examinations =
-             ExaminationService.GetSearchAnamnesis(_medicalRecordViewModel.Keyword, _medicalRecordViewModel.LoggedPatient.Username);
+             _examinationService.GetSearchAnamnesis(_medicalRecordViewModel.Keyword, _medicalRecordViewModel.LoggedPatient.Username);
         _medicalRecordViewModel.PutIntoGrid();
     }
 }

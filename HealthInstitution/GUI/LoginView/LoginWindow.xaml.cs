@@ -296,8 +296,8 @@ namespace HealthInstitution.GUI.LoginView
             var loginWindow = DIContainer.GetService<LoginWindow>();
             loginWindow.ShowDialog();
 
-            LoginWindow window = new LoginWindow();
-            window.DataContext = new LoginViewModel(window);
+            LoginWindow window = DIContainer.GetService<LoginWindow>();
+            window.DataContext = new LoginViewModel(window, DIContainer.GetService<IUserService>(), DIContainer.GetService<ITrollCounterService>(), DIContainer.GetService<IPatientService>(), DIContainer.GetService<IDoctorService>(), DIContainer.GetService<IPrescriptionNotificationService>(), DIContainer.GetService<IDoctorRatingsService>());
             window.ShowDialog();
         }
     }

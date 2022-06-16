@@ -1,6 +1,7 @@
 ﻿using HealthInstitution.Commands.PatientCommands.PatientWindowCommands;
 using HealthInstitution.Commands.PatientCommands.RecommendedSchedulingCommands;
 using HealthInstitution.Core;
+using HealthInstitution.Core.Scheduling;
 using HealthInstitution.Core.SystemUsers.Doctors;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using HealthInstitution.Core.SystemUsers.Users.Model;
@@ -16,6 +17,24 @@ namespace HealthInstitution.ViewModels.GUIViewModels.PatientViewViewModels.Recom
 
 public class RecommendedWindowViewModel : ViewModelBase
 {
+
+    public ICommand ScheduleCommand { get; }
+    public User LoggedPatient;
+    IRecommendedSchedulingService _recommendedSchedulingService;
+    IDoctorService _doctorService;
+    public RecommendedWindowViewModel(User loggedPatient, IRecommendedSchedulingService recommendedSchedulingService,
+                                    IDoctorService doctorService)
+    {
+        LoggedPatient = loggedPatient;
+        _recommendedSchedulingService = recommendedSchedulingService;
+        _doctorService = doctorService;
+        _doctorComboBoxItems = new();
+        _hourComboBoxItems = new();
+        _minuteComboBoxItems = new();
+        ScheduleCommand = new FirstFitScheduleCommand(this);
+        LoadComboBoxes();
+    }
+
     private string _priority;
 
     public string Priority
@@ -228,17 +247,5 @@ public class RecommendedWindowViewModel : ViewModelBase
         LoadMinuteComboBox();
     }
 
-    public ICommand ScheduleCommand { get; }
-    public User LoggedPatient;
-
-    public RecommendedWindowViewModel(User loggedPatient)
-    {
-        LoggedPatient = loggedPatient;
-
-        _doctorComboBoxItems = new();
-        _hourComboBoxItems = new();
-        _minuteComboBoxItems = new();
-        ScheduleCommand = new FirstFitScheduleCommand(this);
-        LoadComboBoxes();
-    }
+    
 }

@@ -2,7 +2,9 @@
 using HealthInstitution.Core;
 using HealthInstitution.Core.Examinations;
 using HealthInstitution.Core.Examinations.Model;
+using HealthInstitution.Core.ScheduleEditRequests;
 using HealthInstitution.Core.SystemUsers.Patients.Model;
+using HealthInstitution.Core.TrollCounters;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -20,6 +22,24 @@ public class PatientScheduleWindowViewModel : ViewModelBase
     public List<Examination> Examinations;
 
     private int _selectedExaminationIndex;
+
+    private IExaminationService _examinationService;
+    private IScheduleEditRequestsService _scheduleEditRequestsService;
+    private ITrollCounterService _trollCounterService;
+
+    public PatientScheduleWindowViewModel(Patient loggedPatient, IExaminationService examinationService, IScheduleEditRequestsService scheduleEditRequestsService,ITrollCounterService trollCounterService)
+    {
+        _examinationService = examinationService;
+        _scheduleEditRequestsService = scheduleEditRequestsService;
+        _trollCounterService = trollCounterService;
+        LoggedPatient = loggedPatient;
+        AddSchedulingCommand = new AddSchedulingCommand(this);
+        EditSchedulingCommand = new EditSchedulingCommand(this);
+        DeleteSchedulingCommand = new DeleteSchedulingCommand(this);
+        Examinations = new();
+        _examinationVMs = new();
+        RefreshGrid();
+    }
 
     public int SelectedExaminationIndex
     {
@@ -72,14 +92,5 @@ public class PatientScheduleWindowViewModel : ViewModelBase
     public ICommand EditSchedulingCommand { get; }
     public ICommand DeleteSchedulingCommand { get; }
 
-    public PatientScheduleWindowViewModel(Patient loggedPatient)
-    {
-        LoggedPatient = loggedPatient;
-        AddSchedulingCommand = new AddSchedulingCommand(this);
-        EditSchedulingCommand = new EditSchedulingCommand(this);
-        DeleteSchedulingCommand = new DeleteSchedulingCommand(this);
-        Examinations = new();
-        _examinationVMs = new();
-        RefreshGrid();
-    }
+    
 }

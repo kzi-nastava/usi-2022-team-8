@@ -1,4 +1,6 @@
 ﻿using HealthInstitution.Core;
+using HealthInstitution.Core.DIContainer;
+using HealthInstitution.Core.Examinations;
 using HealthInstitution.Core.SystemUsers.Patients.Model;
 using HealthInstitution.Core.SystemUsers.Users.Model;
 using HealthInstitution.GUI.PatientView;
@@ -14,17 +16,18 @@ namespace HealthInstitution.Commands.PatientCommands.PatientWindowCommands;
 public class MedicalRecordViewCommand : CommandBase
 {
     private User _loggedPatient;
-
-    public MedicalRecordViewCommand(User loggedPatient)
+    IExaminationService _examinationService; 
+    public MedicalRecordViewCommand(User loggedPatient, IExaminationService examinationService)
     {
+        _examinationService = examinationService;
         _loggedPatient = loggedPatient;
     }
 
     public override void Execute(object? parameter)
     {
-        new MedicalRecordView(_loggedPatient)
-        {
-            DataContext = new MedicalRecordViewViewModel(_loggedPatient)
-        }.ShowDialog();
+        var window = DIContainer.GetService<MedicalRecordView>();
+        window.SetLoggedPatient(_loggedPatient);
+        window.DataContext = new MedicalRecordViewViewModel(_loggedPatient, _examinationService);
+        window.ShowDialog();
     }
 }

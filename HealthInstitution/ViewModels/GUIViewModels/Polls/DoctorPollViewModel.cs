@@ -13,6 +13,16 @@ namespace HealthInstitution.ViewModels.GUIViewModels.Polls;
 
 public class DoctorPollViewModel : ViewModelBase
 {
+    public ICommand SubmitCommand { get; }
+    public Doctor Doctor;
+    IPollService _pollService;
+    public DoctorPollViewModel(Doctor doctor, IPollService pollService)
+    {
+        Doctor = doctor;
+        SubmitCommand = new DoctorPollSubmitCommand(this);
+        _pollService = pollService;
+        LoadLabels();
+    }
     private string _q1Text;
 
     public string Q1Text
@@ -178,15 +188,7 @@ public class DoctorPollViewModel : ViewModelBase
         }
     }
 
-    public ICommand SubmitCommand { get; }
-    public Doctor Doctor;
-
-    public DoctorPollViewModel(Doctor doctor)
-    {
-        Doctor = doctor;
-        SubmitCommand = new DoctorPollSubmitCommand(this);
-        LoadLabels();
-    }
+    
 
     private void LoadLabels()
     {

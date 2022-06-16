@@ -1,6 +1,9 @@
 ﻿using HealthInstitution.Commands.PatientCommands.Scheduling;
 using HealthInstitution.Core;
+using HealthInstitution.Core.Examinations;
 using HealthInstitution.Core.Examinations.Model;
+using HealthInstitution.Core.ScheduleEditRequests;
+using HealthInstitution.Core.Scheduling;
 using HealthInstitution.Core.SystemUsers.Doctors;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using System;
@@ -15,8 +18,27 @@ namespace HealthInstitution.ViewModels.GUIViewModels.Scheduling;
 
 public class EditExaminationDialogViewModel : ViewModelBase
 {
-    public Examination SelectedExamination;
 
+    public Examination SelectedExamination;
+    IDoctorService _doctorService;
+    IExaminationService _examinationService;
+    IEditSchedulingService _editSchedulingService;
+    IScheduleEditRequestsService _scheduleEditRequestService;
+    public EditExaminationDialogViewModel(Examination selectedExamination, IDoctorService doctorService,
+                                       IExaminationService examinationService,
+                                         IEditSchedulingService editSchedulingService,
+                                         IScheduleEditRequestsService scheduleEditRequestsService)
+    {
+        SelectedExamination = selectedExamination;
+        LoadComboBoxes();
+        _selectedDateTime = selectedExamination.Appointment;
+        EditExaminationCommand = new EditExaminationCommand(this, SelectedExamination);
+
+        _editSchedulingService = editSchedulingService;
+        _scheduleEditRequestService = scheduleEditRequestsService;
+        _examinationService = examinationService;
+        _doctorService = doctorService;
+    }
     public DateTime GetExaminationDateTime()
     {
         string formatDate = SelectedDateTime.Date.ToString();
@@ -185,11 +207,5 @@ public class EditExaminationDialogViewModel : ViewModelBase
 
     public ICommand EditExaminationCommand { get; }
 
-    public EditExaminationDialogViewModel(Examination selectedExamination)
-    {
-        SelectedExamination = selectedExamination;
-        LoadComboBoxes();
-        _selectedDateTime = selectedExamination.Appointment;
-        EditExaminationCommand = new EditExaminationCommand(this, SelectedExamination);
-    }
+    
 }

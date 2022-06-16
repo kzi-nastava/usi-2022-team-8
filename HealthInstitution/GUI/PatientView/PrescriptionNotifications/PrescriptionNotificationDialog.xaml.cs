@@ -25,8 +25,12 @@ public partial class RecepieNotificationDialog : Window
     public RecepieNotificationDialog(IPrescriptionNotificationService prescriptionNotificationService)
     {
         InitializeComponent();
+        _prescriptionNotificationService = prescriptionNotificationService;
+    }
 
-        LoadRows(PrescriptionNotificationService.GetPatientActiveNotification(_loggedPatient));
+    public void SetLoggedPatient(string _loggedPatient)
+    {
+        LoadRows(_prescriptionNotificationService.GetPatientActiveNotification(_loggedPatient));
     }
 
     private void LoadRows(List<PrescriptionNotification> recepieNotifications)

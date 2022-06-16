@@ -12,6 +12,14 @@ namespace HealthInstitution.ViewModels.GUIViewModels.Polls;
 
 public class HospitalPollDialogViewModel : ViewModelBase
 {
+    IPollService _pollsService;
+    public HospitalPollDialogViewModel(IPollService pollService)
+    {
+        SubmitCommand = new HospitalPollSubmitCommand(this);
+        _pollsService = pollService;
+        LoadLabels();
+    }
+
     private string _q1Text;
 
     public string Q1Text
@@ -164,11 +172,7 @@ public class HospitalPollDialogViewModel : ViewModelBase
 
     private object _q5Answer;
 
-    public HospitalPollDialogViewModel()
-    {
-        SubmitCommand = new HospitalPollSubmitCommand(this);
-        LoadLabels();
-    }
+    
 
     public object Q5Answer
     {

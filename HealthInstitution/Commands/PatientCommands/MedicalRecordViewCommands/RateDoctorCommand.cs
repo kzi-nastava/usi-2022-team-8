@@ -1,5 +1,8 @@
 ﻿using HealthInstitution.Core;
+using HealthInstitution.Core.DIContainer;
 using HealthInstitution.Core.Examinations.Model;
+using HealthInstitution.Core.Polls;
+using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using HealthInstitution.GUI.PatientView.Polls;
 using HealthInstitution.ViewModels.GUIViewModels.PatientViewViewModels;
 using HealthInstitution.ViewModels.GUIViewModels.Polls;
@@ -14,18 +17,21 @@ namespace HealthInstitution.Commands.PatientCommands.MedicalRecordViewCommands;
 public class RateDoctorCommand : CommandBase
 {
     private MedicalRecordViewViewModel _medicalRecordViewModel;
-
-    public RateDoctorCommand(MedicalRecordViewViewModel medicalRecordViewModel)
+    IPollService _pollService;
+    public RateDoctorCommand(MedicalRecordViewViewModel medicalRecordViewModel, IPollService pollService)
     {
+        _pollService = pollService;
         _medicalRecordViewModel = medicalRecordViewModel;
     }
 
     public override void Execute(object? parameter)
     {
-        new DoctorPollDialog(_medicalRecordViewModel.Examinations[_medicalRecordViewModel.SelectedExaminationIndex].Doctor)
-        {
-            DataContext = new DoctorPollViewModel(_medicalRecordViewModel.Examinations[_medicalRecordViewModel.SelectedExaminationIndex].Doctor)
-        }.ShowDialog();
+        var window = DIContainer.GetService<DoctorPollDialog>();
+        Doctor doctor = _medicalRecordViewModel.Examinations[_medicalRecordViewModel.SelectedExaminationIndex].Doctor;
+        window.SetRatedDoctor(doctor);
+        window.DataContext = new DoctorPollViewModel(doctor, _pollService);
+        window.ShowDialog();
+        
     }
 
     public override bool CanExecute(object? parameter)

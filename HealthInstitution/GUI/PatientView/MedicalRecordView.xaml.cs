@@ -6,6 +6,7 @@ using HealthInstitution.GUI.PatientView.Polls;
 using HealthInstitution.Core.Polls;
 using HealthInstitution.Core.DIContainer;
 using HealthInstitution.ViewModels.GUIViewModels.PatientViewViewModels;
+using HealthInstitution.Core.SystemUsers.Patients.Model;
 
 namespace HealthInstitution.GUI.PatientView;
 
@@ -15,11 +16,16 @@ namespace HealthInstitution.GUI.PatientView;
 public partial class MedicalRecordView : Window
 {
     private User _loggedPatient;
-
+    IExaminationService _examinationService;
     public MedicalRecordView(IExaminationService examinationService)
     {
         InitializeComponent();
-        _loggedPatient = loggedPatient;
+        _examinationService = examinationService;
+    }
+
+    public void SetLoggedPatient(User patient)
+    {
+        _loggedPatient = patient;
     }
 
     private void RateDoctorButton_Click(object sender, RoutedEventArgs e)

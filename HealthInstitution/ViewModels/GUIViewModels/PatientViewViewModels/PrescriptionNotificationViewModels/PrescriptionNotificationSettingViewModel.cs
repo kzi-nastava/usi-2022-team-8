@@ -1,6 +1,7 @@
 ﻿using HealthInstitution.Commands.PatientCommands;
 using HealthInstitution.Core;
 using HealthInstitution.Core.MedicalRecords;
+using HealthInstitution.Core.PrescriptionNotifications.Service;
 using HealthInstitution.Core.Prescriptions.Model;
 using HealthInstitution.Core.SystemUsers.Patients;
 using HealthInstitution.Core.SystemUsers.Patients.Model;
@@ -17,10 +18,29 @@ namespace HealthInstitution.ViewModels.GUIViewModels.PatientViewViewModels.Presc
 
 public class PrescriptionNotificationSettingViewModel : ViewModelBase
 {
-    private int _hourComboBoxSelectedIndex;
-
+    
+    IMedicalRecordService _medicalRecordService;
+    IPatientService _patientService;
+    IPrescriptionNotificationService _prescriptionNotificationService;
+    public ICommand SetNotificationTimeCommand { get; }
     public Patient LoggedPatient;
+    public PrescriptionNotificationSettingViewModel(Patient loggedPatient, IMedicalRecordService medicalRecordService,
+        IPatientService patientService, IPrescriptionNotificationService prescriptionNotificationService)
+    {
+        LoggedPatient = loggedPatient;
+        _patientService = patientService;
+        _medicalRecordService = medicalRecordService;
+        _prescriptionNotificationService = prescriptionNotificationService;
+        PrescritpionVMs = new();
+        _hourComboBoxItems = new();
+        _minuteComboBoxItems = new();
+        _prescriptions = new();
+        LoadComboBoxes();
+        GridRefresh();
+        SetNotificationTimeCommand = new SetPrescriptionNotificationTimeCommand(this);
+    }
 
+    private int _hourComboBoxSelectedIndex;
     public int HourComboBoxSelectedIndex
     {
         get
@@ -133,7 +153,7 @@ public class PrescriptionNotificationSettingViewModel : ViewModelBase
         MinuteComboBoxLoad();
     }
 
-    public ICommand SetNotificationTimeCommand { get; }
+    
 
     private void GridRefresh()
     {
@@ -147,17 +167,7 @@ public class PrescriptionNotificationSettingViewModel : ViewModelBase
         }
     }
 
-    public PrescriptionNotificationSettingViewModel(Patient loggedPatient)
-    {
-        LoggedPatient = loggedPatient;
-        PrescritpionVMs = new();
-        _hourComboBoxItems = new();
-        _minuteComboBoxItems = new();
-        _prescriptions = new();
-        LoadComboBoxes();
-        GridRefresh();
-        SetNotificationTimeCommand = new SetPrescriptionNotificationTimeCommand(this);
-    }
+    
 
     public Prescription GetSelectedPrescription()
     {

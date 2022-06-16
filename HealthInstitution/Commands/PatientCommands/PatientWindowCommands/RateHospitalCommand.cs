@@ -1,4 +1,5 @@
 ﻿using HealthInstitution.Core;
+using HealthInstitution.Core.DIContainer;
 using HealthInstitution.GUI.PatientView;
 using HealthInstitution.ViewModels.GUIViewModels.Polls;
 using System;
@@ -13,9 +14,8 @@ public class RateHospitalCommand : CommandBase
 {
     public override void Execute(object? parameter)
     {
-        new PatientHospitalPollDialog()
-        {
-            DataContext = new HospitalPollDialogViewModel()
-        }.ShowDialog();
+        var window = DIContainer.GetService<PatientHospitalPollDialog>();
+        window.DataContext = new HospitalPollDialogViewModel();
+        window.ShowDialog();
     }
 }

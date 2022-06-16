@@ -1,5 +1,7 @@
 ﻿using HealthInstitution.Commands.PatientCommands.Scheduling;
 using HealthInstitution.Core;
+using HealthInstitution.Core.MedicalRecords;
+using HealthInstitution.Core.Scheduling;
 using HealthInstitution.Core.SystemUsers.Doctors;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using HealthInstitution.Core.SystemUsers.Patients.Model;
@@ -17,6 +19,21 @@ public class AddExaminationDialogViewModel : ViewModelBase
 {
     public Patient LoggedPatient { get; }
 
+    public ICommand CreateExaminationCommand { get; }
+    IDoctorService _doctorService;
+    IMedicalRecordService _medicalRecordService;
+    ISchedulingService _schedulingService;
+    public AddExaminationDialogViewModel(Patient loggedPatient, IDoctorService doctorService,
+                                    IMedicalRecordService medicalRecordService,
+                                    ISchedulingService schedulingService)
+    {
+        LoggedPatient = loggedPatient;
+        LoadComboBoxes();
+        CreateExaminationCommand = new CreateExaminationCommand(this);
+        _doctorService = doctorService;
+        _medicalRecordService = medicalRecordService;
+        _schedulingService = schedulingService;
+    }
     public DateTime GetExaminationDateTime()
     {
         string formatDate = SelectedDateTime.Date.ToString();
@@ -173,12 +190,5 @@ public class AddExaminationDialogViewModel : ViewModelBase
         LoadMinuteComboBox();
     }
 
-    public ICommand CreateExaminationCommand { get; }
-
-    public AddExaminationDialogViewModel(Patient loggedPatient)
-    {
-        LoggedPatient = loggedPatient;
-        LoadComboBoxes();
-        CreateExaminationCommand = new CreateExaminationCommand(this);
-    }
+    
 }

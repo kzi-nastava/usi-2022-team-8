@@ -14,8 +14,23 @@ namespace HealthInstitution.ViewModels.GUIViewModels.PatientViewViewModels.Presc
 
 public class PrescriptionNotificationDialogViewModel : ViewModelBase
 {
-    private ObservableCollection<PrescriptionNotificationViewModel> _notificationVMs;
 
+    private List<PrescriptionNotification> _notifications;
+    private Patient _loggedPatient;
+    IPrescriptionNotificationService _prescriptionNotificationService;
+    
+
+    public PrescriptionNotificationDialogViewModel(Patient loggedPatient, IPrescriptionNotificationService prescriptionNotificationService)
+    {
+        _prescriptionNotificationService = prescriptionNotificationService;
+        _loggedPatient = loggedPatient;
+        _notifications = PrescriptionNotificationService.GetPatientActiveNotification(_loggedPatient.Username);
+        _notificationVMs = new();
+        PutIntoGrid();
+    }
+
+
+    private ObservableCollection<PrescriptionNotificationViewModel> _notificationVMs;
     public ObservableCollection<PrescriptionNotificationViewModel> NotificationVMs
     {
         get
@@ -29,16 +44,7 @@ public class PrescriptionNotificationDialogViewModel : ViewModelBase
         }
     }
 
-    private List<PrescriptionNotification> _notifications;
-    private Patient _loggedPatient;
-
-    public PrescriptionNotificationDialogViewModel(Patient loggedPatient)
-    {
-        _loggedPatient = loggedPatient;
-        _notifications = PrescriptionNotificationService.GetPatientActiveNotification(_loggedPatient.Username);
-        _notificationVMs = new();
-        PutIntoGrid();
-    }
+    
 
     public void PutIntoGrid()
     {

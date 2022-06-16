@@ -1,4 +1,5 @@
 ﻿using HealthInstitution.Core;
+using HealthInstitution.Core.DIContainer;
 using HealthInstitution.Core.DoctorRatings;
 using HealthInstitution.Core.PrescriptionNotifications.Service;
 using HealthInstitution.Core.SystemUsers.Doctors;
@@ -23,10 +24,21 @@ namespace HealthInstitution.Commands;
 public class LoginCommand : CommandBase
 {
     private LoginViewModel _loginViewModel;
-
-    public LoginCommand(LoginViewModel loginViewModel)
+    private IUserService _userService;
+    private IPatientService _patientService;
+    private ITrollCounterService _trollCounterService;
+    private IDoctorRatingsService _doctorRatingsService;
+    private IDoctorService _doctorService;
+    IPrescriptionNotificationService _prescriptionNotificationService;
+    public LoginCommand(LoginViewModel loginViewModel, IUserService userService, ITrollCounterService trollCounterService, IPatientService patientService, IDoctorService doctorService, IPrescriptionNotificationService prescriptionNotificationService, IDoctorRatingsService doctorRatingsService)
     {
         _loginViewModel = loginViewModel;
+        _userService = userService;
+        _trollCounterService = trollCounterService;
+        _patientService = patientService;
+        _doctorService = doctorService;
+        _prescriptionNotificationService = prescriptionNotificationService;
+        _doctorRatingsService = doctorRatingsService;
     }
 
     public String ToPlainString(System.Security.SecureString secureStr)
@@ -38,7 +50,7 @@ public class LoginCommand : CommandBase
     public override void Execute(object? parameter)
     {
         User user = GetUserFromInputData();
-        if (UserService.IsUserFound(user, ToPlainString(_loginViewModel.Password)) && !UserService.IsUserBlocked(user))
+        if (_userService.IsUserFound(user, ToPlainString(_loginViewModel.Password)) && !_userService.IsUserBlocked(user))
         {
             switch (user.Type)
             {
@@ -65,40 +77,47 @@ public class LoginCommand : CommandBase
 
     private User GetUserFromInputData()
     {
-        return UserService.GetByUsername(_loginViewModel.Username);
+        return _userService.GetByUsername(_loginViewModel.Username);
     }
 
     private void RedirectPatient(User foundUser)
     {
-        TrollCounterService.TrollCheck(foundUser.Username);
-        Patient loggedPatient = PatientService.GetByUsername(_loginViewModel.Username);
-        PrescriptionNotificationService.GenerateAllSkippedNotifications(loggedPatient.Username);
-        DoctorRatingsService.AssignScores();
-        var window = new PatientWindow(loggedPatient);
-        window.DataContext = new PatientWindowViewModel(loggedPatient, window);
+        _trollCounterService.TrollCheck(foundUser.Username);
+        Patient loggedPatient = _patientService.GetByUsername(_loginViewModel.Username);
+        _prescriptionNotificationService.GenerateAllSkippedNotifications(loggedPatient.Username);
+        _doctorRatingsService.AssignScores();
+
+        var window = DIContainer.GetService<PatientWindow>();
+        window.SetLoggedPatient(loggedPatient);
+        window.DataContext = new PatientWindowViewModel(loggedPatient, window, _patientService);
         _loginViewModel.ThisWindow.Close();
         window.ShowDialog();
     }
 
     private void RedirectDoctor()
     {
-        DoctorService.LoadAppointments();
-        Doctor loggedDoctor = DoctorService.GetById(_loginViewModel.Username);
+        _doctorService.LoadAppointments();
+        Doctor loggedDoctor = _doctorService.GetById(_loginViewModel.Username);
+
         _loginViewModel.ThisWindow.Close();
-        new DoctorWindow(loggedDoctor).ShowDialog();
+        var window = DIContainer.GetService<DoctorWindow>();
+        window.SetLoggedDoctor(loggedDoctor);
+        window.ShowDialog();
     }
 
     private void RedirectSecretary()
     {
-        SecretaryWindow secretaryWindow = new SecretaryWindow();
         _loginViewModel.ThisWindow.Close();
+
+        SecretaryWindow secretaryWindow = DIContainer.GetService<SecretaryWindow>();
         secretaryWindow.ShowDialog();
     }
 
     private void RedirectManager()
     {
-        ManagerWindow managerWindow = new ManagerWindow();
         _loginViewModel.ThisWindow.Close();
+
+        ManagerWindow managerWindow = DIContainer.GetService<ManagerWindow>();
         managerWindow.ShowDialog();
     }
 }

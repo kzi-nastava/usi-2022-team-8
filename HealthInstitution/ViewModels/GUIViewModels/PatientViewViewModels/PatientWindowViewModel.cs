@@ -2,6 +2,7 @@
 using HealthInstitution.Commands.PatientCommands.PatientWindowCommands;
 using HealthInstitution.Core;
 using HealthInstitution.Core.MVVMNavigation;
+using HealthInstitution.Core.SystemUsers.Patients;
 using HealthInstitution.Core.SystemUsers.Patients.Model;
 using System;
 using System.Collections.Generic;
@@ -15,8 +16,10 @@ namespace HealthInstitution.ViewModels.GUIViewModels.PatientViewViewModels;
 
 public class PatientWindowViewModel : ViewModelBase
 {
-    public PatientWindowViewModel(Patient loggedPatient, Window thisWindow)
+    IPatientService _patientService;
+    public PatientWindowViewModel(Patient loggedPatient, Window thisWindow, IPatientService patientService)
     {
+        _patientService = patientService;
         RateHospital = new RateHospitalCommand();
         MedicalRecordView = new MedicalRecordViewCommand(loggedPatient);
         ManuallySchedule = new ManuallScheduleCommand(loggedPatient);

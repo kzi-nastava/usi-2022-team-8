@@ -1,4 +1,5 @@
 ﻿using HealthInstitution.Core;
+using HealthInstitution.Core.Notifications;
 using HealthInstitution.Core.Notifications.Model;
 using HealthInstitution.Core.SystemUsers.Patients;
 using HealthInstitution.Core.SystemUsers.Patients.Model;
@@ -14,6 +15,21 @@ namespace HealthInstitution.ViewModels.GUIViewModels.PatientViewViewModels;
 
 public class PatientNotificationDialogViewModel : ViewModelBase
 {
+    private List<AppointmentNotification> _notifications;
+    private Patient _loggedPatient;
+    IAppointmentNotificationService _appointmentNotificationService;
+    IPatientService _patientService;
+    public PatientNotificationDialogViewModel(Patient loggedPatient, IPatientService patientService, IAppointmentNotificationService appointmentNotificationService)
+    {
+        _loggedPatient = loggedPatient;
+        _patientService = patientService;
+        _appointmentNotificationService = appointmentNotificationService;
+        List<AppointmentNotification> _Notifications = _loggedPatient.Notifications;
+        PatientService.DeleteNotifications(_loggedPatient);
+        _notificationVMs = new();
+        PutIntoGrid();
+    }
+
     private ObservableCollection<AppointmentNotificationViewModel> _notificationVMs;
 
     public ObservableCollection<AppointmentNotificationViewModel> NotificationVMs
@@ -29,17 +45,7 @@ public class PatientNotificationDialogViewModel : ViewModelBase
         }
     }
 
-    private List<AppointmentNotification> _notifications;
-    private Patient _loggedPatient;
-
-    public PatientNotificationDialogViewModel(Patient loggedPatient)
-    {
-        _loggedPatient = loggedPatient;
-        List<AppointmentNotification> _Notifications = _loggedPatient.Notifications;
-        PatientService.DeleteNotifications(_loggedPatient);
-        _notificationVMs = new();
-        PutIntoGrid();
-    }
+    
 
     public void PutIntoGrid()
     {

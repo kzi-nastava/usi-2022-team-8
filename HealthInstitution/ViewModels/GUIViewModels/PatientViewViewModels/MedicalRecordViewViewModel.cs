@@ -17,7 +17,29 @@ namespace HealthInstitution.ViewModels.GUIViewModels.PatientViewViewModels;
 
 public class MedicalRecordViewViewModel : ViewModelBase
 {
-    //TODO all other commands
+    public ICommand SearchKeywordCommand { get; }
+    public ICommand RateDoctorCommand { get; }
+    public ICommand DoctorSortCommand { get; }
+    public ICommand DateSortCommand { get; }
+    public ICommand SpecializationSortCommand { get; }
+
+    public User LoggedPatient { get; set; }
+    IExaminationService _examinationService;
+
+    public MedicalRecordViewViewModel(User patient, IExaminationService examinationService)
+    {
+        _examinationVMs = new();
+        LoggedPatient = patient;
+        _examinationService = examinationService;
+
+        Examinations = ExaminationService.GetCompletedByPatient(LoggedPatient.Username);
+        PutIntoGrid();
+        DoctorSortCommand = new DoctorSortCommand(this);
+        SearchKeywordCommand = new SearchAnamnesisCommand(this);
+        SpecializationSortCommand = new SpecializationSortCommand(this);
+        DateSortCommand = new DateSortCommand(this);
+        RateDoctorCommand = new RateDoctorCommand(this);
+    }
     public List<Examination> Examinations { get; set; }
 
     private ObservableCollection<ExaminationViewModel> _examinationVMs;
@@ -65,26 +87,7 @@ public class MedicalRecordViewViewModel : ViewModelBase
         }
     }
 
-    public ICommand SearchKeywordCommand { get; }
-    public ICommand RateDoctorCommand { get; }
-    public ICommand DoctorSortCommand { get; }
-    public ICommand DateSortCommand { get; }
-    public ICommand SpecializationSortCommand { get; }
-
-    public User LoggedPatient { get; set; }
-
-    public MedicalRecordViewViewModel(User patient)
-    {
-        _examinationVMs = new();
-        LoggedPatient = patient;
-        Examinations = ExaminationService.GetCompletedByPatient(LoggedPatient.Username);
-        PutIntoGrid();
-        DoctorSortCommand = new DoctorSortCommand(this);
-        SearchKeywordCommand = new SearchAnamnesisCommand(this);
-        SpecializationSortCommand = new SpecializationSortCommand(this);
-        DateSortCommand = new DateSortCommand(this);
-        RateDoctorCommand = new RateDoctorCommand(this);
-    }
+    
 
     public void ClosingHandle()
     {

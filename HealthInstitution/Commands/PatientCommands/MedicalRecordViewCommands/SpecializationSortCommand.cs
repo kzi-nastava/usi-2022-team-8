@@ -12,15 +12,16 @@ namespace HealthInstitution.Commands.PatientCommands.MedicalRecordViewCommands
     public class SpecializationSortCommand : CommandBase
     {
         private MedicalRecordViewViewModel _medicalRecordViewModel;
-
-        public SpecializationSortCommand(MedicalRecordViewViewModel medicalRecordViewModel)
+        IExaminationService _examinationService;
+        public SpecializationSortCommand(MedicalRecordViewViewModel medicalRecordViewModel, IExaminationService examinationService)
         {
+            _examinationService = examinationService;
             _medicalRecordViewModel = medicalRecordViewModel;
         }
 
         public override void Execute(object? parameter)
         {
-            _medicalRecordViewModel.Examinations = ExaminationService.OrderByDoctorSpeciality(_medicalRecordViewModel.Examinations);
+            _medicalRecordViewModel.Examinations = _examinationService.OrderByDoctorSpeciality(_medicalRecordViewModel.Examinations);
             _medicalRecordViewModel.PutIntoGrid();
         }
     }
