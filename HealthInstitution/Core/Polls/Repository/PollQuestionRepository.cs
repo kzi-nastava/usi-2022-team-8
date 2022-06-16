@@ -2,24 +2,17 @@
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using HealthInstitution.Core.SystemUsers.Doctors.Repository;
 using Newtonsoft.Json.Linq;
-using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.Polls.Repository
 {
     public class PollQuestionRepository : IPollQuestionRepository
     {
         private String _fileName;
-
         public List<string> HospitalQuestions { get; set; }
         public List<string> DoctorQuestions { get; set; }
-
         private int _maxId;
         public List<PollQuestion> PollQuestions { get; set; }
         public Dictionary<int, PollQuestion> PollQuestionById { get; set; }
@@ -29,6 +22,7 @@ namespace HealthInstitution.Core.Polls.Repository
             Converters = { new JsonStringEnumConverter() },
             PropertyNameCaseInsensitive = true
         };
+
         private PollQuestionRepository(String fileName)
         {
             this._fileName = fileName;
@@ -46,8 +40,11 @@ namespace HealthInstitution.Core.Polls.Repository
                                                           "How likely would you recommend this doctor",
                                                           "Rate overall experience" };
             this.LoadFromFile();
+            LoadRatedExaminations();
         }
+
         private static PollQuestionRepository s_instance = null;
+
         public static PollQuestionRepository GetInstance()
         {
             {
@@ -70,13 +67,13 @@ namespace HealthInstitution.Core.Polls.Repository
         private PollQuestion Parse(JToken? pollQuestion)
         {
             Dictionary<string, Doctor> doctorByUsername = DoctorRepository.GetInstance().DoctorsByUsername;
-            
+
             int id = (int)pollQuestion["id"];
             string question = (string)pollQuestion["question"];
             string doctorUsername = (string)pollQuestion["forDoctor"];
             Doctor? forDoctor;
             if (doctorUsername == "")
-               forDoctor = null;
+                forDoctor = null;
             else forDoctor = doctorByUsername[doctorUsername];
             List<int> grades = JToken2Ints(pollQuestion["grades"]);
 
@@ -117,6 +114,7 @@ namespace HealthInstitution.Core.Polls.Repository
             }
             return reducedPollQuestions;
         }
+
         public void Save()
         {
             var allPollQuestions = JsonSerializer.Serialize(PrepareForSerialization(), _options);
@@ -155,7 +153,6 @@ namespace HealthInstitution.Core.Polls.Repository
             Save();
         }
 
-
         public void Delete(int id)
         {
             PollQuestion pollQuestion = GetById(id);
@@ -182,6 +179,29 @@ namespace HealthInstitution.Core.Polls.Repository
         public List<PollQuestion> GetDoctorGradeByQuestion(Doctor doctor)
         {
             return PollQuestions.FindAll(question => question.ForDoctor == doctor);
+        }
+
+        private List<int> _ratedExaminations;
+
+        private void LoadRatedExaminations()
+        {
+            _ratedExaminations = JsonSerializer.Deserialize<List<int>>(File.ReadAllText(@"..\..\..\Data\JSON\ratedExaminations.json"), _options);
+        }
+
+        public bool IsExaminationRated(int id)
+        {
+            return _ratedExaminations.Contains(id);
+        }
+
+        private void SaveRatedExaminations()
+        {
+            File.WriteAllText(@"..\..\..\Data\JSON\ratedExaminations.json", JsonSerializer.Serialize(this._ratedExaminations, _options));
+        }
+
+        public void AddToRatedExaminations(int id)
+        {
+            _ratedExaminations.Add(id);
+            SaveRatedExaminations();
         }
     }
 }

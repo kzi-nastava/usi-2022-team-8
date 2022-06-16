@@ -103,7 +103,7 @@ public class DoctorPollViewModel : ViewModelBase
         }
     }
 
-    private object _q1Answer;
+    private object _q1Answer = "3";
 
     public object Q1Answer
     {
@@ -118,7 +118,7 @@ public class DoctorPollViewModel : ViewModelBase
         }
     }
 
-    private object _q2Answer;
+    private object _q2Answer = "3";
 
     public object Q2Answer
     {
@@ -133,7 +133,7 @@ public class DoctorPollViewModel : ViewModelBase
         }
     }
 
-    private object _q3Answer;
+    private object _q3Answer = "3";
 
     public object Q3Answer
     {
@@ -148,7 +148,7 @@ public class DoctorPollViewModel : ViewModelBase
         }
     }
 
-    private object _q4Answer;
+    private object _q4Answer = "3";
 
     public object Q4Answer
     {
@@ -163,7 +163,7 @@ public class DoctorPollViewModel : ViewModelBase
         }
     }
 
-    private object _q5Answer;
+    private object _q5Answer = "3";
 
     public object Q5Answer
     {

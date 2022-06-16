@@ -9,7 +9,7 @@
 
     <Grid>
 
-        <DataGrid  ItemsSource="{Binding CompletedExaminations}" AutoGenerateColumns="False" Name="dataGrid" Grid.ColumnSpan="3" Margin="0,0,0,0" SelectedIndex="{Binding SelectedExaminationIndex}">
+        <DataGrid  ItemsSource="{Binding CompletedExaminations, UpdateSourceTrigger=PropertyChanged}" AutoGenerateColumns="False" Name="dataGrid" Grid.ColumnSpan="3" Margin="0,0,0,0" SelectedIndex="{Binding SelectedExaminationIndex}">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Time" FontSize="18" Binding="{Binding Appointment}" Width ="150" />
                 <DataGridTextColumn Header="Status" FontSize="18" Binding="{Binding Status}" Width =" 150" />

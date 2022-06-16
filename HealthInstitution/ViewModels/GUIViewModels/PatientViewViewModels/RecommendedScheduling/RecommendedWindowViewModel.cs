@@ -16,7 +16,7 @@ namespace HealthInstitution.ViewModels.GUIViewModels.PatientViewViewModels.Recom
 
 public class RecommendedWindowViewModel : ViewModelBase
 {
-    private string _priority;
+    private string _priority = "Doctor";
 
     public string Priority
     {

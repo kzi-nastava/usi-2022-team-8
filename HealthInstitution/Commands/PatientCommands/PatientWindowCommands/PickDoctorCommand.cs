@@ -1,6 +1,7 @@
 ﻿using HealthInstitution.Core;
 using HealthInstitution.Core.SystemUsers.Patients.Model;
 using HealthInstitution.GUI.PatientView;
+using HealthInstitution.ViewModels.GUIViewModels.PatientViewViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,6 +21,9 @@ public class PickDoctorCommand : CommandBase
 
     public override void Execute(object? parameter)
     {
-        new DoctorPickExamination(_loggedPatient).ShowDialog();
+        new DoctorPickExamination()
+        {
+            DataContext = new DoctorPickViewModel(_loggedPatient)
+        }.ShowDialog();
     }
 }

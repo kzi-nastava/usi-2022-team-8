@@ -1,5 +1,6 @@
 ﻿using HealthInstitution.Core;
 using HealthInstitution.Core.Examinations.Model;
+using HealthInstitution.Core.Polls;
 using HealthInstitution.GUI.PatientView.Polls;
 using HealthInstitution.ViewModels.GUIViewModels.PatientViewViewModels;
 using HealthInstitution.ViewModels.GUIViewModels.Polls;
@@ -18,6 +19,14 @@ public class RateDoctorCommand : CommandBase
     public RateDoctorCommand(MedicalRecordViewViewModel medicalRecordViewModel)
     {
         _medicalRecordViewModel = medicalRecordViewModel;
+
+        _medicalRecordViewModel.PropertyChanged += _medicalRecordViewModel_PropertyChanged;
+    }
+
+    private void _medicalRecordViewModel_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName == nameof(_medicalRecordViewModel.SelectedExaminationIndex))
+            OnCanExecuteChanged();
     }
 
     public override void Execute(object? parameter)
@@ -26,10 +35,11 @@ public class RateDoctorCommand : CommandBase
         {
             DataContext = new DoctorPollViewModel(_medicalRecordViewModel.Examinations[_medicalRecordViewModel.SelectedExaminationIndex].Doctor)
         }.ShowDialog();
+        PollService.AddRatedExamination(_medicalRecordViewModel.Examinations[_medicalRecordViewModel.SelectedExaminationIndex].Id);
     }
 
     public override bool CanExecute(object? parameter)
     {
-        return _medicalRecordViewModel.SelectedExaminationIndex >= 0 && base.CanExecute(parameter);
+        return !PollService.IsRatedExamination(_medicalRecordViewModel.Examinations[_medicalRecordViewModel.SelectedExaminationIndex].Id) && base.CanExecute(parameter);
     }
 }

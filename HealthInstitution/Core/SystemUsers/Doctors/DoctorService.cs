@@ -17,6 +17,7 @@ public static class DoctorService
         OperationDoctorRepository.GetInstance();
         ExaminationDoctorRepository.GetInstance();
     }
+
     public static List<Doctor> GetAll()
     {
         return s_doctorRepository.GetAll();
@@ -26,6 +27,7 @@ public static class DoctorService
     {
         return s_doctorRepository.GetById(username);
     }
+
     public static void DeleteNotifications(Doctor doctor)
     {
         s_doctorRepository.DeleteNotifications(doctor);
@@ -68,7 +70,7 @@ public static class DoctorService
 
     public static List<Doctor> OrderByDoctorSurname(List<Doctor> examinations)
     {
-        return examinations.OrderBy(o => o.Specialty).ToList();
+        return examinations.OrderBy(o => o.Surname).ToList();
     }
 
     public static List<Doctor> OrderByDoctorRating(List<Doctor> examinations)

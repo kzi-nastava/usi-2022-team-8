@@ -171,4 +171,14 @@ internal static class PollService
         else
             AddQuestion(pollQuestionDTO);
     }
+
+    public static void AddRatedExamination(int id)
+    {
+        s_pollQuestionRepository.AddToRatedExaminations(id);
+    }
+
+    public static bool IsRatedExamination(int id)
+    {
+        return s_pollQuestionRepository.IsExaminationRated(id);
+    }
 }
