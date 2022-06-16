@@ -1,4 +1,5 @@
 ﻿using HealthInstitution.Core.MedicalRecords.Model;
+using HealthInstitution.ViewModels.GUIViewModels.DoctorViewViewModels.SchedulePerforming;
 using System.Windows;
 
 namespace HealthInstitution.GUI.DoctorView
@@ -8,26 +9,16 @@ namespace HealthInstitution.GUI.DoctorView
     /// </summary>
     public partial class MedicalRecordDialog : Window
     {
-        private MedicalRecord _selectedMedicalRecord;
+        MedicalRecord _medicalRecord;
         public MedicalRecordDialog()
         {
-            InitializeComponent();
-            
+            InitializeComponent();            
         }
-        public void SetSelectedMedicalRecord(MedicalRecord medicalRecord)
+
+        public void SetMedicalRecord(MedicalRecord medicalRecord)
         {
-            _selectedMedicalRecord = medicalRecord;
-            Load();
-        }
-        public void Load()
-        {
-            patientLabel.Content = _selectedMedicalRecord.Patient.ToString();
-            heightLabel.Content = _selectedMedicalRecord.Height.ToString() + " cm";
-            weightLabel.Content = _selectedMedicalRecord.Weight.ToString() + " kg";
-            foreach (String illness in _selectedMedicalRecord.PreviousIllnesses)
-                illnessesListBox.Items.Add(illness);
-            foreach (String allergen in _selectedMedicalRecord.Allergens)
-                allergensListBox.Items.Add(allergen);
+            _medicalRecord = medicalRecord;
+            DataContext = new MedicalRecordDialogViewModel(medicalRecord);
         }
     }
 }

@@ -2,6 +2,7 @@
 using HealthInstitution.Core.RestRequests;
 using HealthInstitution.Core.RestRequests.Model;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
+using HealthInstitution.ViewModels.GUIViewModels.DoctorViewViewModels.RestRequests;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,36 +24,18 @@ namespace HealthInstitution.GUI.DoctorView
     /// </summary>
     public partial class RestRequestTable : Window
     {
-        Doctor _loggedDoctor;
         IRestRequestService _restRequestService;
+        Doctor _loggedDoctor;
         public RestRequestTable(IRestRequestService restRequestService)
         {
-            _restRequestService = restRequestService;
             InitializeComponent();
-            
+            _restRequestService = restRequestService;
         }
+
         public void SetLoggedDoctor(Doctor doctor)
         {
             _loggedDoctor = doctor;
-            LoadRows();
-        }
-        private void LoadRows()
-        {
-            dataGrid.Items.Clear();
-            List<RestRequest> activeRestRequests = _restRequestService.GetByDoctor(_loggedDoctor.Username);
-            foreach (RestRequest restRequest in activeRestRequests)
-            {
-                dataGrid.Items.Add(restRequest);
-            }
-            dataGrid.Items.Refresh();
-        }
-
-        private void CreateRequestButton_Click(object sender, RoutedEventArgs e)
-        {
-            AddRestRequestDialog addRestRequestDialog = DIContainer.GetService<AddRestRequestDialog>();
-            addRestRequestDialog.SetLoggedDoctor(_loggedDoctor);
-            addRestRequestDialog.ShowDialog();
-            LoadRows();
+            DataContext = new RestRequestTableViewModel(doctor, _restRequestService);
         }
     }
 }

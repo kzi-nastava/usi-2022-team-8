@@ -8,15 +8,15 @@
         WindowStartupLocation="CenterScreen"
         Title="Create prescription" Height="350" Width="350">
     <Grid>
-        <ComboBox Name ="hourComboBox" HorizontalAlignment="Left" Margin="202,62,0,0" Loaded="HourComboBox_Loaded" VerticalAlignment="Top" Width="45"/>
-        <ComboBox Name ="minuteComboBox" HorizontalAlignment="Left" Margin="265,62,0,0" VerticalAlignment="Top" Width="45" Loaded="MinuteComboBox_Loaded"/>
-        <ComboBox Name ="drugComboBox" Loaded="DrugComboBox_Loaded" HorizontalAlignment="Left" Height="24" Margin="41,152,0,0" VerticalAlignment="Top" Width="108"/>
-        <ComboBox Name ="timeComboBox" Loaded="TimeComboBox_Loaded" HorizontalAlignment="Left" Height="23" Margin="202,152,0,0" VerticalAlignment="Top" Width="108"/>
+        <ComboBox Name ="hourComboBox" HorizontalAlignment="Left" Margin="202,62,0,0" SelectedIndex="{Binding HourComboBoxSelectedIndex}"  ItemsSource="{Binding HourComboBoxItems}"  VerticalAlignment="Top" Width="45"/>
+        <ComboBox Name ="minuteComboBox" HorizontalAlignment="Left" Margin="265,62,0,0" VerticalAlignment="Top" Width="45" SelectedIndex="{Binding MinuteComboBoxSelectedIndex}" ItemsSource="{Binding MinuteComboBoxItems}"/>
+        <ComboBox Name ="drugComboBox" SelectedIndex="{Binding DrugComboBoxSelectedIndex}" ItemsSource="{Binding DrugComboBoxItems}" HorizontalAlignment="Left" Height="24" Margin="41,152,0,0" VerticalAlignment="Top" Width="108"/>
+        <ComboBox Name ="timeComboBox" SelectedIndex="{Binding TimeOfUseComboBoxSelectedIndex}" ItemsSource="{Binding TimeOfUseComboBoxItems}" HorizontalAlignment="Left" Height="23" Margin="202,152,0,0" VerticalAlignment="Top" Width="108"/>
         <Label Content="Select hourly rate" HorizontalAlignment="Left" Height="25" Margin="17,62,0,0" VerticalAlignment="Top" Width="158"/>
         <Label Content="Select drug for prescription" HorizontalAlignment="Left" Height="25" Margin="17,116,0,0" VerticalAlignment="Top" Width="158"/>
         <Label Content="Select time of drug use" HorizontalAlignment="Left" Height="25" Margin="192,116,0,0" VerticalAlignment="Top" Width="158"/>
-        <Button Content="Submit" Click="Submit_Click" HorizontalAlignment="Center" Height="22" Margin="0,275,0,0" VerticalAlignment="Top" Width="76"/>
+        <Button Content="Submit" Command="{Binding CreatePrescriptionCommand}" HorizontalAlignment="Center" Height="22" Margin="0,275,0,0" VerticalAlignment="Top" Width="76"/>
         <Label Content="Daily dose" HorizontalAlignment="Left" Height="25" Margin="43,212,0,0" VerticalAlignment="Top" Width="106"/>
-        <TextBox Name="doseTextBox" HorizontalAlignment="Left" Margin="196,212,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Height="25"/>
+        <TextBox Name="doseTextBox" HorizontalAlignment="Left" Margin="196,212,0,0" TextWrapping="Wrap" Text="{Binding DailyDose, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120" Height="25"/>
     </Grid>
 </Window>

@@ -3,16 +3,19 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:HealthInstitution.GUI.DoctorView"
+        xmlns:local="clr-namespace:HealthInstitution.GUI.DoctorView" xmlns:local1="clr-namespace:HealthInstitution.ViewModels.GUIViewModels"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         Title="Create referral" Height="300" Width="350">
+    <Window.Resources>
+        <local1:GradeConverter x:Key="typeConverterKey" />
+    </Window.Resources>
     <Grid>
         <Label Content="Label" HorizontalAlignment="Left" Height="8" Margin="60,66,0,0" VerticalAlignment="Top" Width="52"/>
-        <RadioButton Name="doctorRadioButton" Checked ="DoctorChecked" Content="Select doctor" HorizontalAlignment="Left" Height="17" Margin="37,75,0,0" VerticalAlignment="Top" Width="98" RenderTransformOrigin="0.4,0.402"/>
-        <RadioButton Name="specialtyRadioButton" Checked ="SpecialtyChecked" Content="Select specialty" HorizontalAlignment="Left" Height="17" Margin="200,75,0,0" VerticalAlignment="Top" Width="124"/>
-        <ComboBox Name ="doctorComboBox" Loaded="DoctorComboBox_Loaded" HorizontalAlignment="Left" Margin="26,126,0,0" VerticalAlignment="Top" Width="132"/>
-        <ComboBox Name ="specialtyComboBox" Loaded="SpecialtyComboBox_Loaded" HorizontalAlignment="Left" Margin="191,126,0,0" VerticalAlignment="Top" Width="132"/>
-        <Button Content="Submit" Click ="Submit_Click" HorizontalAlignment="Center" Height="22" Margin="0,226,0,0" VerticalAlignment="Top" Width="64"/>
+        <RadioButton Name="doctorRadioButton" IsChecked="{Binding Choice, Converter={StaticResource ResourceKey=typeConverterKey}, ConverterParameter=0}" Content="Select doctor" HorizontalAlignment="Left" Height="17" Margin="37,75,0,0" VerticalAlignment="Top" Width="98" RenderTransformOrigin="0.4,0.402"/>
+        <RadioButton Name="specialtyRadioButton" IsChecked="{Binding Choice, Converter={StaticResource ResourceKey=typeConverterKey}, ConverterParameter=1}" Content="Select specialty" HorizontalAlignment="Left" Height="17" Margin="200,75,0,0" VerticalAlignment="Top" Width="124"/>
+        <ComboBox Name ="doctorComboBox" SelectedIndex="{Binding DoctorComboBoxSelectedIndex}"  ItemsSource="{Binding DoctorComboBoxItems}" HorizontalAlignment="Left" Margin="26,126,0,0" VerticalAlignment="Top" Width="132"/>
+        <ComboBox Name ="specialtyComboBox" SelectedIndex="{Binding SpecialtyComboBoxSelectedIndex}"  ItemsSource="{Binding SpecialtyComboBoxItems}" HorizontalAlignment="Left" Margin="191,126,0,0" VerticalAlignment="Top" Width="132"/>
+        <Button Content="Submit" Command="{Binding CreateReferralCommand}" HorizontalAlignment="Center" Height="22" Margin="0,226,0,0" VerticalAlignment="Top" Width="64"/>
     </Grid>
 </Window>

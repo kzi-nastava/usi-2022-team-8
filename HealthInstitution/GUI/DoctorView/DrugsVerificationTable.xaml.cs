@@ -2,6 +2,7 @@
 using HealthInstitution.Core.Drugs;
 using HealthInstitution.Core.Drugs.Model;
 using HealthInstitution.Core.Drugs.Repository;
+using HealthInstitution.ViewModels.GUIViewModels.DoctorViewViewModels.DrugVerification;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,37 +31,7 @@ namespace HealthInstitution.GUI.DoctorView
             _drugService = drugService;
             _drugVerificationService = drugVerificationService;
             InitializeComponent();
-            LoadRows();
-        }
-
-        private void LoadRows()
-        {
-            dataGrid.Items.Clear();
-            List<Drug> drugs = _drugService.GetAllCreated();
-            foreach (Drug drug in drugs)
-            {
-                dataGrid.Items.Add(drug);
-            }
-        }
-
-        private void AcceptButton_Click(object sender, RoutedEventArgs e)
-        {
-            Drug selectedDrug = (Drug)dataGrid.SelectedItem;
-            System.Windows.MessageBox.Show("You have accepted a new drug!", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
-            _drugVerificationService.Accept(selectedDrug);
-            dataGrid.Items.Remove(selectedDrug);
-        }
-
-        private void RejectButton_Click(object sender, RoutedEventArgs e)
-        {
-            Drug selectedDrug = (Drug)dataGrid.SelectedItem;
-
-            DrugRejectionReasonDialog drugRejectionReasonDialog = DIContainer.GetService<DrugRejectionReasonDialog>();
-            drugRejectionReasonDialog.SetSelectedDrug(selectedDrug);
-            drugRejectionReasonDialog.ShowDialog();
-                
-            LoadRows();
-            dataGrid.Items.Refresh();
+            DataContext = new DrugsVerificationTableViewModel(_drugService, _drugVerificationService);
         }
     }
 }

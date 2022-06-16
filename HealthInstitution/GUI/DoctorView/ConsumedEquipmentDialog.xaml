@@ -8,14 +8,14 @@
         WindowStartupLocation="CenterScreen"
         Title="Consumed equipment" Height="320" Width="450">
     <Grid>
-        <ComboBox Name="equipmentComboBox" SelectionChanged="EquipmentComboBox_SelectionChanged" Loaded="EquipmentComboBox_Loaded" HorizontalAlignment="Left" Margin="266,87,0,0" VerticalAlignment="Top" Width="120" Height="30"/>
-        <ComboBox Name="consumedQuantityComboBox" HorizontalAlignment="Left" Margin="297,144,0,0" VerticalAlignment="Top" Width="58" Height="30"/>
-        <Button Content="Submit one" Click="Submit_Click" HorizontalAlignment="Center" Margin="0,202,0,0" VerticalAlignment="Top" Width="82" Height="24"/>
+        <ComboBox Name="equipmentComboBox" SelectedIndex="{Binding EquipmentComboBoxSelectedIndex}"  ItemsSource="{Binding EquipmentComboBoxItems}" HorizontalAlignment="Left" Margin="266,87,0,0" VerticalAlignment="Top" Width="120" Height="30"/>
+        <TextBox Name="consumedQuantityTextBox" Text="{Binding ConsumedQuantity, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left"  Margin="266,142,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Height="26"/>
+        <Button Content="Submit one" Command="{Binding SubmitOneConsumedEquipmentCommand}" HorizontalAlignment="Center" Margin="0,202,0,0" VerticalAlignment="Top" Width="82" Height="24"/>
         <Label Content="Select equipment: " HorizontalAlignment="Left" Margin="45,85,0,0" VerticalAlignment="Top"/>
         <Label Content="Consumed in examination: " HorizontalAlignment="Left" Margin="45,142,0,0" VerticalAlignment="Top" RenderTransformOrigin="0.361,-0.457"/>
         <Label Content="Room:" HorizontalAlignment="Left" Margin="45,35,0,0" VerticalAlignment="Top"/>
-        <Label Content="" Name="roomLabel" HorizontalAlignment="Left" Margin="266,35,0,0" VerticalAlignment="Top" Width="120"/>
-        <Button Content="Finish" Click="Finish_Click" HorizontalAlignment="Center" Margin="0,241,0,0" VerticalAlignment="Top" Width="42"/>
+        <Label Content="{Binding Path=RoomNo, UpdateSourceTrigger=PropertyChanged}" Name="roomLabel" HorizontalAlignment="Left" Margin="266,35,0,0" VerticalAlignment="Top" Width="120"/>
+        <Button Content="Finish" Command="{Binding FinishConsumedEquipmentCommand}" HorizontalAlignment="Center" Margin="0,241,0,0" VerticalAlignment="Top" Width="42"/>
 
     </Grid>
 </Window>

@@ -26,6 +26,9 @@
       <Folder Include="Core\RestRequests\Repository" />
       <Folder Include="Core\Notifications\" />
       <Folder Include="Core\RestRequests\Repository" />
+      <Folder Include="Core\Polls\Repository\" />
+      <Folder Include="Core\SystemUsers\Secretaries\Model" />
+      <Folder Include="Core\SystemUsers\Secretaries\Repository" />
     </ItemGroup>
 
     <ItemGroup>
@@ -68,4 +71,6 @@
         <SubType>Designer</SubType>
       </Page>
     </ItemGroup>
+
+    <ProjectExtensions><VisualStudio><UserProperties data_4json_4drugs_1json__JsonSchema="C" /></VisualStudio></ProjectExtensions>
 </Project>
