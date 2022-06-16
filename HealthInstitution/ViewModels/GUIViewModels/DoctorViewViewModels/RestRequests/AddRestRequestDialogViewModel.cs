@@ -1,11 +1,13 @@
 ﻿using HealthInstitution.Commands.DoctorCommands.RestRequests;
 using HealthInstitution.Core;
+using HealthInstitution.Core.RestRequests;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows;
 using System.Windows.Input;
 
 namespace HealthInstitution.ViewModels.GUIViewModels.DoctorViewViewModels.RestRequests
@@ -95,10 +97,13 @@ namespace HealthInstitution.ViewModels.GUIViewModels.DoctorViewViewModels.RestRe
         }
 
         public ICommand CreateRestRequestCommand { get; }
-
-        public AddRestRequestDialogViewModel(Doctor doctor)
+        IRestRequestService _restRequestService;
+        public Window ThisWindow;
+        public AddRestRequestDialogViewModel(Window window, Doctor doctor, IRestRequestService restRequestService)
         {
-            CreateRestRequestCommand = new AddRestRequestDialogCommand(this, doctor);
+            ThisWindow = window;    
+            _restRequestService = restRequestService;
+            CreateRestRequestCommand = new AddRestRequestDialogCommand(this, doctor, restRequestService);
         }
     }
 }

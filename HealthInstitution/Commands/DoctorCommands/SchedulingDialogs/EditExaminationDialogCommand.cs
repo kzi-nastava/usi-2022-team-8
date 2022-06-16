@@ -13,10 +13,13 @@ namespace HealthInstitution.Commands.DoctorCommands.SchedulingDialogs
     internal class EditExaminationDialogCommand : CommandBase
     {
         private EditExaminationDialogViewModel _editExaminationDialogViewModel;
-
-        public EditExaminationDialogCommand(EditExaminationDialogViewModel editExaminationDialogViewModel)
+        IMedicalRecordService _medicalRecordService;
+        IExaminationService _examinationService;
+        public EditExaminationDialogCommand(EditExaminationDialogViewModel editExaminationDialogViewModel, IMedicalRecordService medicalRecordService, IExaminationService examinationService)
         {
             _editExaminationDialogViewModel = editExaminationDialogViewModel;
+            _medicalRecordService = medicalRecordService;
+            _examinationService = examinationService;
         }
 
         public override void Execute(object? parameter)
@@ -26,10 +29,10 @@ namespace HealthInstitution.Commands.DoctorCommands.SchedulingDialogs
                 var selectedExamination = _editExaminationDialogViewModel.SelectedExamination;
                 Doctor doctor = selectedExamination.Doctor;
                 Patient patient = _editExaminationDialogViewModel.GetPatient();
-                MedicalRecord medicalRecord = MedicalRecordService.GetByPatientUsername(patient);
+                MedicalRecord medicalRecord = _medicalRecordService.GetByPatientUsername(patient);
                 DateTime dateTime = _editExaminationDialogViewModel.GetExaminationDateTime();
                 ExaminationDTO examination = new ExaminationDTO(dateTime, null, doctor, medicalRecord);
-                ExaminationService.Update(selectedExamination.Id, examination);
+                _examinationService.Update(selectedExamination.Id, examination);
                 System.Windows.MessageBox.Show("You have succesfully edited examination!", "Info", MessageBoxButton.OK, MessageBoxImage.Warning);
 
             }

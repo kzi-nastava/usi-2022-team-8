@@ -14,9 +14,13 @@ namespace HealthInstitution.Commands.DoctorCommands.Scheduling
     internal class DeleteExaminationCommand : CommandBase
     {
         private ExaminationTableViewModel _examinationTableViewModel;
-        public DeleteExaminationCommand(ExaminationTableViewModel examinationTableViewModel)
+        IExaminationService _examinationService;
+        IDoctorService _doctorService;
+        public DeleteExaminationCommand(ExaminationTableViewModel examinationTableViewModel, IExaminationService examinationService, IDoctorService doctorService)
         {
             _examinationTableViewModel = examinationTableViewModel;
+            _examinationService = examinationService;
+            _doctorService = doctorService;
         }
         public override void Execute(object? parameter)
         {
@@ -24,8 +28,8 @@ namespace HealthInstitution.Commands.DoctorCommands.Scheduling
             if (answer == MessageBoxResult.Yes)
             {
                 var selectedExamination = _examinationTableViewModel.GetSelectedExamination();
-                ExaminationService.Delete(selectedExamination.Id);
-                DoctorService.DeleteExamination(selectedExamination);
+                _examinationService.Delete(selectedExamination.Id);
+                _doctorService.DeleteExamination(selectedExamination);
                 _examinationTableViewModel.RefreshGrid();
             }
         }

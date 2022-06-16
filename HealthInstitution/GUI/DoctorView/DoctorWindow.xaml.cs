@@ -17,6 +17,7 @@ using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using HealthInstitution.Core.Examinations.Repository;
 using HealthInstitution.Core.Notifications.Model;
 using HealthInstitution.ViewModels.GUIViewModels.DoctorViewViewModels;
+using HealthInstitution.Core.SystemUsers.Doctors;
 
 namespace HealthInstitution.GUI.DoctorView
 {
@@ -25,21 +26,19 @@ namespace HealthInstitution.GUI.DoctorView
     /// </summary>
     public partial class DoctorWindow : Window
     {
-        public DoctorWindow(Doctor doctor)
+        Doctor _loggedDoctor;
+        IDoctorService _doctorService;
+        public DoctorWindow(IDoctorService doctorService)
         {
             InitializeComponent();
-            //ShowNotificationsDialog();
-            DataContext = new DoctorWindowViewModel(doctor);
+            _doctorService = doctorService;
         }
-       /* private void ShowNotificationsDialog()
+
+        public void SetLoggedDoctor(Doctor doctor)
         {
-            if (_doctorService.GetActiveAppointmentNotification(_loggedDoctor).Count + _doctorService.GetActiveRestRequestNotification(_loggedDoctor).Count > 0)
-            {
-                DoctorNotificationsDialog doctorNotificationsDialog = DIContainer.GetService<DoctorNotificationsDialog>();
-                doctorNotificationsDialog.SetLoggedDoctor(this._loggedDoctor);
-                doctorNotificationsDialog.ShowDialog();
-                    
-            }
-        }*/
+            _loggedDoctor = doctor;
+            DataContext = new DoctorWindowViewModel(doctor, this, _doctorService);
+        }
+       
     }
 }

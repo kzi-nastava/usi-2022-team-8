@@ -29,10 +29,20 @@ namespace HealthInstitution.GUI.DoctorView
     /// </summary>
     public partial class ExaminationTable : Window
     {
-        public ExaminationTable(Doctor doctor)
+        Doctor _loggedDoctor;
+        IExaminationService _examinationService;
+        IDoctorService _doctorService;
+        public ExaminationTable(IExaminationService examinationService, IDoctorService doctorService)
         {
             InitializeComponent();
-            DataContext = new ExaminationTableViewModel(doctor);
+            _examinationService = examinationService;
+            _doctorService = doctorService;
+        }
+
+        public void SetLoggedDoctor(Doctor doctor)
+        {
+            _loggedDoctor = doctor;
+            DataContext = new ExaminationTableViewModel(doctor, _doctorService, _examinationService);
         }
     }
 }

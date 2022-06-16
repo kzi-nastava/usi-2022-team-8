@@ -1,4 +1,5 @@
 ﻿using HealthInstitution.Core;
+using HealthInstitution.Core.DIContainer;
 using HealthInstitution.Core.MedicalRecords.Model;
 using HealthInstitution.GUI.DoctorView;
 using System;
@@ -19,7 +20,9 @@ namespace HealthInstitution.Commands.DoctorCommands.ExaminationPerforming
 
         public override void Execute(object? parameter)
         {
-            new AddPrescriptionDialog(_medicalRecord).ShowDialog();
+            var window = DIContainer.GetService<AddPrescriptionDialog>();
+            window.SetMedicalRecord(_medicalRecord);
+            window.ShowDialog();
         }
     }
 }

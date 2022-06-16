@@ -30,10 +30,23 @@ namespace HealthInstitution.GUI.DoctorView
     /// </summary>
     public partial class AddPrescriptionDialog : Window
     {
-        public AddPrescriptionDialog(MedicalRecord medicalRecord)
+        MedicalRecord _medicalRecord;
+        IDrugService _drugService;
+        IMedicalRecordService _medicalRecordService;
+        IPrescriptionService _prescriptionService;
+        public AddPrescriptionDialog(IDrugService drugService,
+                                    IMedicalRecordService medicalRecordService, IPrescriptionService prescriptionService)
         {
-            InitializeComponent();
-            DataContext = new AddPrescriptionDialogViewModel(medicalRecord);
+            InitializeComponent(); 
+            _medicalRecordService = medicalRecordService;
+            _drugService = drugService;
+            _prescriptionService = prescriptionService;
+        }
+
+        public void SetMedicalRecord(MedicalRecord medicalRecord)
+        {
+            _medicalRecord = medicalRecord;
+            DataContext = new AddPrescriptionDialogViewModel(medicalRecord,_drugService,_medicalRecordService,_prescriptionService);
         }
     }
 }

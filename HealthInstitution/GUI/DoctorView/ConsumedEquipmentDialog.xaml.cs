@@ -13,10 +13,20 @@ namespace HealthInstitution.GUI.DoctorView
     /// </summary>
     public partial class ConsumedEquipmentDialog : Window
     {
-        public ConsumedEquipmentDialog(Room room)
+        IRoomService _roomService;
+        IEquipmentService _equipmentService;
+        Room _selectedRoom;
+        public ConsumedEquipmentDialog(IRoomService roomService, IEquipmentService equipmentService)
         {
             InitializeComponent();
-            DataContext = new ConsumedEquipmentDialogViewModel(room);
+            _roomService = roomService;
+            _equipmentService = equipmentService;
+        }
+
+        public void SetSelectedRoom(Room room)
+        {
+            _selectedRoom = room;
+            DataContext = new ConsumedEquipmentDialogViewModel(room,_roomService,_equipmentService);
         }
     }
 }

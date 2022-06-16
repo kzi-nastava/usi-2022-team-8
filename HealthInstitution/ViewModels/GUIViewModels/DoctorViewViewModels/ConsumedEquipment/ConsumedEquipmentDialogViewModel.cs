@@ -73,7 +73,7 @@ namespace HealthInstitution.ViewModels.GUIViewModels.DoctorViewViewModels.Consum
         public void LoadEquipmentComboBox()
         {
             EquipmentComboBoxItems = new();
-            foreach (Equipment equipment in RoomService.GetDynamicEquipment(Room))
+            foreach (Equipment equipment in _roomService.GetDynamicEquipment(Room))
             {
                 EquipmentComboBoxItems.Add(equipment);
             }
@@ -82,12 +82,16 @@ namespace HealthInstitution.ViewModels.GUIViewModels.DoctorViewViewModels.Consum
 
         public ICommand SubmitOneConsumedEquipmentCommand { get; }
         public ICommand FinishConsumedEquipmentCommand { get; }
-        public ConsumedEquipmentDialogViewModel(Room room)
+        IRoomService _roomService;
+        IEquipmentService _equipmentService;
+        public ConsumedEquipmentDialogViewModel(Room room, IRoomService roomService, IEquipmentService equipmentService)
         {
             Room = room;
             RoomNo = room.Number;
             LoadEquipmentComboBox();
-            SubmitOneConsumedEquipmentCommand = new SubmitOneConsumedEquipmentCommand(this);
+            _roomService = roomService;
+            _equipmentService = equipmentService;
+            SubmitOneConsumedEquipmentCommand = new SubmitOneConsumedEquipmentCommand(this,equipmentService);
             FinishConsumedEquipmentCommand = new FinishConsumedEquipmentCommand(this);
         }
     }

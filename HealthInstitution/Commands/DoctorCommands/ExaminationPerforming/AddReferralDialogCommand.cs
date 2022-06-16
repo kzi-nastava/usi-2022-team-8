@@ -17,10 +17,13 @@ namespace HealthInstitution.Commands.DoctorCommands.Referrals
     {
         private AddReferralDialogViewModel _addReferralDialogViewModel;
         private object doctorComboBox;
-
-        public AddReferralDialogCommand(AddReferralDialogViewModel addReferralDialogViewModel)
+        IReferralService _referralService;
+        IMedicalRecordService _medicalRecordService;
+        public AddReferralDialogCommand(AddReferralDialogViewModel addReferralDialogViewModel, IReferralService referralService, IMedicalRecordService medicalRecordService)
         {
             _addReferralDialogViewModel = addReferralDialogViewModel;
+            _referralService = referralService;
+            _medicalRecordService = medicalRecordService;
         }
 
         public override void Execute(object? parameter)
@@ -38,8 +41,8 @@ namespace HealthInstitution.Commands.DoctorCommands.Referrals
                 SpecialtyType specialtyType = _addReferralDialogViewModel.GetSpecialtyType();
                 referralDTO = new ReferralDTO(ReferralType.Specialty, loggedDoctor, null, specialtyType);
             }
-            Referral referral = ReferralService.Add(referralDTO);
-            MedicalRecordService.AddReferral(patient, referral);
+            Referral referral = _referralService.Add(referralDTO);
+            _medicalRecordService.AddReferral(patient, referral);
             System.Windows.MessageBox.Show("You have created the referral!", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
 
         }

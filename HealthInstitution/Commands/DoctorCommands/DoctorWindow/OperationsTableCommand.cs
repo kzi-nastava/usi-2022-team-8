@@ -1,4 +1,5 @@
 ﻿using HealthInstitution.Core;
+using HealthInstitution.Core.DIContainer;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using HealthInstitution.GUI.DoctorView;
 using System;
@@ -20,7 +21,9 @@ namespace HealthInstitution.Commands.DoctorCommands.DoctorWindow
 
         public override void Execute(object? parameter)
         {
-            new OperationTable(_loggedDoctor).ShowDialog();
+            var window = DIContainer.GetService<OperationTable>();
+            window.SetLoggedDoctor(_loggedDoctor);
+            window.ShowDialog();
         }
     }
 }

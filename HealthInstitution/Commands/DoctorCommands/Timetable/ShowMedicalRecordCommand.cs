@@ -1,4 +1,5 @@
 ﻿using HealthInstitution.Core;
+using HealthInstitution.Core.DIContainer;
 using HealthInstitution.GUI.DoctorView;
 using HealthInstitution.ViewModels.GUIViewModels.DoctorViewViewModels.AppointmentsTable;
 using System;
@@ -20,7 +21,10 @@ namespace HealthInstitution.Commands.DoctorCommands.Timetable
 
         public override void Execute(object? parameter)
         {
-            new MedicalRecordDialog(_scheduledExaminationTableViewModel.GetSelectedMedicalRecord()).ShowDialog();
+            var window = DIContainer.GetService<MedicalRecordDialog>();
+            window.SetMedicalRecord(_scheduledExaminationTableViewModel.GetSelectedMedicalRecord());
+            window.ShowDialog();
+            
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using HealthInstitution.Core;
+using HealthInstitution.Core.DIContainer;
 using HealthInstitution.GUI.DoctorView;
 using HealthInstitution.ViewModels.GUIViewModels.DoctorViewViewModels.AppointmentsTable;
 using System;
@@ -20,7 +21,9 @@ namespace HealthInstitution.Commands.DoctorCommands.Scheduling
 
         public override void Execute(object? parameter)
         {
-            new EditExaminationDialog(_examinationTableViewModel.GetSelectedExamination()).ShowDialog();
+            var window = DIContainer.GetService<EditExaminationDialog>();
+            window.SetExamination(_examinationTableViewModel.GetSelectedExamination());
+            window.ShowDialog();
             _examinationTableViewModel.RefreshGrid();
         }
     }

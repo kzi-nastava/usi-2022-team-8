@@ -30,126 +30,22 @@ namespace HealthInstitution.GUI.DoctorView
     /// </summary>
     public partial class ScheduledExaminationTable : Window
     {
-        public ScheduledExaminationTable(Doctor doctor)
+        Doctor _loggedDoctor;
+        ITimetableService _timetableService;
+        IExaminationService _examinationService;
+        public ScheduledExaminationTable(ITimetableService timetableService, IExaminationService examinationService)
         {
             //this._loggedDoctor = doctor;   
             InitializeComponent();
-            DataContext = new ScheduledExaminationTableViewModel(doctor);
+            _examinationService = examinationService;
+            _timetableService = timetableService;
             //examinationRadioButton.IsChecked = true;
             //datePicker.SelectedDate = DateTime.Now;
         }
         public void SetLoggedDoctor(Doctor doctor)
         {
             _loggedDoctor = doctor;
+            DataContext = new ScheduledExaminationTableViewModel(doctor,_examinationService,_timetableService);
         }
-
-        /*private void LoadOperationRows()
-        {
-            dataGrid.Items.Clear();
-            List<Operation> scheduledOperations = _timetableService.GetScheduledOperations(_loggedDoctor);
-            List<Operation> selectedOperations;
-            if (upcomingDaysRadioButton.IsChecked == true)
-            {
-                selectedOperations = _timetableService.GetOperationsInThreeDays(scheduledOperations);
-            }
-            else
-            {
-                DateTime date = datePicker.SelectedDate.Value.Date;
-                selectedOperations = _timetableService.GetOperationsByDate(scheduledOperations, date);
-            }
-            foreach (Operation operation in selectedOperations)
-            {
-                dataGrid.Items.Add(operation);
-            }
-        }
-
-        public void LoadExaminationRows()
-        {
-            dataGrid.Items.Clear();
-            List<Examination> scheduledExaminations = _timetableService.GetScheduledExaminations(_loggedDoctor);
-            List<Examination> selectedExaminations;
-            if ((bool)upcomingDaysRadioButton.IsChecked)
-            {
-                selectedExaminations = _timetableService.GetExaminationsInThreeDays(scheduledExaminations);
-            } else
-            {
-                DateTime date = datePicker.SelectedDate.Value.Date;
-                selectedExaminations = _timetableService.GetExaminationsByDate(scheduledExaminations, date);
-            }
-            foreach (var examination in selectedExaminations)
-            {*//*
-                dataGrid.Items.Add(examination);
-            }
-    
-        }
-        private void Show_Click(object sender, RoutedEventArgs e)
-        {
-            if (examinationRadioButton.IsChecked == true)
-            {
-                LoadExaminationRows();
-            } else
-            {
-                LoadOperationRows();
-            }
-        }
-
-        private void ShowMedicalRecord_Click(object sender, RoutedEventArgs e)
-        {
-            MedicalRecord selectedMedicalRecord;
-            if ((bool)examinationRadioButton.IsChecked)
-            {
-                Examination selectedExamination = (Examination)dataGrid.SelectedItem;
-                selectedMedicalRecord = selectedExamination.MedicalRecord;
-            }
-            else
-            {
-                Operation selectedOperation = (Operation)dataGrid.SelectedItem;
-                selectedMedicalRecord = selectedOperation.MedicalRecord;
-            }
-
-            var medicalRecordDialog = DIContainer.GetService<MedicalRecordDialog>();
-            medicalRecordDialog.SetSelectedMedicalRecord(selectedMedicalRecord);
-            medicalRecordDialog.ShowDialog();           
-        }
-
-        private bool IsExaminationSelected()
-        {
-            if (!(bool)examinationRadioButton.IsChecked)
-            {
-                System.Windows.MessageBox.Show("You have to check examination for it to start!", "Alert", MessageBoxButton.OKCancel, MessageBoxImage.Warning);
-                return false;
-            }
-            else if (dataGrid.SelectedIndex == -1)
-            {
-                System.Windows.MessageBox.Show("You have to select row to start examination!", "Alert", MessageBoxButton.OKCancel, MessageBoxImage.Warning);
-                return false;
-            }
-            return true;
-        }
-
-        private void StartExamination_Click(object sender, RoutedEventArgs e)
-        {
-            if (IsExaminationSelected())
-            { 
-                Examination selectedExamination = (Examination)dataGrid.SelectedItem;
-                if (_examinationService.IsReadyForPerforming(selectedExamination)) {
-                    var performExaminationDialog = DIContainer.GetService<PerformExaminationDialog>();
-                    performExaminationDialog.SetSelectedExamination(selectedExamination);
-                    performExaminationDialog.ShowDialog(); 
-                }
-
-                else
-                    System.Windows.MessageBox.Show("Date of examination didn't pass!", "Error", MessageBoxButton.OKCancel, MessageBoxImage.Error);
-            }
-            dataGrid.Items.Refresh();
-        }
-
-        private void AppointmentChecked(object sender, RoutedEventArgs e)
-        {
-        }
-
-        private void DatesChecked(object sender, RoutedEventArgs e)
-        {
-        }*/
     }
 }

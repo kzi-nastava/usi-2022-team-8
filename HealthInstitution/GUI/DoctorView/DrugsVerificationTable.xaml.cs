@@ -31,7 +31,7 @@ namespace HealthInstitution.GUI.DoctorView
             _drugService = drugService;
             _drugVerificationService = drugVerificationService;
             InitializeComponent();
-            DataContext = new DrugsVerificationTableViewModel();
+            DataContext = new DrugsVerificationTableViewModel(_drugService, _drugVerificationService);
         }
     }
 }

@@ -3,6 +3,7 @@ using HealthInstitution.Commands.DoctorCommands.SchedulingDialogs;
 using HealthInstitution.Core;
 using HealthInstitution.Core.Examinations;
 using HealthInstitution.Core.Examinations.Model;
+using HealthInstitution.Core.SystemUsers.Doctors;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using System;
 using System.Collections.Generic;
@@ -54,7 +55,7 @@ namespace HealthInstitution.ViewModels.GUIViewModels.DoctorViewViewModels.Appoin
         {
             _examinationsVM.Clear();
             Examinations.Clear();
-            foreach (Examination examination in ExaminationService.GetByDoctor(LoggedDoctor.Username))
+            foreach (Examination examination in _examinationService.GetByDoctor(LoggedDoctor.Username))
             {
                     Examinations.Add(examination);
                     _examinationsVM.Add(new ExaminationViewModel(examination));
@@ -69,13 +70,16 @@ namespace HealthInstitution.ViewModels.GUIViewModels.DoctorViewViewModels.Appoin
         public ICommand CreateExaminationCommand { get; }
         public ICommand EditExaminationCommand { get; }
         public ICommand DeleteExaminationCommand { get; }
-
-        public ExaminationTableViewModel(Doctor loggedDoctor)
+        IDoctorService _doctorService;
+        IExaminationService _examinationService;
+        public ExaminationTableViewModel(Doctor loggedDoctor, IDoctorService doctorService, IExaminationService examinationService)
         {
             LoggedDoctor = loggedDoctor;
+            _doctorService = doctorService;
+            _examinationService = examinationService;
             CreateExaminationCommand = new AddExaminationCommand(this, loggedDoctor);
             EditExaminationCommand = new EditExaminationCommand(this);
-            DeleteExaminationCommand = new DeleteExaminationCommand(this);
+            DeleteExaminationCommand = new DeleteExaminationCommand(this, examinationService,doctorService);
             Examinations = new();
             _examinationsVM = new();
             RefreshGrid();

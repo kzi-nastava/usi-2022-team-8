@@ -1,4 +1,5 @@
 ﻿using HealthInstitution.Core;
+using HealthInstitution.Core.DIContainer;
 using HealthInstitution.Core.Examinations;
 using HealthInstitution.Core.Examinations.Model;
 using HealthInstitution.Core.MedicalRecords;
@@ -20,11 +21,15 @@ namespace HealthInstitution.Commands.DoctorCommands.ExaminationPerforming
     {
         private PerformExaminationDialogViewModel _performExaminationDialogViewModel;
         private Examination _selectedExamination;
+        IMedicalRecordService _medicalRecordService;
+        IExaminationService _examinationService;
 
-        public FinishExaminationCommand(PerformExaminationDialogViewModel performExaminationDialogViewModel, Examination examination)
+        public FinishExaminationCommand(PerformExaminationDialogViewModel performExaminationDialogViewModel, Examination examination, IMedicalRecordService medicalRecordService, IExaminationService examinationService)
         {
             _performExaminationDialogViewModel = performExaminationDialogViewModel;
             _selectedExamination = examination;
+            _medicalRecordService = medicalRecordService;
+            _examinationService = examinationService;
         }
 
         public override void Execute(object? parameter)
@@ -32,11 +37,13 @@ namespace HealthInstitution.Commands.DoctorCommands.ExaminationPerforming
             try
             {
                 MedicalRecordDTO medicalRecordDTO = CreateMedicalRecordDTOFromInputData();
-                MedicalRecordService.Update(medicalRecordDTO);
-                ExaminationService.Complete(_selectedExamination, _performExaminationDialogViewModel.Anamnesis);
+                _medicalRecordService.Update(medicalRecordDTO);
+                _examinationService.Complete(_selectedExamination, _performExaminationDialogViewModel.Anamnesis);
                 System.Windows.MessageBox.Show("You have finished the examination!", "Congrats", MessageBoxButton.OK, MessageBoxImage.Information);
                 //this.Close();
-                new ConsumedEquipmentDialog(_selectedExamination.Room).ShowDialog();
+                var window = DIContainer.GetService<ConsumedEquipmentDialog>();
+                window.SetSelectedRoom(_selectedExamination.Room);
+                window.ShowDialog();
             }
             catch
             {

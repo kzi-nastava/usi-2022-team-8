@@ -13,16 +13,17 @@ namespace HealthInstitution.Commands.DoctorCommands.DrugVerification
     internal class AcceptDrugCommand : CommandBase
     {
         private DrugsVerificationTableViewModel _drugsVerificationTableView;
-
-        public AcceptDrugCommand(DrugsVerificationTableViewModel drugsVerificationTableView)
+        IDrugVerificationService _drugVerificationService;
+        public AcceptDrugCommand(DrugsVerificationTableViewModel drugsVerificationTableView, IDrugVerificationService drugVerificationService)
         {
             _drugsVerificationTableView = drugsVerificationTableView;
+            _drugVerificationService = drugVerificationService;
         }
 
         public override void Execute(object? parameter)
         {
             System.Windows.MessageBox.Show("You have accepted a new drug!", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
-            DrugVerificationService.Accept(_drugsVerificationTableView.GetSelectedDrug());
+            _drugVerificationService.Accept(_drugsVerificationTableView.GetSelectedDrug());
             _drugsVerificationTableView.RefreshGrid();
         }
     }

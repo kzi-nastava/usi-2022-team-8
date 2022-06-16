@@ -32,10 +32,23 @@ namespace HealthInstitution.GUI.DoctorView
     {
         private Patient _patient;
         private Doctor _doctor;
-        public AddReferralDialog(Doctor doctor, Patient patient)
+        IDoctorService _doctorService;
+        IReferralService _referralService;
+        IMedicalRecordService _medicalRecordService;
+        public AddReferralDialog(IDoctorService doctorService,
+            IReferralService referralService, IMedicalRecordService medicalRecordService)
         {
             InitializeComponent();
-            DataContext = new AddReferralDialogViewModel(patient, doctor);
+            _doctorService = doctorService;
+            _referralService = referralService;
+            _medicalRecordService = medicalRecordService;
+        }
+
+        public void SetRefferalFields(Doctor doctor, Patient patient)
+        {
+            _patient = patient;
+            _doctor = doctor;
+            DataContext = new AddReferralDialogViewModel(patient, doctor,_referralService,_doctorService,_medicalRecordService);
         }
     }
 }

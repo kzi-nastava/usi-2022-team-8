@@ -8,7 +8,7 @@
         WindowStartupLocation="CenterScreen"
         Title="Rest requests" Height="450" Width="750">
     <Grid>
-        <DataGrid SelectedIndex="{Binding SelectedExaminationIndex, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding RestRequestsVM}" AutoGenerateColumns="False" Name="dataGrid"  Height="328" VerticalAlignment="Top">
+        <DataGrid SelectedIndex="{Binding SelectedRestRequestIndex, UpdateSourceTrigger=PropertyChanged}" ItemsSource="{Binding RestRequestsVM}" AutoGenerateColumns="False" Name="dataGrid"  Height="328" VerticalAlignment="Top">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Start date" FontSize="18" Binding="{Binding StartDate, StringFormat='dd.MM.yyyy.'}" Width ="*"/>
                 <DataGridTextColumn Header="Days duration" FontSize="18" Binding="{Binding DaysDuration}" Width ="*"/>

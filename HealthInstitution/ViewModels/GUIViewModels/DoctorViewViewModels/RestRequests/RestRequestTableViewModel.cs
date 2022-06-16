@@ -54,7 +54,7 @@ namespace HealthInstitution.ViewModels.GUIViewModels.DoctorViewViewModels.RestRe
         {
             _restRequestsVM.Clear();
             RestRequests.Clear();
-            List<RestRequest> activeRestRequests = RestRequestService.GetByDoctor(LoggedDoctor.Username);
+            List<RestRequest> activeRestRequests = _restRequestService.GetByDoctor(LoggedDoctor.Username);
             foreach (RestRequest restRequest in activeRestRequests)
             {
                 RestRequests.Add(restRequest);
@@ -68,12 +68,13 @@ namespace HealthInstitution.ViewModels.GUIViewModels.DoctorViewViewModels.RestRe
         }
 
         public ICommand CreateRequestCommand { get; }
-
-        public RestRequestTableViewModel(Doctor loggedDoctor)
+        IRestRequestService _restRequestService;
+        public RestRequestTableViewModel(Doctor loggedDoctor, IRestRequestService restRequestService)
         {
             LoggedDoctor = loggedDoctor;
             RestRequests = new();
-            _restRequestsVM = new();
+            _restRequestsVM = new();            
+            _restRequestService = restRequestService;
             RefreshGrid();
             CreateRequestCommand = new AddRestRequestCommand(this, loggedDoctor);
         }

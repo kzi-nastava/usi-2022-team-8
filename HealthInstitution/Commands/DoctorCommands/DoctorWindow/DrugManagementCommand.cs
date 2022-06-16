@@ -1,4 +1,5 @@
 ﻿using HealthInstitution.Core;
+using HealthInstitution.Core.DIContainer;
 using HealthInstitution.GUI.DoctorView;
 using HealthInstitution.ViewModels.GUIViewModels.DoctorViewViewModels;
 using System;
@@ -17,7 +18,8 @@ namespace HealthInstitution.Commands.DoctorCommands.DoctorWindow
 
         public override void Execute(object? parameter)
         {
-            new DrugsVerificationTable().ShowDialog();
+            var window = DIContainer.GetService<DrugsVerificationTable>();
+            window.ShowDialog();
         }
     }
 }

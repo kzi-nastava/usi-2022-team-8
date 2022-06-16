@@ -1,4 +1,5 @@
 ﻿using HealthInstitution.Core;
+using HealthInstitution.Core.DIContainer;
 using HealthInstitution.Core.Drugs;
 using HealthInstitution.GUI.DoctorView;
 using HealthInstitution.ViewModels.GUIViewModels.DoctorViewViewModels.DrugVerification;
@@ -21,7 +22,9 @@ namespace HealthInstitution.Commands.DoctorCommands.DrugVerification
 
         public override void Execute(object? parameter)
         {
-            new DrugRejectionReasonDialog(_drugsVerificationTableView.GetSelectedDrug()).ShowDialog();
+            var window = DIContainer.GetService<DrugRejectionReasonDialog>();
+            window.SetDrug(_drugsVerificationTableView.GetSelectedDrug());
+            window.ShowDialog();
             _drugsVerificationTableView.RefreshGrid();
         }
     }

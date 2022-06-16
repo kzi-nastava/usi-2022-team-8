@@ -24,10 +24,18 @@ namespace HealthInstitution.GUI.DoctorView
     /// </summary>
     public partial class RestRequestTable : Window
     {
-        public RestRequestTable(Doctor doctor)
+        IRestRequestService _restRequestService;
+        Doctor _loggedDoctor;
+        public RestRequestTable(IRestRequestService restRequestService)
         {
             InitializeComponent();
-            DataContext = new RestRequestTableViewModel(doctor);
+            _restRequestService = restRequestService;
+        }
+
+        public void SetLoggedDoctor(Doctor doctor)
+        {
+            _loggedDoctor = doctor;
+            DataContext = new RestRequestTableViewModel(doctor, _restRequestService);
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using HealthInstitution.Core;
+using HealthInstitution.Core.DIContainer;
 using HealthInstitution.Core.Examinations;
 using HealthInstitution.Core.Examinations.Model;
 using HealthInstitution.GUI.DoctorView;
@@ -15,10 +16,11 @@ namespace HealthInstitution.Commands.DoctorCommands.ExaminationPerforming
     internal class StartExaminationCommand : CommandBase
     {
         private ScheduledExaminationTableViewModel _scheduledExaminationTableViewModel;
-
-        public StartExaminationCommand(ScheduledExaminationTableViewModel scheduledExaminationTableViewModel)
+        IExaminationService _examinationService;
+        public StartExaminationCommand(ScheduledExaminationTableViewModel scheduledExaminationTableViewModel, IExaminationService examinationService)
         {
             _scheduledExaminationTableViewModel = scheduledExaminationTableViewModel;
+            _examinationService = examinationService;
         }
 
         public override void Execute(object? parameter)
@@ -26,8 +28,12 @@ namespace HealthInstitution.Commands.DoctorCommands.ExaminationPerforming
             if (IsExaminationSelected())
             {
                 Examination selectedExamination = _scheduledExaminationTableViewModel.GetSelectedExamination();
-                if (ExaminationService.IsReadyForPerforming(selectedExamination))
-                    new PerformExaminationDialog(selectedExamination).ShowDialog();
+                if (_examinationService.IsReadyForPerforming(selectedExamination))
+                {
+                    var window = DIContainer.GetService<PerformExaminationDialog>();
+                    window.SetExamination(selectedExamination);
+                    window.ShowDialog();
+                }                   
                 else
                     System.Windows.MessageBox.Show("Date of examination didn't pass!", "Error", MessageBoxButton.OKCancel, MessageBoxImage.Error);
             }

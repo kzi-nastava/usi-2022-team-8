@@ -14,10 +14,13 @@ namespace HealthInstitution.Commands.DoctorCommands.SchedulingDialogs
     internal class AddOperationDialogCommand : CommandBase
     {
         private AddOperationDialogViewModel _addOperationDialogViewModel;
-
-        public AddOperationDialogCommand(AddOperationDialogViewModel addOperationDialogViewModel)
+        IMedicalRecordService _medicalRecordService;
+        ISchedulingService _schedulingService;
+        public AddOperationDialogCommand(AddOperationDialogViewModel addOperationDialogViewModel, IMedicalRecordService medicalRecordService, ISchedulingService schedulingService)
         {
             _addOperationDialogViewModel = addOperationDialogViewModel;
+            _medicalRecordService = medicalRecordService;
+            _schedulingService = schedulingService;
         }
 
         public override void Execute(object? parameter)
@@ -26,11 +29,11 @@ namespace HealthInstitution.Commands.DoctorCommands.SchedulingDialogs
             {
                 Doctor doctor = _addOperationDialogViewModel.LoggedDoctor;
                 Patient patient = _addOperationDialogViewModel.GetPatient();
-                MedicalRecord medicalRecord = MedicalRecordService.GetByPatientUsername(patient);
+                MedicalRecord medicalRecord = _medicalRecordService.GetByPatientUsername(patient);
                 DateTime dateTime = _addOperationDialogViewModel.GetOperationDateTime();
                 int duration = _addOperationDialogViewModel.GetDuration();
                 OperationDTO operation = new OperationDTO(dateTime, duration, null, doctor, medicalRecord);
-                SchedulingService.ReserveOperation(operation);
+                _schedulingService.ReserveOperation(operation);
                 System.Windows.MessageBox.Show("You have succesfully added new operation!", "Info", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
             catch (Exception ex)

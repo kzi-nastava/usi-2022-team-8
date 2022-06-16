@@ -25,10 +25,21 @@ namespace HealthInstitution.GUI.DoctorView
     /// </summary>
     public partial class PerformExaminationDialog : Window
     {
-        public PerformExaminationDialog(Examination examination)
+        Examination _examination;
+        IMedicalRecordService _medicalRecordService;
+        IExaminationService _examinationService;
+        public PerformExaminationDialog(IExaminationService examinationService,
+            IMedicalRecordService medicalRecordService)
         {
             InitializeComponent();
-            DataContext = new PerformExaminationDialogViewModel(examination, examination.MedicalRecord);
+            _medicalRecordService = medicalRecordService;
+            _examinationService = examinationService;
+        }
+
+        public void SetExamination(Examination examination)
+        {
+            _examination = examination;
+            DataContext = new PerformExaminationDialogViewModel(examination, examination.MedicalRecord,_medicalRecordService,_examinationService);
         }
     }
 }

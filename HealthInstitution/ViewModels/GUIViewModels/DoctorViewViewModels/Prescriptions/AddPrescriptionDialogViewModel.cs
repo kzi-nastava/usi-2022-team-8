@@ -2,7 +2,9 @@
 using HealthInstitution.Core;
 using HealthInstitution.Core.Drugs;
 using HealthInstitution.Core.Drugs.Model;
+using HealthInstitution.Core.MedicalRecords;
 using HealthInstitution.Core.MedicalRecords.Model;
+using HealthInstitution.Core.Prescriptions;
 using HealthInstitution.Core.Prescriptions.Model;
 using System;
 using System.Collections.Generic;
@@ -225,7 +227,7 @@ namespace HealthInstitution.ViewModels.GUIViewModels.DoctorViewViewModels.Prescr
         private void LoadDrugComboBox()
         {
             DrugComboBoxItems = new();
-            foreach (Drug drug in DrugService.GetAll())
+            foreach (Drug drug in _drugService.GetAll())
             {
                 DrugComboBoxItems.Add(drug);
             }
@@ -241,12 +243,17 @@ namespace HealthInstitution.ViewModels.GUIViewModels.DoctorViewViewModels.Prescr
         }
 
         public ICommand CreatePrescriptionCommand { get; }
-
-        public AddPrescriptionDialogViewModel(MedicalRecord medicalRecord)
+        IDrugService _drugService;
+        IMedicalRecordService _medicalRecordService;
+        IPrescriptionService _prescriptionService;
+        public AddPrescriptionDialogViewModel(MedicalRecord medicalRecord, IDrugService drugService, IMedicalRecordService medicalRecordService, IPrescriptionService prescriptionService)
         {
             MedicalRecord = medicalRecord;
             LoadComboBoxes();
-            CreatePrescriptionCommand = new AddPrescriptionDialogCommand(this);
+            _drugService = drugService;
+            _medicalRecordService = medicalRecordService;
+            _prescriptionService = prescriptionService;
+            CreatePrescriptionCommand = new AddPrescriptionDialogCommand(this, prescriptionService, medicalRecordService);
         }
     }
 }

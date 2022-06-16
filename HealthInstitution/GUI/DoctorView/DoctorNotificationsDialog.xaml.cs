@@ -28,10 +28,22 @@ namespace HealthInstitution.GUI.DoctorView
     /// </summary>
     public partial class DoctorNotificationsDialog : Window
     {
-        public DoctorNotificationsDialog(Doctor doctor)
+        IDoctorService _doctorService;
+        IAppointmentNotificationService _appointmentNotificationService;
+        IRestRequestNotificationService _restRequestNotificationService;
+        Doctor _loggedDoctor;
+        public DoctorNotificationsDialog(IDoctorService doctorService, IAppointmentNotificationService appointmentNotificationService, IRestRequestNotificationService restRequestNotificationService)
         {
             InitializeComponent();
-            DataContext = new DoctorNotificationsDialogViewModel(doctor);
+            _doctorService = doctorService;
+            _appointmentNotificationService = appointmentNotificationService;
+            _restRequestNotificationService = restRequestNotificationService;
+        }
+
+        public void SetLoggedDoctor(Doctor doctor)
+        {
+            _loggedDoctor = doctor;
+            DataContext = new DoctorNotificationsDialogViewModel(doctor, _doctorService, _appointmentNotificationService, _restRequestNotificationService);
         }
     }
 }

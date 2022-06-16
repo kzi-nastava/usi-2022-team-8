@@ -19,10 +19,24 @@ namespace HealthInstitution.GUI.DoctorView
     /// </summary>
     public partial class AddExaminationDialog : Window
     {
-        public AddExaminationDialog(Doctor doctor)
+        IPatientService _patientService;
+        IMedicalRecordService _medicalRecordService;
+        ISchedulingService _schedulingService;
+        Doctor _loggedDoctor;
+        public AddExaminationDialog(IPatientService patientService,
+                                    IMedicalRecordService medicalRecordService,
+                                    ISchedulingService schedulingService)
         {
             InitializeComponent();
-            DataContext = new AddExaminationDialogViewModel(doctor);
+            _patientService = patientService;
+            _medicalRecordService = medicalRecordService;
+            _schedulingService = schedulingService;
+        }
+
+        public void SetLoggedDoctor(Doctor doctor)
+        {
+            _loggedDoctor = doctor;
+            DataContext = new AddExaminationDialogViewModel(doctor,_patientService,_medicalRecordService,_schedulingService);
         }
     }
 }

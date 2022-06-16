@@ -9,9 +9,15 @@ namespace HealthInstitution.GUI.DoctorView
     /// </summary>
     public partial class MedicalRecordDialog : Window
     {
-        public MedicalRecordDialog(MedicalRecord medicalRecord)
+        MedicalRecord _medicalRecord;
+        public MedicalRecordDialog()
         {
-            InitializeComponent();
+            InitializeComponent();            
+        }
+
+        public void SetMedicalRecord(MedicalRecord medicalRecord)
+        {
+            _medicalRecord = medicalRecord;
             DataContext = new MedicalRecordDialogViewModel(medicalRecord);
         }
     }

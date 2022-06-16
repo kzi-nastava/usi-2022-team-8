@@ -1,6 +1,8 @@
 ﻿using HealthInstitution.Commands.DoctorCommands.ExaminationPerforming;
 using HealthInstitution.Core;
+using HealthInstitution.Core.Examinations;
 using HealthInstitution.Core.Examinations.Model;
+using HealthInstitution.Core.MedicalRecords;
 using HealthInstitution.Core.MedicalRecords.Model;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using System;
@@ -130,8 +132,9 @@ namespace HealthInstitution.ViewModels.GUIViewModels.DoctorViewViewModels.Schedu
         public ICommand FinishExaminationCommand { get; }
         public ICommand AddAllergenCommand { get; }
         public ICommand AddIllnessCommand { get; }
-
-        public PerformExaminationDialogViewModel(Examination examination, MedicalRecord medicalRecord)
+        IMedicalRecordService _medicalRecordService;
+        IExaminationService _examinationService;
+        public PerformExaminationDialogViewModel(Examination examination, MedicalRecord medicalRecord, IMedicalRecordService medicalRecordService, IExaminationService examinationService)
         {
             LoggedDoctor = examination.Doctor;
             MedicalRecord = medicalRecord;
@@ -139,7 +142,9 @@ namespace HealthInstitution.ViewModels.GUIViewModels.DoctorViewViewModels.Schedu
             ShowCreateReferralDialogCommand = new AddReferralCommand(LoggedDoctor, medicalRecord);
             AddAllergenCommand = new AddAllergenCommand(this);
             AddIllnessCommand = new AddIllnessCommand(this);
-            FinishExaminationCommand = new FinishExaminationCommand(this, examination);
+            _medicalRecordService = medicalRecordService;
+            _examinationService = examinationService;
+            FinishExaminationCommand = new FinishExaminationCommand(this, examination,medicalRecordService, examinationService );
             LoadData();
         }
 

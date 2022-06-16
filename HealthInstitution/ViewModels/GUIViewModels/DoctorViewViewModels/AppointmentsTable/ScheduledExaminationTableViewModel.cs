@@ -1,6 +1,7 @@
 ﻿using HealthInstitution.Commands.DoctorCommands.ExaminationPerforming;
 using HealthInstitution.Commands.DoctorCommands.Timetable;
 using HealthInstitution.Core;
+using HealthInstitution.Core.Examinations;
 using HealthInstitution.Core.Examinations.Model;
 using HealthInstitution.Core.MedicalRecords.Model;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
@@ -110,15 +111,15 @@ namespace HealthInstitution.ViewModels.GUIViewModels.DoctorViewViewModels.Appoin
             _examinationsVM.Clear();
             Examinations.Clear();
             List<Examination> selectedExaminations;
-            List<Examination> scheduledExaminations = TimetableService.GetScheduledExaminations(LoggedDoctor);
+            List<Examination> scheduledExaminations = _timetableService.GetScheduledExaminations(LoggedDoctor);
             if (GetDatesChoice() == 0)
             {
-                selectedExaminations = TimetableService.GetExaminationsInThreeDays(scheduledExaminations);
+                selectedExaminations = _timetableService.GetExaminationsInThreeDays(scheduledExaminations);
             }
             else
             {
                 DateTime date = SelectedDateTime.Date;
-                selectedExaminations = TimetableService.GetExaminationsByDate(scheduledExaminations, date);
+                selectedExaminations = _timetableService.GetExaminationsByDate(scheduledExaminations, date);
             }
             foreach (var examination in selectedExaminations)
             {
@@ -140,13 +141,16 @@ namespace HealthInstitution.ViewModels.GUIViewModels.DoctorViewViewModels.Appoin
         public ICommand ShowDataGridCommand { get; }
         public ICommand ShowMedicalRecordCommand { get; }
         public ICommand StartExaminationCommand { get; }
-
-        public ScheduledExaminationTableViewModel(Doctor loggedDoctor)
+        IExaminationService _examinationService;
+        ITimetableService _timetableService;
+        public ScheduledExaminationTableViewModel(Doctor loggedDoctor, IExaminationService examinationService, ITimetableService timetableService)
         {
             LoggedDoctor = loggedDoctor;
+            _examinationService = examinationService;
+            _timetableService = timetableService;
             ShowDataGridCommand = new ShowDataGridCommand(this);
             ShowMedicalRecordCommand = new ShowMedicalRecordCommand(this);
-            StartExaminationCommand = new StartExaminationCommand(this);
+            StartExaminationCommand = new StartExaminationCommand(this, examinationService);
             Examinations = new();
             _examinationsVM = new();
         }

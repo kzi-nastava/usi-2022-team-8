@@ -1,4 +1,5 @@
 ﻿using HealthInstitution.Core;
+using HealthInstitution.Core.DIContainer;
 using HealthInstitution.Core.MedicalRecords.Model;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using HealthInstitution.GUI.DoctorView;
@@ -22,7 +23,9 @@ namespace HealthInstitution.Commands.DoctorCommands.ExaminationPerforming
 
         public override void Execute(object? parameter)
         {
-            new AddReferralDialog(_loggedDoctor, _medicalRecord.Patient).ShowDialog();
+            var window = DIContainer.GetService<AddReferralDialog>();
+            window.SetRefferalFields(_loggedDoctor, _medicalRecord.Patient);
+            window.ShowDialog();
         }
     }
 }

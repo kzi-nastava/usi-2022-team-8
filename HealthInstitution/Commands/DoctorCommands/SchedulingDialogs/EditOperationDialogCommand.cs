@@ -14,10 +14,13 @@ namespace HealthInstitution.Commands.DoctorCommands.SchedulingDialogs
     public class EditOperationDialogCommand : CommandBase
     {
         private EditOperationDialogViewModel _editOperationDialogViewModel;
-
-        public EditOperationDialogCommand(EditOperationDialogViewModel editOperationDialogViewModel)
+        IMedicalRecordService _medicalRecordService;
+        IOperationService _operationService;
+        public EditOperationDialogCommand(EditOperationDialogViewModel editOperationDialogViewModel, IMedicalRecordService medicalRecordService, IOperationService operationService)
         {
             _editOperationDialogViewModel = editOperationDialogViewModel;
+            _medicalRecordService = medicalRecordService;
+            _operationService = operationService;
         }
 
         public override void Execute(object? parameter)
@@ -27,11 +30,11 @@ namespace HealthInstitution.Commands.DoctorCommands.SchedulingDialogs
                 var selectedOperation = _editOperationDialogViewModel.SelectedOperation;
                 Doctor doctor = selectedOperation.Doctor;
                 Patient patient = _editOperationDialogViewModel.GetPatient();
-                MedicalRecord medicalRecord = MedicalRecordService.GetByPatientUsername(patient);
+                MedicalRecord medicalRecord = _medicalRecordService.GetByPatientUsername(patient);
                 DateTime dateTime = _editOperationDialogViewModel.GetOperationDateTime();
                 int duration = _editOperationDialogViewModel.GetDuration();
                 OperationDTO operation = new OperationDTO(dateTime, duration, null, doctor, medicalRecord);
-                OperationService.Update(selectedOperation.Id, operation);
+                _operationService.Update(selectedOperation.Id, operation);
                 System.Windows.MessageBox.Show("You have succesfully added edited operation!", "Info", MessageBoxButton.OK, MessageBoxImage.Warning);
 
             }

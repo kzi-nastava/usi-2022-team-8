@@ -14,9 +14,13 @@ namespace HealthInstitution.Commands.DoctorCommands.Scheduling
     internal class DeleteOperationCommand : CommandBase
     {
         private OperationTableViewModel _operationTableViewModel;
-        public DeleteOperationCommand(OperationTableViewModel operationTableViewModel)
+        IOperationService _operationService;
+        IDoctorService _doctorService;
+        public DeleteOperationCommand(OperationTableViewModel operationTableViewModel, IOperationService operationService, IDoctorService doctorService)
         {
             _operationTableViewModel = operationTableViewModel;
+            _operationService = operationService;
+            _doctorService = doctorService;
         }
         public override void Execute(object? parameter)
         {
@@ -24,8 +28,8 @@ namespace HealthInstitution.Commands.DoctorCommands.Scheduling
             if (answer == MessageBoxResult.Yes)
             {
                 var selectedOperation = _operationTableViewModel.GetSelectedOperation();
-                OperationService.Delete(selectedOperation.Id);
-                DoctorService.DeleteOperation(selectedOperation);
+                _operationService.Delete(selectedOperation.Id);
+                _doctorService.DeleteOperation(selectedOperation);
                 _operationTableViewModel.RefreshGrid();
             }
         }

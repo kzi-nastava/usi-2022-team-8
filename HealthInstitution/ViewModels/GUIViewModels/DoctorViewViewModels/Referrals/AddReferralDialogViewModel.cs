@@ -1,5 +1,7 @@
 ﻿using HealthInstitution.Commands.DoctorCommands.Referrals;
 using HealthInstitution.Core;
+using HealthInstitution.Core.MedicalRecords;
+using HealthInstitution.Core.Referrals;
 using HealthInstitution.Core.SystemUsers.Doctors;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using HealthInstitution.Core.SystemUsers.Patients.Model;
@@ -110,7 +112,7 @@ namespace HealthInstitution.ViewModels.GUIViewModels.DoctorViewViewModels.Referr
         private void LoadDoctorComboBox()
         {
             DoctorComboBoxItems = new();
-            foreach (Doctor doctor in DoctorService.GetAll())
+            foreach (Doctor doctor in _doctorService.GetAll())
             {
                 DoctorComboBoxItems.Add(doctor);
             }
@@ -126,15 +128,20 @@ namespace HealthInstitution.ViewModels.GUIViewModels.DoctorViewViewModels.Referr
         }
 
         public ICommand CreateReferralCommand { get; }
-
-        public AddReferralDialogViewModel(Patient patient, Doctor doctor)
+        IReferralService _referralService;
+        IDoctorService _doctorService;
+        IMedicalRecordService _medicalRecordService;
+        public AddReferralDialogViewModel(Patient patient, Doctor doctor, IReferralService referralService, IDoctorService doctorService, IMedicalRecordService medicalRecordService)
         {
             Patient = patient;
             Doctor = doctor;
             LoadDoctorComboBox();
             SpecialtyComboBoxItems = new();
             LoadSpecialtyComboBox();
-            CreateReferralCommand = new AddReferralDialogCommand(this);
+            _referralService = referralService;
+            _doctorService = doctorService;
+            _medicalRecordService = medicalRecordService;
+            CreateReferralCommand = new AddReferralDialogCommand(this, referralService, medicalRecordService);
         }
     }
 }

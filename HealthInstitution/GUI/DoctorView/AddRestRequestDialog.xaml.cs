@@ -24,10 +24,18 @@ namespace HealthInstitution.GUI.DoctorView
     /// </summary>
     public partial class AddRestRequestDialog : Window
     {
-        public AddRestRequestDialog(Doctor doctor)
+        Doctor _doctor;
+        IRestRequestService _restRequestService;
+        public AddRestRequestDialog(IRestRequestService restRequestService)
         {
             InitializeComponent();
-            DataContext = new AddRestRequestDialogViewModel(doctor);
+            _restRequestService = restRequestService;
+        }
+
+        public void SetLoggedDoctor(Doctor doctor)
+        {
+            _doctor = doctor;
+            DataContext = new AddRestRequestDialogViewModel(this, doctor,_restRequestService);
         }
     }
 }

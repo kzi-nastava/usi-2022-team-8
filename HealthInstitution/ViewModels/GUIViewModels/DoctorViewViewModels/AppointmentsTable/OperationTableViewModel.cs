@@ -2,6 +2,7 @@
 using HealthInstitution.Core;
 using HealthInstitution.Core.Operations;
 using HealthInstitution.Core.Operations.Model;
+using HealthInstitution.Core.SystemUsers.Doctors;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using HealthInstitution.ViewModels.ModelViewModels.Scheduling;
 using System;
@@ -54,7 +55,7 @@ namespace HealthInstitution.ViewModels.GUIViewModels.DoctorViewViewModels.Appoin
         {
             _operationsVM.Clear();
             Operations.Clear();
-            foreach (Operation operation in OperationService.GetByDoctor(LoggedDoctor.Username))
+            foreach (Operation operation in _operationService.GetByDoctor(LoggedDoctor.Username))
             {
                     Operations.Add(operation);
                     _operationsVM.Add(new OperationViewModel(operation));
@@ -69,13 +70,16 @@ namespace HealthInstitution.ViewModels.GUIViewModels.DoctorViewViewModels.Appoin
         public ICommand CreateOperationCommand { get; }
         public ICommand EditOperationCommand { get; }
         public ICommand DeleteOperationCommand { get; }
-
-        public OperationTableViewModel(Doctor loggedDoctor)
+        IDoctorService _doctorService;
+        IOperationService _operationService;
+        public OperationTableViewModel(Doctor loggedDoctor, IDoctorService doctorService, IOperationService operationService)
         {
             LoggedDoctor = loggedDoctor;
+            _doctorService = doctorService;
+            _operationService = operationService;
             CreateOperationCommand = new AddOperationCommand(this, loggedDoctor);
             EditOperationCommand = new EditOperationCommand(this);
-            DeleteOperationCommand = new DeleteOperationCommand(this);
+            DeleteOperationCommand = new DeleteOperationCommand(this, operationService, doctorService);
             Operations = new();
             _operationsVM = new();
             RefreshGrid();

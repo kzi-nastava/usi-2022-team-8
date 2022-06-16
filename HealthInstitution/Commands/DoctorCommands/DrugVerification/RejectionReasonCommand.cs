@@ -13,10 +13,11 @@ namespace HealthInstitution.Commands.DoctorCommands.DrugVerification
     internal class RejectionReasonCommand : CommandBase
     {
         private RejectionReasonDialogViewModel _rejectionReasonDialogViewModel;
-
-        public RejectionReasonCommand(RejectionReasonDialogViewModel rejectionReasonDialogViewModel)
+        IDrugVerificationService _drugVerificationService;
+        public RejectionReasonCommand(RejectionReasonDialogViewModel rejectionReasonDialogViewModel, IDrugVerificationService drugVerificationService)
         {
             _rejectionReasonDialogViewModel = rejectionReasonDialogViewModel;
+            _drugVerificationService = drugVerificationService;
         }
 
         public override void Execute(object? parameter)
@@ -28,7 +29,7 @@ namespace HealthInstitution.Commands.DoctorCommands.DrugVerification
             }
             else
             {
-                DrugVerificationService.Reject(_rejectionReasonDialogViewModel.SelectedDrug, rejectionReason);
+                _drugVerificationService.Reject(_rejectionReasonDialogViewModel.SelectedDrug, rejectionReason);
                 System.Windows.MessageBox.Show("Successfull rejection!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }

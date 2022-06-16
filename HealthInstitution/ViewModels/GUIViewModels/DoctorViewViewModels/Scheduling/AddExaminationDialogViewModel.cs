@@ -1,5 +1,7 @@
 ﻿using HealthInstitution.Commands.DoctorCommands.SchedulingDialogs;
 using HealthInstitution.Core;
+using HealthInstitution.Core.MedicalRecords;
+using HealthInstitution.Core.Scheduling;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using HealthInstitution.Core.SystemUsers.Patients;
 using HealthInstitution.Core.SystemUsers.Patients.Model;
@@ -158,7 +160,7 @@ namespace HealthInstitution.ViewModels.GUIViewModels.DoctorViewViewModels.Schedu
         private void LoadPatientComboBox()
         {
             PatientComboBoxItems = new();
-            foreach (Patient patient in PatientService.GetAll())
+            foreach (Patient patient in _patientService.GetAll())
             {
                 PatientComboBoxItems.Add(patient);
             }
@@ -172,12 +174,17 @@ namespace HealthInstitution.ViewModels.GUIViewModels.DoctorViewViewModels.Schedu
         }
 
         public ICommand CreateExaminationDialogCommand { get; }
-
-        public AddExaminationDialogViewModel(Doctor loggedDoctor)
+        IPatientService _patientService;
+        IMedicalRecordService _medicalRecordService;
+        ISchedulingService _schedulingService; 
+        public AddExaminationDialogViewModel(Doctor loggedDoctor, IPatientService patientService, IMedicalRecordService medicalRecordService, ISchedulingService schedulingService)
         {
             LoggedDoctor = loggedDoctor;
             LoadComboBoxes();
-            CreateExaminationDialogCommand = new AddExaminationDialogCommand(this);
+            _medicalRecordService = medicalRecordService;
+            _schedulingService = schedulingService;
+            _patientService = patientService;
+            CreateExaminationDialogCommand = new AddExaminationDialogCommand(this, medicalRecordService, schedulingService);
         }
     }
 }

@@ -18,10 +18,23 @@ namespace HealthInstitution.GUI.DoctorView
     /// </summary>
     public partial class AddOperationDialog : Window
     {
-        public AddOperationDialog(Doctor doctor)
+        Doctor _loggedDoctor;
+        IPatientService _patientService;
+        IMedicalRecordService _medicalRecordService;
+        ISchedulingService _schedulingService;
+        public AddOperationDialog(IPatientService patientService,
+                                    IMedicalRecordService medicalRecordService,
+                                    ISchedulingService schedulingService)
         {
             InitializeComponent();
-            DataContext = new AddOperationDialogViewModel(doctor);
+            _patientService = patientService;
+            _medicalRecordService = medicalRecordService;
+            _schedulingService = schedulingService;
+        }
+        public void SetLoggedDoctor(Doctor doctor)
+        {
+            _loggedDoctor = doctor;
+            DataContext = new AddOperationDialogViewModel(doctor,_patientService,_medicalRecordService,_schedulingService);
         }
     }
 }

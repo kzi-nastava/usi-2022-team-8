@@ -51,7 +51,7 @@ namespace HealthInstitution.ViewModels.GUIViewModels.DoctorViewViewModels.DrugVe
         {
             _drugsVM.Clear();
             Drugs.Clear();
-            foreach (Drug drug in DrugService.GetAllCreated())
+            foreach (Drug drug in _drugService.GetAllCreated())
             {
                 Drugs.Add(drug);
                 _drugsVM.Add(new DrugViewModel(drug));
@@ -65,10 +65,13 @@ namespace HealthInstitution.ViewModels.GUIViewModels.DoctorViewViewModels.DrugVe
 
         public ICommand AcceptDrugCommand { get; }
         public ICommand RejectDrugCommand { get; }
-
-        public DrugsVerificationTableViewModel()
+        IDrugService _drugService;
+        IDrugVerificationService _drugVerificationService;
+        public DrugsVerificationTableViewModel(IDrugService drugService, IDrugVerificationService drugVerificationService)
         {
-            AcceptDrugCommand = new AcceptDrugCommand(this);
+            _drugService = drugService;
+            _drugVerificationService = drugVerificationService;
+            AcceptDrugCommand = new AcceptDrugCommand(this, drugVerificationService);
             RejectDrugCommand = new RejectDrugCommand(this);
             _drugsVM = new();
             Drugs = new();

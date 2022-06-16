@@ -1,4 +1,5 @@
 ﻿using HealthInstitution.Core;
+using HealthInstitution.Core.DIContainer;
 using HealthInstitution.Core.RestRequests;
 using HealthInstitution.Core.RestRequests.Model;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
@@ -26,7 +27,9 @@ namespace HealthInstitution.Commands.DoctorCommands.RestRequests
 
         public override void Execute(object? parameter)
         {
-            new AddRestRequestDialog(_loggedDoctor).ShowDialog();
+            var window = DIContainer.GetService<AddRestRequestDialog>();
+            window.SetLoggedDoctor(_loggedDoctor);
+            window.ShowDialog();
             _restRequestTableViewModel.RefreshGrid();
         }
     }

@@ -1,6 +1,8 @@
 ﻿using HealthInstitution.Commands.DoctorCommands.SchedulingDialogs;
 using HealthInstitution.Core;
 using HealthInstitution.Core.Examinations.Model;
+using HealthInstitution.Core.MedicalRecords;
+using HealthInstitution.Core.Operations;
 using HealthInstitution.Core.Operations.Model;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using HealthInstitution.Core.SystemUsers.Patients;
@@ -184,7 +186,7 @@ namespace HealthInstitution.ViewModels.GUIViewModels.DoctorViewViewModels.Schedu
             PatientComboBoxItems = new();
             int i = 0;
             int idx = 0;
-            foreach (Patient patient in PatientService.GetAll())
+            foreach (Patient patient in _patientService.GetAll())
             {
                 PatientComboBoxItems.Add(patient);
                 if (patient.Username == SelectedOperation.MedicalRecord.Patient.Username)
@@ -201,13 +203,18 @@ namespace HealthInstitution.ViewModels.GUIViewModels.DoctorViewViewModels.Schedu
         }
 
         public ICommand EditOperationCommand { get; }
-
-        public EditOperationDialogViewModel(Operation selectedOperation)
+        IMedicalRecordService _medicalRecordService;
+        IOperationService _operationService;
+        IPatientService _patientService;
+        public EditOperationDialogViewModel(Operation selectedOperation, IMedicalRecordService medicalRecordService, IOperationService operationService, IPatientService patientService)
         {
             SelectedOperation = selectedOperation;
             LoadComboBoxes();
             _selectedDateTime = selectedOperation.Appointment;
-            EditOperationCommand = new EditOperationDialogCommand(this);
+            _medicalRecordService = medicalRecordService;
+            _operationService = operationService;
+            _patientService = patientService;
+            EditOperationCommand = new EditOperationDialogCommand(this, medicalRecordService, operationService);
         }
     }
 }

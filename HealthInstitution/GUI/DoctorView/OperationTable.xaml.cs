@@ -17,10 +17,20 @@ namespace HealthInstitution.GUI.DoctorView
     /// </summary>
     public partial class OperationTable : Window
     {
-        public OperationTable(Doctor doctor)
+        IOperationService _operationService;
+        IDoctorService _doctorService;
+        Doctor _loggedDoctor;
+        public OperationTable(IOperationService operationService, IDoctorService doctorService)
         {
             InitializeComponent();
-            DataContext = new OperationTableViewModel(doctor);
+            _operationService = operationService;
+            _doctorService = doctorService;
+        }
+
+        public void SetLoggedDoctor(Doctor doctor)
+        {
+            _loggedDoctor = doctor;
+            DataContext = new OperationTableViewModel(doctor,_doctorService,_operationService);
         }
     }
 }

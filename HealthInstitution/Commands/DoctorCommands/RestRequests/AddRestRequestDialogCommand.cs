@@ -19,11 +19,13 @@ namespace HealthInstitution.Commands.DoctorCommands.RestRequests
       
         private AddRestRequestDialogViewModel _addRestRequestViewModel;
         private Doctor _loggedDoctor;
+        IRestRequestService _restRequestService;
 
-        public AddRestRequestDialogCommand(AddRestRequestDialogViewModel addRestRequestViewModel, Doctor doctor)
+        public AddRestRequestDialogCommand(AddRestRequestDialogViewModel addRestRequestViewModel, Doctor doctor, IRestRequestService restRequestService)
         {
             _addRestRequestViewModel = addRestRequestViewModel;
             _loggedDoctor = doctor;
+            _restRequestService = restRequestService;
         }
 
         public override void Execute(object? parameter)
@@ -31,8 +33,9 @@ namespace HealthInstitution.Commands.DoctorCommands.RestRequests
             try
             {
                 var restRequestDTO = CreateRestRequestDTOFromInputData();
-                RestRequestService.ApplyForRestRequest(restRequestDTO);
+                _restRequestService.ApplyForRestRequest(restRequestDTO);
                 System.Windows.MessageBox.Show("You have applied for rest days!", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
+                _addRestRequestViewModel.ThisWindow.Close();
             }
             catch (Exception ex)
             {

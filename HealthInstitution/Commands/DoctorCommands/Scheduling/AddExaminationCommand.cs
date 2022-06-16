@@ -1,4 +1,5 @@
 ﻿using HealthInstitution.Core;
+using HealthInstitution.Core.DIContainer;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using HealthInstitution.GUI.DoctorView;
 using HealthInstitution.ViewModels.GUIViewModels.DoctorViewViewModels.AppointmentsTable;
@@ -23,7 +24,9 @@ namespace HealthInstitution.Commands.DoctorCommands.Scheduling
 
         public override void Execute(object? parameter)
         {
-            new AddExaminationDialog(_loggedDoctor).ShowDialog();
+            var window = DIContainer.GetService<AddExaminationDialog>();
+            window.SetLoggedDoctor(_loggedDoctor);
+            window.ShowDialog();
             _examinationTableViewModel.RefreshGrid();
         }
     }

@@ -1,4 +1,5 @@
 ﻿using HealthInstitution.Core;
+using HealthInstitution.Core.DIContainer;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using HealthInstitution.GUI.DoctorView;
 using HealthInstitution.ViewModels.GUIViewModels.DoctorViewViewModels;
@@ -21,7 +22,9 @@ namespace HealthInstitution.Commands.DoctorCommands.DoctorWindow
 
         public override void Execute(object? parameter)
         {
-            new ScheduledExaminationTable(_loggedDoctor).ShowDialog();
+            var window = DIContainer.GetService<ScheduledExaminationTable>();
+            window.SetLoggedDoctor(_loggedDoctor);
+            window.ShowDialog();
         }
     }
 }

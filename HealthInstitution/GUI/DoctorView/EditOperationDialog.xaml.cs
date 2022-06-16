@@ -18,10 +18,23 @@ namespace HealthInstitution.GUI.DoctorView
     /// </summary>
     public partial class EditOperationDialog : Window
     {
-        public EditOperationDialog(Operation operation)
+        IPatientService _patientService;
+        IMedicalRecordService _medicalRecordService;
+        IOperationService _operationService;
+        Operation _operation;
+        public EditOperationDialog(IPatientService patientService, IMedicalRecordService medicalRecordService, IOperationService operationService)
         {
             InitializeComponent();
-            DataContext = new EditOperationDialogViewModel(operation);
+            _patientService = patientService;
+            _medicalRecordService = medicalRecordService;
+            _operationService = operationService;
+            
+        }
+
+        public void SetOperation(Operation operation)
+        {
+            _operation = operation;
+            DataContext = new EditOperationDialogViewModel(operation, _medicalRecordService,_operationService,_patientService);
         }
     }
 }

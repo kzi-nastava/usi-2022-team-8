@@ -18,10 +18,13 @@ namespace HealthInstitution.Commands.DoctorCommands.SchedulingDialogs
     internal class AddExaminationDialogCommand : CommandBase
     {
         private AddExaminationDialogViewModel _addDoctorExaminationDialogViewModel;
-
-        public AddExaminationDialogCommand(AddExaminationDialogViewModel addDoctorExaminationDialogViewModel)
+        IMedicalRecordService _medicalRecordService;
+        ISchedulingService _schedulingService;
+        public AddExaminationDialogCommand(AddExaminationDialogViewModel addDoctorExaminationDialogViewModel, IMedicalRecordService medicalRecordService, ISchedulingService schedulingService)
         {
             _addDoctorExaminationDialogViewModel = addDoctorExaminationDialogViewModel;
+            _medicalRecordService = medicalRecordService;
+            _schedulingService = schedulingService;
         }
 
         public override void Execute(object? parameter)
@@ -29,10 +32,10 @@ namespace HealthInstitution.Commands.DoctorCommands.SchedulingDialogs
             try {
                 Doctor doctor = _addDoctorExaminationDialogViewModel.LoggedDoctor;
                 Patient patient = _addDoctorExaminationDialogViewModel.GetPatient();
-                MedicalRecord medicalRecord = MedicalRecordService.GetByPatientUsername(patient);
+                MedicalRecord medicalRecord = _medicalRecordService.GetByPatientUsername(patient);
                 DateTime dateTime = _addDoctorExaminationDialogViewModel.GetExaminationDateTime();
                 ExaminationDTO examination = new ExaminationDTO(dateTime, null, doctor, medicalRecord);
-                SchedulingService.ReserveExamination(examination);
+                _schedulingService.ReserveExamination(examination);
                 System.Windows.MessageBox.Show("You have succesfully added new examination!", "Info", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
             catch (Exception ex)

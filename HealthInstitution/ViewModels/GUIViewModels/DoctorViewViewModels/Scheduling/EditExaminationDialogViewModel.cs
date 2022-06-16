@@ -1,6 +1,8 @@
 ﻿using HealthInstitution.Commands.DoctorCommands.SchedulingDialogs;
 using HealthInstitution.Core;
+using HealthInstitution.Core.Examinations;
 using HealthInstitution.Core.Examinations.Model;
+using HealthInstitution.Core.MedicalRecords;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using HealthInstitution.Core.SystemUsers.Patients;
 using HealthInstitution.Core.SystemUsers.Patients.Model;
@@ -163,7 +165,7 @@ namespace HealthInstitution.ViewModels.GUIViewModels.DoctorViewViewModels.Schedu
             PatientComboBoxItems = new();
             int i = 0;
             int idx = 0;
-            foreach (Patient patient in PatientService.GetAll())
+            foreach (Patient patient in _patientService.GetAll())
             {
                 PatientComboBoxItems.Add(patient);
                 if (patient.Username == SelectedExamination.MedicalRecord.Patient.Username)
@@ -180,13 +182,17 @@ namespace HealthInstitution.ViewModels.GUIViewModels.DoctorViewViewModels.Schedu
         }
 
         public ICommand EditExaminationCommand { get; }
-
-        public EditExaminationDialogViewModel(Examination selectedExamination)
+        IMedicalRecordService _medicalRecordService;
+        IPatientService _patientService;
+        IExaminationService examinationService;
+        public EditExaminationDialogViewModel(Examination selectedExamination, IMedicalRecordService medicalRecordService, IPatientService patientService, IExaminationService examinationService)
         {
             SelectedExamination = selectedExamination;
             LoadComboBoxes();
             _selectedDateTime = selectedExamination.Appointment;
-            EditExaminationCommand = new EditExaminationDialogCommand(this);
+            _medicalRecordService = medicalRecordService;
+            _patientService = patientService;
+            EditExaminationCommand = new EditExaminationDialogCommand(this, medicalRecordService, examinationService);
         }
     }
 }

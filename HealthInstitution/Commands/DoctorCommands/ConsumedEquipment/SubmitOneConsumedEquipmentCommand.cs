@@ -13,9 +13,11 @@ namespace HealthInstitution.Commands.DoctorCommands.ConsumedEquipment
     internal class SubmitOneConsumedEquipmentCommand : CommandBase
     {
         private ConsumedEquipmentDialogViewModel _consumedEquipmentDialogViewModel;
-        public SubmitOneConsumedEquipmentCommand(ConsumedEquipmentDialogViewModel consumedEquipmentDialogViewModel)
+        IEquipmentService _equipmentService;
+        public SubmitOneConsumedEquipmentCommand(ConsumedEquipmentDialogViewModel consumedEquipmentDialogViewModel, IEquipmentService equipmentService)
         {
             _consumedEquipmentDialogViewModel = consumedEquipmentDialogViewModel;
+            _equipmentService = equipmentService;
         }
 
         public override void Execute(object? parameter)
@@ -24,7 +26,7 @@ namespace HealthInstitution.Commands.DoctorCommands.ConsumedEquipment
             {
                 var equipment = _consumedEquipmentDialogViewModel.GetEquipment();
                 var consumedQuantity = _consumedEquipmentDialogViewModel.GetConsumedQuantity();
-                EquipmentService.RemoveConsumed(equipment, consumedQuantity);
+                _equipmentService.RemoveConsumed(equipment, consumedQuantity);
                 System.Windows.MessageBox.Show("You have removed " + consumedQuantity + " " + equipment.Name + " from " + _consumedEquipmentDialogViewModel.Room.ToString(), "Info", MessageBoxButton.OK, MessageBoxImage.Information);
                 _consumedEquipmentDialogViewModel.EquipmentComboBoxItems.Remove(equipment);
                 _consumedEquipmentDialogViewModel.ConsumedQuantity = string.Empty;
