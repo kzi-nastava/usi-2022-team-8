@@ -114,11 +114,11 @@
   },
   {
     "id": 18,
-    "status": "Scheduled",
+    "status": "Completed",
     "appointment": "2022-06-04T15:30:00",
     "room": 3,
     "medicalRecord": "marko",
-    "anamnesis": ""
+    "anamnesis": "sssss"
   },
   {
     "id": 19,
@@ -180,6 +180,22 @@
     "id": 27,
     "status": "Scheduled",
     "appointment": "2022-07-08T17:00:00",
+    "room": 3,
+    "medicalRecord": "pera",
+    "anamnesis": ""
+  },
+  {
+    "id": 28,
+    "status": "Scheduled",
+    "appointment": "2022-06-18T09:00:00",
+    "room": 3,
+    "medicalRecord": "pera",
+    "anamnesis": ""
+  },
+  {
+    "id": 29,
+    "status": "Scheduled",
+    "appointment": "2022-06-17T15:45:00",
     "room": 3,
     "medicalRecord": "pera",
     "anamnesis": ""

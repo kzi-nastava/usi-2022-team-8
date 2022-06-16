@@ -18,7 +18,7 @@ namespace HealthInstitution.ViewModels.GUIViewModels.DoctorViewViewModels.Referr
         public Patient Patient { get; set; }
         public Doctor Doctor { get; set; }
 
-        private object _choice;
+        private object _choice = "0";
 
         public object Choice
         {

@@ -68,6 +68,11 @@ namespace HealthInstitution.ViewModels.GUIViewModels.DoctorViewViewModels.Appoin
             }
         }
 
+        public int GetDatesChoice()
+        {
+            return Convert.ToInt32(DatesChoice as string);
+        }
+
         public List<Examination> Examinations;
 
         private int _selectedExaminationIndex;
@@ -106,7 +111,7 @@ namespace HealthInstitution.ViewModels.GUIViewModels.DoctorViewViewModels.Appoin
             Examinations.Clear();
             List<Examination> selectedExaminations;
             List<Examination> scheduledExaminations = TimetableService.GetScheduledExaminations(LoggedDoctor);
-            if (DatesChoice == "0")
+            if (GetDatesChoice() == 0)
             {
                 selectedExaminations = TimetableService.GetExaminationsInThreeDays(scheduledExaminations);
             }
@@ -144,7 +149,6 @@ namespace HealthInstitution.ViewModels.GUIViewModels.DoctorViewViewModels.Appoin
             StartExaminationCommand = new StartExaminationCommand(this);
             Examinations = new();
             _examinationsVM = new();
-            RefreshGrid();
         }
     }
 }

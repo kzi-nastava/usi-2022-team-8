@@ -145,8 +145,8 @@ namespace HealthInstitution.ViewModels.GUIViewModels.DoctorViewViewModels.Schedu
 
         public void LoadData() {
             Patient = MedicalRecord.Patient.Name + " " + MedicalRecord.Patient.Surname;
-            Height = MedicalRecord.Height.ToString() + " cm";
-            Weight = MedicalRecord.Weight.ToString() + " kg";
+            Height = MedicalRecord.Height.ToString();
+            Weight = MedicalRecord.Weight.ToString();
             PreviousIllnesses = MedicalRecord.PreviousIllnesses;
             Allergens = MedicalRecord.Allergens;
         }

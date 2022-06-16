@@ -28,6 +28,6 @@
         <Button Content="Add illness" Command="{Binding AddIllnessCommand}" HorizontalAlignment="Left" Margin="603,268,0,0" VerticalAlignment="Top" FontSize="16"/>
         <Button Content="Submit" Command="{Binding FinishExaminationCommand}" HorizontalAlignment="Center" Margin="0,425,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.327,-0.439" Width="100" FontSize="16"/>
         <Button Content="Create prescription" Command="{Binding ShowCreatePrescriptionDialogCommand}" HorizontalAlignment="Left" Margin="487,425,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.327,-0.439" Width="151" FontSize="16"/>
-        <Button Content="Create referral" Command="{Binding ShowCreateReferralDialogCommand}" Click="CreateReferral_Click" HorizontalAlignment="Left" Margin="157,425,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.327,-0.439" Width="154" FontSize="16"/>
+        <Button Content="Create referral" Command="{Binding ShowCreateReferralDialogCommand}" HorizontalAlignment="Left" Margin="157,425,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.327,-0.439" Width="154" FontSize="16"/>
     </Grid>
 </Window>

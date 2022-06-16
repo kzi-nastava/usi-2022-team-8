@@ -7,6 +7,7 @@ using HealthInstitution.Core.Scheduling;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using HealthInstitution.Core.SystemUsers.Patients.Model;
 using HealthInstitution.ViewModels.GUIViewModels.DoctorViewViewModels.Scheduling;
+using System.Windows;
 
 namespace HealthInstitution.Commands.DoctorCommands.SchedulingDialogs
 {
