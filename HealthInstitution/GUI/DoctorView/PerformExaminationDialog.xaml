@@ -16,18 +16,18 @@
         <Label Content="Allergens" HorizontalAlignment="Left" Margin="70,327,0,0" VerticalAlignment="Top" FontSize="18" RenderTransformOrigin="6.208,-1.409" Height="34" Width="84"/>
         <Label Content="Anamnesis" HorizontalAlignment="Left" Margin="400,97,0,0" VerticalAlignment="Top" FontSize="18"/>
 
-        <ListBox Name="illnessListBox" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="206,206,316,191"/>
-        <ListBox Name="allergenListBox" d:ItemsSource="{d:SampleData ItemCount=5}" Margin="206,307,316,88"/>
-        <TextBox Name="anamnesisTextBox" HorizontalAlignment="Left" Margin="523,42,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="230" Height="138"/>
-        <TextBox Name="patientTextBox" IsReadOnly = "True" HorizontalAlignment="Left" Height="26" Margin="206,46,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="139" FontSize="18"/>
-        <TextBox Name="heightTextBox" HorizontalAlignment="Left" Height="26" Margin="206,101,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="105" FontSize="18"/>
-        <TextBox Name="weightTextBox" HorizontalAlignment="Left" Height="26" Margin="206,150,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="105" FontSize="18"/>
-        <TextBox Name="illnessTextBox" HorizontalAlignment="Left" Height="26" Margin="564,231,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="160"/>
-        <TextBox Name="allergenTextBox" HorizontalAlignment="Left" Height="26" Margin="563,331,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="161"/>
-        <Button Content="Add allergen" Click="AddAllergen_Click" HorizontalAlignment="Left" Margin="597,371,0,0" VerticalAlignment="Top" FontSize="16"/>
-        <Button Content="Add illness" Click="AddIllness_Click" HorizontalAlignment="Left" Margin="603,268,0,0" VerticalAlignment="Top" FontSize="16"/>
-        <Button Content="Submit" Click="Submit_Click" HorizontalAlignment="Center" Margin="0,425,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.327,-0.439" Width="100" FontSize="16"/>
-        <Button Content="Create prescription" Click="CreatePrescription_Click" HorizontalAlignment="Left" Margin="487,425,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.327,-0.439" Width="151" FontSize="16"/>
-        <Button Content="Create referral" Click="CreateReferral_Click" HorizontalAlignment="Left" Margin="157,425,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.327,-0.439" Width="154" FontSize="16"/>
+        <ListBox Name="illnessListBox" ItemsSource="{Binding Path = PreviousIllnesses}"  Margin="206,206,316,191"/>
+        <ListBox Name="allergenListBox" ItemsSource="{Binding Path = Allergens}"  Margin="206,307,316,88"/>
+        <TextBox Name="anamnesisTextBox"  Text="{Binding Anamnesis, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Margin="523,42,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="230" Height="138"/>
+        <TextBox Name="patientTextBox" Text="{Binding Patient, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" IsReadOnly = "True" HorizontalAlignment="Left" Height="26" Margin="206,46,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="139" FontSize="18"/>
+        <TextBox Name="heightTextBox" Text="{Binding Height, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"   HorizontalAlignment="Left" Height="26" Margin="206,101,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="105" FontSize="18"/>
+        <TextBox Name="weightTextBox" Text="{Binding Weight, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  HorizontalAlignment="Left" Height="26" Margin="206,150,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="105" FontSize="18"/>
+        <TextBox Name="illnessTextBox"  Text="{Binding PreviousIllnessesTextBox, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="26" Margin="564,231,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="160"/>
+        <TextBox Name="allergenTextBox"  Text="{Binding AllergensTextBox, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" HorizontalAlignment="Left" Height="26" Margin="563,331,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="161"/>
+        <Button Content="Add allergen" Command="{Binding AddAllergenCommand}" HorizontalAlignment="Left" Margin="597,371,0,0" VerticalAlignment="Top" FontSize="16"/>
+        <Button Content="Add illness" Command="{Binding AddIllnessCommand}" HorizontalAlignment="Left" Margin="603,268,0,0" VerticalAlignment="Top" FontSize="16"/>
+        <Button Content="Submit" Command="{Binding FinishExaminationCommand}" HorizontalAlignment="Center" Margin="0,425,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.327,-0.439" Width="100" FontSize="16"/>
+        <Button Content="Create prescription" Command="{Binding ShowCreatePrescriptionDialogCommand}" HorizontalAlignment="Left" Margin="487,425,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.327,-0.439" Width="151" FontSize="16"/>
+        <Button Content="Create referral" Command="{Binding ShowCreateReferralDialogCommand}" HorizontalAlignment="Left" Margin="157,425,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.327,-0.439" Width="154" FontSize="16"/>
     </Grid>
 </Window>

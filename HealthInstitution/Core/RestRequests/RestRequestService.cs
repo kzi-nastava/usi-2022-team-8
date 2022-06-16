@@ -79,9 +79,8 @@ namespace HealthInstitution.Core.RestRequests
         }
         private void Validate(RestRequestDTO restRequestDTO)
         {
-            if ((restRequestDTO.StartDate - DateTime.Now).Days <= 2)
+            if ((restRequestDTO.StartDate - DateTime.Now).Days < 2)
             {
-                System.Windows.MessageBox.Show((restRequestDTO.StartDate - DateTime.Now).Days.ToString(), "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
                 throw new Exception("You have to request your days off minimum two days before the start of it!");
             }
 

@@ -1,5 +1,6 @@
 using HealthInstitution.Core.MedicalRecords.Model;
 using HealthInstitution.Core.Rooms.Model;
+using HealthInstitution.Core.Scheduling;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
 
 namespace HealthInstitution.Core.Examinations.Model;

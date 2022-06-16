@@ -1,5 +1,7 @@
 ﻿using HealthInstitution.Core.Drugs;
 using HealthInstitution.Core.Drugs.Model;
+using HealthInstitution.Core.Drugs.Repository;
+using HealthInstitution.ViewModels.GUIViewModels.DoctorViewViewModels.DrugVerification;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,31 +23,10 @@ namespace HealthInstitution.GUI.DoctorView
     /// </summary>
     public partial class DrugRejectionReasonDialog : Window
     {
-        private Drug _selectedDrug;
-        IDrugVerificationService _drugVerificationService;
-        public DrugRejectionReasonDialog(IDrugVerificationService drugVerificationService)
+        public DrugRejectionReasonDialog(Drug drug)
         {
-            this._drugVerificationService = drugVerificationService;
             InitializeComponent();
-        }
-        public void SetSelectedDrug(Drug drug)
-        {
-            _selectedDrug = drug;
-        }
-
-        private void Submit_Click(object sender, RoutedEventArgs e)
-        {
-            String rejectionReason = commentTextBox.Text;
-            if (rejectionReason.Trim() == "")
-            {
-                System.Windows.MessageBox.Show("You have to write a reason for rejection!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-            }
-            else
-            {
-                _drugVerificationService.Reject(_selectedDrug, rejectionReason);
-                System.Windows.MessageBox.Show("Successfull rejection!", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                Close();
-            }
+            DataContext = new RejectionReasonDialogViewModel(drug);
         }
     }
 }
