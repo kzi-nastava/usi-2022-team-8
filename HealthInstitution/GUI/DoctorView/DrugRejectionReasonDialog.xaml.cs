@@ -19,9 +19,9 @@ using System.Windows.Shapes;
 namespace HealthInstitution.GUI.DoctorView
 {
     /// <summary>
-    /// Interaction logic for RejectionReasonDialog.xaml
+    /// Interaction logic for DrugRejectionReason.xaml
     /// </summary>
-    public partial class RejectionReasonDialog : Window
+    public partial class DrugRejectionReasonDialog : Window
     {
         public RejectionReasonDialog(Drug drug)
         {

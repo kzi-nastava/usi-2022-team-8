@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HealthInstitution.Core.AppointmentNotifications
+namespace HealthInstitution.Core.Notifications
 {
     public static class AppointmentNotificationService
     {

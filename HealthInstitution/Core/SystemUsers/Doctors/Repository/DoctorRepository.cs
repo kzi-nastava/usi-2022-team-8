@@ -2,6 +2,7 @@
 using HealthInstitution.Core.Examinations.Repository;
 using HealthInstitution.Core.Notifications.Model;
 using HealthInstitution.Core.Operations.Model;
+using HealthInstitution.Core.RestRequests.Model;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using Newtonsoft.Json.Linq;
 using System.IO;
@@ -107,6 +108,12 @@ public class DoctorRepository : IDoctorRepository
     public void DeleteOperation(Operation operation)
     {
         operation.Doctor.Operations.Remove(operation);
+        Save();
+    }
+
+    public void DeleteRestRequest(RestRequest restRequest)
+    {
+        restRequest.Doctor.RestRequests.Remove(restRequest);
         Save();
     }
 
