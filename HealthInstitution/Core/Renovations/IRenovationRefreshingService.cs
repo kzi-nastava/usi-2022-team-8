@@ -1,14 +1,7 @@
-﻿using HealthInstitution.Core.Renovations.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace HealthInstitution.Core.Renovations
+﻿namespace HealthInstitution.Core.Renovations.Functionality
 {
     public interface IRenovationRefreshingService
     {
-        public void UpdateByRenovation();
+        void UpdateByRenovation();
     }
 }

@@ -1,0 +1,21 @@
+﻿<Window x:Class="HealthInstitution.GUI.DoctorView.RestRequestTable"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:HealthInstitution.GUI.DoctorView"
+        mc:Ignorable="d"
+        WindowStartupLocation="CenterScreen"
+        Title="Rest requests" Height="450" Width="750">
+    <Grid>
+        <DataGrid  ItemsSource="{Binding RestRequest}" AutoGenerateColumns="False" Name="dataGrid"  Height="328" VerticalAlignment="Top">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="Start date" FontSize="18" Binding="{Binding StartDate, StringFormat='dd.MM.yyyy.'}" Width ="*"/>
+                <DataGridTextColumn Header="Days duration" FontSize="18" Binding="{Binding DaysDuration}" Width ="*"/>
+                <DataGridTextColumn Header="Reason" FontSize="18" Binding="{Binding Reason}" Width ="*"/>
+                <DataGridTextColumn Header="Request state" FontSize="18" Binding="{Binding State}" Width ="*"/>
+            </DataGrid.Columns>
+        </DataGrid>
+        <Button Name="createRequestButton" Content="Create request" Click="CreateRequestButton_Click" HorizontalAlignment="Center" Height="30" Margin="0,359,0,0" VerticalAlignment="Top" Width="158" RenderTransformOrigin="0.243,0.514" Cursor="Arrow" FontSize="18" Visibility="Visible"/>
+    </Grid>
+</Window>

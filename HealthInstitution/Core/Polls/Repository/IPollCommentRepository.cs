@@ -1,21 +1,19 @@
 ﻿using HealthInstitution.Core.Polls.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using HealthInstitution.Core.SystemUsers.Doctors.Model;
 
 namespace HealthInstitution.Core.Polls.Repository
 {
-    public interface IPollCommentRepository : IRepository<PollComment>
+    public interface IPollCommentRepository
     {
-        public void LoadFromFile();
-        public void Save();
-        public List<PollComment> GetAll();
-        public PollComment GetById(int id);
-        public void Add(PollComment pollComment);
-        public void Update(int id, PollComment byPollComment);
-        public void Delete(int id);
-
+        void Add(PollComment pollComment);
+        void Delete(int id);
+        List<PollComment> GetAll();
+        Dictionary<int, PollComment> GetAllById();
+        PollComment GetById(int id);
+        List<PollComment> GetCommentsByDoctor(Doctor doctor);
+        List<PollComment> GetHospitalComments();
+        void LoadFromFile();
+        void Save();
+        void Update(int id, PollComment byPollComment);
     }
 }

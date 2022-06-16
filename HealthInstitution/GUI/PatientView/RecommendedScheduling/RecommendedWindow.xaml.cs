@@ -17,6 +17,7 @@ using HealthInstitution.Core.SystemUsers.Doctors;
 using HealthInstitution.Core.Examinations.Model;
 using HealthInstitution.Core.Examinations;
 using HealthInstitution.Core.Scheduling;
+using HealthInstitution.Core.DIContainer;
 
 namespace HealthInstitution.GUI.PatientView;
 

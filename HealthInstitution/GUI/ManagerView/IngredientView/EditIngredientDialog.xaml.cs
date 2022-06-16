@@ -23,13 +23,17 @@ namespace HealthInstitution.GUI.ManagerView.IngredientView
     public partial class EditIngredientDialog : Window
     {
         private Ingredient _ingredient;
-        public EditIngredientDialog(Ingredient ingredient)
+        IIngredientService _ingredientService;
+        public EditIngredientDialog(IIngredientService ingredientService)
         {
             InitializeComponent();
-            this._ingredient = ingredient;
+            _ingredientService = ingredientService;
             SetRoomData();
         }
-
+        public void SetSelectedIngredient(Ingredient ingredient)
+        {
+            _ingredient = ingredient;
+        }
         private void SetRoomData()
         {
             nameBox.Text = _ingredient.Name;
@@ -43,7 +47,7 @@ namespace HealthInstitution.GUI.ManagerView.IngredientView
                 return;
             }
 
-            IngredientService.Update(_ingredient.Id, name);
+            _ingredientService.Update(_ingredient.Id, name);
             System.Windows.MessageBox.Show("Ingredient edited!", "Ingredient edit", MessageBoxButton.OK, MessageBoxImage.Information);
 
             this.Close();
@@ -57,7 +61,7 @@ namespace HealthInstitution.GUI.ManagerView.IngredientView
                 return false;
             }
 
-            if (IngredientService.Contains(name))
+            if (_ingredientService.Contains(name))
             {
                 System.Windows.MessageBox.Show("This ingredient name already exist!", "Create error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;

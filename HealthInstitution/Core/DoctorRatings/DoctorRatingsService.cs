@@ -11,32 +11,39 @@ using HealthInstitution.Core.SystemUsers.Doctors.Repository;
 
 namespace HealthInstitution.Core.DoctorRatings;
 
-public class DoctorRatingsService
+public class DoctorRatingsService : IDoctorRatingsService
 {
-    private static DoctorRatingRepository s_doctorRatingRepository = DoctorRatingRepository.GetInstance();
-    public static void Add(string username)
+    IDoctorRatingRepository _doctorRatingRepository;
+    IDoctorService _doctorService;
+
+    public DoctorRatingsService(IDoctorRatingRepository doctorRatingRepository, IDoctorService doctorService)
     {
-        s_doctorRatingRepository.Add(username);
+        _doctorRatingRepository = doctorRatingRepository;
+        _doctorService = doctorService;
+    }
+    public void Add(string username)
+    {
+        _doctorRatingRepository.Add(username);
     }
 
-    public static double GetAverageById(string id)
+    public double GetAverageById(string id)
     {
-        return s_doctorRatingRepository.RatingsById[id].GetAverage();
+        return _doctorRatingRepository.GetById(id).GetAverage();
     }
 
-    public static void AssignScores()
+    public void AssignScores()
     {
-        foreach (var rating in s_doctorRatingRepository.GetAll())
+        foreach (var rating in _doctorRatingRepository.GetAll())
         {
-            DoctorService.AssignScorebyId(rating.Username, rating.GetAverage());
+            _doctorService.AssignScorebyId(rating.Username, rating.GetAverage());
         }
     }
-    public static List<Doctor> LoadSortedDoctors()
+    public List<Doctor> LoadSortedDoctors()
     {
         AssignScores();
-        return DoctorService.GetDoctorsOrderByRating();
+        return _doctorService.GetDoctorsOrderByRating();
     }
-    public static List<Doctor> GetTopRated(int num)
+    public List<Doctor> GetTopRated(int num)
     {
         var sortedDoctors = LoadSortedDoctors();
         var topRatedDoctors = sortedDoctors.Skip(Math.Max(0, sortedDoctors.Count() - num)).ToList();
@@ -44,19 +51,19 @@ public class DoctorRatingsService
         return topRatedDoctors;
     }
 
-    public static List<Doctor> GetWorstRated(int num)
+    public List<Doctor> GetWorstRated(int num)
     {
         var sortedDoctors = LoadSortedDoctors();
         var topRatedDoctors = sortedDoctors.Take(num).ToList();
         return topRatedDoctors;
     }
 
-    public static void UpdateScore(string DoctorUsername, int score)
+    public void UpdateScore(string DoctorUsername, int score)
     {
-        var doctor = DoctorService.GetById(DoctorUsername);
-        var ratings = s_doctorRatingRepository.GetById(DoctorUsername);
+        var doctor = _doctorService.GetById(DoctorUsername);
+        var ratings = _doctorRatingRepository.GetById(DoctorUsername);
         ratings.Scores.Add(score);
         doctor.AvgRating = GetAverageById(DoctorUsername);
-        s_doctorRatingRepository.Save();
+        _doctorRatingRepository.Save();
     }
 }

@@ -8,23 +8,32 @@ using HealthInstitution.Core.Examinations;
 
 namespace HealthInstitution.Core.Scheduling;
 
-public class EditSchedulingService
+public class EditSchedulingService : IEditSchedulingService
 {
-    public static Examination GenerateRequestExamination(int id, ExaminationDTO examinationDTO)
+    ISchedulingService _schedulingService;
+    IExaminationService _examinationService;
+
+    public EditSchedulingService(ISchedulingService schedulingService, IExaminationService examinationService)
     {
-        examinationDTO.Validate();
-        examinationDTO = SchedulingService.CheckExaminationAvailable(examinationDTO);
+        _schedulingService = schedulingService;
+        _examinationService = examinationService;
+    }
+
+    public Examination GenerateRequestExamination(int id, ExaminationDTO examinationDTO)
+    {
+        _examinationService.Validate(examinationDTO);
+        examinationDTO = _schedulingService.CheckExaminationAvailable(examinationDTO);
         Examination e = new Examination(examinationDTO);
         e.Id = id;
         return e;
     }
 
-    public static void EditExamination(int id, ExaminationDTO examinationDTO)
+    public void EditExamination(int id, ExaminationDTO examinationDTO)
     {
-        examinationDTO.Validate();
-        examinationDTO = SchedulingService.CheckExaminationAvailable(examinationDTO);
+        _examinationService.Validate(examinationDTO);
+        examinationDTO = _schedulingService.CheckExaminationAvailable(examinationDTO);
         Examination e = new Examination(examinationDTO);
         e.Id = id;
-        ExaminationService.Update(id, examinationDTO);
+        _examinationService.Update(id, examinationDTO);
     }
 }

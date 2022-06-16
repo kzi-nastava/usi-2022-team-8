@@ -11,11 +11,12 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.MedicalRecords.Repository
 {
-    public interface IMedicalRecordRepository : IRepository<MedicalRecord>
+    public interface IMedicalRecordRepository
     {
         public void LoadFromFile();
         public void Save();
         public List<MedicalRecord> GetAll();
+        public Dictionary<string, MedicalRecord> GetAllByUsername();
         public MedicalRecord GetByPatientUsername(Patient patient);
         public void Add(MedicalRecord medicalRecord);
         public void Update(MedicalRecord byMedicalRecord);

@@ -8,11 +8,13 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.Operations.Repository
 {
-    public interface IOperationRepository : IRepository<Operation>
+    public interface IOperationRepository
     {
+        public int GetMaxId();
         public void LoadFromFile();
         public void Save();
         public List<Operation> GetAll();
+        public Dictionary<int, Operation> GetAllById();
         public Operation GetById(int id);
         public void Add(Operation operation);
         public void Update(int id, Operation byOperation);

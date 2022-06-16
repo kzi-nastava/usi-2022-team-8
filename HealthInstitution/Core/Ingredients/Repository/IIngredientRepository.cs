@@ -8,11 +8,13 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.Ingredients.Repository
 {
-    public interface IIngredientRepository : IRepository<Ingredient>
+    public interface IIngredientRepository
     {
         public void LoadFromFile();
         public void Save();
         public List<Ingredient> GetAll();
+
+        public Dictionary<int, Ingredient> GetAllById();
         public Ingredient GetById(int id);
         public void Add(string name);
         public void Update(int id, string name);

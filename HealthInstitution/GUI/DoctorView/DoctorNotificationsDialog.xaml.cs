@@ -1,6 +1,8 @@
 ﻿using HealthInstitution.Core.Notifications;
 using HealthInstitution.Core.Notifications.Model;
 using HealthInstitution.Core.Notifications.Repository;
+using HealthInstitution.Core.RestRequestNotifications;
+using HealthInstitution.Core.RestRequestNotifications.Model;
 using HealthInstitution.Core.SystemUsers.Doctors;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using HealthInstitution.Core.SystemUsers.Doctors.Repository;
@@ -26,23 +28,39 @@ namespace HealthInstitution.GUI.DoctorView
     public partial class DoctorNotificationsDialog : Window
     {
         private Doctor _loggedDoctor;
-        public DoctorNotificationsDialog(Doctor doctor)
+        IDoctorService _doctorService;
+        IAppointmentNotificationService _appointmentNotificationService;
+        IRestRequestNotificationService _restRequestNotificationService;
+        public DoctorNotificationsDialog(IDoctorService doctorService, IAppointmentNotificationService appointmentNotificationService,IRestRequestNotificationService restRequestNotificationService)
+        {
+            _doctorService = doctorService;
+            _appointmentNotificationService = appointmentNotificationService;
+            _restRequestNotificationService = restRequestNotificationService;
+            InitializeComponent();
+            
+        }
+        public void SetLoggedDoctor(Doctor doctor)
         {
             _loggedDoctor = doctor;
-            InitializeComponent();
             LoadRows();
         }
         private void LoadRows()
         {
-            dataGrid.Items.Clear();
-            List<AppointmentNotification> doctorsNotifications = _loggedDoctor.Notifications;
-            foreach (AppointmentNotification notification in doctorsNotifications)
+            appointmentGrid.Items.Clear();
+            restRequestGrid.Items.Clear();
+            foreach (AppointmentNotification notification in _doctorService.GetActiveAppointmentNotification(_loggedDoctor))
             {
-                dataGrid.Items.Add(notification);
-                AppointmentNotificationService.ChangeActiveStatus(notification,true);
+                appointmentGrid.Items.Add(notification);
+                _appointmentNotificationService.ChangeActiveStatus(notification,true);
             }
-            dataGrid.Items.Refresh();
-            DoctorService.DeleteNotifications(_loggedDoctor);
+            foreach (RestRequestNotification notification in _doctorService.GetActiveRestRequestNotification(_loggedDoctor))
+            {
+                restRequestGrid.Items.Add(notification.RestRequest);
+                _restRequestNotificationService.ChangeActiveStatus(notification);
+            }
+            appointmentGrid.Items.Refresh();
+            restRequestGrid.Items.Refresh();
+            _doctorService.DeleteNotifications(_loggedDoctor);
         }
     }
 }

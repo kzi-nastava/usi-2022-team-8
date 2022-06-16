@@ -21,11 +21,12 @@ namespace HealthInstitution.GUI.PatientView;
 /// </summary>
 public partial class PatientHospitalPollDialog : Window
 {
-    public PatientHospitalPollDialog()
+    IPollService _pollService;
+    public PatientHospitalPollDialog(IPollService pollService)
     {
         InitializeComponent();
-
-        //LoadQuestionLabels();
+        _pollService = pollService;
+        LoadQuestionLabels();
     }
 
     private void Button_Click(object sender, RoutedEventArgs e)
@@ -41,7 +42,7 @@ public partial class PatientHospitalPollDialog : Window
         if (comment.Length > 0)
         {
             PollCommentDTO pollCommentDTO = new PollCommentDTO(comment, null);
-            PollService.AddComment(pollCommentDTO);
+            _pollService.AddComment(pollCommentDTO);
         }
     }
 
@@ -60,7 +61,7 @@ public partial class PatientHospitalPollDialog : Window
     private void AddQuetionResaults()
     {
         var grids = GetGridsList();
-        var hospitalQuestion = PollService.GetHospitalQuestions();
+        var hospitalQuestion = _pollService.GetHospitalQuestions();
         for (int i = 0; i < grids.Count; i++)
         {
             AddForOneQuestion(grids[i], hospitalQuestion[i]);
@@ -76,12 +77,12 @@ public partial class PatientHospitalPollDialog : Window
         ints.Add(Convert.ToInt32(checkedButton.Content));
 
         PollQuestionDTO pollQuestionDTO = new PollQuestionDTO(question, null, ints);
-        PollService.UpdateQuestionGrades(pollQuestionDTO);
+        _pollService.UpdateQuestionGrades(pollQuestionDTO);
     }
 
     private void LoadQuestionLabels()
     {
-        var questions = PollService.GetHospitalQuestions();
+        var questions = _pollService.GetHospitalQuestions();
         LabelQ1.Content = questions[0];
         LabelQ2.Content = questions[1];
         LabelQ3.Content = questions[2];

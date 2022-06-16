@@ -21,19 +21,21 @@ namespace HealthInstitution.GUI.ManagerView.PollView
     /// </summary>
     public partial class HospitalPollWindow : Window
     {
-        public HospitalPollWindow()
+        IPollService _pollService;
+        public HospitalPollWindow(IPollService pollService)
         {
+            _pollService = pollService;
             InitializeComponent();
             Load();
         }
 
         private void Load()
         {
-            List<TableItemPoll> questions = PollService.GetHospitalPollByQuestions();
+            List<TableItemPoll> questions = _pollService.GetHospitalPollByQuestions();
             pollDataGrid.Items.Clear();
             pollDataGrid.ItemsSource = questions;
 
-            List<PollComment> comments = PollService.GetHospitalComments();
+            List<PollComment> comments = _pollService.GetHospitalComments();
             commentDataGrid.Items.Clear();
             commentDataGrid.ItemsSource = comments;
         }

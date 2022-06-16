@@ -14,46 +14,51 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.EquipmentTransfers.Functionality
 {
-    public static class EquipmentTransferRefreshingService
+    public class EquipmentTransferRefreshingService : IEquipmentTransferRefreshingService
     {
-        private static EquipmentRepository s_equipmentRepository = EquipmentRepository.GetInstance();
-        private static RoomRepository s_roomRepository = RoomRepository.GetInstance();
-        private static EquipmentTransferRepository s_equipmentTransferRepository = EquipmentTransferRepository.GetInstance();
-        public static void UpdateByTransfer()
+        IEquipmentRepository _equipmentRepository;
+        IEquipmentTransferRepository _equipmentTransferRepository;
+        IEquipmentTransferService _equipmentTransferService;
+        public EquipmentTransferRefreshingService(IEquipmentRepository equipmentRepository, IEquipmentTransferRepository equipmentTransferRepository, IEquipmentTransferService equipmentTransferService)
+        {
+            _equipmentRepository = equipmentRepository;
+            _equipmentTransferRepository = equipmentTransferRepository;
+            _equipmentTransferService = equipmentTransferService;
+            UpdateByTransfer();
+        }
+        public  void UpdateByTransfer()
         {
             List<int> equipmentTransfersToRemove = new List<int>();
             
-            foreach (EquipmentTransfer equipmentTransfer in EquipmentTransferRepository.GetInstance().GetAll())
+            foreach (EquipmentTransfer equipmentTransfer in _equipmentTransferRepository.GetAll())
             {
                 if(equipmentTransfer.ToRoom.IsWarehouse() && equipmentTransfer.TransferTime<=DateTime.Now)
                 {
                     FillWarehouse(equipmentTransfer, equipmentTransfersToRemove);
                 }
-                if (equipmentTransfer.TransferTime <= DateTime.Today)
+                else if (equipmentTransfer.TransferTime <= DateTime.Today)
                 {
                     Equipment equipmentFromRoom = equipmentTransfer.FromRoom.AvailableEquipment.Find(eq => (eq.Type == equipmentTransfer.Equipment.Type && eq.Name == equipmentTransfer.Equipment.Name));
-                    EquipmentTransferService.Transfer(equipmentTransfer.ToRoom, equipmentFromRoom, equipmentTransfer.Equipment.Quantity);
+                    _equipmentTransferService.Transfer(equipmentTransfer.ToRoom, equipmentFromRoom, equipmentTransfer.Equipment.Quantity);
                     equipmentTransfersToRemove.Add(equipmentTransfer.Id);
                 }
             }
             RemoveOldTransfers(equipmentTransfersToRemove);
             
         }
-        private static void FillWarehouse(EquipmentTransfer equipmentTransfer, List<int> equipmentTransfersToRemove)
+        private void FillWarehouse(EquipmentTransfer equipmentTransfer, List<int> equipmentTransfersToRemove)
         {
-            Equipment purchasedEquipment = s_equipmentRepository.EquipmentById[equipmentTransfer.Equipment.Id];
-            EquipmentTransferService.Transfer(equipmentTransfer.ToRoom, purchasedEquipment, purchasedEquipment.Quantity);
+            Equipment purchasedEquipment = _equipmentRepository.GetById(equipmentTransfer.Equipment.Id);
+            _equipmentTransferService.Transfer(equipmentTransfer.ToRoom, purchasedEquipment, purchasedEquipment.Quantity);
             equipmentTransfersToRemove.Add(equipmentTransfer.Id);
         }
 
-        private static void RemoveOldTransfers(List<int> equipmentTransfersToRemove)
+        private void RemoveOldTransfers(List<int> equipmentTransfersToRemove)
         {
             foreach (int id in equipmentTransfersToRemove)
             {
-                EquipmentTransferService.Delete(id);
+                _equipmentTransferService.Delete(id);
             }
         }
-
-        
     }
 }

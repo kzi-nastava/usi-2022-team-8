@@ -20,9 +20,12 @@ namespace HealthInstitution.GUI.ManagerView.PollView
     /// </summary>
     public partial class RatedDoctorsWindow : Window
     {
-        public RatedDoctorsWindow(List<Doctor> doctors)
+        public RatedDoctorsWindow()
         {
             InitializeComponent();
+        }
+        public void SetDoctors(List<Doctor> doctors)
+        {
             List<Doctor> doctorsToShow = doctors.Select(d => { d.AvgRating = Math.Round(d.AvgRating, 2); return d; }).ToList();
             dataGrid.ItemsSource = doctorsToShow;
         }

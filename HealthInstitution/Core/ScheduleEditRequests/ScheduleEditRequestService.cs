@@ -11,58 +11,63 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.ScheduleEditRequests
 {
-    public static class ScheduleEditRequestService
+    public class ScheduleEditRequestService : IScheduleEditRequestsService
     {
-        static ScheduleEditRequestFileRepository s_scheduleEditRequestRepository = ScheduleEditRequestFileRepository.GetInstance();
-
-        public static List<ScheduleEditRequest> GetAll()
+        IScheduleEditRequestFileRepository _scheduleEditRequestRepository;
+        IExaminationRepository _examinationRepository;
+        public ScheduleEditRequestService(IScheduleEditRequestFileRepository scheduleEditRequestRepository, IExaminationRepository examinationRepository)
         {
-            return s_scheduleEditRequestRepository.GetAll();
+            _scheduleEditRequestRepository = scheduleEditRequestRepository;
+            _examinationRepository = examinationRepository;
+        }
+        public List<ScheduleEditRequest> GetAll()
+        {
+            return _scheduleEditRequestRepository.GetAll();
         }
 
-        public static ScheduleEditRequest GetById(int id)
+        public ScheduleEditRequest GetById(int id)
         {
-            return s_scheduleEditRequestRepository.GetById(id);  
+            return _scheduleEditRequestRepository.GetById(id);  
         }
 
-        public static void AddEditRequest(Examination examination)
+        public void AddEditRequest(Examination examination)
         {
             int unixTimestamp = (int)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
-            ScheduleEditRequest scheduleEditRequest = new ScheduleEditRequest(unixTimestamp, examination, examination.Id, RestRequestState.OnHold);
-            s_scheduleEditRequestRepository.AddEditRequest(scheduleEditRequest, unixTimestamp);
+            ScheduleEditRequest scheduleEditRequest = new ScheduleEditRequest(unixTimestamp, examination, examination.Id, _examinationRepository.GetById(examination.Id), RestRequestState.OnHold);
+            _scheduleEditRequestRepository.AddEditRequest(scheduleEditRequest, unixTimestamp);
         }
 
-        public static void AddDeleteRequest(Examination examination)
+        public void AddDeleteRequest(Examination examination)
         {
             Int32 unixTimestamp = (int)DateTime.UtcNow.Subtract(new DateTime(1970, 1, 1)).TotalSeconds;
-            ScheduleEditRequest scheduleEditRequest = new ScheduleEditRequest(unixTimestamp, null, examination.Id, RestRequestState.OnHold);
-            s_scheduleEditRequestRepository.AddDeleteRequest(scheduleEditRequest, unixTimestamp);
+            ScheduleEditRequest scheduleEditRequest = new ScheduleEditRequest(unixTimestamp, null, examination.Id, _examinationRepository.GetById(examination.Id), RestRequestState.OnHold);
+            _scheduleEditRequestRepository.AddDeleteRequest(scheduleEditRequest, unixTimestamp);
         }
 
-        public static void DeleteRequest(int id)
+        public void DeleteRequest(int id)
         {
             ScheduleEditRequest scheduleEditRequest = GetById(id);
             if (scheduleEditRequest != null)
             {
-                s_scheduleEditRequestRepository.DeleteRequest(scheduleEditRequest);
+                _scheduleEditRequestRepository.DeleteRequest(scheduleEditRequest);
             }
         }
 
-        public static void AcceptScheduleEditRequests(int id)
+        public void AcceptScheduleEditRequests(int id)
         {
             ScheduleEditRequest scheduleEditRequest = GetById(id);
             if (scheduleEditRequest != null)
             {
-                ExaminationRepository.GetInstance().SwapExaminationValue(scheduleEditRequest.NewExamination);
-                s_scheduleEditRequestRepository.AcceptScheduleEditRequests(scheduleEditRequest);
+                _examinationRepository.SwapExaminationValue(scheduleEditRequest.NewExamination);
+                _scheduleEditRequestRepository.AcceptScheduleEditRequests(scheduleEditRequest);
             }
         }
 
-        public static void RejectScheduleEditRequests(int id)
+        public void RejectScheduleEditRequests(int id)
         {
             ScheduleEditRequest scheduleEditRequest = GetById(id);
             if (scheduleEditRequest != null)
-                s_scheduleEditRequestRepository.RejectScheduleEditRequests(scheduleEditRequest);
+                _scheduleEditRequestRepository.RejectScheduleEditRequests(scheduleEditRequest);
         }
     }
 }

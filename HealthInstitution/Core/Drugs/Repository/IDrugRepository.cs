@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.Drugs.Repository
 {
-    public interface IDrugRepository : IRepository<Drug>
+    public interface IDrugRepository
     {
         public void LoadFromFile();
         public void Save();
@@ -26,5 +26,6 @@ namespace HealthInstitution.Core.Drugs.Repository
         public void Delete(int id);
         public bool ContainsIngredient(Ingredient ingredient);
         public bool Contains(string name);
+        public Dictionary<int, Drug> GetAllById();
     }
 }

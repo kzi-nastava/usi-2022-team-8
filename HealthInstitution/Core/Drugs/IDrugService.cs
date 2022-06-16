@@ -8,20 +8,18 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.Drugs
 {
-    public interface IDrugService : IService<Drug> 
+    public interface IDrugService
     {
-        public Task<IEnumerable<Drug>> GetAll();
-        public Task<Drug> GetById(int id);
-        public Task<IEnumerable<Drug>> GetAllAccepted();
-        public Task<IEnumerable<Drug>> GetAllRejected();
-        public Task<IEnumerable<Drug>> GetAllCreated();
+        public List<Drug> GetAll();
+        public Drug GetById(int id);
+        public List<Drug> GetAllAccepted();
+        public List<Drug> GetAllRejected();
+        public List<Drug> GetAllCreated();
         public void Add(DrugDTO drugDTO);
         public void Update(int id, DrugDTO drugDTO);
         public void Delete(int id);
-        public void Accept(Drug drug);
-        public void Reject(Drug drug, string rejectionReason);
         public bool ContainsIngredient(Ingredient ingredient);
-
-
+        public List<Ingredient> GetIngredients(Drug drug);
+        public bool Contains(string name);
     }
 }

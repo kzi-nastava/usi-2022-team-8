@@ -21,8 +21,22 @@ namespace HealthInstitution.GUI.PatientView;
 /// </summary>
 public partial class RecepieNotificationDialog : Window
 {
-    public RecepieNotificationDialog(string _loggedPatient)
+    IPrescriptionNotificationService _prescriptionNotificationService;
+    public RecepieNotificationDialog(IPrescriptionNotificationService prescriptionNotificationService)
     {
         InitializeComponent();
+
+        LoadRows(PrescriptionNotificationService.GetPatientActiveNotification(_loggedPatient));
+    }
+
+    private void LoadRows(List<PrescriptionNotification> recepieNotifications)
+    {
+        dataGrid.Items.Clear();
+        //List<Notification> doctorsNotificationsCopy = doctorsNotifications.ConvertAll(notification => new Notification(notification.Id,notification.OldAppointment,notification.NewAppointment,notification.Doctor,notification.Patient,notification.ActiveForDoctor,notification.ActiveForPatient));
+        foreach (PrescriptionNotification notification in recepieNotifications)
+        {
+            dataGrid.Items.Add(notification);
+        }
+        dataGrid.Items.Refresh();
     }
 }

@@ -8,11 +8,13 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.Examinations.Repository
 {
-    public interface IExaminationRepository : IRepository<Examination>
+    public interface IExaminationRepository
     {
+        public int GetMaxId();
         public void LoadFromFile();
         public void Save();
         public List<Examination> GetAll();
+        public Dictionary<int, Examination> GetAllById();
         public Examination GetById(int id);
         public void Add(Examination examination);
         public void Update(int id, Examination byExamination);

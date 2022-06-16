@@ -15,7 +15,9 @@ namespace HealthInstitution.Core.Renovations.Repository
 {
     public class RenovationRepository : IRenovationRepository
     {
-        private String _fileName;
+        private String _fileName = @"..\..\..\Data\JSON\renovations.json";
+
+        private IRoomRepository _roomRepository;
 
         private int _maxId;
         public List<Renovation> Renovations { get; set; }
@@ -26,29 +28,18 @@ namespace HealthInstitution.Core.Renovations.Repository
             Converters = { new JsonStringEnumConverter() },
             PropertyNameCaseInsensitive = true
         };
-        private RenovationRepository(String fileName)
+
+        public RenovationRepository(IRoomRepository roomRepository)
         {
-            this._fileName = fileName;
+            _roomRepository = roomRepository;
             this.Renovations = new List<Renovation>();
             this.RenovationById = new Dictionary<int, Renovation>();
             this._maxId = 0;
             this.LoadFromFile();
         }
-        private static RenovationRepository s_instance = null;
-        public static RenovationRepository GetInstance()
-        {
-            {
-                if (s_instance == null)
-                {
-                    s_instance = new RenovationRepository(@"..\..\..\Data\JSON\renovations.json");
-                }
-                return s_instance;
-            }
-        }
-
         private Renovation Parse(JToken? renovation)
         {
-            Dictionary<int, Room> roomById = RoomRepository.GetInstance().RoomById;
+            Dictionary<int, Room> roomById = _roomRepository.GetAllById();
 
             int id = (int)renovation["id"];
             int roomId = (int)renovation["room"];
@@ -159,6 +150,11 @@ namespace HealthInstitution.Core.Renovations.Repository
         public List<Renovation> GetAll()
         {
             return this.Renovations;
+        }
+
+        public Dictionary<int, Renovation> GetAllById()
+        {
+            return this.RenovationById;
         }
 
         public Renovation GetById(int id)

@@ -1,10 +1,1 @@
-{
-  "exclude": [
-    "**/bin",
-    "**/bower_components",
-    "**/jspm_packages",
-    "**/node_modules",
-    "**/obj",
-    "**/platforms"
-  ]
-}
+[{"id":1,"reason":"Sahranjuje psa","startDate":"2022-06-19T00:00:00","daysDuration":10,"state":"OnHold","urgent":false,"rejectionReason":""},{"id":2,"reason":"radi di","startDate":"2022-07-02T00:00:00","daysDuration":5,"state":"Rejected","urgent":false,"rejectionReason":"to smo vec uradili"}]

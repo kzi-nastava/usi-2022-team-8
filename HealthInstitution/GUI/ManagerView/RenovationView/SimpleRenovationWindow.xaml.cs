@@ -1,4 +1,6 @@
-﻿using HealthInstitution.Core.EquipmentTransfers;
+﻿using HealthInstitution.Core.DIContainer;
+using HealthInstitution.Core.Equipments;
+using HealthInstitution.Core.EquipmentTransfers;
 using HealthInstitution.Core.EquipmentTransfers.Model;
 using HealthInstitution.Core.EquipmentTransfers.Repository;
 using HealthInstitution.Core.Examinations.Model;
@@ -32,29 +34,35 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
     /// Interaction logic for SimpleRenovationWindow.xaml
     /// </summary>
     public partial class SimpleRenovationWindow : Window
-    {       
-        public SimpleRenovationWindow()
+    {     
+        IRoomService _roomService;
+        IRoomTimetableService _roomTimetableService;
+        IRenovationService _renovationService;
+        public SimpleRenovationWindow(IRoomService roomService, IRoomTimetableService roomTimetableService, IRenovationService renovationService)
         {
+            _roomService = roomService;
+            _roomTimetableService = roomTimetableService;
+            _renovationService = renovationService;
             InitializeComponent();
         }
 
         private void RoomSplit_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
-            RoomSplitWindow roomSplitWindow = new RoomSplitWindow();
+            RoomSplitWindow roomSplitWindow = DIContainer.GetService<RoomSplitWindow>();           
             roomSplitWindow.ShowDialog();
         }
 
         private void RoomMerge_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
-            RoomMergeWindow roomMergeWindow = new RoomMergeWindow();
+            RoomMergeWindow roomMergeWindow = DIContainer.GetService<RoomMergeWindow>();            
             roomMergeWindow.ShowDialog();
         }
 
         private void RoomComboBox_Loaded(object sender, RoutedEventArgs e)
         {     
-            List<Room> rooms = RoomService.GetActive();
+            List<Room> rooms = _roomService.GetActive();
             
             roomComboBox.ItemsSource = rooms;
             roomComboBox.SelectedItem = null;
@@ -90,10 +98,10 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
             Room selectedRoom = (Room)roomComboBox.SelectedItem;
 
             RenovationDTO renovationDTO = new RenovationDTO(selectedRoom, startDate, endDate);
-            RenovationService.AddRenovation(renovationDTO);
+            Renovation renovation = _renovationService.AddRenovation(renovationDTO);
             if (startDate == DateTime.Today)
             {
-                RenovationService.StartRenovation(selectedRoom);
+                _renovationService.Start(renovation);
                 System.Windows.MessageBox.Show("Renovation scheduled!", "Room renovation", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             else
@@ -114,7 +122,7 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
             }
       
             string message;
-            bool occupied = RoomTimetableService.CheckRoomTimetable(selectedRoom, startDate, out message);
+            bool occupied = _roomTimetableService.CheckRoomTimetable(selectedRoom, startDate, out message);
             if (occupied)
             {
                 System.Windows.MessageBox.Show(message, "Failed renovation", MessageBoxButton.OK, MessageBoxImage.Error);

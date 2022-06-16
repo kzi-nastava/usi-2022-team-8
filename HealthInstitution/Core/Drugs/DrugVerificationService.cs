@@ -8,19 +8,22 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.Drugs
 {
-    public static class DrugVerificationService
+    public class DrugVerificationService : IDrugVerificationService
     {
-        private static DrugRepository s_drugRepository = DrugRepository.GetInstance();
-
-        public static void Accept(Drug drug)
+        IDrugRepository _drugRepository;
+        public DrugVerificationService(IDrugRepository drugRepository)
         {
-            s_drugRepository.Accept(drug);
+            _drugRepository = drugRepository;
         }
-        public static void Reject(Drug drug, string rejectionReason)
+        public void Accept(Drug drug)
         {
-            s_drugRepository.Reject(drug, rejectionReason);
+            _drugRepository.Accept(drug);
         }
-        public static string ReasonForRejection(Drug drug)
+        public void Reject(Drug drug, string rejectionReason)
+        {
+            _drugRepository.Reject(drug, rejectionReason);
+        }
+        public string ReasonForRejection(Drug drug)
         {
             return drug.RejectionReason;
         }

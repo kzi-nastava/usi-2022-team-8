@@ -9,8 +9,6 @@ namespace HealthInstitution.Core.Scheduling
 {
     public interface IPatientExaminationAvailabilityService
     {
-        public void CheckIfPatientHasExaminations(ExaminationDTO examinationDTO);
-        public void CheckIfPatientHasOperations(ExaminationDTO examinationDTO);
         public void CheckIfPatientIsAvailable(ExaminationDTO examinationDTO);
     }
 }

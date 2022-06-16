@@ -1,4 +1,5 @@
-﻿using HealthInstitution.Core.Equipments;
+﻿using HealthInstitution.Core.DIContainer;
+using HealthInstitution.Core.Equipments;
 using HealthInstitution.Core.Equipments.Model;
 using HealthInstitution.Core.Rooms;
 using HealthInstitution.Core.Rooms.Model;
@@ -25,9 +26,13 @@ namespace HealthInstitution.GUI.ManagerView
     /// </summary>
     public partial class EquipmentInspectionDialog : Window
     {
-        public EquipmentInspectionDialog()
+        IEquipmentService _equipmentService;
+        IRoomService _roomService;
+        public EquipmentInspectionDialog(IEquipmentService equipmentService, IRoomService roomService)
         {
             InitializeComponent();
+            _equipmentService = equipmentService;
+            _roomService = roomService;
         }
 
         private void QuantityComboBox_Loaded(object sender, RoutedEventArgs e)
@@ -111,7 +116,7 @@ namespace HealthInstitution.GUI.ManagerView
 
             EquipmentFilterDTO equipmentFilterDTO = FormEquipmentFilterDTO();
             
-            List<TableItemEquipment> items = EquipmentService.FilterEquipment(equipmentFilterDTO);
+            List<TableItemEquipment> items = _equipmentService.FilterEquipment(equipmentFilterDTO);
             
             if (items == null || !items.Any())
             {
@@ -120,7 +125,8 @@ namespace HealthInstitution.GUI.ManagerView
             }
 
             this.Close();
-            EquipmentTableWindow equipmentTableWindow = new EquipmentTableWindow(items);
+            EquipmentTableWindow equipmentTableWindow = DIContainer.GetService<EquipmentTableWindow>();
+            equipmentTableWindow.SetTableItems(items);
             equipmentTableWindow.ShowDialog();
         }
 
@@ -164,7 +170,7 @@ namespace HealthInstitution.GUI.ManagerView
                 return;
             }
 
-            List<TableItemEquipment> items = EquipmentService.SearchEquipment(searchInput);
+            List<TableItemEquipment> items = _equipmentService.SearchEquipment(searchInput);
             
             if (items == null || !items.Any())
             {
@@ -173,7 +179,8 @@ namespace HealthInstitution.GUI.ManagerView
             }
 
             this.Close();
-            EquipmentTableWindow equipmentTableWindow = new EquipmentTableWindow(items);
+            EquipmentTableWindow equipmentTableWindow = DIContainer.GetService<EquipmentTableWindow>();
+            equipmentTableWindow.SetTableItems(items);
             equipmentTableWindow.ShowDialog();
         }     
 
@@ -186,13 +193,14 @@ namespace HealthInstitution.GUI.ManagerView
                 return;
             }
             this.Close();
-            EquipmentTableWindow equipmentTableWindow = new EquipmentTableWindow(items);
+            EquipmentTableWindow equipmentTableWindow = DIContainer.GetService<EquipmentTableWindow>();
+            equipmentTableWindow.SetTableItems(items);
             equipmentTableWindow.ShowDialog();
         }
 
         private List<TableItemEquipment> LoadRows()
         {
-            List<TableItemEquipment> items = RoomService.GetTableItemEquipments();
+            List<TableItemEquipment> items = _roomService.GetTableItemEquipments();
             return items;
         }
     }

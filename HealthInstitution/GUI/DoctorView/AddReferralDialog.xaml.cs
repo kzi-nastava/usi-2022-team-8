@@ -31,14 +31,23 @@ namespace HealthInstitution.GUI.DoctorView
     {
         private Patient _patient;
         private Doctor _doctor;
-        public AddReferralDialog(Doctor doctor, Patient patient)
+        IDoctorService _doctorService;
+        IReferralService _referralService;
+        IMedicalRecordService _medicalRecordService;
+        public AddReferralDialog(IDoctorService doctorService,
+            IReferralService referralService, IMedicalRecordService medicalRecordService)
         {
-            _patient = patient;
-            _doctor = doctor;
+            _doctorService = doctorService;
+            _referralService = referralService;
+            _medicalRecordService = medicalRecordService;
             InitializeComponent();
             Load();
         }
-
+        public void SetReferralFields(Patient patient, Doctor doctor)
+        { 
+            _patient = patient;
+            _doctor = doctor;
+        }
         public void Load()
         {
             doctorRadioButton.IsChecked = true;
@@ -61,7 +70,7 @@ namespace HealthInstitution.GUI.DoctorView
         private void DoctorComboBox_Loaded(object sender, RoutedEventArgs e)
         {
             var doctorComboBox = sender as System.Windows.Controls.ComboBox;
-            List<Doctor> doctors = DoctorService.GetAll();
+            List<Doctor> doctors = _doctorService.GetAll();
             foreach (Doctor doctor in doctors)
             {
                 if (_doctor.Username != doctor.Username)
@@ -105,8 +114,8 @@ namespace HealthInstitution.GUI.DoctorView
             {
                 referralDTO = CreateReferralDTOWithSpecialty();
             }
-            Referral referral = ReferralService.Add(referralDTO);
-            MedicalRecordService.AddReferral(_patient, referral);
+            Referral referral = _referralService.Add(referralDTO);
+            _medicalRecordService.AddReferral(_patient, referral);
             System.Windows.MessageBox.Show("You have created the referral!", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
         }
     }

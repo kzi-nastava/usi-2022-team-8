@@ -1,5 +1,7 @@
 ﻿using HealthInstitution.Core.Examinations.Model;
 using HealthInstitution.Core.Operations.Model;
+using HealthInstitution.Core.Rooms.Model;
+using HealthInstitution.Core.ScheduleEditRequests.Model;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using System;
 using System.Collections.Generic;
@@ -11,16 +13,10 @@ namespace HealthInstitution.Core.Scheduling
 {
     public interface IAppointmentDelayingService
     {
-        public DateTime FindFirstAvailableAppointment(DateTime appointment, int appointmentCounter, TimeSpan ts);
+        public List<Tuple<int, int, DateTime>> FindClosest(List<DateTime> nextTwoHoursAppointments, SpecialtyType specialtyType, RoomType roomType);
+        public List<ScheduleEditRequest> PrepareDataForDelaying(List<Tuple<int, int, DateTime>> examinationsAndOperationsForDelaying);
+        public void DelayExamination(ScheduleEditRequest selectedAppointment, Examination examination);
+        public void DelayOperation(ScheduleEditRequest selectedAppointment, Operation operation);
 
-        public void GetExaminationsWithPriorities(List<Examination> nextTwoHoursExaminations, List<Tuple<int, int, DateTime>> priorityExaminationsAndOperations);
-
-        public void GetOperationsWithPriorities(List<Operation> nextTwoHoursOperations, List<Tuple<int, int, DateTime>> priorityExaminationsAndOperations);
-
-        public List<Tuple<int, int, DateTime>> GetPriorityExaminationsAndOperations(List<Examination> nextTwoHoursExaminations, List<Operation> nextTwoHoursOperations);
-
-        public List<Tuple<int, int, DateTime>> FindClosest(List<DateTime> nextTwoHoursAppointments, SpecialtyType specialtyType);
-
-        public List<DateTime> FindNextTwoHoursAppointments();
     }
 }

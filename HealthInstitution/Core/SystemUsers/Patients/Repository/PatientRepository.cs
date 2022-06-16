@@ -15,11 +15,9 @@ namespace HealthInstitution.Core.SystemUsers.Patients.Repository
 {
     public class PatientRepository : IPatientRepository
     {
-        private String _fileName;
+        private String _fileName= @"..\..\..\Data\JSON\patients.json";
         public List<Patient> Patients { get; set; }
         public Dictionary<string, Patient> PatientByUsername { get; set; }
-
-        private UserRepository userRepository = UserRepository.GetInstance();
 
         private JsonSerializerOptions _options = new JsonSerializerOptions
         {
@@ -28,25 +26,11 @@ namespace HealthInstitution.Core.SystemUsers.Patients.Repository
             PropertyNameCaseInsensitive = true
         };
 
-        private PatientRepository(string fileName)
+        public PatientRepository()
         {
-            this._fileName = fileName;
             this.Patients = new List<Patient>();
             this.PatientByUsername = new Dictionary<string, Patient>();
             this.LoadFromFile();
-        }
-
-        private static PatientRepository s_instance = null;
-
-        public static PatientRepository GetInstance()
-        {
-            {
-                if (s_instance == null)
-                {
-                    s_instance = new PatientRepository(@"..\..\..\Data\JSON\patients.json");
-                }
-                return s_instance;
-            }
         }
 
         private Patient Parse(JToken? patient)
@@ -101,14 +85,16 @@ namespace HealthInstitution.Core.SystemUsers.Patients.Repository
         {
             return this.Patients;
         }
-
+        public Dictionary<string,Patient> GetAllByUsername()
+        {
+            return PatientByUsername;
+        }
         public Patient GetByUsername(string username)
         {
             if (PatientByUsername.ContainsKey(username))
                 return PatientByUsername[username];
             return null;
         }
-
         public void Add(Patient patient)
         {
             this.Patients.Add(patient);
@@ -129,11 +115,8 @@ namespace HealthInstitution.Core.SystemUsers.Patients.Repository
         public void Delete(string username)
         {
             Patient patient = GetByUsername(username);
-            TrollCounterService.Delete(username);
-            MedicalRecordRepository.GetInstance().Delete(patient);
             this.Patients.Remove(patient);
             this.PatientByUsername.Remove(username);
-            userRepository.Delete(username);
             Save();
         }
 

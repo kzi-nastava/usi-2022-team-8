@@ -17,9 +17,13 @@ namespace HealthInstitution.Core.ScheduleEditRequests.Repository;
 
 public class ScheduleEditRequestFileRepository : IScheduleEditRequestFileRepository
 {
-    private String _fileName;
+    private String _fileName= @"..\..\..\Data\JSON\scheduleEditRequests.json";
     public List<ScheduleEditRequest> Requests { get; set; }
     public Dictionary<Int32, ScheduleEditRequest> RequestsById { get; set; }
+    IDoctorRepository _doctorRepository;
+    IExaminationRepository _examinationRepository;
+    IMedicalRecordRepository _medicalRecordRepository;
+    IRoomRepository _roomRepository;
 
     private JsonSerializerOptions _options = new JsonSerializerOptions
     {
@@ -28,33 +32,22 @@ public class ScheduleEditRequestFileRepository : IScheduleEditRequestFileReposit
         PropertyNameCaseInsensitive = true
     };
 
-    private ScheduleEditRequestFileRepository(string fileName)
+    public ScheduleEditRequestFileRepository(IDoctorRepository doctorRepository, IExaminationRepository examinationRepository, IMedicalRecordRepository medicalRecordRepository, IRoomRepository roomRepository)
     {
-        this._fileName = fileName;
+        _doctorRepository = doctorRepository;
+        _examinationRepository = examinationRepository;
+        _medicalRecordRepository = medicalRecordRepository;
+        _roomRepository = roomRepository;
         this.Requests = new List<ScheduleEditRequest>();
         this.RequestsById = new Dictionary<int, ScheduleEditRequest>();
         this.LoadFromFile();
     }
 
-    private static ScheduleEditRequestFileRepository s_instance = null;
-
-    public static ScheduleEditRequestFileRepository GetInstance()
-    {
-        {
-            if (s_instance == null)
-            {
-                s_instance = new ScheduleEditRequestFileRepository(@"..\..\..\Data\JSON\scheduleEditRequests.json");
-            }
-            return s_instance;
-        }
-    }
-
     private Examination ParseExamination(JToken? request, int id)
     {
-        Dictionary<int, Room> roomsById = RoomRepository.GetInstance().RoomById;
-        Dictionary<String, Doctor> doctorsByUsername = DoctorRepository.GetInstance().DoctorsByUsername;
-        ExaminationDoctorRepository.GetInstance();
-        Dictionary<String, MedicalRecord> medicalRecordsByUsername = MedicalRecordRepository.GetInstance().MedicalRecordByUsername;
+        Dictionary<int, Room> roomsById = _roomRepository.GetAllById();
+        Dictionary<String, Doctor> doctorsByUsername = _doctorRepository.GetAllByUsername();
+        Dictionary<String, MedicalRecord> medicalRecordsByUsername = _medicalRecordRepository.GetAllByUsername();
 
         ExaminationStatus status;
         Enum.TryParse(request["newExamination"]["status"].ToString(), out status);
@@ -75,13 +68,9 @@ public class ScheduleEditRequestFileRepository : IScheduleEditRequestFileReposit
     {
         Examination loadedExamination;
         if (request["newExamination"] is not null)
-        {
             loadedExamination = ParseExamination(request, id);
-        }
         else
-        {
             loadedExamination = null;
-        }
         return loadedExamination;
     }
 
@@ -96,7 +85,7 @@ public class ScheduleEditRequestFileRepository : IScheduleEditRequestFileReposit
             Enum.TryParse(request["state"].ToString(), out state);
             int examinationId = (int)request["examinationId"];
             loadedExamination = ParseLoadedExamination(request, id);
-            ScheduleEditRequest scheduleEditRequest = new ScheduleEditRequest(id, loadedExamination, examinationId, state);
+            ScheduleEditRequest scheduleEditRequest = new ScheduleEditRequest(id, loadedExamination, examinationId, _examinationRepository.GetById(examinationId), state);
             this.Requests.Add(scheduleEditRequest);
             this.RequestsById.Add(id, scheduleEditRequest);
         }
@@ -158,6 +147,10 @@ public class ScheduleEditRequestFileRepository : IScheduleEditRequestFileReposit
     public List<ScheduleEditRequest> GetAll()
     {
         return this.Requests;
+    }
+    public Dictionary<int,ScheduleEditRequest> GetAllById()
+    {
+        return RequestsById;
     }
 
     public ScheduleEditRequest GetById(int id)

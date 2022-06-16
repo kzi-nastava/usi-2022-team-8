@@ -1,4 +1,5 @@
-﻿using HealthInstitution.Core.DoctorRatings;
+﻿using HealthInstitution.Core.DIContainer;
+using HealthInstitution.Core.DoctorRatings;
 using HealthInstitution.Core.Polls;
 using HealthInstitution.Core.Polls.Model;
 using HealthInstitution.Core.SystemUsers.Doctors;
@@ -24,9 +25,15 @@ namespace HealthInstitution.GUI.ManagerView.PollView
     /// </summary>
     public partial class DoctorPollWindow : Window
     {
-        public DoctorPollWindow()
+        IDoctorRatingsService _doctorRatingsService;
+        IPollService _pollService;
+        IDoctorService _doctorService;
+        public DoctorPollWindow(IDoctorRatingsService doctorRatingsService, IPollService pollService, IDoctorService doctorService)
         {
             InitializeComponent();
+            _doctorRatingsService = doctorRatingsService;
+            _pollService = pollService;
+            _doctorService = doctorService;
         }
 
         private void ShowPoll_Click(object sender, RoutedEventArgs e)
@@ -43,30 +50,34 @@ namespace HealthInstitution.GUI.ManagerView.PollView
         {
             Doctor doctor = (Doctor)doctorComboBox.SelectedItem;
 
-            List<TableItemPoll> questions = PollService.GetDoctorPollByQuestions(doctor);
+            List<TableItemPoll> questions = _pollService.GetDoctorPollByQuestions(doctor);
             pollDataGrid.ItemsSource = questions;
 
-            List<PollComment> comments = PollService.GetCommentsByDoctor(doctor);
+            List<PollComment> comments = _pollService.GetCommentsByDoctor(doctor);
             commentDataGrid.ItemsSource = comments;
         }
 
         private void TopRated_Click(object sender, RoutedEventArgs e)
         {
-            var topRatedDoctors = DoctorRatingsService.GetTopRated(3);
-            RatedDoctorsWindow ratedDoctorsWindow = new RatedDoctorsWindow(topRatedDoctors);
+            var topRatedDoctors = _doctorRatingsService.GetTopRated(3);
+
+            RatedDoctorsWindow ratedDoctorsWindow = DIContainer.GetService<RatedDoctorsWindow>();
+            ratedDoctorsWindow.SetDoctors(topRatedDoctors);
             ratedDoctorsWindow.ShowDialog();
         }
 
         private void WorstRated_Click(object sender, RoutedEventArgs e)
         {
-            var worstRatedDoctors = DoctorRatingsService.GetWorstRated(3);
-            RatedDoctorsWindow ratedDoctorsWindow = new RatedDoctorsWindow(worstRatedDoctors);
+            var worstRatedDoctors = _doctorRatingsService.GetWorstRated(3);
+
+            RatedDoctorsWindow ratedDoctorsWindow = DIContainer.GetService<RatedDoctorsWindow>();
+            ratedDoctorsWindow.SetDoctors(worstRatedDoctors);
             ratedDoctorsWindow.ShowDialog();
         }
 
         private void DoctorComboBox_Loaded(object sender, RoutedEventArgs e)
         {
-            List<Doctor> doctors = DoctorService.GetAll();
+            List<Doctor> doctors = _doctorService.GetAll();
             doctorComboBox.ItemsSource = doctors;
             doctorComboBox.SelectedItem = null;
         }

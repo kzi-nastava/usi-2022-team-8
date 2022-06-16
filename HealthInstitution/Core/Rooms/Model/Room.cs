@@ -41,14 +41,22 @@ public class Room
 
     }
 
+    public void ExcludeByRenovation()
+    {
+        this.IsRenovating = false;
+        this.IsActive = false;
+    }
+
+    public void ActivateByRenovation()
+    {
+        this.IsRenovating = false;
+        this.IsActive = true;
+    }
+
     public override string? ToString()
     {
         return Type.ToString()+" "+Number;
     }
-    /*public string? ToString(int availableEquipment)
-    {
-        return Type.ToString() + " " + Number + " (has " + availableEquipment + ")";
-    }*/
 
     public bool IsWarehouse()
     {

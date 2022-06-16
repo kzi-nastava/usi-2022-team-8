@@ -30,6 +30,7 @@ using System.Windows.Forms;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using HealthInstitution.Core.DIContainer;
 
 namespace HealthInstitution.GUI.ManagerView.RenovationView
 {
@@ -40,25 +41,34 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
     {
         private List<Equipment> _firstRoomEquipmentFromArranging;
         private List<Equipment> _secondRoomEquipmentFromArranging;
-        public RoomSplitWindow()
+        IRoomService _roomService;
+        IRenovationService _renovationService;
+        IEquipmentService _equipmentService;
+        IRoomTimetableService _roomTimetableService;
+        public RoomSplitWindow(IRoomService roomService, IRenovationService renovationService,
+        IEquipmentService equipmentService, IRoomTimetableService roomTimetableService)
         {
             InitializeComponent();
+            _roomService = roomService;
+            _renovationService = renovationService;
+            _equipmentService = equipmentService;
+            _roomTimetableService = roomTimetableService;
             _firstRoomEquipmentFromArranging = new List<Equipment>();
             _secondRoomEquipmentFromArranging = new List<Equipment>();
             arrangeEquipmentButton.IsEnabled = false;
         }
-
         private void SimpleRenovation_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
-            SimpleRenovationWindow simpleRenovationindow = new SimpleRenovationWindow();
-            simpleRenovationindow.ShowDialog();
+
+            SimpleRenovationWindow simpleRenovationWindow = DIContainer.GetService<SimpleRenovationWindow>();
+            simpleRenovationWindow.ShowDialog();
         }
 
         private void RoomMerge_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
-            RoomMergeWindow roomMergeWindow = new RoomMergeWindow();
+            RoomMergeWindow roomMergeWindow = DIContainer.GetService<RoomMergeWindow>();
             roomMergeWindow.ShowDialog();
         }
 
@@ -70,7 +80,7 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
 
         private void SplittingRoomComboBox_Loaded(object sender, RoutedEventArgs e)
         {
-            List<Room> rooms = RoomService.GetActive();
+            List<Room> rooms = _roomService.GetActive();
 
             splitRoomComboBox.ItemsSource = rooms;
             splitRoomComboBox.SelectedItem = null;
@@ -98,11 +108,11 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
 
         private void SplitRoomComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            EquipmentService.RemoveEquipmentFrom(_firstRoomEquipmentFromArranging);
-            EquipmentService.RemoveEquipmentFrom(_secondRoomEquipmentFromArranging);
+            _equipmentService.RemoveEquipmentFrom(_firstRoomEquipmentFromArranging);
+            _equipmentService.RemoveEquipmentFrom(_secondRoomEquipmentFromArranging);
 
             Room selectedRoom = (Room)splitRoomComboBox.SelectedItem;
-            if (EquipmentService.IsEmpty(selectedRoom.AvailableEquipment))
+            if (_equipmentService.IsEmpty(selectedRoom.AvailableEquipment))
             {
                 arrangeEquipmentButton.IsEnabled = false;
             }
@@ -161,26 +171,26 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
             DateTime endDate = (DateTime)endDatePicker.SelectedDate;
             Room selectedRoom = (Room)splitRoomComboBox.SelectedItem;
 
-            Room firstRoom = RoomService.AddRoom(GetFirstRoom());
-            Room secondRoom = RoomService.AddRoom(GetSecondRoom());
+            Room firstRoom = _roomService.AddRoom(GetFirstRoom());
+            Room secondRoom = _roomService.AddRoom(GetSecondRoom());
 
-            if (EquipmentService.IsEmpty(_firstRoomEquipmentFromArranging) && EquipmentService.IsEmpty(_secondRoomEquipmentFromArranging))
+            if (_equipmentService.IsEmpty(_firstRoomEquipmentFromArranging) && _equipmentService.IsEmpty(_secondRoomEquipmentFromArranging))
             {
-                firstRoom.AvailableEquipment = EquipmentService.CopyEquipments(RoomService.GetAvailableEquipment(selectedRoom));
-                RoomService.WriteIn();
+                firstRoom.AvailableEquipment = _equipmentService.CopyEquipments(_roomService.GetAvailableEquipment(selectedRoom));
+                _roomService.WriteIn();
             }
             else
             {
                 firstRoom.AvailableEquipment = _firstRoomEquipmentFromArranging;
                 secondRoom.AvailableEquipment = _secondRoomEquipmentFromArranging;
-                RoomService.WriteIn();
+                _roomService.WriteIn();
             }
 
             RoomSeparationDTO roomSeparationDTO = new RoomSeparationDTO(selectedRoom, firstRoom, secondRoom, startDate, endDate);
-            RenovationService.AddRoomSeparation(roomSeparationDTO);
+            Renovation renovation = _renovationService.AddRoomSeparation(roomSeparationDTO);
             if (startDate == DateTime.Today)
             {
-                RenovationService.StartSeparation(selectedRoom, firstRoom, secondRoom);
+                _renovationService.Start(renovation);
                 System.Windows.MessageBox.Show("Renovation scheduled!", "Room renovation", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             else
@@ -208,7 +218,7 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
                 return false;
             }
 
-            if (RoomService.RoomNumberIsTaken(firstRoomNumber) || RoomService.RoomNumberIsTaken(secondRoomNumber))
+            if (_roomService.RoomNumberIsTaken(firstRoomNumber) || _roomService.RoomNumberIsTaken(secondRoomNumber))
             {
                 System.Windows.MessageBox.Show("This room number already exist!", "Failed renovation", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
@@ -253,7 +263,7 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
             }
 
             string message;
-            bool occupied = RoomTimetableService.CheckRoomTimetable(selectedRoom, startDate, out message);
+            bool occupied = _roomTimetableService.CheckRoomTimetable(selectedRoom, startDate, out message);
             if (occupied)
             {
                 System.Windows.MessageBox.Show(message, "Failed renovation", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -296,11 +306,12 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
             }
 
             Room selectedRoom = (Room)splitRoomComboBox.SelectedItem;
-            if (EquipmentService.IsEmpty(_firstRoomEquipmentFromArranging) && EquipmentService.IsEmpty(_secondRoomEquipmentFromArranging))
+            if (_equipmentService.IsEmpty(_firstRoomEquipmentFromArranging) && _equipmentService.IsEmpty(_secondRoomEquipmentFromArranging))
             {
-                _firstRoomEquipmentFromArranging = EquipmentService.CopyEquipments(RoomService.GetAvailableEquipment(selectedRoom));
+                _firstRoomEquipmentFromArranging = _equipmentService.CopyEquipments(_roomService.GetAvailableEquipment(selectedRoom));
             }
-            ArrangeEquipmentForSplitWindow arrangeEquipmentForSplitWindow = new ArrangeEquipmentForSplitWindow(_firstRoomEquipmentFromArranging,_secondRoomEquipmentFromArranging);
+            ArrangeEquipmentForSplitWindow arrangeEquipmentForSplitWindow = DIContainer.GetService<ArrangeEquipmentForSplitWindow>();
+            arrangeEquipmentForSplitWindow.SetEquipmentCollections(_firstRoomEquipmentFromArranging, _secondRoomEquipmentFromArranging);
             arrangeEquipmentForSplitWindow.ShowDialog();
         }
 

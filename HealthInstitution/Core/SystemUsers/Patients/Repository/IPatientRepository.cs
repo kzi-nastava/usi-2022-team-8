@@ -9,11 +9,12 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.SystemUsers.Patients.Repository
 {
-    public interface IPatientRepository : IRepository<Patient>
+    public interface IPatientRepository
     {
         public void LoadFromFile();
         public void Save();
         public List<Patient> GetAll();
+        public Dictionary<string, Patient> GetAllByUsername();
         public Patient GetByUsername(string username);
         public void Add(Patient patient);
         public void Update(Patient byPatient);

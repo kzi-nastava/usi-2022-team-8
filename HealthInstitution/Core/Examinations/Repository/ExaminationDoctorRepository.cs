@@ -14,31 +14,21 @@ namespace HealthInstitution.Core.Examinations.Repository
 {
     public class ExaminationDoctorRepository : IExaminationDoctorRepository
     {
-        private String _fileName;
+        private String _fileName = @"..\..\..\Data\JSON\examinationDoctor.json";
+        private IDoctorRepository _doctorRepository;
+        private IExaminationRepository _examinationRepository;
 
-        private ExaminationDoctorRepository(String fileName)
+        public ExaminationDoctorRepository(IDoctorRepository doctorRepository, IExaminationRepository examinationRepository)
         {
-            this._fileName = fileName;
+            _doctorRepository = doctorRepository;
+            _examinationRepository = examinationRepository;
             this.LoadFromFile();
-        }
-
-        private static ExaminationDoctorRepository s_instance = null;
-
-        public static ExaminationDoctorRepository GetInstance()
-        {
-            {
-                if (s_instance == null)
-                {
-                    s_instance = new ExaminationDoctorRepository(@"..\..\..\Data\JSON\examinationDoctor.json");
-                }
-                return s_instance;
-            }
         }
 
         public void LoadFromFile()
         {
-            var doctorsByUsername = DoctorRepository.GetInstance().DoctorsByUsername;
-            var examinationsById = ExaminationRepository.GetInstance().ExaminationsById;
+            var doctorsByUsername = _doctorRepository.GetAllByUsername();
+            var examinationsById = _examinationRepository.GetAllById();
             var examinationIdsDoctorUsernames = JArray.Parse(File.ReadAllText(this._fileName));
             foreach (var pair in examinationIdsDoctorUsernames)
             {
@@ -54,7 +44,7 @@ namespace HealthInstitution.Core.Examinations.Repository
         public void Save()
         {
             List<dynamic> examinationIdsDoctorUsernames = new List<dynamic>();
-            var examinations = ExaminationRepository.GetInstance().Examinations;
+            var examinations = _examinationRepository.GetAll();
             foreach (var examination in examinations)
             {
                 Doctor doctor = examination.Doctor;

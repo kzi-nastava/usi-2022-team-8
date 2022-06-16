@@ -14,12 +14,12 @@ public class ScheduleEditRequest
     public Operation NewOperation { get; set; }
     public RestRequestState State { get; set; }
 
-    public ScheduleEditRequest(int id, Examination examination, int examinationId, RestRequestState state)
+    public ScheduleEditRequest(int id, Examination examination, int examinationId, Examination currentExamination, RestRequestState state)
     {
         this.Id = id;
         this.NewExamination = examination;
         this.State = state;
-        this.CurrentExamination = ExaminationRepository.GetInstance().ExaminationsById[examinationId];
+        this.CurrentExamination = currentExamination;
         this.CurrentOperation = null;
         this.NewOperation = null;
     }

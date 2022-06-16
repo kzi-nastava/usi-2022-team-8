@@ -8,11 +8,12 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Core.Renovations.Repository
 {
-    public interface IRenovationRepository : IRepository<Renovation>
+    public interface IRenovationRepository
     {
         public void LoadFromFile();
         public void Save();
         public List<Renovation> GetAll();
+        public Dictionary<int, Renovation> GetAllById();
         public Renovation GetById(int id);
         public void AddRenovation(Renovation renovation);
         public void UpdateRenovation(int id, Renovation byRenovation);

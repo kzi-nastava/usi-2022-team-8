@@ -1,4 +1,6 @@
-﻿using HealthInstitution.Core.Equipments.Model;
+﻿using HealthInstitution.Core.DIContainer;
+using HealthInstitution.Core.Equipments.Model;
+using HealthInstitution.Core.EquipmentTransfers;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,9 +25,12 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
     {
         private List<Equipment> _firstRoomEquipments;
         private List<Equipment> _secondRoomEquipments;
-        public ArrangeEquipmentForSplitWindow(List<Equipment> firstRoomEquipment, List<Equipment> secondRoomEquipments)
+        public ArrangeEquipmentForSplitWindow()
         {
             InitializeComponent();
+        }
+        public void SetEquipmentCollections(List<Equipment> firstRoomEquipment, List<Equipment> secondRoomEquipments)
+        {
             _firstRoomEquipments = firstRoomEquipment;
             _secondRoomEquipments = secondRoomEquipments;
             Load();
@@ -70,7 +75,8 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
 
         private void TransferToFirst_Click(object sender, RoutedEventArgs e)
         {
-            EquipmentTransferForSplitDialog equipmentTransferForSplitDialog = new EquipmentTransferForSplitDialog(_secondRoomEquipments,_firstRoomEquipments);
+            EquipmentTransferForSplitDialog equipmentTransferForSplitDialog = DIContainer.GetService<EquipmentTransferForSplitDialog>();
+            equipmentTransferForSplitDialog.SetEquipmentCollections(_secondRoomEquipments, _firstRoomEquipments);
             equipmentTransferForSplitDialog.ShowDialog();
 
             Load();
@@ -82,7 +88,8 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
 
         private void TransferToSecond_Click(object sender, RoutedEventArgs e)
         {
-            EquipmentTransferForSplitDialog equipmentTransferForSplitDialog = new EquipmentTransferForSplitDialog(_firstRoomEquipments,_secondRoomEquipments);
+            EquipmentTransferForSplitDialog equipmentTransferForSplitDialog = DIContainer.GetService<EquipmentTransferForSplitDialog>();
+            equipmentTransferForSplitDialog.SetEquipmentCollections(_firstRoomEquipments, _secondRoomEquipments);
             equipmentTransferForSplitDialog.ShowDialog();
 
             Load();

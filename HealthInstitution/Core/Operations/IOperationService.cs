@@ -10,12 +10,14 @@ namespace HealthInstitution.Core.Operations
 {
     public interface IOperationService
     {
+        public int GetMaxId();
         public List<Operation> GetAll();
         public Operation GetById(int id);
-        public void Add(OperationDTO operationDTO);
+        public Operation Add(OperationDTO operationDTO);
         public void Update(int id, OperationDTO operationDTO);
         public void Delete(int id);
         public List<Operation> GetByPatient(string patientUsername);
         public List<Operation> GetByDoctor(string doctorUsername);
+        public void Validate(OperationDTO operationDTO);
     }
 }

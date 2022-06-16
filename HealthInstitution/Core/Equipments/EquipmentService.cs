@@ -7,36 +7,41 @@ using System.Dynamic;
 
 namespace HealthInstitution.Core.Equipments
 {
-    public class EquipmentService
+    public class EquipmentService : IEquipmentService
     {
-        private static EquipmentRepository s_equipmentRepository = EquipmentRepository.GetInstance();
-        private static RoomRepository s_roomRepository = RoomRepository.GetInstance();
-        public static List<Equipment> GetAll()
+        IEquipmentRepository _equipmentRepository;
+        IRoomRepository _roomRepository;
+        public EquipmentService(IEquipmentRepository equipmentRepository, IRoomRepository roomRepository)
         {
-            return s_equipmentRepository.GetAll();
+            _equipmentRepository = equipmentRepository;
+            _roomRepository = roomRepository;
+        }
+        public List<Equipment> GetAll()
+        {
+            return _equipmentRepository.GetAll();
         }
 
-        public static Equipment Add(EquipmentDTO equipmentDTO)
+        public Equipment Add(EquipmentDTO equipmentDTO)
         {
             Equipment equipment = new Equipment(equipmentDTO);
-            return s_equipmentRepository.Add(equipment);
+            return _equipmentRepository.Add(equipment);
         }
 
-        public static void Update(int id, EquipmentDTO equipmentDTO)
+        public void Update(int id, EquipmentDTO equipmentDTO)
         {
             Equipment equipment = new Equipment(equipmentDTO);
-            s_equipmentRepository.Update(id, equipment);
+            _equipmentRepository.Update(id, equipment);
         }
 
-        public static void Delete(int id)
+        public void Delete(int id)
         {
-            s_equipmentRepository.Delete(id);
+            _equipmentRepository.Delete(id);
         }
 
-        public static List<TableItemEquipment> FilterEquipment(EquipmentFilterDTO equipmentFilter)
+        public List<TableItemEquipment> FilterEquipment(EquipmentFilterDTO equipmentFilter)
         {
             List<TableItemEquipment> items = new List<TableItemEquipment>();
-            List<Room> rooms = s_roomRepository.GetActive();
+            List<Room> rooms = _roomRepository.GetActive();
             foreach (Room room in rooms)
             {
                 if (!MatchRoomTypeFilter(room, equipmentFilter))
@@ -55,12 +60,12 @@ namespace HealthInstitution.Core.Equipments
             return items;
         }
 
-        public static Dictionary<string, int> EquipmentPerQuantity()
+        public Dictionary<string, int> GetEquipmentPerQuantity()
         {
-            return s_equipmentRepository.EquipmentPerQuantity;
+            return _equipmentRepository.GetEquipmentPerQuantity();
         }
 
-        private static bool MatchQuantityFilter(Equipment equipment, EquipmentFilterDTO equipmentFilter)
+        private bool MatchQuantityFilter(Equipment equipment, EquipmentFilterDTO equipmentFilter)
         {
             if (!equipmentFilter.ApplyQuantityFilter)
             {
@@ -87,21 +92,21 @@ namespace HealthInstitution.Core.Equipments
             return true;
         }
 
-        private static bool MatchEquipmentTypeFilter(Equipment equipment, EquipmentFilterDTO equipmentFilter)
+        private bool MatchEquipmentTypeFilter(Equipment equipment, EquipmentFilterDTO equipmentFilter)
         {
             return !equipmentFilter.ApplyEquipmentTypeFilter || equipment.HasEquipmentType(equipmentFilter.EquipmentTypeFilter);
         }
 
-        private static bool MatchRoomTypeFilter(Room room, EquipmentFilterDTO equipmentFilter)
+        private bool MatchRoomTypeFilter(Room room, EquipmentFilterDTO equipmentFilter)
         {
             return !equipmentFilter.ApplyRoomTypeFilter || room.HasRoomType(equipmentFilter.RoomTypeFilter);
         }
 
-        public static List<TableItemEquipment> SearchEquipment(string searchInput)
+        public List<TableItemEquipment> SearchEquipment(string searchInput)
         {
             List<TableItemEquipment> items = new List<TableItemEquipment>();
 
-            List<Room> rooms = s_roomRepository.GetActive();
+            List<Room> rooms = _roomRepository.GetActive();
             foreach (Room room in rooms)
             {
                 foreach (Equipment equipment in room.AvailableEquipment)
@@ -116,7 +121,7 @@ namespace HealthInstitution.Core.Equipments
             return items;
         }
 
-        private static bool SearchMatch(Room room, Equipment equipment, string searchInput)
+        private bool SearchMatch(Room room, Equipment equipment, string searchInput)
         {
             if (room.Type.ToString().ToLower().Contains(searchInput.ToLower()))
                 return true;
@@ -129,7 +134,7 @@ namespace HealthInstitution.Core.Equipments
             return false;
         }
 
-        public static Equipment GetEquipmentFromRoom(Room room, string equipmentName)
+        public Equipment GetEquipmentFromRoom(Room room, string equipmentName)
         {
             foreach (Equipment equipment in room.AvailableEquipment)
                 if (equipment.Name == equipmentName)
@@ -137,28 +142,28 @@ namespace HealthInstitution.Core.Equipments
             return null;
         }
 
-        public static void RemoveEquipmentFrom(List<Equipment> equipments)
+        public void RemoveEquipmentFrom(List<Equipment> equipments)
         {
             foreach (Equipment equipment in equipments)
             {
-                EquipmentService.Delete(equipment.Id);
+                Delete(equipment.Id);
             }
             equipments.Clear();
         }
 
-        public static List<Equipment> CopyEquipments(List<Equipment> availableEquipment)
+        public List<Equipment> CopyEquipments(List<Equipment> availableEquipment)
         {
             List<Equipment> equipments = new List<Equipment>();
             foreach (Equipment equipment in availableEquipment)
             {
                 EquipmentDTO equipmentDTO = new EquipmentDTO(equipment.Quantity, equipment.Name, equipment.Type, equipment.IsDynamic);
-                Equipment newEquipment = EquipmentService.Add(equipmentDTO);
+                Equipment newEquipment = Add(equipmentDTO);
                 equipments.Add(newEquipment);
             }
             return equipments;
         }
 
-        public static bool IsEmpty(List<Equipment> list)
+        public bool IsEmpty(List<Equipment> list)
         {
             if (list == null)
             {
@@ -168,7 +173,7 @@ namespace HealthInstitution.Core.Equipments
             return !list.Any();
         }
 
-        public static int GetQuantityForTransfer(string quantityFromForm, Room room, string equipmentName)
+        public int GetQuantityForTransfer(string quantityFromForm, Room room, string equipmentName)
         {
             int quantity;
             string exceptionMessage = "Quantity must be filled";
@@ -188,7 +193,7 @@ namespace HealthInstitution.Core.Equipments
                 throw new Exception(exceptionMessage);
             }
         }
-        private static dynamic FormMissingEquipmentRoomPair(Room room, Equipment equipment, int quantityInRoom)
+        private dynamic FormMissingEquipmentRoomPair(Room room, Equipment equipment, int quantityInRoom)
         {
             dynamic obj = new ExpandoObject();
             obj.Room = room;
@@ -197,7 +202,7 @@ namespace HealthInstitution.Core.Equipments
             return obj;
         }
 
-        private static int GetQuantityOfEquipmentInRoom(Room room, Equipment equipment)
+        private int GetQuantityOfEquipmentInRoom(Room room, Equipment equipment)
         {
             int quantity = 0;
             foreach (Equipment e in room.AvailableEquipment)
@@ -208,7 +213,7 @@ namespace HealthInstitution.Core.Equipments
             return quantity;
         }
 
-        private static void CheckRoomEquipmentPair(Room room, Equipment equipment, HashSet<String> distinctEquipments, List<dynamic> pairs)
+        private void CheckRoomEquipmentPair(Room room, Equipment equipment, HashSet<String> distinctEquipments, List<dynamic> pairs)
         {
             if (equipment.IsDynamic && !distinctEquipments.Contains(equipment.Name))
             {
@@ -221,10 +226,10 @@ namespace HealthInstitution.Core.Equipments
             }
         }
 
-        public static List<dynamic> GetMissingEquipment()
+        public List<dynamic> GetMissingEquipment()
         {
-            List<Equipment> equipments = s_equipmentRepository.Equipments;
-            List<Room> rooms = s_roomRepository.Rooms;
+            List<Equipment> equipments = _equipmentRepository.GetAll();
+            List<Room> rooms = _roomRepository.GetAll();
             List<dynamic> pairs = new();
             HashSet<string> distinctEquipments;
             foreach (Room room in rooms)
@@ -237,10 +242,10 @@ namespace HealthInstitution.Core.Equipments
             }
             return pairs;
         }
-        public static void RemoveConsumed(Equipment equipment, int consumedQuantity)
+        public void RemoveConsumed(Equipment equipment, int consumedQuantity)
         {
             equipment.Quantity -= consumedQuantity;
-            s_equipmentRepository.Save();
+            _equipmentRepository.Save();
          }
     }
 }

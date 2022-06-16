@@ -5,6 +5,22 @@ using HealthInstitution.GUI.LoginView;
 using HealthInstitution.GUI.PatientView;
 using HealthInstitution.Core.SystemUsers.Patients.Model;
 using HealthInstitution.Core.Notifications.Model;
+using HealthInstitution.Core.SystemUsers.Patients;
+using HealthInstitution.Core.PrescriptionNotifications.Service;
+using HealthInstitution.Core.DIContainer;
+using HealthInstitution.Core.SystemUsers.Users;
+using HealthInstitution.Core.TrollCounters;
+using HealthInstitution.Core.SystemUsers.Doctors;
+using HealthInstitution.Core.EquipmentTransfers;
+using HealthInstitution.Core.Renovations.Functionality;
+using HealthInstitution.Core.RestRequests;
+using HealthInstitution.Core.DoctorRatings;
+using HealthInstitution.Core.Notifications;
+using HealthInstitution.Core.Examinations;
+using HealthInstitution.Core.ScheduleEditRequests;
+using HealthInstitution.Core.Scheduling;
+using HealthInstitution.Core.MedicalRecords;
+using HealthInstitution.Core.Polls;
 
 namespace HealthInstitution.GUI.UserWindow
 {
@@ -14,25 +30,19 @@ namespace HealthInstitution.GUI.UserWindow
     public partial class PatientWindow : Window
     {
         private Patient _loggedPatient;
-
-        public PatientWindow(Patient loggedPatient)
+        IPatientService _patientService;
+        public PatientWindow(IPatientService patientService)
         {
             InitializeComponent();
             this._loggedPatient = loggedPatient;
             //ShowNotificationsDialog();
         }
-
         private void ShowNotificationsDialog()
         {
-            int activeNotifications = 0;
-            foreach (AppointmentNotification notification in this._loggedPatient.Notifications)
+            if (_patientService.GetActiveAppointmentNotification(_loggedPatient).Count>0)
             {
-                if (notification.ActiveForPatient)
-                    activeNotifications++;
-            }
-            if (activeNotifications > 0)
-            {
-                PatientNotificationsDialog patientNotificationsDialog = new PatientNotificationsDialog(this._loggedPatient);
+                PatientNotificationsDialog patientNotificationsDialog = DIContainer.GetService<PatientNotificationsDialog>();
+                patientNotificationsDialog.SetLoggedPatient(_loggedPatient);
                 patientNotificationsDialog.ShowDialog();
             }
         }

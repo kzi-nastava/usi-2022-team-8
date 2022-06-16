@@ -17,7 +17,10 @@ namespace HealthInstitution.Core.EquipmentTransfers.Repository
 {
     public class EquipmentTransferRepository : IEquipmentTransferRepository
     {
-        private String _fileName;
+        private String _fileName = @"..\..\..\Data\JSON\equipmentTransfers.json";
+
+        private IEquipmentRepository _equipmentRepository;
+        private IRoomRepository _roomRepository;
 
         private int _maxId;
         public List<EquipmentTransfer> EquipmentTransfers { get; set; }
@@ -28,30 +31,21 @@ namespace HealthInstitution.Core.EquipmentTransfers.Repository
             Converters = { new JsonStringEnumConverter() },
             PropertyNameCaseInsensitive = true
         };
-        private EquipmentTransferRepository(String fileName)
+
+        public EquipmentTransferRepository(IEquipmentRepository equipmentRepository, IRoomRepository roomRepository)
         {
-            this._fileName = fileName;
+            _equipmentRepository = equipmentRepository;
+            _roomRepository = roomRepository;
             this.EquipmentTransfers = new List<EquipmentTransfer>();
             this.EquipmentTransferById = new Dictionary<int, EquipmentTransfer>();
             this._maxId = 0;
             this.LoadFromFile();
         }
-        private static EquipmentTransferRepository s_instance = null;
-        public static EquipmentTransferRepository GetInstance()
-        {
-            {
-                if (s_instance == null)
-                {
-                    s_instance = new EquipmentTransferRepository(@"..\..\..\Data\JSON\equipmentTransfers.json");
-                }
-                return s_instance;
-            }
-        }
 
         private EquipmentTransfer Parse(JToken? equipmentTransfer)
         {
-            Dictionary<int, Equipment> equipmentById = EquipmentRepository.GetInstance().EquipmentById;
-            Dictionary<int, Room> roomById = RoomRepository.GetInstance().RoomById;
+            Dictionary<int, Equipment> equipmentById = _equipmentRepository.GetAllById();
+            Dictionary<int, Room> roomById = _roomRepository.GetAllById();
 
             int id = (int)equipmentTransfer["id"];
             int equipmentId = (int)equipmentTransfer["equipment"];
@@ -111,6 +105,10 @@ namespace HealthInstitution.Core.EquipmentTransfers.Repository
             return this.EquipmentTransfers;
         }
 
+        public Dictionary<int, EquipmentTransfer> GetAllById()
+        {
+            return this.EquipmentTransferById;
+        }
         public EquipmentTransfer GetById(int id)
         {
             if (EquipmentTransferById.ContainsKey(id))

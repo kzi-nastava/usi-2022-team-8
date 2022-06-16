@@ -1,10 +1,12 @@
-﻿using HealthInstitution.Core.Examinations;
+﻿using HealthInstitution.Core.DIContainer;
+using HealthInstitution.Core.Examinations;
 using HealthInstitution.Core.Examinations.Repository;
 using HealthInstitution.Core.Operations;
 using HealthInstitution.Core.Operations.Repository;
 using HealthInstitution.Core.SystemUsers.Patients;
 using HealthInstitution.Core.SystemUsers.Patients.Model;
 using HealthInstitution.Core.SystemUsers.Patients.Repository;
+using HealthInstitution.Core.SystemUsers.Users;
 using HealthInstitution.GUI.SecretaryView;
 using System.Windows;
 
@@ -15,15 +17,17 @@ namespace HealthInstitution.GUI.UserWindow
     /// </summary>
     public partial class PatientsTable : Window
     {
-        public PatientsTable()
+        IPatientService _patientService;
+        public PatientsTable(IPatientService patientService)
         {
             InitializeComponent();
+            _patientService = patientService;
             LoadRows();
         }
         private void LoadRows()
         {
             dataGrid.Items.Clear();
-            List<Patient> patients = PatientService.GetAll();
+            List<Patient> patients = _patientService.GetAll();
             foreach (Patient patient in patients)
             {
                 dataGrid.Items.Add(patient);
@@ -32,7 +36,7 @@ namespace HealthInstitution.GUI.UserWindow
         }
         private void CreatePatient_Click(object sender, RoutedEventArgs e)
         {
-            CreatePatientDialog createPatientDialog = new CreatePatientDialog();
+            CreatePatientDialog createPatientDialog = DIContainer.GetService<CreatePatientDialog>();          
             createPatientDialog.ShowDialog();
             LoadRows();
         }
@@ -42,17 +46,19 @@ namespace HealthInstitution.GUI.UserWindow
             Patient selectedPatient = (Patient)dataGrid.SelectedItem;
             if (selectedPatient != null) 
             {
-                UpdatePatientWindow updatePatientWindow = new UpdatePatientWindow(selectedPatient);
+                UpdatePatientWindow updatePatientWindow = DIContainer.GetService<UpdatePatientWindow>();
+                updatePatientWindow.SetSelectedPatient(selectedPatient);               
                 updatePatientWindow.ShowDialog();
+
                 dataGrid.SelectedItem = null;
                 LoadRows();
             }
         }
         private void TryDeletingPatient(Patient selectedPatient)
         {
-            if (ExaminationService.GetByPatient(selectedPatient.Username).Count() == 0 && OperationService.GetByPatient(selectedPatient.Username).Count() == 0)
+            if (_patientService.IsAvailableForDeletion(selectedPatient))
             {
-                PatientService.Delete(selectedPatient.Username);
+                _patientService.Delete(selectedPatient.Username);
                 dataGrid.SelectedItem = null;
                 LoadRows();
             }
@@ -74,7 +80,7 @@ namespace HealthInstitution.GUI.UserWindow
             Patient selectedPatient = (Patient)dataGrid.SelectedItem;
             if (selectedPatient != null)
             {
-                PatientService.ChangeBlockedStatus(selectedPatient.Username);
+                _patientService.ChangeBlockedStatus(selectedPatient.Username);
                 dataGrid.SelectedItem = null;
                 LoadRows();
             }

@@ -1,4 +1,6 @@
-﻿using HealthInstitution.Core.EquipmentTransfers;
+﻿using HealthInstitution.Core.DIContainer;
+using HealthInstitution.Core.Equipments;
+using HealthInstitution.Core.EquipmentTransfers;
 using HealthInstitution.Core.EquipmentTransfers.Model;
 using HealthInstitution.Core.EquipmentTransfers.Repository;
 using HealthInstitution.Core.Examinations.Model;
@@ -34,22 +36,29 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
     /// </summary>
     public partial class RoomMergeWindow : Window
     {
-        public RoomMergeWindow()
+        IRoomTimetableService _roomTimetableService;
+        IRenovationService _renovationService;
+        IRoomService _roomService;
+        public RoomMergeWindow(IRoomTimetableService roomTimetableService, IRenovationService renovationService, IRoomService roomService)
         {
             InitializeComponent();
+            _roomTimetableService = roomTimetableService;
+            _renovationService = renovationService;
+            _roomService = roomService;
+            
         }
 
         private void SimpleRenovation_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
-            SimpleRenovationWindow simpleRenovationWindow = new SimpleRenovationWindow();
+            SimpleRenovationWindow simpleRenovationWindow = DIContainer.GetService<SimpleRenovationWindow>();
             simpleRenovationWindow.ShowDialog();
         }
 
         private void RoomSplit_Click(object sender, RoutedEventArgs e)
         {
             this.Close();
-            RoomSplitWindow roomSplitWindow = new RoomSplitWindow();
+            RoomSplitWindow roomSplitWindow = DIContainer.GetService<RoomSplitWindow>();           
             roomSplitWindow.ShowDialog();
         }
 
@@ -61,7 +70,7 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
 
         private void FirstRoomComboBox_Loaded(object sender, RoutedEventArgs e)
         {
-            List<Room> rooms = RoomService.GetActive();
+            List<Room> rooms = _roomService.GetActive();
 
             firstRoomComboBox.ItemsSource = rooms;
             firstRoomComboBox.SelectedItem = null;
@@ -69,7 +78,7 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
 
         private void SecondRoomComboBox_Loaded(object sender, RoutedEventArgs e)
         {
-            List<Room> rooms = RoomService.GetActive();
+            List<Room> rooms = _roomService.GetActive();
 
             secondRoomComboBox.ItemsSource = rooms;
             secondRoomComboBox.SelectedItem = null;
@@ -124,13 +133,13 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
             RoomType type = (RoomType)roomTypeComboBox.SelectedItem;
 
             RoomDTO roomDTO = new RoomDTO(type, number, true, false);
-            Room mergedRoom = RoomService.AddRoom(roomDTO);
+            Room mergedRoom = _roomService.AddRoom(roomDTO);
 
             RoomMergerDTO roomMergerDTO = new RoomMergerDTO(firstSelectedRoom, secondSelectedRoom, mergedRoom, startDate, endDate);
-            RenovationService.AddRoomMerger(roomMergerDTO);
+            Renovation renovation = _renovationService.AddRoomMerger(roomMergerDTO);
             if (startDate == DateTime.Today)
             {
-                RenovationService.StartMerge(firstSelectedRoom, secondSelectedRoom, mergedRoom);
+                _renovationService.Start(renovation);
                 System.Windows.MessageBox.Show("Renovation scheduled!", "Room renovation", MessageBoxButton.OK, MessageBoxImage.Information);
             }
             else
@@ -158,14 +167,14 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
             }
 
             string message;
-            bool firstRoomOccupied = RoomTimetableService.CheckRoomTimetable(firstSelectedRoom, startDate, out message);
+            bool firstRoomOccupied = _roomTimetableService.CheckRoomTimetable(firstSelectedRoom, startDate, out message);
             if (firstRoomOccupied)
             {
                 System.Windows.MessageBox.Show(message, "Failed renovation", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
             }
 
-            bool secondRoomOccupied = RoomTimetableService.CheckRoomTimetable(secondSelectedRoom, startDate, out message);
+            bool secondRoomOccupied = _roomTimetableService.CheckRoomTimetable(secondSelectedRoom, startDate, out message);
             if (secondRoomOccupied)
             {
                 System.Windows.MessageBox.Show(message, "Failed renovation", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -185,7 +194,7 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
             }
             int number = Int32.Parse(numberInput);
 
-            if (RoomService.RoomNumberIsTaken(number))
+            if (_roomService.RoomNumberIsTaken(number))
             {
                 System.Windows.MessageBox.Show("This room number already exist!", "Failed renovation", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;

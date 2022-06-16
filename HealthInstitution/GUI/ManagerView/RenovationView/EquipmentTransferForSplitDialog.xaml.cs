@@ -25,9 +25,14 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
     {
         private List<Equipment> _firstRoomEquipments;
         private List<Equipment> _secondRoomEquipments;
-        public EquipmentTransferForSplitDialog(List<Equipment> firstRoomEquipment, List<Equipment> secondRoomEquipments)
+        IEquipmentTransferService _equipmentTransferService;
+        public EquipmentTransferForSplitDialog(IEquipmentTransferService equipmentTransferService)
         {
             InitializeComponent();
+            _equipmentTransferService = equipmentTransferService;
+        }
+        public void SetEquipmentCollections(List<Equipment> firstRoomEquipment, List<Equipment> secondRoomEquipments)
+        {
             _firstRoomEquipments = firstRoomEquipment;
             _secondRoomEquipments = secondRoomEquipments;
         }
@@ -59,7 +64,7 @@ namespace HealthInstitution.GUI.ManagerView.RenovationView
                 return;
             }
  
-            EquipmentTransferService.Transfer(_secondRoomEquipments, equipment, quantity);
+            _equipmentTransferService.Transfer(_secondRoomEquipments, equipment, quantity);
             System.Windows.MessageBox.Show("Equipment transfer completed!", "Equipment transfer", MessageBoxButton.OK, MessageBoxImage.Information);
             
             this.Close();
