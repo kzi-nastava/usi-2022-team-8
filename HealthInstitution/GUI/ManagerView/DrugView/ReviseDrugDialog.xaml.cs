@@ -36,11 +36,11 @@ namespace HealthInstitution.GUI.ManagerView.DrugView
             _drugService = drugService;
             _ingredientsForDrug = new List<Ingredient>();
             addIngredient.IsEnabled = false;
-            SetDrugData();
         }
         public void SetDrug(Drug drug)
         {
             _drug = drug;
+            SetDrugData();
         }
         private void SetDrugData()
         {

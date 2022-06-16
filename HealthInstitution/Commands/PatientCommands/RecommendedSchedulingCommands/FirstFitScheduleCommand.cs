@@ -36,6 +36,10 @@ internal class FirstFitScheduleCommand : CommandBase
             window.ShowDialog();
             _viewModel.ThisWindow.Close();
         }
+        else
+        {
+            _viewModel.ThisWindow.Close();
+        }
     }
 
     private RecommendedSchedulingDTOs GenerateFirstFitDTO()

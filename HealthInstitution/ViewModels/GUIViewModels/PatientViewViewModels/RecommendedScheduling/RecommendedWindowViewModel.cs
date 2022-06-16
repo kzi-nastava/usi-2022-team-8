@@ -38,7 +38,7 @@ public class RecommendedWindowViewModel : ViewModelBase
         LoadComboBoxes();
     }
 
-    private string _priority;
+    private string _priority = "Doctor";
 
     public string Priority
     {

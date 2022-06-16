@@ -23,17 +23,20 @@ namespace HealthInstitution.GUI.ManagerView.IngredientView
     public partial class EditIngredientDialog : Window
     {
         private Ingredient _ingredient;
-        IIngredientService _ingredientService;
+        private IIngredientService _ingredientService;
+
         public EditIngredientDialog(IIngredientService ingredientService)
         {
             InitializeComponent();
             _ingredientService = ingredientService;
-            SetRoomData();
         }
+
         public void SetSelectedIngredient(Ingredient ingredient)
         {
             _ingredient = ingredient;
+            SetRoomData();
         }
+
         private void SetRoomData()
         {
             nameBox.Text = _ingredient.Name;

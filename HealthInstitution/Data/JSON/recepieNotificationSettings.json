@@ -1,1 +1,27 @@
-[]
+[
+
+  {
+    "BeforeAmmount": "2022-06-16T04:04:00+02:00",
+    "PatientUsername": "pera",
+    "Prescription": {
+      "Id": 4,
+      "DailyDose": 2,
+      "TimeOfUse": "DuringMeal",
+      "Drug": {
+        "Id": 1,
+        "Name": "Brufen",
+        "State": "Accepted",
+        "Ingredients": [
+          {
+            "Id": 2,
+            "Name": "bromazepam"
+          }
+        ],
+        "RejectionReason": ""
+      },
+      "HourlyRate": "2022-05-19T09:00:00"
+    },
+    "LastUpdated": "2022-06-16T22:24:18.2615641+02:00",
+    "Id": 4
+  }
+]

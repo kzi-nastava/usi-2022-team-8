@@ -24,24 +24,27 @@ namespace HealthInstitution.GUI.ManagerView
     public partial class EditRoomDialog : Window
     {
         private Room _room;
-        IRoomService _roomService;
+        private IRoomService _roomService;
+
         public EditRoomDialog(IRoomService roomService)
         {
             InitializeComponent();
             _roomService = roomService;
-            SetRoomData();
         }
+
         public void SetSelectedRoom(Room room)
         {
             _room = room;
+            SetRoomData();
         }
+
         private void SetRoomData()
         {
             numberBox.Text = _room.Number.ToString();
         }
 
         private void RoomTypeComboBox_Loaded(object sender, RoutedEventArgs e)
-        {   
+        {
             List<RoomType> types = new List<RoomType>();
             types.Add(RoomType.ExaminationRoom);
             types.Add(RoomType.OperatingRoom);
@@ -62,7 +65,7 @@ namespace HealthInstitution.GUI.ManagerView
             {
                 return;
             }
-            
+
             if (!ValidateRoomType())
             {
                 return;

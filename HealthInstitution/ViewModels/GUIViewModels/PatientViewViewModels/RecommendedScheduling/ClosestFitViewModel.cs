@@ -46,7 +46,7 @@ public class ClosestFitViewModel : ViewModelBase
         }
     }
 
-    private object _choice;
+    private object _choice = "0";
 
     public object Choice
     {
