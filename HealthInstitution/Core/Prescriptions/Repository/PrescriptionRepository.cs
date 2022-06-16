@@ -12,7 +12,7 @@ namespace HealthInstitution.Core.Prescriptions.Repository
     public class PrescriptionRepository : IPrescriptionRepository
     {
         public int maxId;
-        private String _fileName = @"..\..\..\Data\JSON\prescriptions.json";
+        private String _fileName = @"..\..\..\Data\prescriptions.json";
 
         private IDrugRepository _drugRepository;
         public List<Prescription> Prescriptions { get; set; }
@@ -47,7 +47,7 @@ namespace HealthInstitution.Core.Prescriptions.Repository
         public void LoadFromFile()
         {
             var prescriptions = JArray.Parse(File.ReadAllText(_fileName));
-            //var prescriptions = JsonSerializer.Deserialize<List<Prescription>>(File.ReadAllText(@"..\..\..\Data\JSON\prescriptions.json"), _options);
+            //var prescriptions = JsonSerializer.Deserialize<List<Prescription>>(File.ReadAllText(@"..\..\..\Data\prescriptions.json"), _options);
             foreach (var prescription in prescriptions)
             {
                 Prescription loadedPrescription = Parse(prescription);

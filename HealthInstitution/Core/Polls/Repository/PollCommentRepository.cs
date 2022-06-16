@@ -15,7 +15,7 @@ namespace HealthInstitution.Core.Polls.Repository
 {
     public class PollCommentRepository : IPollCommentRepository
     {
-        private String _fileName = @"..\..\..\Data\JSON\pollComments.json";
+        private String _fileName = @"..\..\..\Data\pollComments.json";
         private IDoctorRepository _doctorRepository;
 
         private int _maxId;
@@ -36,7 +36,6 @@ namespace HealthInstitution.Core.Polls.Repository
             this._maxId = 0;
             this.LoadFromFile();
         }
-
 
         private PollComment Parse(JToken? pollComment)
         {
@@ -86,6 +85,7 @@ namespace HealthInstitution.Core.Polls.Repository
             }
             return reducedPollComments;
         }
+
         public void Save()
         {
             var allPollComments = JsonSerializer.Serialize(PrepareForSerialization(), _options);
@@ -101,6 +101,7 @@ namespace HealthInstitution.Core.Polls.Repository
         {
             return this.PollCommentById;
         }
+
         public PollComment GetById(int id)
         {
             if (PollCommentById.ContainsKey(id))
@@ -126,7 +127,6 @@ namespace HealthInstitution.Core.Polls.Repository
             pollComment.ForDoctor = byPollComment.ForDoctor;
             Save();
         }
-
 
         public void Delete(int id)
         {

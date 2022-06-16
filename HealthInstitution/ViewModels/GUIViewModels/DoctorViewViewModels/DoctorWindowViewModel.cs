@@ -1,6 +1,5 @@
 ﻿using HealthInstitution.Commands;
 using HealthInstitution.Commands.DoctorCommands.DoctorWindow;
-using HealthInstitution.Core;
 using HealthInstitution.Core.DIContainer;
 using HealthInstitution.Core.SystemUsers.Doctors;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;

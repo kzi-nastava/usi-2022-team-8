@@ -12,7 +12,7 @@ namespace HealthInstitution.Core.TrollCounters.Repository;
 
 public class TrollCounterFileRepository : ITrollCounterFileRepository
 {
-    private String _fileName= @"..\..\..\Data\JSON\trollCounters.json";
+    private String _fileName = @"..\..\..\Data\trollCounters.json";
     public List<TrollCounter> Counters { get; set; }
     public Dictionary<String, TrollCounter> CountersById { get; set; }
 
@@ -31,7 +31,7 @@ public class TrollCounterFileRepository : ITrollCounterFileRepository
 
     public void LoadFromFile()
     {
-        var counters = JsonSerializer.Deserialize<List<TrollCounter>>(File.ReadAllText(@"..\..\..\Data\JSON\trollCounters.json"), _options);
+        var counters = JsonSerializer.Deserialize<List<TrollCounter>>(File.ReadAllText(@"..\..\..\Data\trollCounters.json"), _options);
         foreach (TrollCounter trollCounter in counters)
         {
             this.Counters.Add(trollCounter);
@@ -49,10 +49,12 @@ public class TrollCounterFileRepository : ITrollCounterFileRepository
     {
         return this.Counters;
     }
+
     public Dictionary<string, TrollCounter> GetAllById(string id)
     {
         return CountersById;
     }
+
     public TrollCounter GetById(string id)
     {
         return this.CountersById[id];
@@ -81,11 +83,13 @@ public class TrollCounterFileRepository : ITrollCounterFileRepository
     {
         if (CountersById[username].EditDeleteDates.Count() >= 5) throw new Exception("Edited too many examinations");
     }
+
     public void AppendEditDeleteDates(string username)
     {
         GetById(username).AppendEditDeleteDates(DateTime.Today);
         Save();
     }
+
     public void AppendCreateDates(string username)
     {
         GetById(username).AppendCreateDates(DateTime.Today);

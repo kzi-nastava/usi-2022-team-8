@@ -1,5 +1,4 @@
 ﻿using HealthInstitution.Commands.PatientCommands.Scheduling;
-using HealthInstitution.Core;
 using HealthInstitution.Core.Examinations;
 using HealthInstitution.Core.Examinations.Model;
 using HealthInstitution.Core.ScheduleEditRequests;

@@ -15,17 +15,18 @@ namespace HealthInstitution.Core.RestRequestNotifications.Repository
 {
     public class RestRequestNotificationRepository : IRestRequestNotificationRepository
     {
-        private String _fileName= @"..\..\..\Data\JSON\restRequestNotifications.json";
+        private String _fileName = @"..\..\..\Data\restRequestNotifications.json";
         public int _maxId { get; set; }
         public List<RestRequestNotification> Notifications { get; set; }
         public Dictionary<int, RestRequestNotification> NotificationsById { get; set; }
-        IRestRequestRepository _restRequestRepository;
+        private IRestRequestRepository _restRequestRepository;
 
         private JsonSerializerOptions _options = new JsonSerializerOptions
         {
             Converters = { new JsonStringEnumConverter() },
             PropertyNameCaseInsensitive = true
         };
+
         public RestRequestNotificationRepository(IRestRequestRepository restRequestRepository)
         {
             _restRequestRepository = restRequestRepository;
@@ -34,6 +35,7 @@ namespace HealthInstitution.Core.RestRequestNotifications.Repository
             this._maxId = 0;
             this.LoadFromFile();
         }
+
         public void LoadFromFile()
         {
             var allNotifications = JArray.Parse(File.ReadAllText(this._fileName));
@@ -52,7 +54,6 @@ namespace HealthInstitution.Core.RestRequestNotifications.Repository
                 this.NotificationsById.Add(id, loadedNotification);
             }
         }
-
 
         public void Save()
         {
@@ -74,6 +75,7 @@ namespace HealthInstitution.Core.RestRequestNotifications.Repository
         {
             return this.Notifications;
         }
+
         public Dictionary<int, RestRequestNotification> GetAllById()
         {
             return NotificationsById;
@@ -87,17 +89,20 @@ namespace HealthInstitution.Core.RestRequestNotifications.Repository
             }
             return null;
         }
+
         private void AddToCollections(RestRequestNotification notification)
         {
             notification.RestRequest.Doctor.RestRequestNotifications.Add(notification);
             Notifications.Add(notification);
             NotificationsById.Add(notification.Id, notification);
         }
+
         private void SaveAll()
         {
             Save();
             DIContainer.DIContainer.GetService<IRestRequestNotificationDoctorRepository>().Save();
         }
+
         public void Add(RestRequestNotification restRequestNotification)
         {
             int id = ++this._maxId;

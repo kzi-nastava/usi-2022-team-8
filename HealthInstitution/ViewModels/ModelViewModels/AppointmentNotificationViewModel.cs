@@ -1,5 +1,4 @@
-﻿using HealthInstitution.Core;
-using HealthInstitution.Core.Notifications.Model;
+﻿using HealthInstitution.Core.Notifications.Model;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using System;
 using System.Collections.Generic;

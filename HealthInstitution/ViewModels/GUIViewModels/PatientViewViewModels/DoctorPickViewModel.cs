@@ -1,5 +1,4 @@
 ﻿using HealthInstitution.Commands.PatientCommands.DoctorPickCommands;
-using HealthInstitution.Core;
 using HealthInstitution.Core.SystemUsers.Doctors;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using HealthInstitution.Core.SystemUsers.Patients.Model;

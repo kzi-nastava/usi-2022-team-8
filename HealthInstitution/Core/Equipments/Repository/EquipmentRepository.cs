@@ -12,7 +12,7 @@ namespace HealthInstitution.Core.Equipments.Repository
 {
     public class EquipmentRepository : IEquipmentRepository
     {
-        private String _fileName = @"..\..\..\Data\JSON\equipments.json";
+        private String _fileName = @"..\..\..\Data\equipments.json";
 
         private int _maxId;
         public List<Equipment> Equipments { get; set; }
@@ -24,18 +24,19 @@ namespace HealthInstitution.Core.Equipments.Repository
             Converters = { new JsonStringEnumConverter() },
             PropertyNameCaseInsensitive = true
         };
+
         public EquipmentRepository()
-        {            
+        {
             this.Equipments = new List<Equipment>();
             this.EquipmentById = new Dictionary<int, Equipment>();
             this.EquipmentPerQuantity = new Dictionary<string, int>();
             this._maxId = 0;
             this.LoadFromFile();
         }
-        
+
         public void LoadFromFile()
         {
-            var equipments = JsonSerializer.Deserialize<List<Equipment>>(File.ReadAllText(@"..\..\..\Data\JSON\equipments.json"), _options);
+            var equipments = JsonSerializer.Deserialize<List<Equipment>>(File.ReadAllText(@"..\..\..\Data\equipments.json"), _options);
             foreach (Equipment equipment in equipments)
             {
                 if (equipment.Id > _maxId)
@@ -52,8 +53,8 @@ namespace HealthInstitution.Core.Equipments.Repository
         {
             foreach (Equipment equipment in Equipments)
             {
-                if(equipment.IsDynamic)
-                { 
+                if (equipment.IsDynamic)
+                {
                     if (EquipmentPerQuantity.ContainsKey(equipment.Name))
                     {
                         EquipmentPerQuantity[equipment.Name] += equipment.Quantity;
@@ -116,6 +117,7 @@ namespace HealthInstitution.Core.Equipments.Repository
             equipment.IsDynamic = byEquipment.IsDynamic;
             Save();
         }
+
         public void Delete(int id)
         {
             Equipment equipment = GetById(id);
@@ -123,6 +125,7 @@ namespace HealthInstitution.Core.Equipments.Repository
             this.EquipmentById.Remove(id);
             Save();
         }
+
         public EquipmentType GetEquipmentType(string equipmentName)
         {
             EquipmentType equipmentType = EquipmentType.AppointmentEquipment;
@@ -133,6 +136,7 @@ namespace HealthInstitution.Core.Equipments.Repository
             }
             return equipmentType;
         }
+
         public void RemoveConsumed(Equipment equipment, int consumedQuantity)
         {
             equipment.Quantity -= consumedQuantity;
@@ -146,4 +150,3 @@ namespace HealthInstitution.Core.Equipments.Repository
         }
     }
 }
-

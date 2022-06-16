@@ -17,7 +17,7 @@ namespace HealthInstitution.Core.EquipmentTransfers.Repository
 {
     public class EquipmentTransferRepository : IEquipmentTransferRepository
     {
-        private String _fileName = @"..\..\..\Data\JSON\equipmentTransfers.json";
+        private String _fileName = @"..\..\..\Data\equipmentTransfers.json";
 
         private IEquipmentRepository _equipmentRepository;
         private IRoomRepository _roomRepository;
@@ -62,7 +62,7 @@ namespace HealthInstitution.Core.EquipmentTransfers.Repository
         public void LoadFromFile()
         {
             var equipmentTransfers = JArray.Parse(File.ReadAllText(_fileName));
-           
+
             foreach (var equipmentTransfer in equipmentTransfers)
             {
                 EquipmentTransfer loadedEquipmentTransfer = Parse(equipmentTransfer);
@@ -87,13 +87,14 @@ namespace HealthInstitution.Core.EquipmentTransfers.Repository
                 {
                     id = equipmentTransfer.Id,
                     equipment = equipmentTransfer.Equipment.Id,
-                    fromRoom = (equipmentTransfer.FromRoom==null) ? 0 : equipmentTransfer.FromRoom.Id,
+                    fromRoom = (equipmentTransfer.FromRoom == null) ? 0 : equipmentTransfer.FromRoom.Id,
                     toRoom = equipmentTransfer.ToRoom.Id,
                     transferTime = equipmentTransfer.TransferTime
                 });
             }
             return reducedEquipmentTransfers;
         }
+
         public void Save()
         {
             var allEquipmentTransfers = JsonSerializer.Serialize(PrepareForSerialization(), _options);
@@ -109,6 +110,7 @@ namespace HealthInstitution.Core.EquipmentTransfers.Repository
         {
             return this.EquipmentTransferById;
         }
+
         public EquipmentTransfer GetById(int id)
         {
             if (EquipmentTransferById.ContainsKey(id))
@@ -137,7 +139,6 @@ namespace HealthInstitution.Core.EquipmentTransfers.Repository
             Save();
         }
 
-
         public void Delete(int id)
         {
             EquipmentTransfer equipmentTransfer = GetById(id);
@@ -145,6 +146,5 @@ namespace HealthInstitution.Core.EquipmentTransfers.Repository
             this.EquipmentTransferById.Remove(id);
             Save();
         }
-
     }
 }

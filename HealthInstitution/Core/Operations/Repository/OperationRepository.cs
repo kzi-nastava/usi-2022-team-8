@@ -22,7 +22,7 @@ namespace HealthInstitution.Core.Operations.Repository
 {
     public class OperationRepository : IOperationRepository
     {
-        private String _fileName = @"..\..\..\Data\JSON\operations.json";
+        private String _fileName = @"..\..\..\Data\operations.json";
 
         private IRoomRepository _roomRepository;
         private IMedicalRecordRepository _medicalRecordRepository;
@@ -64,8 +64,9 @@ namespace HealthInstitution.Core.Operations.Repository
 
             return new Operation(id, appointment, duration, room, null, medicalRecord);
         }
+
         public void LoadFromFile()
-        { 
+        {
             var allOperations = JArray.Parse(File.ReadAllText(this._fileName));
             foreach (var operation in allOperations)
             {
@@ -95,6 +96,7 @@ namespace HealthInstitution.Core.Operations.Repository
             }
             return reducedOperations;
         }
+
         public void Save()
         {
             List<dynamic> reducedOperations = PrepareForSerialization();
@@ -111,10 +113,12 @@ namespace HealthInstitution.Core.Operations.Repository
             }
             Save();
         }
+
         public int GetMaxId()
         {
             return _maxId;
         }
+
         public List<Operation> GetAll()
         {
             return this.Operations;
@@ -124,6 +128,7 @@ namespace HealthInstitution.Core.Operations.Repository
         {
             return this.OperationsById;
         }
+
         public Operation GetById(int id)
         {
             if (OperationsById.ContainsKey(id))
@@ -151,7 +156,7 @@ namespace HealthInstitution.Core.Operations.Repository
             int id = ++this._maxId;
             operation.Id = id;
             AddToCollections(operation);
-            SaveAll();        
+            SaveAll();
         }
 
         public void Update(int id, Operation byOperation)
@@ -164,13 +169,12 @@ namespace HealthInstitution.Core.Operations.Repository
             Save();
         }
 
-       
         public void Delete(int id)
         {
             Operation operation = OperationsById[id];
             this.Operations.Remove(operation);
             this.OperationsById.Remove(id);
-            SaveAll();        
+            SaveAll();
         }
 
         public void SwapOperationValue(Operation operation)

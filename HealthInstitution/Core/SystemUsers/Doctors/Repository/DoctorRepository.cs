@@ -13,7 +13,7 @@ namespace HealthInstitution.Core.SystemUsers.Doctors.Repository;
 
 public class DoctorRepository : IDoctorRepository
 {
-    private String _fileName= @"..\..\..\Data\JSON\doctors.json";
+    private String _fileName = @"..\..\..\Data\doctors.json";
     public List<Doctor> Doctors { get; set; }
     public Dictionary<String, Doctor> DoctorsByUsername { get; set; }
 
@@ -80,7 +80,7 @@ public class DoctorRepository : IDoctorRepository
         return this.Doctors;
     }
 
-    public Dictionary<string,Doctor> GetAllByUsername()
+    public Dictionary<string, Doctor> GetAllByUsername()
     {
         return DoctorsByUsername;
     }

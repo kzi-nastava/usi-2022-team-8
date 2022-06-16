@@ -1,5 +1,4 @@
-﻿using HealthInstitution.Core;
-using HealthInstitution.Core.Examinations.Model;
+﻿using HealthInstitution.Core.Examinations.Model;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System;

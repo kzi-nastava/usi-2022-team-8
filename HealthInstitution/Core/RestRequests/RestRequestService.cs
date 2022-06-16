@@ -1,6 +1,7 @@
 ﻿using HealthInstitution.Core.RestRequestNotifications;
 using HealthInstitution.Core.RestRequests.Model;
 using HealthInstitution.Core.RestRequests.Repository;
+using HealthInstitution.Core.Timetable;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -79,14 +80,15 @@ namespace HealthInstitution.Core.RestRequests
         }
         private void Validate(RestRequestDTO restRequestDTO)
         {
-            if ((restRequestDTO.StartDate - DateTime.Now).Days < 2)
+            if ((restRequestDTO.StartDate - DateTime.Now).Days <= 2)
             {
+                System.Windows.MessageBox.Show((restRequestDTO.StartDate - DateTime.Now).Days.ToString(), "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
                 throw new Exception("You have to request your days off minimum two days before the start of it!");
             }
 
             if (restRequestDTO.IsUrgent && !(restRequestDTO.DaysDuration > 0 && restRequestDTO.DaysDuration < 5))
                 throw new Exception("Urgent requests have to be five or less days!");
-            TimetableService.IsDoctorAvailable(restRequestDTO);
+            DoctorTimetableService.IsDoctorAvailable(restRequestDTO);
         }
         public void ApplyForRestRequest(RestRequestDTO restRequestDTO)
         {

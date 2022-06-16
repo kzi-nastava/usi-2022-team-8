@@ -17,18 +17,20 @@ namespace HealthInstitution.Core.Rooms.Repository
 {
     public class RoomRepository : IRoomRepository
     {
-        private String _fileName= @"..\..\..\Data\JSON\rooms.json";
+        private String _fileName = @"..\..\..\Data\rooms.json";
 
         private int _maxId;
         public List<Room> Rooms { get; set; }
         public Dictionary<int, Room> RoomById { get; set; }
 
-        IEquipmentRepository _equipmentRepository;
+        private IEquipmentRepository _equipmentRepository;
+
         private JsonSerializerOptions _options = new JsonSerializerOptions
         {
             Converters = { new JsonStringEnumConverter() },
             PropertyNameCaseInsensitive = true
         };
+
         public RoomRepository(IEquipmentRepository equipmentRepository)
         {
             _equipmentRepository = equipmentRepository;
@@ -62,6 +64,7 @@ namespace HealthInstitution.Core.Rooms.Repository
 
             return new Room(id, type, number, isRenovating, availableEquipment, isActive);
         }
+
         public void LoadFromFile()
         {
             var rooms = JArray.Parse(File.ReadAllText(_fileName));
@@ -82,12 +85,13 @@ namespace HealthInstitution.Core.Rooms.Repository
         private List<int> FormListOfIds(List<Equipment> equipments)
         {
             var ids = new List<int>();
-            foreach(var equipment in equipments)
+            foreach (var equipment in equipments)
             {
                 ids.Add(equipment.Id);
             }
             return ids;
         }
+
         private List<dynamic> PrepareForSerialization()
         {
             List<dynamic> reducedRooms = new List<dynamic>();
@@ -105,6 +109,7 @@ namespace HealthInstitution.Core.Rooms.Repository
             }
             return reducedRooms;
         }
+
         public void Save()
         {
             var allRooms = JsonSerializer.Serialize(PrepareForSerialization(), _options);
@@ -115,6 +120,7 @@ namespace HealthInstitution.Core.Rooms.Repository
         {
             return this.Rooms;
         }
+
         public Dictionary<int, Room> GetAllById()
         {
             return RoomById;
@@ -147,7 +153,6 @@ namespace HealthInstitution.Core.Rooms.Repository
             room.IsActive = byRoom.IsActive;
             Save();
         }
-
 
         public void Delete(int id)
         {
@@ -195,6 +200,7 @@ namespace HealthInstitution.Core.Rooms.Repository
             }
             return dynamicEquipment;
         }
+
         public Room? GetFromString(string? roomFromForm)
         {
             if (roomFromForm != null)
@@ -219,6 +225,5 @@ namespace HealthInstitution.Core.Rooms.Repository
         {
             return this.Rooms.FindIndex(room => room.Number == number);
         }
-
     }
 }

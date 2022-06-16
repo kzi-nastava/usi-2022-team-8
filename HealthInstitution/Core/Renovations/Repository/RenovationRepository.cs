@@ -15,7 +15,7 @@ namespace HealthInstitution.Core.Renovations.Repository
 {
     public class RenovationRepository : IRenovationRepository
     {
-        private String _fileName = @"..\..\..\Data\JSON\renovations.json";
+        private String _fileName = @"..\..\..\Data\renovations.json";
 
         private IRoomRepository _roomRepository;
 
@@ -37,6 +37,7 @@ namespace HealthInstitution.Core.Renovations.Repository
             this._maxId = 0;
             this.LoadFromFile();
         }
+
         private Renovation Parse(JToken? renovation)
         {
             Dictionary<int, Room> roomById = _roomRepository.GetAllById();
@@ -68,12 +69,12 @@ namespace HealthInstitution.Core.Renovations.Repository
                 Room secondRoom = roomById[secondRoomId];
                 return new RoomSeparation(id, room, firstRoom, secondRoom, startDate, endDate);
             }
-
         }
+
         public void LoadFromFile()
         {
             var renovations = JArray.Parse(File.ReadAllText(_fileName));
-            
+
             foreach (var renovation in renovations)
             {
                 Renovation loadedRenovation = Parse(renovation);
@@ -206,7 +207,6 @@ namespace HealthInstitution.Core.Renovations.Repository
             Save();
         }
 
-
         public void Delete(int id)
         {
             Renovation renovation = GetById(id);
@@ -214,6 +214,5 @@ namespace HealthInstitution.Core.Renovations.Repository
             this.RenovationById.Remove(id);
             Save();
         }
-
     }
 }

@@ -11,11 +11,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace HealthInstitution.Core
+namespace HealthInstitution.Core.Timetable
 {
-    public class TimetableService : ITimetableService
+    public class DoctorTimetableService : IDoctorTimetableService
     {
-        public TimetableService() { }
+        public DoctorTimetableService()
+        { }
+
         public List<Examination> GetScheduledExaminations(Doctor doctor)
         {
             return doctor.Examinations.Where(e => e.Status == ExaminationStatus.Scheduled).ToList();
@@ -32,6 +34,7 @@ namespace HealthInstitution.Core
             DateTime dateForThreeDays = today.AddDays(3);
             return examinations.Where(e => e.Appointment <= dateForThreeDays && e.Appointment >= today).ToList();
         }
+
         public List<Operation> GetOperationsInThreeDays(List<Operation> operations)
         {
             DateTime today = DateTime.Now;
@@ -43,6 +46,7 @@ namespace HealthInstitution.Core
         {
             return examinations.Where(e => e.Appointment.Date == date).ToList();
         }
+
         public List<Operation> GetOperationsByDate(List<Operation> operations, DateTime date)
         {
             return operations.Where(o => o.Appointment.Date == date).ToList();

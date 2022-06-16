@@ -17,13 +17,13 @@ namespace HealthInstitution.Core.ScheduleEditRequests.Repository;
 
 public class ScheduleEditRequestFileRepository : IScheduleEditRequestFileRepository
 {
-    private String _fileName= @"..\..\..\Data\JSON\scheduleEditRequests.json";
+    private String _fileName = @"..\..\..\Data\scheduleEditRequests.json";
     public List<ScheduleEditRequest> Requests { get; set; }
     public Dictionary<Int32, ScheduleEditRequest> RequestsById { get; set; }
-    IDoctorRepository _doctorRepository;
-    IExaminationRepository _examinationRepository;
-    IMedicalRecordRepository _medicalRecordRepository;
-    IRoomRepository _roomRepository;
+    private IDoctorRepository _doctorRepository;
+    private IExaminationRepository _examinationRepository;
+    private IMedicalRecordRepository _medicalRecordRepository;
+    private IRoomRepository _roomRepository;
 
     private JsonSerializerOptions _options = new JsonSerializerOptions
     {
@@ -148,7 +148,8 @@ public class ScheduleEditRequestFileRepository : IScheduleEditRequestFileReposit
     {
         return this.Requests;
     }
-    public Dictionary<int,ScheduleEditRequest> GetAllById()
+
+    public Dictionary<int, ScheduleEditRequest> GetAllById()
     {
         return RequestsById;
     }

@@ -16,17 +16,18 @@ namespace HealthInstitution.Core
 {
     public class RestRequestRepository : IRestRequestRepository
     {
-        private String _fileName= @"..\..\..\Data\JSON\RestRequests.json";
+        private String _fileName = @"..\..\..\Data\RestRequests.json";
         public int _maxId { get; set; }
         public List<RestRequest> RestRequests { get; set; }
         public Dictionary<int, RestRequest> RestRequestsById { get; set; }
-        IDoctorRepository _doctorRepository;
+        private IDoctorRepository _doctorRepository;
 
         private JsonSerializerOptions _options = new JsonSerializerOptions
         {
             Converters = { new JsonStringEnumConverter() },
             PropertyNameCaseInsensitive = true
         };
+
         public RestRequestRepository(IDoctorRepository doctorRepository)
         {
             _doctorRepository = doctorRepository;
@@ -49,6 +50,7 @@ namespace HealthInstitution.Core
 
             return new RestRequest(id, null, reason, startDate, daysDuration, state, urgent, rejectionReason);
         }
+
         public void LoadFromFile()
         {
             var allRestRequests = JArray.Parse(File.ReadAllText(this._fileName));
@@ -81,6 +83,7 @@ namespace HealthInstitution.Core
             }
             return reducedRestRequests;
         }
+
         public void Save()
         {
             List<dynamic> reducedRestRequests = PrepareForSerialization();
@@ -97,6 +100,7 @@ namespace HealthInstitution.Core
         {
             return RestRequestsById;
         }
+
         public RestRequest GetById(int id)
         {
             if (RestRequestsById.ContainsKey(id))
@@ -136,6 +140,7 @@ namespace HealthInstitution.Core
             this.RestRequestsById[id] = restRequest;
             Save();
         }
+
         public void Delete(int id)
         {
             RestRequest restRequest = RestRequestsById[id];
@@ -144,11 +149,13 @@ namespace HealthInstitution.Core
             restRequest.Doctor.RestRequests.Remove(restRequest);
             SaveAll();
         }
+
         public void Accept(RestRequest restRequest)
         {
             restRequest.State = RestRequestState.Accepted;
             Save();
         }
+
         public void Reject(RestRequest restRequest, string rejectionReason)
         {
             restRequest.State = RestRequestState.Rejected;
@@ -165,7 +172,6 @@ namespace HealthInstitution.Core
                     doctorRestRequests.Add(restRequest);
             }
             return doctorRestRequests;*/
-
 
             return GetAll().Where(restRequest => restRequest.Doctor.Username == doctorUsername).ToList();
         }

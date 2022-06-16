@@ -1,5 +1,4 @@
 ﻿using HealthInstitution.Commands.DoctorCommands.ConsumedEquipment;
-using HealthInstitution.Core;
 using HealthInstitution.Core.Equipments;
 using HealthInstitution.Core.Equipments.Model;
 using HealthInstitution.Core.Rooms;

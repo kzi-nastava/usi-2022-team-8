@@ -7,7 +7,7 @@ namespace HealthInstitution.Core.PrescriptionNotifications.Repository;
 
 public class PrescriptionNotificationRepository : IPrescriptionNotificationRepository
 {
-    private String _fileName = @"..\..\..\Data\JSON\recepieNotifications.json";
+    private String _fileName = @"..\..\..\Data\recepieNotifications.json";
     public List<PrescriptionNotification> Notifications { get; set; }
     public Dictionary<int, PrescriptionNotification> NotificationsById { get; set; }
 
@@ -16,6 +16,7 @@ public class PrescriptionNotificationRepository : IPrescriptionNotificationRepos
         Converters = { new JsonStringEnumConverter() },
         PropertyNameCaseInsensitive = true
     };
+
     public PrescriptionNotificationRepository()
     {
         this.Notifications = new List<PrescriptionNotification>();
@@ -25,7 +26,7 @@ public class PrescriptionNotificationRepository : IPrescriptionNotificationRepos
 
     public void LoadFromFile()
     {
-        var notifications = JsonSerializer.Deserialize<List<PrescriptionNotification>>(File.ReadAllText(@"..\..\..\Data\JSON\recepieNotifications.json"), _options);
+        var notifications = JsonSerializer.Deserialize<List<PrescriptionNotification>>(File.ReadAllText(@"..\..\..\Data\recepieNotifications.json"), _options);
         foreach (PrescriptionNotification notification in notifications)
         {
             this.Notifications.Add(notification);

@@ -15,7 +15,7 @@ namespace HealthInstitution.Core.Polls.Repository
 {
     public class PollQuestionRepository : IPollQuestionRepository
     {
-        private String _fileName = @"..\..\..\Data\JSON\pollQuestions.json";
+        private String _fileName = @"..\..\..\Data\pollQuestions.json";
         private IDoctorRepository _doctorRepository;
 
         public List<string> HospitalQuestions { get; set; }
@@ -50,7 +50,6 @@ namespace HealthInstitution.Core.Polls.Repository
             this.LoadFromFile();
             LoadRatedExaminations();
         }
-
 
         private List<int> JToken2Ints(JToken tokens)
         {
@@ -110,6 +109,7 @@ namespace HealthInstitution.Core.Polls.Repository
             }
             return reducedPollQuestions;
         }
+
         public void Save()
         {
             var allPollQuestions = JsonSerializer.Serialize(PrepareForSerialization(), _options);
@@ -125,6 +125,7 @@ namespace HealthInstitution.Core.Polls.Repository
         {
             return this.PollQuestionById;
         }
+
         public PollQuestion GetById(int id)
         {
             if (PollQuestionById.ContainsKey(id))
@@ -151,7 +152,6 @@ namespace HealthInstitution.Core.Polls.Repository
             pollQuestion.Grades = byPollQuestion.Grades;
             Save();
         }
-
 
         public void Delete(int id)
         {
@@ -180,11 +180,12 @@ namespace HealthInstitution.Core.Polls.Repository
         {
             return PollQuestions.FindAll(question => question.ForDoctor == doctor);
         }
+
         private List<int> _ratedExaminations;
 
         private void LoadRatedExaminations()
         {
-            _ratedExaminations = JsonSerializer.Deserialize<List<int>>(File.ReadAllText(@"..\..\..\Data\JSON\ratedExaminations.json"), _options);
+            _ratedExaminations = JsonSerializer.Deserialize<List<int>>(File.ReadAllText(@"..\..\..\Data\ratedExaminations.json"), _options);
         }
 
         public bool IsExaminationRated(int id)
@@ -194,7 +195,7 @@ namespace HealthInstitution.Core.Polls.Repository
 
         private void SaveRatedExaminations()
         {
-            File.WriteAllText(@"..\..\..\Data\JSON\ratedExaminations.json", JsonSerializer.Serialize(this._ratedExaminations, _options));
+            File.WriteAllText(@"..\..\..\Data\ratedExaminations.json", JsonSerializer.Serialize(this._ratedExaminations, _options));
         }
 
         public void AddToRatedExaminations(int id)

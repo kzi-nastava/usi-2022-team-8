@@ -15,7 +15,7 @@ namespace HealthInstitution.Core.SystemUsers.Patients.Repository
 {
     public class PatientRepository : IPatientRepository
     {
-        private String _fileName= @"..\..\..\Data\JSON\patients.json";
+        private String _fileName = @"..\..\..\Data\patients.json";
         public List<Patient> Patients { get; set; }
         public Dictionary<string, Patient> PatientByUsername { get; set; }
 
@@ -85,16 +85,19 @@ namespace HealthInstitution.Core.SystemUsers.Patients.Repository
         {
             return this.Patients;
         }
-        public Dictionary<string,Patient> GetAllByUsername()
+
+        public Dictionary<string, Patient> GetAllByUsername()
         {
             return PatientByUsername;
         }
+
         public Patient GetByUsername(string username)
         {
             if (PatientByUsername.ContainsKey(username))
                 return PatientByUsername[username];
             return null;
         }
+
         public void Add(Patient patient)
         {
             this.Patients.Add(patient);

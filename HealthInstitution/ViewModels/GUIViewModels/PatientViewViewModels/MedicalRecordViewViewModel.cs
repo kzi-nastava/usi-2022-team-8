@@ -1,6 +1,5 @@
 ﻿using HealthInstitution.Commands.PatientCommands;
 using HealthInstitution.Commands.PatientCommands.MedicalRecordViewCommands;
-using HealthInstitution.Core;
 using HealthInstitution.Core.Examinations;
 using HealthInstitution.Core.Examinations.Model;
 using HealthInstitution.Core.Polls;

@@ -15,9 +15,10 @@ namespace HealthInstitution.Core.RestRequestNotifications.Repository
 {
     public class RestRequestNotificationDoctorRepository : IRestRequestNotificationDoctorRepository
     {
-        private String _fileName= @"..\..\..\Data\JSON\restRequestNotificationDoctor.json";
-        IDoctorRepository _doctorRepository;
-        IRestRequestNotificationRepository _restRequestNotificationRepository;
+        private String _fileName = @"..\..\..\Data\restRequestNotificationDoctor.json";
+        private IDoctorRepository _doctorRepository;
+        private IRestRequestNotificationRepository _restRequestNotificationRepository;
+
         public RestRequestNotificationDoctorRepository(IDoctorRepository doctorRepository, IRestRequestNotificationRepository restRequestNotificationRepository)
         {
             _doctorRepository = doctorRepository;

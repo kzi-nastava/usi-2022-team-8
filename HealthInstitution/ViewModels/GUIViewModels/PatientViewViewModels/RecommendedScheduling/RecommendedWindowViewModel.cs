@@ -1,6 +1,5 @@
 ﻿using HealthInstitution.Commands.PatientCommands.PatientWindowCommands;
 using HealthInstitution.Commands.PatientCommands.RecommendedSchedulingCommands;
-using HealthInstitution.Core;
 using HealthInstitution.Core.Scheduling;
 using HealthInstitution.Core.SystemUsers.Doctors;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;

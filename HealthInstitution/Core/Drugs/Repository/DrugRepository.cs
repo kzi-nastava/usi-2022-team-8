@@ -11,7 +11,7 @@ namespace HealthInstitution.Core.Drugs.Repository;
 public class DrugRepository : IDrugRepository
 {
     private int _maxId;
-    private String _fileName = @"..\..\..\Data\JSON\drugs.json";
+    private String _fileName = @"..\..\..\Data\drugs.json";
     private IIngredientRepository _ingredientRepository;
     public List<Drug> Drugs { get; set; }
     public Dictionary<int, Drug> DrugById { get; set; }
@@ -30,6 +30,7 @@ public class DrugRepository : IDrugRepository
         Converters = { new JsonStringEnumConverter() },
         PropertyNameCaseInsensitive = true
     };
+
     private List<Ingredient> JToken2Ingredients(JToken tokens)
     {
         Dictionary<int, Ingredient> ingredientById = _ingredientRepository.GetAllById();
@@ -50,8 +51,6 @@ public class DrugRepository : IDrugRepository
                                   (string)drug["rejectionReason"]);
     }
 
-
-
     public void LoadFromFile()
     {
         var drugs = JArray.Parse(File.ReadAllText(_fileName));
@@ -66,6 +65,7 @@ public class DrugRepository : IDrugRepository
             this.DrugById[loadedDrug.Id] = loadedDrug;
         }
     }
+
     private List<dynamic> PrepareForSerialization()
     {
         List<dynamic> reducedDrugs = new List<dynamic>();
@@ -76,15 +76,16 @@ public class DrugRepository : IDrugRepository
                 ingredientsId.Add(i.Id);
             reducedDrugs.Add(new
             {
-                id=drug.Id,
-                name=drug.Name,
-                state=drug.State,
-                ingredients=ingredientsId,
-                rejectionReason=drug.RejectionReason
+                id = drug.Id,
+                name = drug.Name,
+                state = drug.State,
+                ingredients = ingredientsId,
+                rejectionReason = drug.RejectionReason
             });
         }
         return reducedDrugs;
     }
+
     public void Save()
     {
         var allDrugs = JsonSerializer.Serialize(PrepareForSerialization(), _options);
@@ -110,6 +111,7 @@ public class DrugRepository : IDrugRepository
     {
         return GetAllByStatus(DrugState.Created);
     }
+
     public List<Drug> GetAllRejected()
     {
         return GetAllByStatus(DrugState.Rejected);
@@ -138,7 +140,7 @@ public class DrugRepository : IDrugRepository
     public void Add(Drug drug)
     {
         int id = ++_maxId;
-        drug.Id=id;
+        drug.Id = id;
         this.Drugs.Add(drug);
         this.DrugById[id] = drug;
         Save();
@@ -154,6 +156,7 @@ public class DrugRepository : IDrugRepository
         DrugById[drug.Id] = drug;
         Save();
     }
+
     public void Accept(Drug drug)
     {
         drug.State = DrugState.Accepted;
@@ -164,7 +167,7 @@ public class DrugRepository : IDrugRepository
     public void Reject(Drug drug, string rejectionReason)
     {
         drug.State = DrugState.Rejected;
-        drug.RejectionReason = rejectionReason;   
+        drug.RejectionReason = rejectionReason;
         DrugById[drug.Id] = drug;
         Save();
     }
@@ -188,6 +191,7 @@ public class DrugRepository : IDrugRepository
         }
         return false;
     }
+
     public bool Contains(string name)
     {
         return this.Drugs.Any(drug => drug.Name == name);

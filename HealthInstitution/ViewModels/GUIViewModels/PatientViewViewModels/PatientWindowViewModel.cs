@@ -1,8 +1,6 @@
 ﻿using HealthInstitution.Commands;
 using HealthInstitution.Commands.PatientCommands.PatientWindowCommands;
-using HealthInstitution.Core;
 using HealthInstitution.Core.DIContainer;
-using HealthInstitution.Core.MVVMNavigation;
 using HealthInstitution.Core.SystemUsers.Patients;
 using HealthInstitution.Core.SystemUsers.Patients.Model;
 using HealthInstitution.GUI.PatientView;
@@ -18,10 +16,11 @@ namespace HealthInstitution.ViewModels.GUIViewModels.PatientViewViewModels;
 
 public class PatientWindowViewModel : ViewModelBase
 {
-    IPatientService _patientService;
-    Patient _loggedPatient;
+    private IPatientService _patientService;
+    private Patient _loggedPatient;
+
     public PatientWindowViewModel(Patient loggedPatient, Window thisWindow, IPatientService patientService)
-    {   
+    {
         _loggedPatient = loggedPatient;
         _patientService = patientService;
         ShowNotificationsDialog();
@@ -46,6 +45,7 @@ public class PatientWindowViewModel : ViewModelBase
     public ICommand PrescriptionNotificationSettings { get; }
     public ICommand Logout { get; }
     public ICommand PatientNotificationCommand { get; }
+
     private void ShowNotificationsDialog()
     {
         if (_patientService.GetActiveAppointmentNotification(_loggedPatient).Count > 0)

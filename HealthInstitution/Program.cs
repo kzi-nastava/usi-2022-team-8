@@ -68,6 +68,7 @@ using HealthInstitution.GUI.PatientView;
 using HealthInstitution.GUI.PatientWindows;
 using HealthInstitution.GUI.SecretaryView;
 using HealthInstitution.GUI.SecretaryView.RequestsView;
+using HealthInstitution.Core.Timetable;
 
 namespace HealthInstitution
 {
@@ -167,7 +168,7 @@ namespace HealthInstitution
                 services.RegisterTransient<ITrollCounterFileRepository, TrollCounterFileRepository>();
                 services.RegisterTransient<ITrollCounterService, TrollCounterService>();
 
-                services.RegisterTransient<ITimetableService, TimetableService>();
+                services.RegisterTransient<IDoctorTimetableService, DoctorTimetableService>();
             }
 
 

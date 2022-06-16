@@ -1,5 +1,4 @@
-﻿using HealthInstitution.Core;
-using HealthInstitution.Core.Drugs.Model;
+﻿using HealthInstitution.Core.Drugs.Model;
 using HealthInstitution.Core.Ingredients.Model;
 using System;
 using System.Collections.Generic;

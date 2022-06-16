@@ -14,7 +14,7 @@ namespace HealthInstitution.Core.DoctorRatings.Repository;
 
 public class DoctorRatingRepository : IDoctorRatingRepository
 {
-    private String _fileName = @"..\..\..\Data\JSON\doctorRatings.json";
+    private String _fileName = @"..\..\..\Data\doctorRatings.json";
     public List<DoctorRating> Ratings { get; set; }
     public Dictionary<String, DoctorRating> RatingsById { get; set; }
 
@@ -33,7 +33,7 @@ public class DoctorRatingRepository : IDoctorRatingRepository
 
     public void LoadFromFile()
     {
-        var ratings = JsonSerializer.Deserialize<List<DoctorRating>>(File.ReadAllText(@"..\..\..\Data\JSON\doctorRatings.json"), _options);
+        var ratings = JsonSerializer.Deserialize<List<DoctorRating>>(File.ReadAllText(@"..\..\..\Data\doctorRatings.json"), _options);
         foreach (DoctorRating doctorRating in ratings)
         {
             this.Ratings.Add(doctorRating);
@@ -80,5 +80,4 @@ public class DoctorRatingRepository : IDoctorRatingRepository
     {
         return RatingsById;
     }
-
 }

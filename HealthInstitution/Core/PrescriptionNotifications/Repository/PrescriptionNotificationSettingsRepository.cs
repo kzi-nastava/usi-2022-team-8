@@ -12,7 +12,7 @@ namespace HealthInstitution.Core.PrescriptionNotifications.Repository;
 
 public class PrescriptionNotificationSettingsRepository : IPrescriptionNotificationSettingsRepository
 {
-    private String _fileName = @"..\..\..\Data\JSON\recepieNotificationSettings.json";
+    private String _fileName = @"..\..\..\Data\recepieNotificationSettings.json";
     public List<PrescriptionNotificationSettings> Settings { get; set; }
     public Dictionary<int, PrescriptionNotificationSettings> SettingsById { get; set; }
 
@@ -31,13 +31,14 @@ public class PrescriptionNotificationSettingsRepository : IPrescriptionNotificat
 
     public void LoadFromFile()
     {
-        var settings = JsonSerializer.Deserialize<List<PrescriptionNotificationSettings>>(File.ReadAllText(@"..\..\..\Data\JSON\recepieNotificationSettings.json"), _options);
+        var settings = JsonSerializer.Deserialize<List<PrescriptionNotificationSettings>>(File.ReadAllText(@"..\..\..\Data\recepieNotificationSettings.json"), _options);
         foreach (PrescriptionNotificationSettings setting in settings)
         {
             this.Settings.Add(setting);
             this.SettingsById.Add(setting.Id, setting);
         }
     }
+
     public List<PrescriptionNotificationSettings> GetAll()
     {
         return Settings;
@@ -47,6 +48,7 @@ public class PrescriptionNotificationSettingsRepository : IPrescriptionNotificat
     {
         return this.SettingsById;
     }
+
     public void Save()
     {
         var allRatings = JsonSerializer.Serialize(this.Settings, _options);

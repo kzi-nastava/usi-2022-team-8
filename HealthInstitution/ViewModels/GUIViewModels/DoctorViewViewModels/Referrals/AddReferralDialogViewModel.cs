@@ -1,5 +1,4 @@
 ﻿using HealthInstitution.Commands.DoctorCommands.Referrals;
-using HealthInstitution.Core;
 using HealthInstitution.Core.MedicalRecords;
 using HealthInstitution.Core.Referrals;
 using HealthInstitution.Core.SystemUsers.Doctors;

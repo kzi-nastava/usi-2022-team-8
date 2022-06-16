@@ -14,7 +14,7 @@ namespace HealthInstitution.Core.MedicalRecords.Repository
 {
     public class MedicalRecordRepository : IMedicalRecordRepository
     {
-        private String _fileName = @"..\..\..\Data\JSON\medicalRecords.json";
+        private String _fileName = @"..\..\..\Data\medicalRecords.json";
 
         private IPrescriptionRepository _prescriptionRepository;
         private IReferralRepository _referralRepository;
@@ -37,7 +37,7 @@ namespace HealthInstitution.Core.MedicalRecords.Repository
             this.MedicalRecordByUsername = new Dictionary<string, MedicalRecord>();
             this.LoadFromFile();
         }
-        
+
         private List<string> JToken2Strings(JToken tokens)
         {
             List<string> items = new List<string>();
@@ -80,7 +80,7 @@ namespace HealthInstitution.Core.MedicalRecords.Repository
         public void LoadFromFile()
         {
             var medicalRecords = JArray.Parse(File.ReadAllText(_fileName));
-            //var medicalRecords = JsonSerializer.Deserialize<List<MedicalRecord>>(File.ReadAllText(@"..\..\..\Data\JSON\medicalRecords.json"), _options);
+            //var medicalRecords = JsonSerializer.Deserialize<List<MedicalRecord>>(File.ReadAllText(@"..\..\..\Data\medicalRecords.json"), _options);
             foreach (var medicalRecord in medicalRecords)
             {
                 MedicalRecord loadedMedicalRecord = Parse(medicalRecord);
@@ -140,7 +140,7 @@ namespace HealthInstitution.Core.MedicalRecords.Repository
         public void Add(MedicalRecord medicalRecord)
         {
             this.MedicalRecords.Add(medicalRecord);
-            this.MedicalRecordByUsername[medicalRecord.Patient.Username]=medicalRecord;
+            this.MedicalRecordByUsername[medicalRecord.Patient.Username] = medicalRecord;
             Save();
         }
 

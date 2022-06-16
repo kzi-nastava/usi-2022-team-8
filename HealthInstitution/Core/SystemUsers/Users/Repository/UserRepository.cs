@@ -8,7 +8,7 @@ namespace HealthInstitution.Core.SystemUsers.Users.Repository;
 
 public class UserRepository : IUserRepository
 {
-    private String _fileName= @"..\..\..\Data\JSON\users.json";
+    private String _fileName = @"..\..\..\Data\users.json";
     public List<User> Users { get; set; }
     public Dictionary<String, User> UsersByUsername { get; set; }
 
@@ -17,15 +17,17 @@ public class UserRepository : IUserRepository
         Converters = { new JsonStringEnumConverter() },
         PropertyNameCaseInsensitive = true
     };
+
     public UserRepository()
     {
         this.Users = new List<User>();
         this.UsersByUsername = new Dictionary<string, User>();
         this.LoadFromFile();
     }
+
     public void LoadFromFile()
     {
-        var users = JsonSerializer.Deserialize<List<User>>(File.ReadAllText(@"..\..\..\Data\JSON\users.json"), _options);
+        var users = JsonSerializer.Deserialize<List<User>>(File.ReadAllText(@"..\..\..\Data\users.json"), _options);
         foreach (User user in users)
         {
             this.Users.Add(user);
@@ -43,6 +45,7 @@ public class UserRepository : IUserRepository
     {
         return this.Users;
     }
+
     public Dictionary<string, User> GetAllByUsername()
     {
         return UsersByUsername;
@@ -68,7 +71,7 @@ public class UserRepository : IUserRepository
         user.Password = byUser.Password;
         user.Name = byUser.Name;
         user.Surname = byUser.Surname;
-        this.UsersByUsername[byUser.Username]=user;
+        this.UsersByUsername[byUser.Username] = user;
         Save();
     }
 
@@ -79,6 +82,7 @@ public class UserRepository : IUserRepository
         this.UsersByUsername.Remove(username);
         Save();
     }
+
     public void ChangeBlockedStatus(User user)
     {
         if (user.Blocked == BlockState.NotBlocked)
@@ -86,6 +90,5 @@ public class UserRepository : IUserRepository
         else
             user.Blocked = BlockState.NotBlocked;
         Save();
-
     }
 }

@@ -1,5 +1,4 @@
 ﻿using HealthInstitution.Commands.DoctorCommands.DrugVerification;
-using HealthInstitution.Core;
 using HealthInstitution.Core.Drugs;
 using HealthInstitution.Core.Drugs.Model;
 using HealthInstitution.ViewModels.ModelViewModels.DrugVerification;

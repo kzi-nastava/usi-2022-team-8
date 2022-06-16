@@ -14,9 +14,10 @@ namespace HealthInstitution.Core.RestRequests.Repository
 {
     public class RestRequestDoctorRepository : IRestRequestDoctorRepository
     {
-        private String _fileName= @"..\..\..\Data\JSON\restRequestDoctor.json";
-        IDoctorRepository _doctorRepository;
-        IRestRequestRepository _restRequestRepository;
+        private String _fileName = @"..\..\..\Data\restRequestDoctor.json";
+        private IDoctorRepository _doctorRepository;
+        private IRestRequestRepository _restRequestRepository;
+
         public RestRequestDoctorRepository(IDoctorRepository doctorRepository, IRestRequestRepository restRequestRepository)
         {
             _doctorRepository = doctorRepository;

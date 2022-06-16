@@ -1,5 +1,4 @@
 ﻿using HealthInstitution.Commands.DoctorCommands.Prescriptions;
-using HealthInstitution.Core;
 using HealthInstitution.Core.Drugs;
 using HealthInstitution.Core.Drugs.Model;
 using HealthInstitution.Core.MedicalRecords;

@@ -18,7 +18,7 @@ namespace HealthInstitution.Core.Examinations.Repository;
 
 public class ExaminationRepository : IExaminationRepository
 {
-    private String _fileName = @"..\..\..\Data\JSON\examinations.json";
+    private String _fileName = @"..\..\..\Data\examinations.json";
 
     private IRoomRepository _roomRepository;
 
@@ -101,10 +101,12 @@ public class ExaminationRepository : IExaminationRepository
         var allExaminations = JsonSerializer.Serialize(reducedExaminations, _options);
         File.WriteAllText(_fileName, allExaminations);
     }
+
     public int GetMaxId()
     {
         return _maxId;
     }
+
     public List<Examination> GetAll()
     {
         return Examinations;

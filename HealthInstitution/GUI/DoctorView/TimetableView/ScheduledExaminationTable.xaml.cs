@@ -1,5 +1,4 @@
-﻿using HealthInstitution.Core;
-using HealthInstitution.Core.DIContainer;
+﻿using HealthInstitution.Core.DIContainer;
 using HealthInstitution.Core.Examinations;
 using HealthInstitution.Core.Examinations.Model;
 using HealthInstitution.Core.MedicalRecords;
@@ -8,6 +7,7 @@ using HealthInstitution.Core.Operations.Model;
 using HealthInstitution.Core.Operations.Repository;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using HealthInstitution.Core.SystemUsers.Doctors.Repository;
+using HealthInstitution.Core.Timetable;
 using HealthInstitution.ViewModels.GUIViewModels.DoctorViewViewModels.AppointmentsTable;
 using System;
 using System.Collections.Generic;
@@ -31,9 +31,9 @@ namespace HealthInstitution.GUI.DoctorView
     public partial class ScheduledExaminationTable : Window
     {
         Doctor _loggedDoctor;
-        ITimetableService _timetableService;
+        IDoctorTimetableService _timetableService;
         IExaminationService _examinationService;
-        public ScheduledExaminationTable(ITimetableService timetableService, IExaminationService examinationService)
+        public ScheduledExaminationTable(IDoctorTimetableService timetableService, IExaminationService examinationService)
         {
             //this._loggedDoctor = doctor;   
             InitializeComponent();

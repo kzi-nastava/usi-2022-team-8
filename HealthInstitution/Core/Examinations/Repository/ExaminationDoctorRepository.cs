@@ -14,7 +14,7 @@ namespace HealthInstitution.Core.Examinations.Repository
 {
     public class ExaminationDoctorRepository : IExaminationDoctorRepository
     {
-        private String _fileName = @"..\..\..\Data\JSON\examinationDoctor.json";
+        private String _fileName = @"..\..\..\Data\examinationDoctor.json";
         private IDoctorRepository _doctorRepository;
         private IExaminationRepository _examinationRepository;
 

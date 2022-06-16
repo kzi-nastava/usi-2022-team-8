@@ -1,5 +1,4 @@
 ﻿using HealthInstitution.Commands.DoctorCommands.RestRequests;
-using HealthInstitution.Core;
 using HealthInstitution.Core.RestRequests;
 using HealthInstitution.Core.RestRequests.Model;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;

@@ -1,5 +1,4 @@
 ﻿using HealthInstitution.Commands.PatientCommands;
-using HealthInstitution.Core;
 using HealthInstitution.Core.MedicalRecords;
 using HealthInstitution.Core.PrescriptionNotifications.Service;
 using HealthInstitution.Core.Prescriptions.Model;

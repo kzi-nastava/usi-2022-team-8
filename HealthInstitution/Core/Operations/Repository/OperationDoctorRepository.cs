@@ -14,7 +14,7 @@ namespace HealthInstitution.Core.Operations.Repository
 {
     public class OperationDoctorRepository : IOperationDoctorRepository
     {
-        private String _fileName = @"..\..\..\Data\JSON\operationDoctor.json";
+        private String _fileName = @"..\..\..\Data\operationDoctor.json";
         private IDoctorRepository _doctorRepository;
         private IOperationRepository _operationRepository;
 
@@ -25,7 +25,6 @@ namespace HealthInstitution.Core.Operations.Repository
             this.LoadFromFile();
         }
 
-        
         public void LoadFromFile()
         {
             var doctorsByUsername = _doctorRepository.GetAllByUsername();
@@ -56,4 +55,3 @@ namespace HealthInstitution.Core.Operations.Repository
         }
     }
 }
-

@@ -14,7 +14,7 @@ namespace HealthInstitution.Core.Notifications.Repository
 {
     public class AppointmentNotificationDoctorRepository : IAppointmentNotificationDoctorRepository
     {
-        private String _fileName = @"..\..\..\Data\JSON\appointmentNotificationDoctor.json";
+        private String _fileName = @"..\..\..\Data\appointmentNotificationDoctor.json";
         private IDoctorRepository _doctorRepository;
         private IAppointmentNotificationRepository _appointmentNotificationRepository;
 
@@ -29,7 +29,7 @@ namespace HealthInstitution.Core.Notifications.Repository
         {
             var doctorsByUsername = _doctorRepository.GetAllByUsername();
             var notificationsById = _appointmentNotificationRepository.GetAllById();
-            
+
             var doctorUseranamesNotificationIds = JArray.Parse(File.ReadAllText(this._fileName));
             foreach (var pair in doctorUseranamesNotificationIds)
             {
