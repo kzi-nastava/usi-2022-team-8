@@ -1,4 +1,6 @@
 ﻿using HealthInstitution.Core;
+using HealthInstitution.Core.DIContainer;
+using HealthInstitution.Core.SystemUsers.Patients.Model;
 using HealthInstitution.Core.TrollCounters;
 using HealthInstitution.GUI.PatientView;
 using HealthInstitution.ViewModels.GUIViewModels.Scheduling;
@@ -12,24 +14,26 @@ namespace HealthInstitution.Commands.PatientCommands.Scheduling;
 
 public class AddSchedulingCommand : CommandBase
 {
+    Patient _loggedPatient;
     private PatientScheduleWindowViewModel _patientScheduleWindowViewModel;
-
-    public AddSchedulingCommand(PatientScheduleWindowViewModel patientScheduleWindowViewModel)
+    ITrollCounterService _trollCounterService;
+    public AddSchedulingCommand(PatientScheduleWindowViewModel patientScheduleWindowViewModel,Patient loggedPatient, ITrollCounterService trollCounterService)
     {
+        _loggedPatient = loggedPatient;
         _patientScheduleWindowViewModel = patientScheduleWindowViewModel;
+        _trollCounterService = trollCounterService;
     }
 
     public override void Execute(object? parameter)
     {
         try
         {
-            TrollCounterService.TrollCheck(_patientScheduleWindowViewModel.LoggedPatient.Username);
-            new AddExaminationDialog(_patientScheduleWindowViewModel.LoggedPatient)
-            {
-                DataContext = new AddExaminationDialogViewModel(_patientScheduleWindowViewModel.LoggedPatient)
-            }.ShowDialog();
+            _trollCounterService.TrollCheck(_patientScheduleWindowViewModel.LoggedPatient.Username);
+            var window = DIContainer.GetService<AddExaminationDialog>();
+            window.SetLoggedPatient(_loggedPatient);
+            window.ShowDialog();
             _patientScheduleWindowViewModel.RefreshGrid();
-            TrollCounterService.AppendCreateDates(_patientScheduleWindowViewModel.LoggedPatient.Username);
+            _trollCounterService.AppendCreateDates(_patientScheduleWindowViewModel.LoggedPatient.Username);
             MessageBox.Show("Sucessfuly made examination appointment", "Success");
         }
         catch (Exception e)

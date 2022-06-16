@@ -31,11 +31,12 @@ namespace HealthInstitution.GUI.PatientView
             _medicalRecordService = medicalRecordService;
             _schedulingService = schedulingService;
         }
-        public void SetLoggedPatient(Patient patient)
+        public AddExaminationDialogViewModel SetLoggedPatient(Patient patient)
         {
-
             _loggedPatient = patient;
-            DataContext = new AddExaminationDialogViewModel(patient, _doctorService, _medicalRecordService, _schedulingService);
+            var dc = new AddExaminationDialogViewModel(patient, _doctorService, _medicalRecordService, _schedulingService);
+            DataContext = dc;
+            return dc;
         }
 
     }

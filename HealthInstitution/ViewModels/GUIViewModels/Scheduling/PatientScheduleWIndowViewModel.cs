@@ -33,9 +33,9 @@ public class PatientScheduleWindowViewModel : ViewModelBase
         _scheduleEditRequestsService = scheduleEditRequestsService;
         _trollCounterService = trollCounterService;
         LoggedPatient = loggedPatient;
-        AddSchedulingCommand = new AddSchedulingCommand(this);
-        EditSchedulingCommand = new EditSchedulingCommand(this);
-        DeleteSchedulingCommand = new DeleteSchedulingCommand(this);
+        AddSchedulingCommand = new AddSchedulingCommand(this,loggedPatient,_trollCounterService);
+        EditSchedulingCommand = new EditSchedulingCommand(this,_trollCounterService);
+        DeleteSchedulingCommand = new DeleteSchedulingCommand(this,_examinationService,_trollCounterService,_scheduleEditRequestsService);
         Examinations = new();
         _examinationVMs = new();
         RefreshGrid();
@@ -73,7 +73,7 @@ public class PatientScheduleWindowViewModel : ViewModelBase
     {
         _examinationVMs.Clear();
         Examinations.Clear();
-        foreach (Examination examination in ExaminationService.GetAll())
+        foreach (Examination examination in _examinationService.GetAll())
         {
             if (examination.MedicalRecord.Patient.Username.Equals(LoggedPatient.Username))
             {

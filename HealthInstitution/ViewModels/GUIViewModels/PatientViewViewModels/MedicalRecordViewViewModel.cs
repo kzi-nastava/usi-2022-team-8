@@ -3,6 +3,7 @@ using HealthInstitution.Commands.PatientCommands.MedicalRecordViewCommands;
 using HealthInstitution.Core;
 using HealthInstitution.Core.Examinations;
 using HealthInstitution.Core.Examinations.Model;
+using HealthInstitution.Core.Polls;
 using HealthInstitution.Core.SystemUsers.Patients.Model;
 using HealthInstitution.Core.SystemUsers.Users.Model;
 using System;
@@ -25,20 +26,20 @@ public class MedicalRecordViewViewModel : ViewModelBase
 
     public User LoggedPatient { get; set; }
     IExaminationService _examinationService;
-
-    public MedicalRecordViewViewModel(User patient, IExaminationService examinationService)
+    IPollService _pollService;
+    public MedicalRecordViewViewModel(User patient, IExaminationService examinationService, IPollService pollService)
     {
         _examinationVMs = new();
         LoggedPatient = patient;
         _examinationService = examinationService;
-
-        Examinations = ExaminationService.GetCompletedByPatient(LoggedPatient.Username);
+        _pollService = pollService;
+        Examinations = _examinationService.GetCompletedByPatient(LoggedPatient.Username);
         PutIntoGrid();
-        DoctorSortCommand = new DoctorSortCommand(this);
-        SearchKeywordCommand = new SearchAnamnesisCommand(this);
-        SpecializationSortCommand = new SpecializationSortCommand(this);
-        DateSortCommand = new DateSortCommand(this);
-        RateDoctorCommand = new RateDoctorCommand(this);
+        DoctorSortCommand = new DoctorSortCommand(this,_examinationService);
+        SearchKeywordCommand = new SearchAnamnesisCommand(this,_examinationService);
+        SpecializationSortCommand = new SpecializationSortCommand(this,_examinationService);
+        DateSortCommand = new DateSortCommand(this,_examinationService);
+        RateDoctorCommand = new RateDoctorCommand(this,_pollService);
     }
     public List<Examination> Examinations { get; set; }
 

@@ -13,10 +13,11 @@ namespace HealthInstitution.Commands.PatientCommands.PollCommands;
 public class DoctorPollSubmitCommand : CommandBase
 {
     private DoctorPollViewModel _doctorPollViewModel;
-
-    public DoctorPollSubmitCommand(DoctorPollViewModel doctorPollViewModel)
+    IPollService _pollService;
+    public DoctorPollSubmitCommand(DoctorPollViewModel doctorPollViewModel,IPollService pollService)
     {
         _doctorPollViewModel = doctorPollViewModel;
+        _pollService = pollService;
     }
 
     public override void Execute(object? parameter)
@@ -35,7 +36,7 @@ public class DoctorPollSubmitCommand : CommandBase
         ints.Add(Convert.ToInt32(answer as string));
 
         PollQuestionDTO pollQuestionDTO = new PollQuestionDTO(question, _doctorPollViewModel.Doctor, ints);
-        PollService.UpdateQuestionGrades(pollQuestionDTO);
+        _pollService.UpdateQuestionGrades(pollQuestionDTO);
     }
 
     private void AddComment()
@@ -46,7 +47,7 @@ public class DoctorPollSubmitCommand : CommandBase
         {
             comment = comment.Trim();
             PollCommentDTO pollCommentDTO = new PollCommentDTO(comment, _doctorPollViewModel.Doctor);
-            PollService.AddComment(pollCommentDTO);
+            _pollService.AddComment(pollCommentDTO);
         }
     }
 }

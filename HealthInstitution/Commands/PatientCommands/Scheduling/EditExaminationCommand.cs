@@ -17,11 +17,18 @@ public class EditExaminationCommand : Core.CommandBase
 {
     private EditExaminationDialogViewModel _editExaminationDialogViewModel;
     private Examination _selectedExamination;
-
-    public EditExaminationCommand(EditExaminationDialogViewModel editExaminationDialogViewModel, Examination selectedExamination)
+    IExaminationService _examinationService;
+    IEditSchedulingService _editSchedulingService;
+    IScheduleEditRequestsService _scheduleEditRequestsService;
+    IDoctorService _doctorService;
+    public EditExaminationCommand(EditExaminationDialogViewModel editExaminationDialogViewModel, Examination selectedExamination,IExaminationService examinationService,IEditSchedulingService editSchedulingService,IScheduleEditRequestsService scheduleEditRequestsService,IDoctorService doctorService)
     {
         _editExaminationDialogViewModel = editExaminationDialogViewModel;
         _selectedExamination = selectedExamination;
+        _examinationService = examinationService;
+        _editSchedulingService = editSchedulingService;
+        _scheduleEditRequestsService = scheduleEditRequestsService;
+        _doctorService = doctorService;
     }
 
     public override void Execute(object? parameter)
@@ -46,18 +53,18 @@ public class EditExaminationCommand : Core.CommandBase
 
     private void GenerateRequest(DateTime dateTime)
     {
-        ExaminationDTO examinationDTO = ExaminationService.ParseExaminationToExaminationDTO(_selectedExamination);
-        examinationDTO.Doctor = DoctorService.GetById(_editExaminationDialogViewModel.GetDoctorUsername());
+        ExaminationDTO examinationDTO = _examinationService.ParseExaminationToExaminationDTO(_selectedExamination);
+        examinationDTO.Doctor = _doctorService.GetById(_editExaminationDialogViewModel.GetDoctorUsername());
         examinationDTO.Appointment = dateTime;
-        Examination newExamination = EditSchedulingService.GenerateRequestExamination(_selectedExamination.Id, examinationDTO);
-        ScheduleEditRequestService.AddEditRequest(newExamination);
+        Examination newExamination = _editSchedulingService.GenerateRequestExamination(_selectedExamination.Id, examinationDTO);
+        _scheduleEditRequestsService.AddEditRequest(newExamination);
     }
 
     private void EditNow(DateTime dateTime)
     {
-        ExaminationDTO examinationDTO = ExaminationService.ParseExaminationToExaminationDTO(_selectedExamination);
-        examinationDTO.Doctor = DoctorService.GetById(_editExaminationDialogViewModel.GetDoctorUsername());
+        ExaminationDTO examinationDTO = _examinationService.ParseExaminationToExaminationDTO(_selectedExamination);
+        examinationDTO.Doctor = _doctorService.GetById(_editExaminationDialogViewModel.GetDoctorUsername());
         examinationDTO.Appointment = dateTime;
-        EditSchedulingService.EditExamination(_selectedExamination.Id, examinationDTO);
+        _editSchedulingService.EditExamination(_selectedExamination.Id, examinationDTO);
     }
 }

@@ -20,22 +20,28 @@ public class RateDoctorCommand : CommandBase
     IPollService _pollService;
     public RateDoctorCommand(MedicalRecordViewViewModel medicalRecordViewModel, IPollService pollService)
     {
-        _pollService = pollService;
         _medicalRecordViewModel = medicalRecordViewModel;
+        _pollService = pollService;
+        _medicalRecordViewModel.PropertyChanged += _medicalRecordViewModel_PropertyChanged;
+    }
+
+    private void _medicalRecordViewModel_PropertyChanged(object? sender, System.ComponentModel.PropertyChangedEventArgs e)
+    {
+        if (e.PropertyName == nameof(_medicalRecordViewModel.SelectedExaminationIndex))
+            OnCanExecuteChanged();
     }
 
     public override void Execute(object? parameter)
     {
+        Examination examination = _medicalRecordViewModel.Examinations[_medicalRecordViewModel.SelectedExaminationIndex];
         var window = DIContainer.GetService<DoctorPollDialog>();
-        Doctor doctor = _medicalRecordViewModel.Examinations[_medicalRecordViewModel.SelectedExaminationIndex].Doctor;
-        window.SetRatedDoctor(doctor);
-        window.DataContext = new DoctorPollViewModel(doctor, _pollService);
+        window.SetRatedDoctor(examination.Doctor);
         window.ShowDialog();
-        
+        _pollService.AddRatedExamination(examination.Id);
     }
 
     public override bool CanExecute(object? parameter)
     {
-        return _medicalRecordViewModel.SelectedExaminationIndex >= 0 && base.CanExecute(parameter);
+        return !_pollService.IsRatedExamination(_medicalRecordViewModel.Examinations[_medicalRecordViewModel.SelectedExaminationIndex].Id) && base.CanExecute(parameter);
     }
 }

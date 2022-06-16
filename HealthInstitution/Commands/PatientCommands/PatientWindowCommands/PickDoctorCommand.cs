@@ -1,4 +1,5 @@
 ﻿using HealthInstitution.Core;
+using HealthInstitution.Core.DIContainer;
 using HealthInstitution.Core.SystemUsers.Patients.Model;
 using HealthInstitution.GUI.PatientView;
 using System;
@@ -20,6 +21,8 @@ public class PickDoctorCommand : CommandBase
 
     public override void Execute(object? parameter)
     {
-        new DoctorPickExamination(_loggedPatient).ShowDialog();
+        var window = DIContainer.GetService<DoctorPickExamination>();
+        window.SetLoggedPatient(_loggedPatient);
+        window.ShowDialog();
     }
 }

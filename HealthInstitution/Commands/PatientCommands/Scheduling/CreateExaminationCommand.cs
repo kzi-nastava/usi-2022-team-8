@@ -17,18 +17,23 @@ namespace HealthInstitution.Commands.PatientCommands.Scheduling;
 internal class CreateExaminationCommand : CommandBase
 {
     private AddExaminationDialogViewModel _addExaminationDialogViewModel;
-
-    public CreateExaminationCommand(AddExaminationDialogViewModel addExaminationDialogViewModel)
+    IMedicalRecordService _medicalRecordService;
+    IDoctorService _doctorService;
+    ISchedulingService _schedulingService;
+    public CreateExaminationCommand(AddExaminationDialogViewModel addExaminationDialogViewModel, IMedicalRecordService medicalRecordService,IDoctorService doctorService,ISchedulingService schedulingService)
     {
         _addExaminationDialogViewModel = addExaminationDialogViewModel;
+        _medicalRecordService = medicalRecordService;
+        _doctorService = doctorService;
+        _schedulingService = schedulingService;
     }
 
     public override void Execute(object? parameter)
     {
-        MedicalRecord medicalRecord = MedicalRecordService.GetByPatientUsername(_addExaminationDialogViewModel.LoggedPatient);
-        Doctor doctor = DoctorService.GetById(_addExaminationDialogViewModel.GetDoctorUsername());
+        MedicalRecord medicalRecord = _medicalRecordService.GetByPatientUsername(_addExaminationDialogViewModel.LoggedPatient);
+        Doctor doctor = _doctorService.GetById(_addExaminationDialogViewModel.GetDoctorUsername());
         DateTime dateTime = _addExaminationDialogViewModel.GetExaminationDateTime();
         ExaminationDTO examination = new ExaminationDTO(dateTime, null, doctor, medicalRecord);
-        SchedulingService.ReserveExamination(examination);
+        _schedulingService.ReserveExamination(examination);
     }
 }

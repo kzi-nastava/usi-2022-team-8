@@ -15,7 +15,6 @@ public class RateHospitalCommand : CommandBase
     public override void Execute(object? parameter)
     {
         var window = DIContainer.GetService<PatientHospitalPollDialog>();
-        window.DataContext = new HospitalPollDialogViewModel();
         window.ShowDialog();
     }
 }

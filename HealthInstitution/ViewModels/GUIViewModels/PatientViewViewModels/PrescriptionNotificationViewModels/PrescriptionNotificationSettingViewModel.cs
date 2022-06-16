@@ -37,7 +37,7 @@ public class PrescriptionNotificationSettingViewModel : ViewModelBase
         _prescriptions = new();
         LoadComboBoxes();
         GridRefresh();
-        SetNotificationTimeCommand = new SetPrescriptionNotificationTimeCommand(this);
+        SetNotificationTimeCommand = new SetPrescriptionNotificationTimeCommand(this,_prescriptionNotificationService);
     }
 
     private int _hourComboBoxSelectedIndex;
@@ -159,7 +159,7 @@ public class PrescriptionNotificationSettingViewModel : ViewModelBase
     {
         _prescriptions.Clear();
         _prescriptionVMs.Clear();
-        _prescriptions = MedicalRecordService.GetByPatientUsername(PatientService.GetByUsername(LoggedPatient.Username)).Prescriptions;
+        _prescriptions = _medicalRecordService.GetByPatientUsername(_patientService.GetByUsername(LoggedPatient.Username)).Prescriptions;
 
         foreach (var prescription in _prescriptions)
         {

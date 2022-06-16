@@ -40,7 +40,7 @@ namespace HealthInstitution.GUI.PatientView
         public void SetLoggedPatient(Patient patient)
         {
             _loggedPatient = patient;
-            this.DataContext = new PatientNotificationDialogViewModel(patient, _patientService, _appointmentNotificationService);
+            this.DataContext = new PatientNotificationDialogViewModel(patient, _patientService,_appointmentNotificationService);
         }
  
     }

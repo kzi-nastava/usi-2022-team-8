@@ -24,7 +24,7 @@ public class ClosestFitViewModel : ViewModelBase
         Examinations = new();
         Examinations = examinations;
         _examinationVMs = new();
-        AddClosestFitExaminationCommand = new ClosestFitCommand(this);
+        AddClosestFitExaminationCommand = new ClosestFitCommand(this,_examinationService);
         LoadRows();
     }
 

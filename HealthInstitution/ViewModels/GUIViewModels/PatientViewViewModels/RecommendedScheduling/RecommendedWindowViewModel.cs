@@ -31,7 +31,7 @@ public class RecommendedWindowViewModel : ViewModelBase
         _doctorComboBoxItems = new();
         _hourComboBoxItems = new();
         _minuteComboBoxItems = new();
-        ScheduleCommand = new FirstFitScheduleCommand(this);
+        ScheduleCommand = new FirstFitScheduleCommand(this,_recommendedSchedulingService);
         LoadComboBoxes();
     }
 
@@ -234,7 +234,7 @@ public class RecommendedWindowViewModel : ViewModelBase
     private void LoadDoctorComboBox()
     {
         DoctorComboBoxItems = new();
-        foreach (Doctor user in DoctorService.GetAll())
+        foreach (Doctor user in _doctorService.GetAll())
         {
             DoctorComboBoxItems.Add(user.Username);
         }

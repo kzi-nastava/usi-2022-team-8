@@ -12,11 +12,11 @@ namespace HealthInstitution.ViewModels.GUIViewModels.Polls;
 
 public class HospitalPollDialogViewModel : ViewModelBase
 {
-    IPollService _pollsService;
+    IPollService _pollService;
     public HospitalPollDialogViewModel(IPollService pollService)
     {
-        SubmitCommand = new HospitalPollSubmitCommand(this);
-        _pollsService = pollService;
+        _pollService = pollService;
+        SubmitCommand = new HospitalPollSubmitCommand(this,_pollService);
         LoadLabels();
     }
 
@@ -110,7 +110,7 @@ public class HospitalPollDialogViewModel : ViewModelBase
         }
     }
 
-    private object _q1Answer;
+    private object _q1Answer = "3";
 
     public object Q1Answer
     {
@@ -125,7 +125,7 @@ public class HospitalPollDialogViewModel : ViewModelBase
         }
     }
 
-    private object _q2Answer;
+    private object _q2Answer = "3";
 
     public object Q2Answer
     {
@@ -140,7 +140,7 @@ public class HospitalPollDialogViewModel : ViewModelBase
         }
     }
 
-    private object _q3Answer;
+    private object _q3Answer = "3";
 
     public object Q3Answer
     {
@@ -155,7 +155,7 @@ public class HospitalPollDialogViewModel : ViewModelBase
         }
     }
 
-    private object _q4Answer;
+    private object _q4Answer = "3";
 
     public object Q4Answer
     {
@@ -170,7 +170,7 @@ public class HospitalPollDialogViewModel : ViewModelBase
         }
     }
 
-    private object _q5Answer;
+    private object _q5Answer = "3";
 
     
 
@@ -191,7 +191,7 @@ public class HospitalPollDialogViewModel : ViewModelBase
 
     private void LoadLabels()
     {
-        var questions = PollService.GetHospitalQuestions();
+        var questions = _pollService.GetHospitalQuestions();
         Q1Text = questions[0];
         Q2Text = questions[1];
         Q3Text = questions[2];

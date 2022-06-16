@@ -1,4 +1,5 @@
 ﻿using HealthInstitution.Core;
+using HealthInstitution.Core.DIContainer;
 using HealthInstitution.Core.Examinations.Model;
 using HealthInstitution.Core.Scheduling;
 using HealthInstitution.GUI.PatientView;
@@ -14,25 +15,24 @@ namespace HealthInstitution.Commands.PatientCommands.RecommendedSchedulingComman
 internal class FirstFitScheduleCommand : CommandBase
 {
     private RecommendedWindowViewModel _viewModel;
-
-    public FirstFitScheduleCommand(RecommendedWindowViewModel viewModel)
+    IRecommendedSchedulingService _recommendedSchedulingService;
+    public FirstFitScheduleCommand(RecommendedWindowViewModel viewModel, IRecommendedSchedulingService recommendedSchedulingService)
     {
         _viewModel = viewModel;
+        _recommendedSchedulingService = recommendedSchedulingService;
     }
 
     public override void Execute(object? parameter)
     {
         var fitDTO = GenerateFirstFitDTO();
-        bool found = RecommendedSchedulingService.FindFirstFit(fitDTO);
+        bool found = _recommendedSchedulingService.FindFirstFit(fitDTO);
         if (!found)
         {
             var closestFitDTO = GenerateClosestFitDTO();
-            List<Examination> suggestions =
-                RecommendedSchedulingService.FindClosestFit(closestFitDTO);
-            new ClosestFit()
-            {
-                DataContext = new ClosestFitViewModel(suggestions)
-            }.ShowDialog();
+            List<Examination> suggestions =_recommendedSchedulingService.FindClosestFit(closestFitDTO);
+            var window = DIContainer.GetService<ClosestFit>();
+            window.SetSuggestions(suggestions);
+            window.ShowDialog();
         }
     }
 

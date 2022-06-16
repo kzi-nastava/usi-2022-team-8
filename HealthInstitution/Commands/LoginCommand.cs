@@ -97,26 +97,23 @@ public class LoginCommand : CommandBase
     {
         _doctorService.LoadAppointments();
         Doctor loggedDoctor = _doctorService.GetById(_loginViewModel.Username);
-
-        _loginViewModel.ThisWindow.Close();
         var window = DIContainer.GetService<DoctorWindow>();
         window.SetLoggedDoctor(loggedDoctor);
+        _loginViewModel.ThisWindow.Close();
         window.ShowDialog();
     }
 
     private void RedirectSecretary()
     {
-        _loginViewModel.ThisWindow.Close();
-
         SecretaryWindow secretaryWindow = DIContainer.GetService<SecretaryWindow>();
+        _loginViewModel.ThisWindow.Close();
         secretaryWindow.ShowDialog();
     }
 
     private void RedirectManager()
     {
-        _loginViewModel.ThisWindow.Close();
-
         ManagerWindow managerWindow = DIContainer.GetService<ManagerWindow>();
+        _loginViewModel.ThisWindow.Close();
         managerWindow.ShowDialog();
     }
 }

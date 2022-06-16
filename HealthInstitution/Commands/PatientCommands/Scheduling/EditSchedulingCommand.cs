@@ -1,4 +1,5 @@
 ﻿using HealthInstitution.Core;
+using HealthInstitution.Core.DIContainer;
 using HealthInstitution.Core.Examinations.Model;
 using HealthInstitution.Core.TrollCounters;
 using HealthInstitution.GUI.PatientWindows;
@@ -14,23 +15,23 @@ namespace HealthInstitution.Commands.PatientCommands.Scheduling
     public class EditSchedulingCommand : CommandBase
     {
         private PatientScheduleWindowViewModel _patientScheduleWindowViewModel;
+        ITrollCounterService _trollCounterService;
 
-        public EditSchedulingCommand(PatientScheduleWindowViewModel patientScheduleWIndowViewModel)
+        public EditSchedulingCommand(PatientScheduleWindowViewModel patientScheduleWIndowViewModel, ITrollCounterService trollCounterService)
         {
             _patientScheduleWindowViewModel = patientScheduleWIndowViewModel;
+            _trollCounterService = trollCounterService;
         }
 
         public override void Execute(object? parameter)
         {
-            TrollCounterService.TrollCheck(_patientScheduleWindowViewModel.LoggedPatient.Username);
+            _trollCounterService.TrollCheck(_patientScheduleWindowViewModel.LoggedPatient.Username);
             Examination selectedExamination = _patientScheduleWindowViewModel.GetSelectedExamination();
-            new EditExaminationDialog(selectedExamination)
-            {
-                DataContext = new EditExaminationDialogViewModel(_patientScheduleWindowViewModel.Examinations
-                [_patientScheduleWindowViewModel.SelectedExaminationIndex])
-            }.ShowDialog();
+            var window = DIContainer.GetService<EditExaminationDialog>();
+            window.SetExamination(selectedExamination);
+            window.ShowDialog();
             _patientScheduleWindowViewModel.RefreshGrid();
-            TrollCounterService.AppendEditDeleteDates(_patientScheduleWindowViewModel.LoggedPatient.Username);
+            _trollCounterService.AppendEditDeleteDates(_patientScheduleWindowViewModel.LoggedPatient.Username);
         }
 
         public override bool CanExecute(object? parameter)

@@ -17,17 +17,17 @@ public class PatientNotificationDialogViewModel : ViewModelBase
 {
     private List<AppointmentNotification> _notifications;
     private Patient _loggedPatient;
-    IAppointmentNotificationService _appointmentNotificationService;
     IPatientService _patientService;
+    IAppointmentNotificationService _appointmentNotificationService;
     public PatientNotificationDialogViewModel(Patient loggedPatient, IPatientService patientService, IAppointmentNotificationService appointmentNotificationService)
     {
         _loggedPatient = loggedPatient;
         _patientService = patientService;
         _appointmentNotificationService = appointmentNotificationService;
-        List<AppointmentNotification> _Notifications = _loggedPatient.Notifications;
-        PatientService.DeleteNotifications(_loggedPatient);
+        _notifications = _loggedPatient.Notifications;
         _notificationVMs = new();
         PutIntoGrid();
+        _patientService.DeleteNotifications(_loggedPatient);
     }
 
     private ObservableCollection<AppointmentNotificationViewModel> _notificationVMs;
@@ -53,6 +53,7 @@ public class PatientNotificationDialogViewModel : ViewModelBase
         foreach (AppointmentNotification notification in _notifications)
         {
             _notificationVMs.Add(new AppointmentNotificationViewModel(notification));
+            _appointmentNotificationService.ChangeActiveStatus(notification, false);
         }
     }
 }

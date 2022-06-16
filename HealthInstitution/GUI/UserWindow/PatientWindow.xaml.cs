@@ -41,20 +41,8 @@ namespace HealthInstitution.GUI.UserWindow
         public void SetLoggedPatient(Patient patient)
         {
             _loggedPatient = patient;
-            this.DataContext = new PatientWindowViewModel(patient, this, _patientService);
-            ShowNotificationsDialog();
-            RecepieNotificationDialog recepieNotificationDialog = DIContainer.GetService<RecepieNotificationDialog>();
-            recepieNotificationDialog.SetLoggedPatient(_loggedPatient);
-            recepieNotificationDialog.ShowDialog();
+            this.DataContext = new PatientWindowViewModel(patient, this,_patientService);
         }
-        private void ShowNotificationsDialog()
-        {
-            if (_patientService.GetActiveAppointmentNotification(_loggedPatient).Count>0)
-            {
-                PatientNotificationsDialog patientNotificationsDialog = DIContainer.GetService<PatientNotificationsDialog>();
-                patientNotificationsDialog.SetLoggedPatient(_loggedPatient);
-                patientNotificationsDialog.ShowDialog();
-            }
-        }
+        
     }
 }

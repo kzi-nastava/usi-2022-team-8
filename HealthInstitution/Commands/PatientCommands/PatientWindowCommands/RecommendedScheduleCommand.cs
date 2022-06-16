@@ -1,4 +1,5 @@
 ﻿using HealthInstitution.Core;
+using HealthInstitution.Core.DIContainer;
 using HealthInstitution.Core.SystemUsers.Patients.Model;
 using HealthInstitution.GUI.PatientView;
 using HealthInstitution.ViewModels.GUIViewModels.PatientViewViewModels.RecommendedScheduling;
@@ -21,9 +22,8 @@ public class RecommendedScheduleCommand : CommandBase
 
     public override void Execute(object? parameter)
     {
-        new RecommendedWindow()
-        {
-            DataContext = new RecommendedWindowViewModel(_loggedPatient)
-        }.ShowDialog();
+        var window = DIContainer.GetService<RecommendedWindow>();
+        window.SetLoggedPatient(_loggedPatient);
+        window.ShowDialog();
     }
 }

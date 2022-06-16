@@ -1,4 +1,5 @@
 ﻿using HealthInstitution.Core;
+using HealthInstitution.Core.DIContainer;
 using HealthInstitution.Core.SystemUsers.Patients;
 using HealthInstitution.GUI.PatientView;
 using HealthInstitution.ViewModels.GUIViewModels.PatientViewViewModels.PrescriptionNotificationViewModels;
@@ -21,10 +22,9 @@ namespace HealthInstitution.Commands.PatientCommands.PatientWindowCommands
 
         public override void Execute(object? parameter)
         {
-            new RecepieNotificationSettingsDialog(_username)
-            {
-                DataContext = new PrescriptionNotificationSettingViewModel(PatientService.GetByUsername(_username))
-            }.ShowDialog();
+            var window = DIContainer.GetService<RecepieNotificationSettingsDialog>();
+            window.SetLoggedPatient(_username);
+            window.ShowDialog();
         }
     }
 }

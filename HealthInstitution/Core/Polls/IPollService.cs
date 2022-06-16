@@ -23,5 +23,7 @@ namespace HealthInstitution.Core.Polls
         void UpdateComment(int id, PollCommentDTO pollCommentDTO);
         void UpdateQuestion(int id, PollQuestionDTO pollQuestionDTO);
         void UpdateQuestionGrades(PollQuestionDTO pollQuestionDTO);
+        public void AddRatedExamination(int id);
+        public bool IsRatedExamination(int id);
     }
 }

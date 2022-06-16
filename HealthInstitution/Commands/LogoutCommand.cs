@@ -31,7 +31,6 @@ namespace HealthInstitution.Commands
             {
                 Window.Close();
                 var window = DIContainer.GetService<LoginWindow>();
-                window.DataContext = new LoginViewModel(window,DIContainer.GetService<IUserService>(), DIContainer.GetService<ITrollCounterService>(), DIContainer.GetService<IPatientService>(), DIContainer.GetService<Core.SystemUsers.Doctors.IDoctorService>(), DIContainer.GetService<IPrescriptionNotificationService>(), DIContainer.GetService<IDoctorRatingsService>());
                 window.ShowDialog();
             }
         }

@@ -16,10 +16,8 @@ namespace HealthInstitution.Commands.PatientCommands.PatientWindowCommands;
 public class MedicalRecordViewCommand : CommandBase
 {
     private User _loggedPatient;
-    IExaminationService _examinationService; 
-    public MedicalRecordViewCommand(User loggedPatient, IExaminationService examinationService)
+    public MedicalRecordViewCommand(User loggedPatient)
     {
-        _examinationService = examinationService;
         _loggedPatient = loggedPatient;
     }
 
@@ -27,7 +25,6 @@ public class MedicalRecordViewCommand : CommandBase
     {
         var window = DIContainer.GetService<MedicalRecordView>();
         window.SetLoggedPatient(_loggedPatient);
-        window.DataContext = new MedicalRecordViewViewModel(_loggedPatient, _examinationService);
         window.ShowDialog();
     }
 }

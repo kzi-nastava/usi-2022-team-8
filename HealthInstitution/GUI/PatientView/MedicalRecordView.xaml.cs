@@ -17,15 +17,17 @@ public partial class MedicalRecordView : Window
 {
     private User _loggedPatient;
     IExaminationService _examinationService;
-    public MedicalRecordView(IExaminationService examinationService)
+    IPollService _pollService;
+    public MedicalRecordView(IExaminationService examinationService, IPollService pollService)
     {
         InitializeComponent();
         _examinationService = examinationService;
+        _pollService = pollService;
     }
 
     public void SetLoggedPatient(User patient)
     {
         _loggedPatient = patient;
-        DataContext = new MedicalRecordViewViewModel(patient, _examinationService);
+        DataContext = new MedicalRecordViewViewModel(patient, _examinationService, _pollService);
     }
 }

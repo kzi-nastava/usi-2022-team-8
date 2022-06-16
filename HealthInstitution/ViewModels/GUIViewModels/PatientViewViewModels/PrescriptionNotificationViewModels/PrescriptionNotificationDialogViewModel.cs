@@ -24,7 +24,7 @@ public class PrescriptionNotificationDialogViewModel : ViewModelBase
     {
         _prescriptionNotificationService = prescriptionNotificationService;
         _loggedPatient = loggedPatient;
-        _notifications = PrescriptionNotificationService.GetPatientActiveNotification(_loggedPatient.Username);
+        _notifications = _prescriptionNotificationService.GetPatientActiveNotification(_loggedPatient.Username);
         _notificationVMs = new();
         PutIntoGrid();
     }

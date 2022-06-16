@@ -17,22 +17,15 @@ namespace HealthInstitution.Commands.PatientCommands.PatientWindowCommands;
 public class ManuallScheduleCommand : CommandBase
 {
     private Patient _loggedPatient;
-    private IExaminationService _examinationService;
-    private IScheduleEditRequestsService _scheduleEditRequestsService;
-    private ITrollCounterService _trollCounterService;
-    public ManuallScheduleCommand(Patient loggedPatient, IExaminationService examinationService, IScheduleEditRequestsService scheduleEditRequestsService, ITrollCounterService trollCounterService)
+    public ManuallScheduleCommand(Patient loggedPatient)
     {
         _loggedPatient = loggedPatient;
-        _examinationService = examinationService;
-        _scheduleEditRequestsService = scheduleEditRequestsService;
-        _trollCounterService = trollCounterService;
     }
 
     public override void Execute(object? parameter)
     {
         var window = DIContainer.GetService<PatientScheduleWindow>();
         window.SetLoggedPatient(_loggedPatient);
-        window.DataContext = new PatientScheduleWindowViewModel(_loggedPatient, _examinationService, _scheduleEditRequestsService, _trollCounterService);
         window.ShowDialog();
     }
 }

@@ -32,12 +32,11 @@ public class EditExaminationDialogViewModel : ViewModelBase
         SelectedExamination = selectedExamination;
         LoadComboBoxes();
         _selectedDateTime = selectedExamination.Appointment;
-        EditExaminationCommand = new EditExaminationCommand(this, SelectedExamination);
-
         _editSchedulingService = editSchedulingService;
         _scheduleEditRequestService = scheduleEditRequestsService;
         _examinationService = examinationService;
         _doctorService = doctorService;
+        EditExaminationCommand = new EditExaminationCommand(this, SelectedExamination, _examinationService, _editSchedulingService, _scheduleEditRequestService, _doctorService);
     }
     public DateTime GetExaminationDateTime()
     {
@@ -186,7 +185,7 @@ public class EditExaminationDialogViewModel : ViewModelBase
         int i = 0;
         int idx = 0;
         DoctorComboBoxItems = new();
-        foreach (Doctor user in DoctorService.GetAll())
+        foreach (Doctor user in _doctorService.GetAll())
         {
             DoctorComboBoxItems.Add(user.Username);
             if (user.Username == SelectedExamination.Doctor.Username)

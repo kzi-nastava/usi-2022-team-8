@@ -13,10 +13,11 @@ namespace HealthInstitution.Commands.PatientCommands.PollCommands;
 public class HospitalPollSubmitCommand : CommandBase
 {
     private HospitalPollDialogViewModel _hospitalPollDialogViewModel;
-
-    public HospitalPollSubmitCommand(HospitalPollDialogViewModel hospitalPollDialogViewModel)
+    IPollService _pollService;
+    public HospitalPollSubmitCommand(HospitalPollDialogViewModel hospitalPollDialogViewModel, IPollService pollService)
     {
         _hospitalPollDialogViewModel = hospitalPollDialogViewModel;
+        _pollService = pollService;
     }
 
     public override void Execute(object? parameter)
@@ -35,7 +36,7 @@ public class HospitalPollSubmitCommand : CommandBase
         ints.Add(Convert.ToInt32(answer as string));
 
         PollQuestionDTO pollQuestionDTO = new PollQuestionDTO(question, null, ints);
-        PollService.UpdateQuestionGrades(pollQuestionDTO);
+        _pollService.UpdateQuestionGrades(pollQuestionDTO);
     }
 
     private void AddComment()
@@ -46,7 +47,7 @@ public class HospitalPollSubmitCommand : CommandBase
         {
             comment = comment.Trim();
             PollCommentDTO pollCommentDTO = new PollCommentDTO(comment, null);
-            PollService.AddComment(pollCommentDTO);
+            _pollService.AddComment(pollCommentDTO);
         }
     }
 }

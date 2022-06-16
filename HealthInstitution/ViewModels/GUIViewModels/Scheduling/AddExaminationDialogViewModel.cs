@@ -29,10 +29,10 @@ public class AddExaminationDialogViewModel : ViewModelBase
     {
         LoggedPatient = loggedPatient;
         LoadComboBoxes();
-        CreateExaminationCommand = new CreateExaminationCommand(this);
         _doctorService = doctorService;
         _medicalRecordService = medicalRecordService;
         _schedulingService = schedulingService;
+        CreateExaminationCommand = new CreateExaminationCommand(this, _medicalRecordService, _doctorService, _schedulingService);
     }
     public DateTime GetExaminationDateTime()
     {
@@ -177,7 +177,7 @@ public class AddExaminationDialogViewModel : ViewModelBase
     private void LoadDoctorComboBox()
     {
         DoctorComboBoxItems = new();
-        foreach (Doctor user in DoctorService.GetAll())
+        foreach (Doctor user in _doctorService.GetAll())
         {
             DoctorComboBoxItems.Add(user.Username);
         }

@@ -1,4 +1,5 @@
 ﻿using HealthInstitution.Core;
+using HealthInstitution.Core.DIContainer;
 using HealthInstitution.Core.Notifications.Model;
 using HealthInstitution.Core.SystemUsers.Patients.Model;
 using HealthInstitution.GUI.PatientView;
@@ -30,13 +31,13 @@ namespace HealthInstitution.Commands.PatientCommands.PatientWindowCommands
             }
             if (activeNotifications > 0)
             {
-                PatientNotificationsDialog patientNotificationsDialog = new PatientNotificationsDialog(this._loggedPatient);
-                patientNotificationsDialog.ShowDialog();
+                var patientNotificationWindow = DIContainer.GetService<PatientNotificationsDialog>();
+                patientNotificationWindow.SetLoggedPatient(_loggedPatient);
+                patientNotificationWindow.ShowDialog();
             }
-            new RecepieNotificationDialog(_loggedPatient.Username)
-            {
-                DataContext = new PrescriptionNotificationDialogViewModel(_loggedPatient)
-            }.ShowDialog();
+            var prescriptionNotificationWindow = DIContainer.GetService<RecepieNotificationDialog>();
+            prescriptionNotificationWindow.SetLoggedPatient(_loggedPatient);
+            prescriptionNotificationWindow.ShowDialog();
         }
     }
 }

@@ -16,18 +16,23 @@ namespace HealthInstitution.Commands.PatientCommands.Scheduling;
 public class DeleteSchedulingCommand : CommandBase
 {
     private PatientScheduleWindowViewModel _patientScheduleWindowViewModel;
-
-    public DeleteSchedulingCommand(PatientScheduleWindowViewModel patientScheduleWindowViewModel)
+    IExaminationService _examinationService;
+    ITrollCounterService _trollCounterService;
+    IScheduleEditRequestsService _scheduleEditRequestsService;
+    public DeleteSchedulingCommand(PatientScheduleWindowViewModel patientScheduleWindowViewModel, IExaminationService examinationService,ITrollCounterService trollCounterService, IScheduleEditRequestsService scheduleEditRequestsService)
     {
         _patientScheduleWindowViewModel = patientScheduleWindowViewModel;
+        _examinationService = examinationService;
+        _trollCounterService = trollCounterService;
+        _scheduleEditRequestsService = scheduleEditRequestsService;
     }
 
     public override void Execute(object? parameter)
     {
         Examination selectedExamination = _patientScheduleWindowViewModel.GetSelectedExamination();
-        TrollCounterService.TrollCheck(_patientScheduleWindowViewModel.LoggedPatient.Username);
+        _trollCounterService.TrollCheck(_patientScheduleWindowViewModel.LoggedPatient.Username);
         _patientScheduleWindowViewModel.RefreshGrid();
-        TrollCounterService.AppendEditDeleteDates(_patientScheduleWindowViewModel.LoggedPatient.Username);
+        _trollCounterService.AppendEditDeleteDates(_patientScheduleWindowViewModel.LoggedPatient.Username);
         ConfirmDelete(selectedExamination);
     }
 
@@ -43,11 +48,11 @@ public class DeleteSchedulingCommand : CommandBase
         {
             if (selectedExamination.Appointment.AddDays(-2) < DateTime.Now)
             {
-                ScheduleEditRequestService.AddDeleteRequest(selectedExamination);
+                _scheduleEditRequestsService.AddDeleteRequest(selectedExamination);
             }
             else
             {
-                ExaminationService.Delete(selectedExamination.Id);
+                _examinationService.Delete(selectedExamination.Id);
                 selectedExamination.Doctor.Examinations.Remove(selectedExamination);
                 _patientScheduleWindowViewModel.RefreshGrid();
             }
