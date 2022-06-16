@@ -5,55 +5,76 @@
     "dailyDose": 5,
     "timeOfUse": "DuringMeal",
     "drug": 2,
-    "hourlyRate": "2022-05-15T00:00:00+02:00"
+    "hourlyRate": "2022-05-19T09:00:00"
   },
   {
     "id": 2,
     "dailyDose": 33,
     "timeOfUse": "DuringMeal",
     "drug": 2,
-    "hourlyRate": "2022-05-15T00:00:00+02:00"
+    "hourlyRate": "2022-05-19T09:00:00"
   },
   {
     "id": 3,
     "dailyDose": 99,
     "timeOfUse": "PreMeal",
     "drug": 1,
-    "hourlyRate": "2022-05-15T00:00:00+02:00"
+    "hourlyRate": "2022-05-19T09:00:00"
   },
   {
     "id": 4,
     "dailyDose": 2,
     "timeOfUse": "DuringMeal",
     "drug": 1,
-    "hourlyRate": "2022-05-15T00:00:00+02:00"
+    "hourlyRate": "2022-05-19T09:00:00"
   },
   {
     "id": 5,
     "dailyDose": 1,
     "timeOfUse": "DuringMeal",
     "drug": 1,
-    "hourlyRate": "2022-05-15T00:00:00+02:00"
+    "hourlyRate": "2022-05-19T09:00:00"
   },
   {
     "id": 6,
     "dailyDose": 6,
     "timeOfUse": "DuringMeal",
     "drug": 2,
-    "hourlyRate": "2022-05-15T00:00:00+02:00"
+    "hourlyRate": "2022-05-19T09:00:00"
   },
   {
     "id": 7,
     "dailyDose": 65,
     "timeOfUse": "PostMeal",
     "drug": 4,
-    "hourlyRate": "2022-05-15T00:00:00+02:00"
+    "hourlyRate": "2022-05-19T09:00:00"
   },
   {
     "id": 8,
     "dailyDose": 7,
     "timeOfUse": "PostMeal",
     "drug": 6,
-    "hourlyRate": "2022-05-15T00:00:00+02:00"
+    "hourlyRate": "2022-05-19T09:00:00"
+  },
+  {
+    "id": 9,
+    "dailyDose": 6,
+    "timeOfUse": "NotImportant",
+    "drug": 1,
+    "hourlyRate": "2022-05-19T09:00:00"
+  },
+  {
+    "id": 10,
+    "dailyDose": 4,
+    "timeOfUse": "PreMeal",
+    "drug": 4,
+    "hourlyRate": "2022-05-19T09:00:00"
+  },
+  {
+    "id": 11,
+    "dailyDose": 333,
+    "timeOfUse": "NotImportant",
+    "drug": 1,
+    "hourlyRate": "2022-05-19T09:00:00"
   }
 ]

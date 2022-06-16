@@ -5,6 +5,8 @@ using System.Windows;
 using HealthInstitution.GUI.PatientView.Polls;
 using HealthInstitution.Core.Polls;
 using HealthInstitution.Core.DIContainer;
+using HealthInstitution.ViewModels.GUIViewModels.PatientViewViewModels;
+using HealthInstitution.Core.SystemUsers.Patients.Model;
 
 namespace HealthInstitution.GUI.PatientView;
 
@@ -14,68 +16,18 @@ namespace HealthInstitution.GUI.PatientView;
 public partial class MedicalRecordView : Window
 {
     private User _loggedPatient;
-    private List<Examination> _currentExaminations;
     IExaminationService _examinationService;
-
-    public MedicalRecordView(IExaminationService examinationService)
+    IPollService _pollService;
+    public MedicalRecordView(IExaminationService examinationService, IPollService pollService)
     {
         InitializeComponent();
         _examinationService = examinationService;
-        LoadAllRows();
+        _pollService = pollService;
     }
+
     public void SetLoggedPatient(User patient)
     {
         _loggedPatient = patient;
-    }
-
-    private void DoctorButton_Click(object sender, RoutedEventArgs e)
-    {
-        LoadRows(_examinationService.OrderByDoctor(_currentExaminations));
-    }
-
-    private void DateButton_Click(object sender, RoutedEventArgs e)
-    {
-        LoadRows(_examinationService.OrderByDate(_currentExaminations));
-    }
-
-    private void SpecializationButton_Click(object sender, RoutedEventArgs e)
-    {
-        LoadRows(_examinationService.OrderByDoctorSpeciality(_currentExaminations));
-    }
-
-    private void SearchButton_Click(object sender, RoutedEventArgs e)
-    {
-        LoadRows(_examinationService.GetSearchAnamnesis(searchParameter.Text, _loggedPatient.Username));
-    }
-
-    private void LoadAllRows()
-    {
-        LoadRows(_examinationService.GetCompletedByPatient(_loggedPatient.Username));
-    }
-
-    private void LoadRows(List<Examination> examinations)
-    {
-        _currentExaminations = examinations;
-        dataGrid.Items.Clear();
-        foreach (Examination examination in examinations)
-        {
-            if (examination.MedicalRecord.Patient.Username.Equals(_loggedPatient.Username))
-                dataGrid.Items.Add(examination);
-        }
-        dataGrid.Items.Refresh();
-    }
-
-    private void SearchParameter_GotFocus(object sender, RoutedEventArgs e)
-    {
-        searchParameter.Clear();
-    }
-
-    private void RateDoctorButton_Click(object sender, RoutedEventArgs e)
-    {
-        Examination selectedExamination = (Examination)dataGrid.SelectedItem;
-
-        DoctorPollDialog doctorPollDialog = DIContainer.GetService<DoctorPollDialog>();
-        doctorPollDialog.SetRatedDoctor(selectedExamination.Doctor);
-        doctorPollDialog.ShowDialog();
+        DataContext = new MedicalRecordViewViewModel(patient, _examinationService, _pollService);
     }
 }

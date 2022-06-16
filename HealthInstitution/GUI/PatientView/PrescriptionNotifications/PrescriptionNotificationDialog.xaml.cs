@@ -13,6 +13,8 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using HealthInstitution.Core.PrescriptionNotifications.Model;
 using HealthInstitution.Core.PrescriptionNotifications.Service;
+using HealthInstitution.Core.SystemUsers.Patients.Model;
+using HealthInstitution.ViewModels.GUIViewModels.PatientViewViewModels.PrescriptionNotificationViewModels;
 
 namespace HealthInstitution.GUI.PatientView;
 
@@ -22,24 +24,17 @@ namespace HealthInstitution.GUI.PatientView;
 public partial class RecepieNotificationDialog : Window
 {
     IPrescriptionNotificationService _prescriptionNotificationService;
+    Patient _loggedPatient;
     public RecepieNotificationDialog(IPrescriptionNotificationService prescriptionNotificationService)
     {
         InitializeComponent();
         _prescriptionNotificationService = prescriptionNotificationService;
+    }
 
-    }
-    public void SetLoggedPatient(string _loggedPatient)
+    public void SetLoggedPatient(Patient loggedPatient)
     {
-        LoadRows(_prescriptionNotificationService.GetPatientActiveNotification(_loggedPatient));
+        _loggedPatient = loggedPatient;
+        DataContext = new PrescriptionNotificationDialogViewModel(loggedPatient, _prescriptionNotificationService);
     }
-    private void LoadRows(List<PrescriptionNotification> recepieNotifications)
-    {
-        dataGrid.Items.Clear();
-        //List<Notification> doctorsNotificationsCopy = doctorsNotifications.ConvertAll(notification => new Notification(notification.Id,notification.OldAppointment,notification.NewAppointment,notification.Doctor,notification.Patient,notification.ActiveForDoctor,notification.ActiveForPatient));
-        foreach (PrescriptionNotification notification in recepieNotifications)
-        {
-            dataGrid.Items.Add(notification);
-        }
-        dataGrid.Items.Refresh();
-    }
+
 }

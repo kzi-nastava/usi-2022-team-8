@@ -7,15 +7,15 @@
     "previousIlnesses": [ "Headaches", "Diarrhea", "Diarea", "NovaBolest", "sss", "Corona" ],
     "allergens": [ "Gluten", "Nuts", "princ belve", "NOVI ALERGEN", "NovAlergen", "sss", "Asistent iz OS-a" ],
     "prescriptionsId": [ 4 ],
-    "referralsId": [ 2 ]
+    "referralsId": []
   },
   {
-    "height": 174,
-    "weight": 75.1,
+    "height": 188,
+    "weight": 76,
     "patientUsername": "marko",
     "previousIlnesses": [ "Headaches", "Mononucleosis", "Arthritis", "fff", "nova bolest" ],
     "allergens": [ "Milk", "Soya", "diazepam", "Nuts", "fff", "novi alergen" ],
-    "prescriptionsId": [ 6 ],
-    "referralsId": [ 1 ]
+    "prescriptionsId": [],
+    "referralsId": []
   }
 ]

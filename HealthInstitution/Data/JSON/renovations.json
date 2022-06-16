@@ -1,1 +1,21 @@
-[{"id":1,"room":11,"startDate":"2022-06-13T00:00:00","endDate":"2022-06-14T00:00:00","firstRoom":12,"secondRoom":13,"type":"separation"}]
+[
+
+  {
+    "id": 1,
+    "room": 11,
+    "startDate": "2022-06-13T00:00:00",
+    "endDate": "2022-06-14T00:00:00",
+    "firstRoom": 12,
+    "secondRoom": 13,
+    "type": "separation"
+  },
+  {
+    "id": 2,
+    "room": 13,
+    "startDate": "2022-06-01T00:00:00",
+    "endDate": "2022-06-11T00:00:00",
+    "firstRoom": 14,
+    "secondRoom": 15,
+    "type": "separation"
+  }
+]

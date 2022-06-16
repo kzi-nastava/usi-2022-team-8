@@ -6,30 +6,25 @@
         xmlns:local="clr-namespace:HealthInstitution.GUI.PatientView"
         mc:Ignorable="d"
         Title="MedicalRecordView" Height="450" Width="800">
+
     <Grid>
-        <DataGrid  ItemsSource="{Binding Examination}" AutoGenerateColumns="True" Name="dataGrid" Grid.ColumnSpan="3" Margin="0,0,0,0">
+
+        <DataGrid  ItemsSource="{Binding CompletedExaminations}" AutoGenerateColumns="False" Name="dataGrid" Grid.ColumnSpan="3" Margin="0,0,0,0" SelectedIndex="{Binding SelectedExaminationIndex}">
             <DataGrid.Columns>
                 <DataGridTextColumn Header="Time" FontSize="18" Binding="{Binding Appointment}" Width ="150" />
                 <DataGridTextColumn Header="Status" FontSize="18" Binding="{Binding Status}" Width =" 150" />
-                <DataGridTextColumn Header="RoomNo" FontSize="18" Binding="{Binding Room.Number}" Width =" 150" />
-                <DataGridTextColumn Header="Doctor" FontSize="18" Width =" 150">
-                    <DataGridTextColumn.Binding>
-                        <MultiBinding StringFormat="{}{0} {1}">
-                            <Binding Path="Doctor.Name" />
-                            <Binding Path="Doctor.Surname" />
-                        </MultiBinding>
-                    </DataGridTextColumn.Binding>
-                </DataGridTextColumn>
+                <DataGridTextColumn Header="RoomNo" FontSize="18" Binding="{Binding RoomNo}" Width =" 150" />
+                <DataGridTextColumn Header="Doctor" FontSize="18" Width =" 150" Binding="{Binding Doctor}" />
                 <DataGridTextColumn Header="Anamnesis" FontSize="18" Width =" 150" Binding="{Binding Anamnesis}" />
             </DataGrid.Columns>
         </DataGrid>
-        <Button Name="Search" Content="Search anamnesis by keyword" HorizontalAlignment="Left" Height="18" Margin="600,356,0,0" VerticalAlignment="Top" Width="172" Click="SearchButton_Click" />
-        <TextBox Name="searchParameter" HorizontalAlignment="Left" Margin="600,333,0,0" TextWrapping="Wrap" Text="Anamensis keyword" VerticalAlignment="Top" Width="172" GotFocus="SearchParameter_GotFocus" />
-        <Button Content="Doctor" HorizontalAlignment="Left" Height="23" Margin="45,342,0,0" VerticalAlignment="Top" Width="101" Click="DoctorButton_Click" />
-        <Button Content="Date" HorizontalAlignment="Left" Height="23" Margin="195,342,0,0" VerticalAlignment="Top" Width="101" Click="DateButton_Click" />
-        <Button Content="Doctor specialization" HorizontalAlignment="Center" Height="23" Margin="0,342,0,0" VerticalAlignment="Top" Width="143" Click="SpecializationButton_Click" />
+        <Button Name="Search" Content="Search anamnesis by keyword" HorizontalAlignment="Left" Height="18" Margin="600,356,0,0" VerticalAlignment="Top" Width="172" Command="{Binding SearchKeywordCommand}" />
+        <TextBox Name="searchParameter" HorizontalAlignment="Left" Margin="600,333,0,0" TextWrapping="Wrap" Text="{Binding Keyword, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="172" />
+        <Button Content="Doctor" HorizontalAlignment="Left" Height="23" Margin="45,342,0,0" VerticalAlignment="Top" Width="101" Command="{Binding DoctorSortCommand}" />
+        <Button Content="Date" HorizontalAlignment="Left" Height="23" Margin="195,342,0,0" VerticalAlignment="Top" Width="101" Command="{Binding DateSortCommand}" />
+        <Button Content="Doctor specialization" HorizontalAlignment="Center" Height="23" Margin="0,342,0,0" VerticalAlignment="Top" Width="143" Command="{Binding SpecializationSortCommand}" />
         <Label Content="Sorts:" HorizontalAlignment="Left" Height="25" Margin="45,296,0,0" VerticalAlignment="Top" Width="101" />
         <Label Content="Search:" HorizontalAlignment="Left" Height="25" Margin="600,296,0,0" VerticalAlignment="Top" Width="101" />
-        <Button Content="Rate Doctor" HorizontalAlignment="Left" Height="26" Margin="44,370,0,0" VerticalAlignment="Top" Width="428" Click="RateDoctorButton_Click" />
+        <Button Content="Rate Doctor" HorizontalAlignment="Left" Height="26" Margin="44,370,0,0" VerticalAlignment="Top" Width="428" Command="{Binding RateDoctorCommand}" />
     </Grid>
 </Window>

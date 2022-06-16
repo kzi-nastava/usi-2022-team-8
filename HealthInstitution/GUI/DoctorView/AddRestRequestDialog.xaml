@@ -3,21 +3,24 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:HealthInstitution.GUI.DoctorView"
+        xmlns:local="clr-namespace:HealthInstitution.GUI.DoctorView" xmlns:local1="clr-namespace:HealthInstitution.ViewModels.GUIViewModels"
         mc:Ignorable="d"
         WindowStartupLocation="CenterScreen"
         Title="Create rest request" Height="400" Width="400">
+    <Window.Resources>
+        <local1:GradeConverter x:Key="typeConverterKey" />
+    </Window.Resources>
     <Grid>
         <Label Content="Date" HorizontalAlignment="Left" Margin="38,40,0,0" VerticalAlignment="Top"/>
         <Label Content="Urgent request" HorizontalAlignment="Left" Margin="33,106,0,0" VerticalAlignment="Top"/>
         <Label Content="Number of days" HorizontalAlignment="Left" Margin="33,168,0,0" VerticalAlignment="Top"/>
         <Label Content="Reason for request" HorizontalAlignment="Left" Margin="33,245,0,0" VerticalAlignment="Top"/>
-        <DatePicker Name="datePicker" SelectedDate="{Binding Date, StringFormat='dd/MM/yyyy HH:mm:ss'}" Margin="153,28,23,306" Height="50"/>
-        <RadioButton Name="urgentRadioButton" Checked ="UrgentChecked" Content="Yes" HorizontalAlignment="Left" Height="17" Margin="205,112,0,0" VerticalAlignment="Top" Width="73" RenderTransformOrigin="0.523,0.402"/>
-        <RadioButton Name="notUrgentRadioButton" Checked ="NotUrgentChecked" Content="No" HorizontalAlignment="Left" Height="17" Margin="309,112,0,0" VerticalAlignment="Top" Width="68"/>
-        <TextBox Name="numberOfDaysTextBox" HorizontalAlignment="Left" Margin="205,169,0,0" PreviewTextInput="NumberValidationTextBox" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120" Height="23"/>
-        <TextBox Name="requestReasonTextBox" HorizontalAlignment="Left" Margin="153,230,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="224" Height="56"/>
-        <Button Content="Submit" Click="Submit_Click" HorizontalAlignment="Center" Margin="0,320,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.327,-0.439" Width="100" FontSize="16"/>
+        <DatePicker Name="datePicker" SelectedDate="{Binding SelectedDateTime, UpdateSourceTrigger=LostFocus, StringFormat='dd/MM/yyyy HH:mm:ss'}" Margin="153,28,23,306" Height="50"/>
+        <RadioButton Name="urgentRadioButton" IsChecked="{Binding UrgencyChoice, Converter={StaticResource ResourceKey=typeConverterKey}, ConverterParameter=0}" Content="Yes" HorizontalAlignment="Left" Height="17" Margin="205,112,0,0" VerticalAlignment="Top" Width="73" RenderTransformOrigin="0.523,0.402"/>
+        <RadioButton Name="notUrgentRadioButton" IsChecked="{Binding UrgencyChoice, Converter={StaticResource ResourceKey=typeConverterKey}, ConverterParameter=1}" Content="No" HorizontalAlignment="Left" Height="17" Margin="309,112,0,0" VerticalAlignment="Top" Width="68"/>
+        <TextBox Name="numberOfDaysTextBox" HorizontalAlignment="Left" Margin="205,169,0,0" TextWrapping="Wrap" Text="{Binding DaysDuration, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="120" Height="23"/>
+        <TextBox Name="requestReasonTextBox" HorizontalAlignment="Left" Margin="153,230,0,0" TextWrapping="Wrap" Text="{Binding Reason, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" VerticalAlignment="Top" Width="224" Height="56"/>
+        <Button Content="Submit" Command="{Binding CreateRestRequestCommand}" HorizontalAlignment="Center" Margin="0,320,0,0" VerticalAlignment="Top" RenderTransformOrigin="1.327,-0.439" Width="100" FontSize="16"/>
 
     </Grid>
 </Window>

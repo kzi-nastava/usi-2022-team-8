@@ -17,5 +17,7 @@ namespace HealthInstitution.Core.Polls.Repository
         void LoadFromFile();
         void Save();
         void Update(int id, PollQuestion byPollQuestion);
+        public bool IsExaminationRated(int id);
+        public void AddToRatedExaminations(int id);
     }
 }

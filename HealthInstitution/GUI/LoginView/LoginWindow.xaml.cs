@@ -53,6 +53,8 @@ using HealthInstitution.Core.ScheduleEditRequests.Repository;
 using HealthInstitution.Core.ScheduleEditRequests;
 using HealthInstitution.Core.Scheduling;
 using HealthInstitution.Core;
+using System.Windows.Controls;
+using HealthInstitution.ViewModels.GUIViewModels;
 
 using HealthInstitution.GUI.ManagerView.DrugView;
 using HealthInstitution.GUI.ManagerView.IngredientView;
@@ -87,6 +89,8 @@ namespace HealthInstitution.GUI.LoginView
         public LoginWindow(IUserService userService, ITrollCounterService trollCounterService, IPatientService patientService, IDoctorService doctorService, IPrescriptionNotificationService prescriptionNotificationService, IDoctorRatingsService doctorRatingsService, IEquipmentTransferRefreshingService equipmentTransferRefreshingService, IRenovationRefreshingService renovationRefreshingService)
         {
             InitializeComponent();
+            this.DataContext = new LoginViewModel(this, userService,trollCounterService,patientService,doctorService,prescriptionNotificationService,doctorRatingsService);
+
             _userService = userService;
             _trollCounterService = trollCounterService;
             _patientService = patientService;
@@ -95,80 +99,12 @@ namespace HealthInstitution.GUI.LoginView
             _doctorRatingsService = doctorRatingsService;
         }
 
-        private User GetUserFromInputData()
+        private void PasswordBox_PasswordChanged(object sender, RoutedEventArgs e)
         {
-            _usernameInput = usernameBox.Text;
-            _passwordInput = passwordBox.Password.ToString();
-            return _userService.GetByUsername(_usernameInput);
-        }
-
-        private void LoginButton_click(object sender, RoutedEventArgs e)
-        {
-            User user = GetUserFromInputData();
-            if (_userService.IsUserFound(user, _passwordInput) && !_userService.IsUserBlocked(user))
+            if (this.DataContext != null)
             {
-                this.Close();
-                switch (user.Type)
-                {
-                    case UserType.Patient:
-                        RedirectPatient(user);
-                        break;
-
-                    case UserType.Doctor:
-                        RedirectDoctor();
-                        break;
-
-                    case UserType.Secretary:
-                        RedirectSecretary();
-                        break;
-
-                    case UserType.Manager:
-                        RedirectManager();
-                        break;
-                }
+                ((dynamic)this.DataContext).Password = ((PasswordBox)sender).SecurePassword;
             }
-        }
-
-        private void RedirectPatient(User foundUser)
-        {
-            _trollCounterService.TrollCheck(foundUser.Username);
-            //_patientService.LoadNotifications();
-            Patient loggedPatient = _patientService.GetByUsername(_usernameInput);
-            _prescriptionNotificationService.GenerateAllSkippedNotifications(loggedPatient.Username);
-            _doctorRatingsService.AssignScores();
-
-            var patientWindow = DIContainer.GetService<PatientWindow>();
-            patientWindow.SetLoggedPatient(loggedPatient);
-            patientWindow.ShowDialog();
-            
-        }
-
-        private void RedirectDoctor()
-        {
-            //_doctorService.LoadAppointments();
-            //_doctorService.LoadNotifications();
-            //_restRequestService.LoadRequests();
-            Doctor loggedDoctor = _doctorService.GetById(_usernameInput);
-
-            var doctorWindow = DIContainer.GetService<DoctorWindow>();
-            doctorWindow.SetLoggedDoctor(loggedDoctor);
-            doctorWindow.ShowDialog();
-        }
-
-        private void RedirectSecretary()
-        {
-            //_restRequestService.LoadRequests();
-
-            var secretaryWindow = DIContainer.GetService<SecretaryWindow>();
-            secretaryWindow.ShowDialog();
-
-        }
-
-        private void RedirectManager()
-        {
-            var managerWindow = DIContainer.GetService<ManagerWindow>();
-            managerWindow.ShowDialog();
-
         }
 
         [STAThread]
@@ -361,7 +297,6 @@ namespace HealthInstitution.GUI.LoginView
 
             var loginWindow = DIContainer.GetService<LoginWindow>();
             loginWindow.ShowDialog();
-
         }
     }
 }

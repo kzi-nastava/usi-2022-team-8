@@ -5,6 +5,7 @@ using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using HealthInstitution.Core.SystemUsers.Patients;
 using HealthInstitution.Core.SystemUsers.Patients.Model;
 using HealthInstitution.Core.SystemUsers.Patients.Repository;
+using HealthInstitution.ViewModels.GUIViewModels.PatientViewViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,18 +40,8 @@ namespace HealthInstitution.GUI.PatientView
         public void SetLoggedPatient(Patient patient)
         {
             _loggedPatient = patient;
-            LoadRows();
+            this.DataContext = new PatientNotificationDialogViewModel(patient, _patientService,_appointmentNotificationService);
         }
-        private void LoadRows()
-        {
-            dataGrid.Items.Clear();
-            foreach (AppointmentNotification notification in _patientService.GetActiveAppointmentNotification(_loggedPatient))
-            {
-                dataGrid.Items.Add(notification);
-                _appointmentNotificationService.ChangeActiveStatus(notification, false);
-            }
-            dataGrid.Items.Refresh();
-            _patientService.DeleteNotifications(_loggedPatient);
-        }
+ 
     }
 }

@@ -70,7 +70,8 @@ namespace HealthInstitution.Core.Prescriptions.Repository
                     id = prescription.Id,
                     dailyDose = prescription.DailyDose,
                     timeOfUse = prescription.TimeOfUse,
-                    drug = prescription.Drug.Id
+                    drug = prescription.Drug.Id,
+                    hourlyRate = prescription.HourlyRate
                 });
             }
             return reducedPrescriptions;
@@ -91,6 +92,7 @@ namespace HealthInstitution.Core.Prescriptions.Repository
         {
             return this.PrescriptionById;
         }
+
         public Prescription GetById(int id)
         {
             if (PrescriptionById.ContainsKey(id))

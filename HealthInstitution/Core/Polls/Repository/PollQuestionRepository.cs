@@ -48,6 +48,7 @@ namespace HealthInstitution.Core.Polls.Repository
                                                           "How likely would you recommend this doctor",
                                                           "Rate overall experience" };
             this.LoadFromFile();
+            LoadRatedExaminations();
         }
 
 
@@ -178,6 +179,28 @@ namespace HealthInstitution.Core.Polls.Repository
         public List<PollQuestion> GetDoctorGradeByQuestion(Doctor doctor)
         {
             return PollQuestions.FindAll(question => question.ForDoctor == doctor);
+        }
+        private List<int> _ratedExaminations;
+
+        private void LoadRatedExaminations()
+        {
+            _ratedExaminations = JsonSerializer.Deserialize<List<int>>(File.ReadAllText(@"..\..\..\Data\JSON\ratedExaminations.json"), _options);
+        }
+
+        public bool IsExaminationRated(int id)
+        {
+            return _ratedExaminations.Contains(id);
+        }
+
+        private void SaveRatedExaminations()
+        {
+            File.WriteAllText(@"..\..\..\Data\JSON\ratedExaminations.json", JsonSerializer.Serialize(this._ratedExaminations, _options));
+        }
+
+        public void AddToRatedExaminations(int id)
+        {
+            _ratedExaminations.Add(id);
+            SaveRatedExaminations();
         }
     }
 }

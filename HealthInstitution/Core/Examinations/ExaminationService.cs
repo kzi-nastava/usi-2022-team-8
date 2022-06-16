@@ -1,5 +1,6 @@
 ﻿using HealthInstitution.Core.Examinations.Model;
 using HealthInstitution.Core.Examinations.Repository;
+using HealthInstitution.Core.MedicalRecords;
 using HealthInstitution.Core.Scheduling;
 using HealthInstitution.Core.SystemUsers.Patients.Model;
 using HealthInstitution.Core.SystemUsers.Users.Model;

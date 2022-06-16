@@ -24,5 +24,5 @@ namespace HealthInstitution.Core.RestRequestNotifications.Model
             RestRequest = restRequestNotificationDTO.RestRequest;
             Active = restRequestNotificationDTO.Active;
         }
-    }
+}
 }

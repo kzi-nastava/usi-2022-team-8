@@ -27,8 +27,9 @@ namespace HealthInstitution.GUI.ManagerView.DrugView
     {
         private List<Ingredient> _ingredientsForDrug;
         private Drug _drug;
-        IDrugService _drugService;
-        IIngredientService _ingredientService;
+        private IDrugService _drugService;
+        private IIngredientService _ingredientService;
+
         public EditDrugDialog(IDrugService drugService, IIngredientService ingredientService)
         {
             InitializeComponent();
@@ -36,22 +37,25 @@ namespace HealthInstitution.GUI.ManagerView.DrugView
             _ingredientService = ingredientService;
             _ingredientsForDrug = new List<Ingredient>();
             addIngredient.IsEnabled = false;
-            SetDrugData();
         }
+
         public void SetDrug(Drug drug)
         {
             _drug = drug;
+            SetDrugData();
         }
+
         private void SetDrugData()
         {
             nameBox.Text = _drug.Name;
-            
+
             foreach (Ingredient ingredient in _drugService.GetIngredients(_drug))
             {
                 _ingredientsForDrug.Add(ingredient);
             }
             RefreshDataGrid();
         }
+
         private void IngredientsComboBox_Loaded(object sender, RoutedEventArgs e)
         {
             List<Ingredient> ingredients = _ingredientService.GetAll();
@@ -125,13 +129,12 @@ namespace HealthInstitution.GUI.ManagerView.DrugView
                 return false;
             }
 
-            if (_drug.Name!=name && _drugService.Contains(name))
+            if (_drug.Name != name && _drugService.Contains(name))
             {
                 System.Windows.MessageBox.Show("This drug name already exist!", "Create error", MessageBoxButton.OK, MessageBoxImage.Error);
                 return false;
             }
             return true;
         }
-
     }
 }

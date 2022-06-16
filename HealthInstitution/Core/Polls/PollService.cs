@@ -179,4 +179,13 @@ public class PollService : IPollService
         else
             AddQuestion(pollQuestionDTO);
     }
+    public void AddRatedExamination(int id)
+    {
+        _pollQuestionRepository.AddToRatedExaminations(id);
+    }
+
+    public bool IsRatedExamination(int id)
+    {
+        return _pollQuestionRepository.IsExaminationRated(id);
+    }
 }
