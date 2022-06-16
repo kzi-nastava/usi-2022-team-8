@@ -15,11 +15,11 @@ using System.Windows;
 
 namespace HealthInstitution.Commands.DoctorCommands.SchedulingDialogs
 {
-    internal class CreateExaminationDialogCommand : CommandBase
+    internal class AddExaminationDialogCommand : CommandBase
     {
         private AddExaminationDialogViewModel _addDoctorExaminationDialogViewModel;
 
-        public CreateExaminationDialogCommand(AddExaminationDialogViewModel addDoctorExaminationDialogViewModel)
+        public AddExaminationDialogCommand(AddExaminationDialogViewModel addDoctorExaminationDialogViewModel)
         {
             _addDoctorExaminationDialogViewModel = addDoctorExaminationDialogViewModel;
         }
@@ -33,6 +33,7 @@ namespace HealthInstitution.Commands.DoctorCommands.SchedulingDialogs
                 DateTime dateTime = _addDoctorExaminationDialogViewModel.GetExaminationDateTime();
                 ExaminationDTO examination = new ExaminationDTO(dateTime, null, doctor, medicalRecord);
                 SchedulingService.ReserveExamination(examination);
+                System.Windows.MessageBox.Show("You have succesfully added new examination!", "Info", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
             catch (Exception ex)
             {

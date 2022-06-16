@@ -30,6 +30,8 @@ namespace HealthInstitution.Commands.DoctorCommands.SchedulingDialogs
                 DateTime dateTime = _editExaminationDialogViewModel.GetExaminationDateTime();
                 ExaminationDTO examination = new ExaminationDTO(dateTime, null, doctor, medicalRecord);
                 ExaminationService.Update(selectedExamination.Id, examination);
+                System.Windows.MessageBox.Show("You have succesfully edited examination!", "Info", MessageBoxButton.OK, MessageBoxImage.Warning);
+
             }
             catch (Exception ex)
             {

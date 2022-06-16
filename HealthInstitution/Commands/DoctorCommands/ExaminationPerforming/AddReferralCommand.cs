@@ -1,5 +1,6 @@
 ﻿using HealthInstitution.Core;
 using HealthInstitution.Core.MedicalRecords.Model;
+using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using HealthInstitution.GUI.DoctorView;
 using System;
 using System.Collections.Generic;
@@ -9,17 +10,19 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Commands.DoctorCommands.ExaminationPerforming
 {
-    internal class ShowCreatePrescriptionDialogCommand : CommandBase
+    internal class AddReferralCommand : CommandBase
     {
         MedicalRecord _medicalRecord;
-        public ShowCreatePrescriptionDialogCommand(MedicalRecord medicalRecord)
+        Doctor _loggedDoctor;
+        public AddReferralCommand(Doctor doctor, MedicalRecord medicalRecord)
         {
+            _loggedDoctor = doctor;
             _medicalRecord = medicalRecord;
         }
 
         public override void Execute(object? parameter)
         {
-            new AddPrescriptionDialog(_medicalRecord).ShowDialog();
+            new AddReferralDialog(_loggedDoctor, _medicalRecord.Patient).ShowDialog();
         }
     }
 }

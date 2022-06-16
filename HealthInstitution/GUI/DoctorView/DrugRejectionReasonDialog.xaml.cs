@@ -23,7 +23,7 @@ namespace HealthInstitution.GUI.DoctorView
     /// </summary>
     public partial class DrugRejectionReasonDialog : Window
     {
-        public RejectionReasonDialog(Drug drug)
+        public DrugRejectionReasonDialog(Drug drug)
         {
             InitializeComponent();
             DataContext = new RejectionReasonDialogViewModel(drug);

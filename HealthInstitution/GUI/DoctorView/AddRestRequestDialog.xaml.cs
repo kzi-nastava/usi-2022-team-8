@@ -1,6 +1,7 @@
 ﻿using HealthInstitution.Core.RestRequests;
 using HealthInstitution.Core.RestRequests.Model;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
+using HealthInstitution.ViewModels.GUIViewModels.DoctorViewViewModels.RestRequests;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,57 +24,10 @@ namespace HealthInstitution.GUI.DoctorView
     /// </summary>
     public partial class AddRestRequestDialog : Window
     {
-        Doctor _loggedDoctor;
         public AddRestRequestDialog(Doctor doctor)
         {
-            _loggedDoctor = doctor;
             InitializeComponent();
-            Load();
-        }
-
-        public void Load()
-        {
-            urgentRadioButton.IsChecked = false;
-            notUrgentRadioButton.IsChecked = true;
-        }
-        private void NumberValidationTextBox(object sender, TextCompositionEventArgs e)
-        {
-            Regex regex = new Regex("[^0-9]+");
-            e.Handled = regex.IsMatch(e.Text);
-        }
-
-        public RestRequestDTO CreateRestRequestDTOFromInputData()
-        {
-            DateTime startDate = (DateTime)datePicker.SelectedDate;
-            int daysDuration = Int32.Parse(numberOfDaysTextBox.Text);
-            String requestReason = requestReasonTextBox.Text;
-            bool isUrgent = (bool)urgentRadioButton.IsChecked;
-            RestRequestDTO restRequestDTO = new RestRequestDTO(_loggedDoctor, requestReason, startDate, daysDuration, RestRequestState.OnHold, isUrgent, "");
-            return restRequestDTO;
-        }
-        private void Submit_Click(object sender, RoutedEventArgs e)
-        {
-            try
-            {
-                var restRequestDTO = CreateRestRequestDTOFromInputData();
-                RestRequestService.ApplyForRestRequest(restRequestDTO);
-                System.Windows.MessageBox.Show("You have applied for rest days!", "Info", MessageBoxButton.OK, MessageBoxImage.Information);
-                this.Close();
-            }
-            catch (Exception ex)
-            {
-                System.Windows.MessageBox.Show(ex.Message, "Warning", MessageBoxButton.OK, MessageBoxImage.Warning);
-            }
-        }
-
-        private void UrgentChecked(object sender, RoutedEventArgs e)
-        {
-
-        }
-
-        private void NotUrgentChecked(object sender, RoutedEventArgs e)
-        {
-
+            DataContext = new AddRestRequestDialogViewModel(doctor);
         }
     }
 }

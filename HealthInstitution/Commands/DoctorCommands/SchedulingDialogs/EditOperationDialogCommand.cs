@@ -32,6 +32,8 @@ namespace HealthInstitution.Commands.DoctorCommands.SchedulingDialogs
                 int duration = _editOperationDialogViewModel.GetDuration();
                 OperationDTO operation = new OperationDTO(dateTime, duration, null, doctor, medicalRecord);
                 OperationService.Update(selectedOperation.Id, operation);
+                System.Windows.MessageBox.Show("You have succesfully added edited operation!", "Info", MessageBoxButton.OK, MessageBoxImage.Warning);
+
             }
             catch (Exception ex)
             {

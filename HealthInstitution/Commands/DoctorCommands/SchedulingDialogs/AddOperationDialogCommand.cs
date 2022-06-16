@@ -11,11 +11,11 @@ using System.Windows;
 
 namespace HealthInstitution.Commands.DoctorCommands.SchedulingDialogs
 {
-    internal class CreateOperationDialogCommand : CommandBase
+    internal class AddOperationDialogCommand : CommandBase
     {
         private AddOperationDialogViewModel _addOperationDialogViewModel;
 
-        public CreateOperationDialogCommand(AddOperationDialogViewModel addOperationDialogViewModel)
+        public AddOperationDialogCommand(AddOperationDialogViewModel addOperationDialogViewModel)
         {
             _addOperationDialogViewModel = addOperationDialogViewModel;
         }
@@ -31,6 +31,7 @@ namespace HealthInstitution.Commands.DoctorCommands.SchedulingDialogs
                 int duration = _addOperationDialogViewModel.GetDuration();
                 OperationDTO operation = new OperationDTO(dateTime, duration, null, doctor, medicalRecord);
                 SchedulingService.ReserveOperation(operation);
+                System.Windows.MessageBox.Show("You have succesfully added new operation!", "Info", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
             catch (Exception ex)
             {

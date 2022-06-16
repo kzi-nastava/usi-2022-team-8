@@ -246,7 +246,7 @@ namespace HealthInstitution.ViewModels.GUIViewModels.DoctorViewViewModels.Prescr
         {
             MedicalRecord = medicalRecord;
             LoadComboBoxes();
-            CreatePrescriptionCommand = new CreatePrescriptionCommand(this);
+            CreatePrescriptionCommand = new AddPrescriptionDialogCommand(this);
         }
     }
 }

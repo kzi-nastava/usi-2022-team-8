@@ -12,11 +12,11 @@ using System.Windows;
 
 namespace HealthInstitution.Commands.DoctorCommands.Prescriptions
 {
-    internal class CreatePrescriptionCommand : CommandBase
+    internal class AddPrescriptionDialogCommand : CommandBase
     {
         private AddPrescriptionDialogViewModel _addPrescriptionDialogViewModel;
 
-        public CreatePrescriptionCommand(AddPrescriptionDialogViewModel addPrescriptionDialogViewModel)
+        public AddPrescriptionDialogCommand(AddPrescriptionDialogViewModel addPrescriptionDialogViewModel)
         {
             _addPrescriptionDialogViewModel = addPrescriptionDialogViewModel;
         }

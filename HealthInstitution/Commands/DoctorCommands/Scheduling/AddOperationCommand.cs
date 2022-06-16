@@ -10,12 +10,12 @@ using System.Threading.Tasks;
 
 namespace HealthInstitution.Commands.DoctorCommands.Scheduling
 {
-    internal class CreateOperationCommand : CommandBase
+    internal class AddOperationCommand : CommandBase
     {
         private OperationTableViewModel _operationTableViewModel;
         private Doctor _loggedDoctor;
 
-        public CreateOperationCommand(OperationTableViewModel operationTableViewModel, Doctor doctor)
+        public AddOperationCommand(OperationTableViewModel operationTableViewModel, Doctor doctor)
         {
             _operationTableViewModel = operationTableViewModel;
             _loggedDoctor = doctor;

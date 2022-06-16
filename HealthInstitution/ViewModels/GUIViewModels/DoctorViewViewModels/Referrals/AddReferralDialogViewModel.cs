@@ -134,7 +134,7 @@ namespace HealthInstitution.ViewModels.GUIViewModels.DoctorViewViewModels.Referr
             LoadDoctorComboBox();
             SpecialtyComboBoxItems = new();
             LoadSpecialtyComboBox();
-            CreateReferralCommand = new CreateReferralCommand(this);
+            CreateReferralCommand = new AddReferralDialogCommand(this);
         }
     }
 }

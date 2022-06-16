@@ -135,8 +135,8 @@ namespace HealthInstitution.ViewModels.GUIViewModels.DoctorViewViewModels.Schedu
         {
             LoggedDoctor = examination.Doctor;
             MedicalRecord = medicalRecord;
-            ShowCreatePrescriptionDialogCommand = new ShowCreatePrescriptionDialogCommand(medicalRecord);
-            ShowCreateReferralDialogCommand = new ShowCreateReferralDialogCommand(LoggedDoctor, medicalRecord);
+            ShowCreatePrescriptionDialogCommand = new AddPrescriptionCommand(medicalRecord);
+            ShowCreateReferralDialogCommand = new AddReferralCommand(LoggedDoctor, medicalRecord);
             AddAllergenCommand = new AddAllergenCommand(this);
             AddIllnessCommand = new AddIllnessCommand(this);
             FinishExaminationCommand = new FinishExaminationCommand(this, examination);

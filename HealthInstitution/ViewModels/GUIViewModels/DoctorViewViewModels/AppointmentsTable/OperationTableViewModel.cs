@@ -73,7 +73,7 @@ namespace HealthInstitution.ViewModels.GUIViewModels.DoctorViewViewModels.Appoin
         public OperationTableViewModel(Doctor loggedDoctor)
         {
             LoggedDoctor = loggedDoctor;
-            CreateOperationCommand = new CreateOperationCommand(this, loggedDoctor);
+            CreateOperationCommand = new AddOperationCommand(this, loggedDoctor);
             EditOperationCommand = new EditOperationCommand(this);
             DeleteOperationCommand = new DeleteOperationCommand(this);
             Operations = new();

@@ -21,7 +21,7 @@ namespace HealthInstitution.Commands.DoctorCommands.DrugVerification
 
         public override void Execute(object? parameter)
         {
-            new RejectionReasonDialog(_drugsVerificationTableView.GetSelectedDrug()).ShowDialog();
+            new DrugRejectionReasonDialog(_drugsVerificationTableView.GetSelectedDrug()).ShowDialog();
             _drugsVerificationTableView.RefreshGrid();
         }
     }

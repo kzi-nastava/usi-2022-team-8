@@ -20,6 +20,7 @@ namespace HealthInstitution.ViewModels.GUIViewModels.DoctorViewViewModels
             ScheduleReviewCommand = new ScheduleReviewCommand(loggedDoctor);
             DrugManagementCommand = new DrugManagementCommand();
             LogoutCommand = new LogoutCommand();
+            RestRequestTableCommand = new RestRequestTableCommand(loggedDoctor);
         }
 
         public ICommand OperationsTableCommand { get; }
@@ -27,5 +28,6 @@ namespace HealthInstitution.ViewModels.GUIViewModels.DoctorViewViewModels
         public ICommand ScheduleReviewCommand { get; }
         public ICommand DrugManagementCommand { get; }
         public ICommand LogoutCommand { get; }
+        public ICommand RestRequestTableCommand { get; }
     }
 }

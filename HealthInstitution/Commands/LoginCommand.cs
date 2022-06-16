@@ -1,6 +1,7 @@
 ﻿using HealthInstitution.Core;
 using HealthInstitution.Core.DoctorRatings;
 using HealthInstitution.Core.PrescriptionNotifications.Service;
+using HealthInstitution.Core.RestRequests;
 using HealthInstitution.Core.SystemUsers.Doctors;
 using HealthInstitution.Core.SystemUsers.Doctors.Model;
 using HealthInstitution.Core.SystemUsers.Patients;
@@ -80,6 +81,7 @@ public class LoginCommand : CommandBase
     private void RedirectDoctor()
     {
         DoctorService.LoadAppointments();
+        RestRequestService.LoadRequests();
         Doctor loggedDoctor = DoctorService.GetById(_loginViewModel.Username);
         new DoctorWindow(loggedDoctor).ShowDialog();
     }

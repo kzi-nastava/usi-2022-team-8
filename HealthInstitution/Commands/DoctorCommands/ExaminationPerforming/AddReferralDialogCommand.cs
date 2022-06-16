@@ -13,12 +13,12 @@ using System.Windows;
 
 namespace HealthInstitution.Commands.DoctorCommands.Referrals
 {
-    internal class CreateReferralCommand : CommandBase
+    internal class AddReferralDialogCommand : CommandBase
     {
         private AddReferralDialogViewModel _addReferralDialogViewModel;
         private object doctorComboBox;
 
-        public CreateReferralCommand(AddReferralDialogViewModel addReferralDialogViewModel)
+        public AddReferralDialogCommand(AddReferralDialogViewModel addReferralDialogViewModel)
         {
             _addReferralDialogViewModel = addReferralDialogViewModel;
         }

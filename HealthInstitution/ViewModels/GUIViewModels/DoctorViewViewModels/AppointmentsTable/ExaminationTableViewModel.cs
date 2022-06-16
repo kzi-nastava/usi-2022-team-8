@@ -73,7 +73,7 @@ namespace HealthInstitution.ViewModels.GUIViewModels.DoctorViewViewModels.Appoin
         public ExaminationTableViewModel(Doctor loggedDoctor)
         {
             LoggedDoctor = loggedDoctor;
-            CreateExaminationCommand = new CreateExaminationCommand(this, loggedDoctor);
+            CreateExaminationCommand = new AddExaminationCommand(this, loggedDoctor);
             EditExaminationCommand = new EditExaminationCommand(this);
             DeleteExaminationCommand = new DeleteExaminationCommand(this);
             Examinations = new();
